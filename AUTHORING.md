@@ -67,3 +67,8 @@ chapter:
 ## 7. 점검
 - 작업 중간과 끝에 `node build/build.mjs --check`를 실행해 오류가 0건인지 확인한다(출력 폴더는 건드리지 않는다).
 - 자기 장의 파일만 만들고 고친다. 다른 장 파일, 공용 파일, `build/`, `assets/common.*`, `i18n/`은 고치지 않는다. 고쳐야 할 것이 있으면 최종 보고에 적는다.
+
+## 8. 공용 문서와 다른 서비스의 사실
+- 여러 서비스를 비교하거나 묶는 내용은 `common` 권(`data/topics/common/`, `content/ko/common/`, `data/questions/common/`)에 쓴다. 장 ID는 `common/<이름>`.
+- SQS 밖 서비스의 수치는 서비스별 파일에 둔다: `data/facts/sns.yaml`, `eventbridge.yaml`, `kinesis.yaml` 등. ID 접두어는 서비스 이름(`sns.`, `eventbridge.`, `kinesis.`).
+- 요금은 리전마다 다르고 자주 바뀐다. 요금 사실은 기준 리전을 label에 쓰고 `volatile: true`로 둔다.

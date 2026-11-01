@@ -30,6 +30,7 @@ chapter:
       exam_tags:
         - SAA-C03#2.1
         - SAA-C03#2.2
+        - SOA-C03#2.2
       sources:
         - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html#sqs-basic-architecture
         - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html

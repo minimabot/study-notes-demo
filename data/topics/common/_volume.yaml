@@ -1,0 +1,7 @@
+# 여러 서비스에 걸친 공용 문서. 서비스 권에는 요약과 링크만 두고 비교·통합 패턴은 여기에만 쓴다.
+volume:
+  id: common
+  title: { ko: "공용: 서비스 비교와 통합 패턴" }
+order:
+  - common/messaging-compare
+  - common/fanout
