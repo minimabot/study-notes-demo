@@ -1,0 +1,44 @@
+# 장: 큰 메시지 다루기
+chapter:
+  id: sqs/large-messages
+  title:
+    ko: 큰 메시지 다루기 (확장 클라이언트와 S3)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-managing-large-messages.html
+  topics:
+    - id: sqs/large-messages/size-limit
+      title:
+        ko: 메시지 크기 한도
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+        - https://aws.amazon.com/sqs/pricing/
+    - id: sqs/large-messages/claim-check
+      title:
+        ko: 본문은 S3에, 큐에는 참조만
+      exam_tags:
+        - SAA-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-managing-large-messages.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+    - id: sqs/large-messages/extended-client
+      title:
+        ko: 확장 클라이언트 라이브러리
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-s3-messages.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/extended-client-library-python.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+    - id: sqs/large-messages/cleanup
+      title:
+        ko: S3에 남은 본문 정리하기
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-s3-messages.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/extended-client-library-python.html
+        - https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html

@@ -1,0 +1,49 @@
+# 장: 표준 대기열
+chapter:
+  id: sqs/standard
+  title:
+    ko: 표준 대기열 (Standard queue)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues.html
+  topics:
+    - id: sqs/standard/delivery
+      title:
+        ko: 최소 1회 전송과 최선의 순서
+      exam_tags:
+        - SAA-C03#2.1
+        - SAA-C03#2.2
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html
+    - id: sqs/standard/lifecycle
+      title:
+        ko: 보내기, 받기, 지우기
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html#sqs-message-lifecycle
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html
+    - id: sqs/standard/identifiers
+      title:
+        ko: 큐 URL, 메시지 ID, 수신 핸들
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_DeleteMessage.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_GetQueueUrl.html
+    - id: sqs/standard/idempotency
+      title:
+        ko: 중복과 순서 바뀜에 대비하기 (멱등성)
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      recommended:
+        - claim:
+            ko: 같은 메시지를 여러 번 처리해도 문제가 없도록 애플리케이션을 멱등하게 설계한다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_DeleteMessage.html

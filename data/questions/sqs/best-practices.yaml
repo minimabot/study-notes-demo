@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.bp-batch-partial
+  type: quiz
+  chapter: sqs/best-practices
+  topic: sqs/best-practices/throughput
+  question: { ko: "생산자가 `SendMessageBatch`로 메시지 {{fact:sqs.batch.max-messages}}를 보냈고, 요청은 성공 응답으로 끝났다. 생산자가 이어서 해야 할 일은?" }
+  choices:
+    - { id: a, text: { ko: "할 일이 없다. 요청이 성공했으면 모든 메시지가 큐에 들어갔다" } }
+    - { id: b, text: { ko: "응답의 메시지별 실패 목록을 확인하고, 실패한 메시지만 다시 보낸다" } }
+    - { id: c, text: { ko: "중복을 막기 위해 같은 배치를 통째로 한 번 더 보낸다" } }
+    - { id: d, text: { ko: "배치를 쓰지 말고 `SendMessage`로 한 건씩 보내도록 바꾼다" } }
+  answer: b
+  explanation: { ko: "배치 요청은 일부 메시지가 실패해도 성공으로 돌아올 수 있다. 그래서 메시지별 결과를 확인하고 실패한 것만 다시 보낸다(b). a는 실패한 메시지를 조용히 잃는다. c는 이미 들어간 메시지를 중복으로 만든다. d는 문제를 풀지 못하고 요청 수와 비용만 늘린다." }
+  facts: [sqs.batch.max-messages]
+
+- id: sqs.q.bp-retry-backoff
+  type: quiz
+  chapter: sqs/best-practices
+  topic: sqs/best-practices/retries
+  question: { ko: "AWS SDK 없이 HTTP 요청을 직접 만들어 `ReceiveMessage`를 호출하는 소비자가 있다. 오류나 시간 초과가 나면 어떻게 다시 시도하는 것이 AWS 안내에 맞는가?" }
+  choices:
+    - { id: a, text: { ko: "기다리지 않고 성공할 때까지 즉시 다시 호출한다" } }
+    - { id: b, text: { ko: "잠시 쉬었다가 다시 호출하고, 같은 결과가 이어지면 쉬는 시간을 늘린다" } }
+    - { id: c, text: { ko: "큐를 지우고 다시 만든다" } }
+    - { id: d, text: { ko: "가시성 제한 시간을 최댓값으로 올린다" } }
+  answer: b
+  explanation: { ko: "SDK는 재시도와 지수 백오프를 기본으로 해 준다. SDK를 쓰지 않으면 직접 대기를 두고, 같은 결과가 반복되면 대기를 늘린다(예: {{fact:sqs.bp.retry.pause.first}} 뒤 {{fact:sqs.bp.retry.pause.next}}). a는 요청만 늘리고 상황을 악화시킨다. c는 메시지를 잃는다. d는 요청 오류와 관계가 없다." }
+  facts: [sqs.bp.retry.pause.first, sqs.bp.retry.pause.next]
+
+- id: sqs.q.bp-dlq-retention
+  type: quiz
+  chapter: sqs/best-practices
+  topic: sqs/best-practices/mistakes
+  question: { ko: "Standard 큐의 메시지 보관 기간이 {{raw:4일}}이다. 이 큐에 붙일 데드레터 큐의 보관 기간은 어떻게 정해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "원본 큐와 같게 둔다" } }
+    - { id: b, text: { ko: "원본 큐보다 짧게 둔다. DLQ로 옮겨질 때 만료 시각이 새로 시작되기 때문이다" } }
+    - { id: c, text: { ko: "원본 큐보다 길게 둔다. 만료가 처음 큐에 들어간 시각 기준이기 때문이다" } }
+    - { id: d, text: { ko: "보관 기간은 DLQ에 적용되지 않으므로 상관없다" } }
+  answer: c
+  explanation: { ko: "Standard 큐에서는 DLQ로 옮겨져도 처음 큐에 들어간 시각이 바뀌지 않고, 만료도 그 시각 기준이다. 그래서 원본 큐에서 오래 머문 메시지는 DLQ에서 금방 지워질 수 있다. AWS는 DLQ 보관 기간을 원본보다 길게 두라고 권한다. 보관 기간은 최대 {{fact:sqs.retention.max}}까지 늘릴 수 있다. 만료 시각이 새로 시작되는 것(b)은 FIFO 큐의 동작이다." }
+  facts: [sqs.retention.max]

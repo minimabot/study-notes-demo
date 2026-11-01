@@ -1,0 +1,64 @@
+# 장: 짧은 폴링과 긴 폴링
+chapter:
+  id: sqs/polling
+  title:
+    ko: 짧은 폴링과 긴 폴링 (Short / Long Polling)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html
+  topics:
+    - id: sqs/polling/short-vs-long
+      title:
+        ko: 두 방식은 무엇이 다른가
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#4.3
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html
+    - id: sqs/polling/settings
+      title:
+        ko: 어디서 켜고 얼마로 두는가
+      exam_tags:
+        - DVA-C03#1.1
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: 대부분의 경우 긴 폴링 대기 시간을 최댓값으로 둔다. 너무 길면 줄이되 최소값 이상으로 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+          checked: 2026-11-01
+        - claim:
+            ko: HTTP 응답 시간 제한을 WaitTimeSeconds보다 길게 잡는다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html#sqs-short-long-polling-differences
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+    - id: sqs/polling/cost
+      title:
+        ko: 빈 응답도 요금이 나간다
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: 대부분의 경우 짧은 폴링보다 긴 폴링을 쓴다. 즉시 응답이 꼭 필요한 앱만 짧은 폴링을 쓴다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-using-appropriate-polling-mode.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-using-appropriate-polling-mode.html
+        - https://aws.amazon.com/sqs/pricing/
+    - id: sqs/polling/pitfalls
+      title:
+        ko: 자주 틀리는 곳
+      exam_tags:
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: 여러 큐를 긴 폴링할 때는 큐마다 스레드를 하나씩 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/confirm-queue-is-empty.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html

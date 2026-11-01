@@ -1,0 +1,100 @@
+# 장 sqs/dlq 전용 사실 항목. 공용 값(보관 기간 등)은 sqs-core.yaml을 재사용한다.
+
+- id: sqs.dlq.max-receive.min
+  value: 1
+  unit: count
+  display: { ko: "1" }
+  label: { ko: "최대 수신 수(maxReceiveCount) 최솟값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.dlq.max-receive.max
+  value: 1000
+  unit: count
+  display: { ko: "1,000" }
+  label: { ko: "최대 수신 수(maxReceiveCount) 최댓값 (콘솔 기준 유효 범위)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.dlq.max-receive.default
+  value: 10
+  unit: count
+  display: { ko: "10" }
+  label: { ko: "API로 리드라이브 정책을 설정할 때 maxReceiveCount 기본값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.dlq.lambda-max-receive.recommended
+  value: 5
+  unit: count
+  display: { ko: "5 이상" }
+  label: { ko: "Lambda가 큐를 읽을 때 AWS가 권장하는 원본 큐의 maxReceiveCount" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.dlq.redrive-allow.byqueue-max
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "리드라이브 허용 정책 byQueue에 지정할 수 있는 원본 큐 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.dlq.reorder-receive-threshold
+  value: 3
+  unit: count
+  display: { ko: "3회" }
+  label: { ko: "Standard 큐에서 삭제 없이 이만큼 이상 수신된 메시지를 큐 뒤쪽으로 보내는 기준 (maxReceiveCount가 이보다 클 때)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.redrive.velocity.max
+  value: 500
+  unit: msg/s
+  display: { ko: "초당 메시지 500개" }
+  label: { ko: "DLQ 리드라이브 사용자 지정 최고 속도의 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_StartMessageMoveTask.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue-redrive.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.redrive.task.max-duration
+  value: 129600
+  unit: s
+  display: { ko: "36시간" }
+  label: { ko: "DLQ 리드라이브 작업 하나가 실행될 수 있는 최대 시간" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue-redrive.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue-redrive.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.redrive.tasks.per-account
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "계정당 동시에 실행할 수 있는 리드라이브 작업 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue-redrive.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue-redrive.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.redrive.tasks.per-queue
+  value: 1
+  unit: count
+  display: { ko: "1개" }
+  label: { ko: "큐 하나에서 동시에 실행할 수 있는 메시지 이동 작업 수" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_StartMessageMoveTask.html
+  checked: 2026-11-01
+  volatile: true

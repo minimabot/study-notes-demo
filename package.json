@@ -3,11 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build/build.mjs",
-    "serve": "python3 -m http.server 8787 -d dist"
+    "build": "node build/build.mjs && pagefind --site dist --glob \"ko/**/*.html\" --force-language ko",
+    "serve": "python3 -m http.server 8787 -d dist",
+    "check": "node build/build.mjs --check"
   },
   "dependencies": {
     "markdown-it": "^14.3.3",
     "yaml": "^2.9.1"
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
   }
 }

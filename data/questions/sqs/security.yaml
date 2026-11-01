@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.security-cross-account
+  type: quiz
+  chapter: sqs/security
+  topic: sqs/security/access-policies
+  question: { ko: "계정 B의 애플리케이션 역할이 계정 A의 큐에 메시지를 보내야 한다. 계정 B의 역할에는 sqs:SendMessage를 허용하는 IAM 정책이 이미 붙어 있다. 무엇을 더 해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "아무것도 하지 않아도 된다. IAM 정책만으로 다른 계정의 큐에 보낼 수 있다" } }
+    - { id: b, text: { ko: "계정 A의 큐 정책에 계정 B의 역할을 주체로 하는 SendMessage 허용 문을 추가한다" } }
+    - { id: c, text: { ko: "큐를 SSE-SQS로 암호화한다" } }
+    - { id: d, text: { ko: "계정 B에 같은 이름의 큐를 만든다" } }
+  answer: b
+  explanation: { ko: "교차 계정 접근은 큐를 가진 쪽의 큐 정책(리소스 기반 정책)이 그 주체를 허용해야 한다. 상대 계정의 IAM 정책만으로는 부족하다(a). 암호화(c)는 접근 허용과 상관이 없고, 다른 계정에 같은 이름의 큐를 만드는 것(d)은 별개의 큐일 뿐이다." }
+  facts: []
+
+- id: sqs.q.security-sns-kms
+  type: quiz
+  chapter: sqs/security
+  topic: sqs/security/encryption-at-rest
+  question: { ko: "SNS 주제가 SQS 큐로 메시지를 보내는데, 큐를 SSE-KMS로 바꾼 뒤 메시지가 더 이상 들어오지 않는다. 큐는 AWS 관리형 키(alias/aws/sqs)를 쓰고 있다. 어떻게 고쳐야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "AWS 관리형 키의 키 정책에 sns.amazonaws.com을 추가한다" } }
+    - { id: b, text: { ko: "고객 관리형 KMS 키를 만들어 키 정책에서 sns.amazonaws.com에 kms:GenerateDataKey와 kms:Decrypt를 허용하고, 큐가 그 키를 쓰게 한다" } }
+    - { id: c, text: { ko: "데이터 키 재사용 기간을 최댓값인 {{fact:sqs.sse.key-reuse.max}}로 늘린다" } }
+    - { id: d, text: { ko: "큐 정책에서 aws:SecureTransport 조건을 지운다" } }
+  answer: b
+  explanation: { ko: "AWS 서비스가 암호화된 큐에 보내려면 그 서비스 주체가 KMS 키를 쓸 수 있어야 한다. AWS 관리형 키의 키 정책은 고칠 수 없으므로(a는 불가능) 고객 관리형 키를 써야 한다. 재사용 기간(c)은 KMS 호출 횟수만 바꾼다. SNS는 HTTPS로 SQS에 보내므로 SecureTransport 조건(d)은 원인이 아니다." }
+  facts: [sqs.sse.key-reuse.max]
+
+- id: sqs.q.security-vpce
+  type: quiz
+  chapter: sqs/security
+  topic: sqs/security/transit-network
+  question: { ko: "프라이빗 서브넷의 EC2가 NAT 게이트웨이 없이 SQS를 쓰고, 그 큐는 이 VPC 밖에서 오는 메시지 요청을 받지 않아야 한다. 가장 알맞은 구성은?" }
+  choices:
+    - { id: a, text: { ko: "SQS용 게이트웨이 VPC 엔드포인트를 만들고 라우팅 테이블에 추가한다" } }
+    - { id: b, text: { ko: "SQS용 인터페이스 VPC 엔드포인트를 만들고, 큐 정책에 aws:sourceVpce가 그 엔드포인트가 아니면 SendMessage·ReceiveMessage를 거부하는 문을 넣는다" } }
+    - { id: c, text: { ko: "VPC 엔드포인트 정책만 설정한다. 그러면 VPC 밖에서의 호출도 막힌다" } }
+    - { id: d, text: { ko: "큐를 SSE-KMS로 암호화한다" } }
+  answer: b
+  explanation: { ko: "SQS는 인터페이스 VPC 엔드포인트(PrivateLink)로 연결한다. 엔드포인트 정책(c)은 그 엔드포인트를 지나는 요청만 통제하므로, 같은 사용자가 VPC 밖에서 부르는 것은 막지 못한다. 큐 쪽에서 aws:sourceVpce 조건으로 거부해야 한다. 게이트웨이 엔드포인트(a)는 SQS 문서가 안내하는 방식이 아니고, 암호화(d)는 접근 경로를 제한하지 않는다." }
+  facts: []

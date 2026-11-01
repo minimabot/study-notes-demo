@@ -264,8 +264,8 @@ function chapterBody(r, { inline, depth }) {
   return `
 <header class="topbar"><button class="tocbtn" aria-expanded="false" aria-controls="toc">☰ ${esc(T.toc)}</button><span class="brand">${esc(T.site_name)}</span></header>
 <div class="shell">
-<nav id="toc" class="toc" aria-label="${esc(T.toc)}"><div class="toc-in"><div class="series">${esc(T.site_tagline)}</div>${homeLink}<div class="vol">${esc(ch.title.ko)}</div><ol>${toc}<li><a href="#sources">${esc(T.sources)}</a></li></ol><button class="tocclose">${esc(T.close)}</button></div></nav>
-<main>
+<nav id="toc" class="toc" aria-label="${esc(T.toc)}"><div class="toc-in"><div class="series">${esc(T.site_tagline)}</div>${homeLink}<div class="vol">${esc(ch.title.ko)}</div><ol>${toc}<li><a href="#sources">${esc(T.sources)}</a></li></ol>${inline ? '' : `<p class="tocsearch"><a href="${up}ko/search/">🔍 ${esc(T.search)}</a></p>`}<button class="tocclose">${esc(T.close)}</button></div></nav>
+<main data-pagefind-body>
 <p class="crumb">${esc(ch._volume.title.ko)} · <span class="track">${esc(T['track_' + ch.track])}</span></p>
 <h1>${esc(ch.title.ko)}</h1>
 <div class="tags big">${tagHtml(r.chapterTags, 'ko', T)}</div>
@@ -300,6 +300,7 @@ for (const lang of LANGS_PUBLISHED) {
   const T = i18n[lang];
   const vols = [...volumes.values()];
   write(`${lang}/index.html`, simplePage(lang, T, T.site_name, `<p>${esc(T.site_tagline)}</p><ul class="vlist">${vols.map((v) => `<li><a href="${v.id}/">${esc(v.title[lang])}</a> <span class="muted">${out.filter((o) => o.vol === v.id).length} / ${v.order.length}</span></li>`).join('')}</ul>`, 1));
+  write(`${lang}/search/index.html`, simplePage(lang, T, T.search, `<link rel="stylesheet" href="../../pagefind/pagefind-ui.css"><div id="search"></div><script src="../../pagefind/pagefind-ui.js"></script><script>window.addEventListener('DOMContentLoaded',()=>{new PagefindUI({element:'#search',showSubResults:true,translations:{placeholder:'${T.search_placeholder}',zero_results:'${T.search_none} [SEARCH_TERM]'}})})</script>`, 2, `<p class="crumb"><a href="../">${esc(T.site_name)}</a></p>`));
   for (const v of vols) {
     const crumbs = `<p class="crumb"><a href="../">${esc(T.site_name)}</a></p>`;
     const rows = v.order.map((id, n) => {
@@ -309,7 +310,7 @@ for (const lang of LANGS_PUBLISHED) {
       const track = c ? `<span class="track">${esc(T['track_' + c.track])}</span>` : '';
       return `<li class="${done ? '' : 'todo'}"><span class="n">${n + 1}</span><div>${done ? `<a href="../${id}/">${esc(title)}</a>` : `${esc(title)} <em>${esc(T.coming)}</em>`} ${track}<div class="tags">${tags}</div></div></li>`;
     }).join('');
-    const extras = `<p class="extras"><a href="numbers/">${esc(T.numbers_title)}</a> · <a href="coverage/">${esc(T.coverage_title)}</a> · <a href="changes/">${esc(T.changes_title)}</a></p>`;
+    const extras = `<p class="extras"><a href="../search/">🔍 ${esc(T.search)}</a> · <a href="numbers/">${esc(T.numbers_title)}</a> · <a href="coverage/">${esc(T.coverage_title)}</a> · <a href="changes/">${esc(T.changes_title)}</a></p>`;
     write(`${lang}/${v.id}/index.html`, simplePage(lang, T, v.title[lang], `${extras}<details class="legend"><summary>${esc(T.legend_title)}</summary><ul><li>${esc(T.legend_exam)}</li><li>${esc(T.legend_rec)}</li><li>${esc(T.legend_none)}</li></ul></details><ol class="chlist">${rows}</ol>`, 2, crumbs));
 
     // 숫자 모음: 사실 항목 전체 (치트시트 대체)

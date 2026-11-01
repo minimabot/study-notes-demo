@@ -1,0 +1,41 @@
+# sqs/monitoring 장 전용 사실 항목.
+
+- id: sqs.cw.metric-interval
+  value: 60
+  unit: s
+  display: { ko: "1분" }
+  label: { ko: "SQS가 CloudWatch로 지표를 보내는 간격" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/monitoring-using-cloudwatch.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/monitoring-using-cloudwatch.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.cw.active-window
+  value: 21600
+  unit: s
+  display: { ko: "6시간" }
+  label: { ko: "메시지나 요청이 없을 때 큐를 활성으로 보는 기간 (넘으면 지표 전송 중단)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/monitoring-using-cloudwatch.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/monitoring-using-cloudwatch.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.cw.reactivation-delay
+  value: 900
+  unit: s
+  display: { ko: "최대 15분" }
+  label: { ko: "비활성 큐가 다시 활성화될 때 지표가 늦게 나오는 시간" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/monitoring-using-cloudwatch.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/monitoring-using-cloudwatch.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: cloudtrail.event-history.retention
+  value: 7776000
+  unit: s
+  display: { ko: "90일" }
+  label: { ko: "CloudTrail 이벤트 기록이 관리 이벤트를 보여 주는 기간" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/logging-and-monitoring.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/logging-and-monitoring.html
+  checked: 2026-11-01
+  volatile: false

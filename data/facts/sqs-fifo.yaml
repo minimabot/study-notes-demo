@@ -1,0 +1,31 @@
+# sqs/fifo 장 전용 사실 항목. 공용 항목(sqs-core.yaml, lambda.yaml)에 없는 것만 둔다.
+
+- id: sqs.fifo.message-groups.max
+  value: -1
+  unit: count
+  display: { ko: "제한 없음" }
+  label: { ko: "FIFO 큐 하나에 둘 수 있는 메시지 그룹 수" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-fifo.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-fifo.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.fifo.group-id.max-length
+  value: 128
+  unit: char
+  display: { ko: "128자" }
+  label: { ko: "메시지 그룹 ID(MessageGroupId) 최대 길이" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.fifo.group-scan.window
+  value: 120000
+  unit: count
+  display: { ko: "앞쪽 120,000개" }
+  label: { ko: "FIFO 큐가 꺼낼 수 있는 메시지 그룹을 찾을 때 훑는 메시지 수" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoid-backlog-with-the-same-message-group-id.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoid-backlog-with-the-same-message-group-id.html
+  checked: 2026-11-01
+  volatile: true

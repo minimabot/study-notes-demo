@@ -1,0 +1,64 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.dlq-retention
+  type: quiz
+  chapter: sqs/dlq
+  topic: sqs/dlq/retention
+  question: { ko: "Standard 큐와 그 DLQ의 보존 기간이 모두 기본값({{fact:sqs.retention.default}})이다. 원본 큐에서 오래 재시도되다 DLQ로 옮겨진 메시지가 금방 사라졌다. 원인과 대처로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "DLQ로 옮겨질 때 보존 기간이 새로 시작되므로 원인은 다른 곳에 있다" } }
+    - { id: b, text: { ko: "Standard 큐는 처음 들어온 시각을 유지하므로, DLQ 보존 기간을 원본보다 길게 잡는다" } }
+    - { id: c, text: { ko: "maxReceiveCount를 낮추면 DLQ 보존 기간이 늘어난다" } }
+    - { id: d, text: { ko: "DLQ의 ApproximateAgeOfOldestMessage가 작으므로 메시지는 아직 남아 있다" } }
+  answer: b
+  explanation: { ko: "Standard 큐에서 DLQ로 옮겨진 메시지는 처음 들어온 시각을 그대로 가지므로 원본에서 보낸 시간만큼 DLQ에서 덜 머문다. 보존 기간이 새로 시작되는 것(a)은 FIFO 큐의 동작이다. maxReceiveCount(c)는 보존 기간을 바꾸지 않는다. ApproximateAgeOfOldestMessage(d)는 DLQ로 옮겨진 시각부터 세므로 만료 여유를 알려 주지 않는다." }
+  facts: [sqs.retention.default]
+
+- id: sqs.q.dlq-lambda
+  type: quiz
+  chapter: sqs/dlq
+  topic: sqs/dlq/lambda
+  question: { ko: "SQS 큐를 이벤트 소스로 쓰는 Lambda 함수가 특정 메시지에서 계속 실패한다. 이 메시지를 따로 모으려면 DLQ를 어디에 설정하는가?" }
+  choices:
+    - { id: a, text: { ko: "Lambda 함수의 비동기 호출 설정에 있는 DLQ" } }
+    - { id: b, text: { ko: "Lambda 함수의 실패 시 대상(on-failure destination)" } }
+    - { id: c, text: { ko: "원본 SQS 큐의 리드라이브 정책" } }
+    - { id: d, text: { ko: "DLQ의 리드라이브 허용 정책만 설정하면 된다" } }
+  answer: c
+  explanation: { ko: "이벤트 소스 매핑에서 실패한 메시지는 큐로 돌아가고, 수신 횟수가 maxReceiveCount를 넘으면 SQS가 DLQ로 옮긴다. 그래서 원본 큐의 리드라이브 정책에 DLQ를 지정한다. 함수의 DLQ(a)와 실패 시 대상(b)은 비동기 호출용이다. 리드라이브 허용 정책(d)은 어떤 원본이 이 DLQ를 쓸 수 있는지 정할 뿐 연결을 만들지 않는다. AWS는 이때 maxReceiveCount를 {{fact:sqs.dlq.lambda-max-receive.recommended}}으로 권한다." }
+  facts: [sqs.dlq.lambda-max-receive.recommended]
+
+- id: sqs.q.dlq-redrive
+  type: quiz
+  chapter: sqs/dlq
+  topic: sqs/dlq/redrive
+  question: { ko: "버그를 고친 뒤 DLQ의 메시지를 원본 큐로 되돌리려 한다. DLQ 리드라이브에 대한 설명으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "되돌린 메시지는 원래 메시지 ID와 들어온 시각을 그대로 유지한다" } }
+    - { id: b, text: { ko: "리드라이브 중에 조건에 맞는 메시지만 골라 보낼 수 있다" } }
+    - { id: c, text: { ko: "작업을 취소하면 이미 옮긴 메시지도 DLQ로 돌아온다" } }
+    - { id: d, text: { ko: "되돌린 메시지는 새 메시지로 취급되어 보존 기간이 다시 시작된다" } }
+  answer: d
+  explanation: { ko: "리드라이브된 메시지는 새 메시지 ID와 새 들어온 시각을 받으므로 보존 기간도 다시 시작된다(그래서 a는 틀리다). 리드라이브는 메시지를 거르거나 고치지 못한다(b). 취소해도 이미 옮긴 메시지는 받는 큐에 남는다(c). 속도는 최대 {{fact:sqs.redrive.velocity.max}}까지 정할 수 있다." }
+  facts: [sqs.redrive.velocity.max]
+
+- id: sqs.d.dlq-poison
+  type: design
+  chapter: sqs/dlq
+  topic: sqs/dlq/redrive
+  scenario: { ko: "Standard 큐에서 Lambda 함수가 주문 이벤트를 배치로 처리한다. 가끔 형식이 깨진 메시지가 들어오면 배치 전체가 실패하고, 같은 메시지가 계속 다시 나타나 정상 주문까지 늦어진다. 원본 큐의 보존 기간은 {{fact:sqs.retention.default}}이다. 독 메시지를 격리하고, 원인을 고친 뒤 안전하게 다시 처리하는 구성을 설계하라." }
+  choices:
+    - { id: a, text: { ko: "원본 큐에 리드라이브 정책으로 DLQ를 연결하고 maxReceiveCount를 넉넉히(Lambda 기준 권장값 이상) 둔다" } }
+    - { id: b, text: { ko: "DLQ의 보존 기간을 원본 큐보다 길게 잡고, DLQ의 ApproximateNumberOfMessagesVisible에 CloudWatch 경보를 건다" } }
+    - { id: c, text: { ko: "이벤트 소스 매핑에 ReportBatchItemFailures를 켜서 실패한 메시지만 큐로 돌려보낸다" } }
+    - { id: d, text: { ko: "원인을 고친 뒤 DLQ 리드라이브를 낮은 속도로 시작해 원본 큐 상태를 보며 늘린다" } }
+    - { id: e, text: { ko: "maxReceiveCount를 1로 두어 실패한 메시지를 바로 DLQ로 보낸다" } }
+    - { id: f, text: { ko: "DLQ를 Lambda 함수의 비동기 호출 설정에 지정한다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a·b·c·d를 모두 고르면 정답이다. a는 독 메시지를 격리하고, b는 격리된 메시지가 조사 전에 만료되거나 방치되는 것을 막는다."
+      - "c가 있어야 정상 메시지가 독 메시지와 같은 배치에 묶여 수신 횟수가 오르다 DLQ로 잘못 가는 일을 줄인다."
+      - "d: 고치지 않고 되돌리면 같은 실패가 반복된다. 한꺼번에 보내면 원본 큐 소비자가 밀리므로 속도를 낮춰 시작한다."
+      - "e는 감점: 스로틀이나 일시 오류 한 번에도 정상 메시지가 DLQ로 간다. AWS는 Lambda와 쓸 때 {{fact:sqs.dlq.lambda-max-receive.recommended}}을 권한다."
+      - "f는 감점: 함수의 DLQ는 비동기 호출용이다. SQS 이벤트 소스 매핑에서 실패한 메시지는 원본 큐의 리드라이브 정책으로 DLQ에 간다."
+  facts: [sqs.retention.default, sqs.dlq.lambda-max-receive.recommended]

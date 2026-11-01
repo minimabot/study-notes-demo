@@ -1,0 +1,56 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.delay-fifo-timer
+  type: quiz
+  chapter: sqs/delay-timers
+  topic: sqs/delay-timers/message-timer
+  question: { ko: "FIFO 큐에 메시지를 보내면서 메시지마다 서로 다른 지연을 주고 싶다. 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "SendMessage에 DelaySeconds를 넣으면 메시지마다 다르게 적용된다" } }
+    - { id: b, text: { ko: "FIFO 큐는 메시지별 타이머를 지원하지 않는다. 큐 단위 지연만 쓸 수 있다" } }
+    - { id: c, text: { ko: "메시지 그룹 ID마다 지연을 따로 정할 수 있다" } }
+    - { id: d, text: { ko: "FIFO 큐는 어떤 지연도 지원하지 않는다" } }
+  answer: b
+  explanation: { ko: "FIFO 큐에서는 메시지마다 DelaySeconds를 줄 수 없고, 큐 속성으로 거는 지연만 된다. 그래서 a와 c는 틀리다. d도 틀리다. 큐 단위 지연(지연 큐)은 FIFO 큐에서도 쓸 수 있다." }
+  facts: []
+
+- id: sqs.q.delay-change-existing
+  type: quiz
+  chapter: sqs/delay-timers
+  topic: sqs/delay-timers/message-timer
+  question: { ko: "운영 중인 큐의 DelaySeconds 값을 늘렸다. 이미 큐에 들어와 있던 메시지에도 새 값이 적용되는 경우는?" }
+  choices:
+    - { id: a, text: { ko: "Standard 큐일 때만" } }
+    - { id: b, text: { ko: "FIFO 큐일 때만" } }
+    - { id: c, text: { ko: "두 종류 모두" } }
+    - { id: d, text: { ko: "두 종류 모두 아니다" } }
+  answer: b
+  explanation: { ko: "큐 단위 지연을 바꾸면 Standard 큐에서는 이미 있는 메시지에 영향이 없고, FIFO 큐에서는 이미 있는 메시지에도 영향이 있다. 그래서 a, c, d는 틀리다." }
+  facts: []
+
+- id: sqs.q.delay-vs-visibility
+  type: quiz
+  chapter: sqs/delay-timers
+  topic: sqs/delay-timers/vs-visibility
+  question: { ko: "지연 큐와 가시성 제한 시간의 차이를 바르게 설명한 것은?" }
+  choices:
+    - { id: a, text: { ko: "지연은 메시지가 큐에 들어올 때부터 숨기고, 가시성 제한 시간은 소비자가 받은 뒤부터 숨긴다" } }
+    - { id: b, text: { ko: "지연은 소비자가 받은 뒤부터 숨기고, 가시성 제한 시간은 큐에 들어올 때부터 숨긴다" } }
+    - { id: c, text: { ko: "둘은 같은 기능이고 이름만 다르다" } }
+    - { id: d, text: { ko: "지연은 처리에 실패할 때마다 다시 걸린다" } }
+  answer: a
+  explanation: { ko: "둘 다 메시지를 숨기지만 시작 시점이 다르다. 지연은 큐에 처음 들어올 때, 가시성 제한 시간은 받은 뒤다. b는 반대로 말했고, c는 시작 시점의 차이를 무시했다. d도 틀리다. 지연은 처음 한 번만 걸리고, 실패 뒤 다시 보이는 시점은 가시성 제한 시간이 정한다." }
+  facts: []
+
+- id: sqs.q.delay-long-schedule
+  type: quiz
+  chapter: sqs/delay-timers
+  topic: sqs/delay-timers/longer-schedules
+  question: { ko: "회원 가입 {{raw:24시간}} 뒤에 안내 메일 작업을 큐에 넣고 싶다. 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "메시지 타이머를 {{raw:24시간}}으로 건다" } }
+    - { id: b, text: { ko: "지연 큐의 DelaySeconds를 최댓값보다 크게 설정한다" } }
+    - { id: c, text: { ko: "EventBridge Scheduler로 정한 시각에 큐에 메시지를 넣는다" } }
+    - { id: d, text: { ko: "가시성 제한 시간을 {{raw:24시간}}으로 잡는다" } }
+  answer: c
+  explanation: { ko: "SQS의 지연은 지연 큐든 메시지 타이머든 {{fact:sqs.delay.max}}가 최대다. 그래서 a와 b는 안 된다. d는 받은 뒤 숨기는 기능이라 예약과 맞지 않고, 최댓값 {{fact:sqs.visibility.max}}보다도 길다. 더 먼 예약은 AWS가 권하는 EventBridge Scheduler를 쓴다." }
+  facts: [sqs.delay.max, sqs.visibility.max]

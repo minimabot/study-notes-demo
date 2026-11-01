@@ -1,0 +1,50 @@
+# 장: 지연 큐와 메시지 타이머
+chapter:
+  id: sqs/delay-timers
+  title:
+    ko: 지연 큐와 메시지 타이머 (Delay Queue / Message Timer)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-delay-queues.html
+  topics:
+    - id: sqs/delay-timers/delay-queue
+      title:
+        ko: 큐 전체를 늦추는 지연 큐
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-delay-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+    - id: sqs/delay-timers/message-timer
+      title:
+        ko: 메시지 하나만 늦추는 메시지 타이머
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-timers.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessage.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-delay-queues.html
+    - id: sqs/delay-timers/vs-visibility
+      title:
+        ko: 가시성 제한 시간과 무엇이 다른가
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-delay-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html
+    - id: sqs/delay-timers/longer-schedules
+      title:
+        ko: 더 먼 미래의 예약은 EventBridge Scheduler로
+      exam_tags:
+        - SAA-C03#2.1
+      recommended:
+        - claim:
+            ko: SQS 지연 최댓값보다 길거나 유연한 예약이 필요하면 EventBridge Scheduler를 쓴다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-delay-queues.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-delay-queues.html
+        - https://docs.aws.amazon.com/scheduler/latest/UserGuide/what-is-scheduler.html

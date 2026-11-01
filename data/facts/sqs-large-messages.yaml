@@ -1,0 +1,41 @@
+# sqs/large-messages 장 전용 사실 항목. 메시지 최대 크기 자체는 sqs-core.yaml의 sqs.message.max-size를 쓴다.
+
+- id: sqs.extended.max-payload
+  value: 2000000000
+  unit: byte
+  display: { ko: "2 GB" }
+  label: { ko: "확장 클라이언트 라이브러리(S3 사용)로 보낼 수 있는 페이로드 최대 크기" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.extended.threshold.default
+  value: 262144
+  unit: byte
+  display: { ko: "256 KiB" }
+  label: { ko: "확장 클라이언트 라이브러리가 본문을 S3로 옮기는 기본 기준 크기 (2025-08-04 이전 메시지 최대 크기와 같은 값)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-s3-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-s3-messages.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.billing.chunk-size
+  value: 65536
+  unit: byte
+  display: { ko: "64 KB" }
+  label: { ko: "요청 요금 계산 단위. 페이로드를 이 크기로 나눈 조각마다 요청 1건으로 계산" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.billing.requests-per-max-message
+  value: 16
+  unit: count
+  display: { ko: "16건" }
+  label: { ko: "메시지 최대 크기(1 MiB) 페이로드 하나를 보낼 때 계산되는 요청 수" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true

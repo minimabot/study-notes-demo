@@ -1,0 +1,66 @@
+# 장: 배달 못한 편지 대기열(DLQ)과 리드라이브
+chapter:
+  id: sqs/dlq
+  title:
+    ko: 배달 못한 편지 대기열 (DLQ)과 리드라이브
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+  topics:
+    - id: sqs/dlq/basics
+      title:
+        ko: 계속 실패하는 메시지를 따로 빼 두기
+      exam_tags:
+        - SAA-C03#2.2
+        - DVA-C03#1.1
+      recommended:
+        - claim:
+            ko: maxReceiveCount는 충분히 재시도할 수 있을 만큼 높게 잡는다. 1처럼 낮으면 한 번의 실패로 DLQ로 간다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html#policies-for-dead-letter-queues
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+    - id: sqs/dlq/retention
+      title:
+        ko: 보존 기간 함정
+      exam_tags:
+        - SAA-C03#2.2
+      recommended:
+        - claim:
+            ko: DLQ의 메시지 보존 기간은 항상 원본 큐보다 길게 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/setting-up-dead-letter-queue-retention.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html#understanding-message-retention-periods
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/setting-up-dead-letter-queue-retention.html
+    - id: sqs/dlq/lambda
+      title:
+        ko: Lambda가 큐를 읽을 때 DLQ는 어디에 붙이나
+      exam_tags:
+        - DVA-C03#1.2
+      recommended:
+        - claim:
+            ko: Lambda가 읽는 원본 큐의 리드라이브 정책에서 maxReceiveCount를 5 이상으로 둔다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html
+    - id: sqs/dlq/redrive
+      title:
+        ko: 고친 뒤 되돌리기 (DLQ 리드라이브)와 운영 점검
+      exam_tags:
+        - SOA-C03#1.1
+        - SOA-C03#1.2
+        - DOP-C02#5.3
+      recommended:
+        - claim:
+            ko: 리드라이브 속도는 작은 값으로 시작해 원본 큐 상태를 보며 조금씩 올린다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue-redrive.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue-redrive.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/troubleshooting-dlq-redrive.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/dead-letter-queues-alarms-cloudwatch.html

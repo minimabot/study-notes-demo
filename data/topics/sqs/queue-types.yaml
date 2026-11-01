@@ -1,0 +1,39 @@
+# 장: 큐 종류
+chapter:
+  id: sqs/queue-types
+  title:
+    ko: 큐 종류 - 표준과 FIFO
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html
+  topics:
+    - id: sqs/queue-types/compare
+      title:
+        ko: 표준 대기열과 FIFO 대기열의 차이
+      exam_tags:
+        - SAA-C03#2.1
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-fifo.html
+    - id: sqs/queue-types/choose
+      title:
+        ko: 어느 쪽을 고를 것인가
+      exam_tags:
+        - SAA-C03#2.1
+        - SAP-C03#1.1
+      recommended:
+        - claim:
+            ko: 표준 대기열을 쓸 때는 같은 메시지를 여러 번 처리해도 결과가 같도록 멱등하게 설계한다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html
+    - id: sqs/queue-types/fixed
+      title:
+        ko: 만든 뒤에는 종류를 바꿀 수 없다
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-moving.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/creating-sqs-fifo-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-fifo.html

@@ -1,0 +1,42 @@
+# 장 sqs/standard 퀴즈. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.standard-delete-id
+  type: quiz
+  chapter: sqs/standard
+  topic: sqs/standard/identifiers
+  question: { ko: "소비자가 표준 대기열에서 메시지를 받아 처리를 마쳤다. 이 메시지를 큐에서 지우려면 DeleteMessage에 무엇을 넣어야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "생산자가 SendMessage 응답으로 받은 메시지 ID" } }
+    - { id: b, text: { ko: "가장 최근에 메시지를 받을 때 함께 받은 수신 핸들" } }
+    - { id: c, text: { ko: "처음 메시지를 받을 때 받은 수신 핸들" } }
+    - { id: d, text: { ko: "메시지 본문의 해시 값" } }
+  answer: b
+  explanation: { ko: "삭제에는 수신 핸들이 필요하고, 같은 메시지를 여러 번 받았다면 가장 최근 것을 써야 한다. 메시지 ID(a)는 메시지를 알아보는 데 쓸 뿐 삭제에 쓰지 못한다. 옛 수신 핸들(c)로 요청하면 성공 응답이 와도 메시지가 지워지지 않을 수 있다. 본문 해시(d)는 삭제 요청에 쓰는 값이 아니다." }
+  facts: []
+
+- id: sqs.q.standard-duplicate
+  type: quiz
+  chapter: sqs/standard
+  topic: sqs/standard/idempotency
+  question: { ko: "표준 대기열을 읽는 포인트 적립 작업자가 있다. 작업자는 처리 후 DeleteMessage를 정상 호출하고 있는데, 드물게 같은 적립이 두 번 일어난다. 가장 알맞은 대응은?" }
+  choices:
+    - { id: a, text: { ko: "가시성 제한 시간을 최댓값 {{fact:sqs.visibility.max}}로 늘린다" } }
+    - { id: b, text: { ko: "DeleteMessage를 두 번씩 호출한다" } }
+    - { id: c, text: { ko: "메시지에 적립 건 ID를 넣고, 작업자가 이미 처리한 ID는 건너뛰도록 멱등하게 만든다" } }
+    - { id: d, text: { ko: "생산자가 메시지를 보내는 간격을 늘린다" } }
+  answer: c
+  explanation: { ko: "표준 대기열은 최소 1회 전송이라, 사본을 가진 서버 하나가 잠시 응답하지 못하면 삭제한 뒤에도 같은 메시지가 다시 올 수 있다. 그래서 소비자가 멱등해야 한다. a는 처리 중 재노출을 줄일 뿐 이런 중복은 막지 못하고, 작업자 장애 때 재처리만 늦어진다. b는 남아 있는 사본을 지우는 방법이 아니다. d처럼 천천히 보내도 전송 보장은 바뀌지 않는다." }
+  facts: [sqs.visibility.max]
+
+- id: sqs.q.standard-order
+  type: quiz
+  chapter: sqs/standard
+  topic: sqs/standard/delivery
+  question: { ko: "차량 위치를 표준 대기열로 보내 지도에 표시한다. 가끔 오래된 위치가 최신 위치를 덮어쓴다. 지도에는 가장 최근 위치만 보이면 된다. 큐를 바꾸지 않고 고치는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "메시지에 측정 시각을 넣고, 소비자는 이미 반영한 시각보다 오래된 위치를 버린다" } }
+    - { id: b, text: { ko: "큐 속성에서 순서 보장 옵션을 켠다" } }
+    - { id: c, text: { ko: "소비자를 하나로 줄이면 보낸 순서대로 받는다" } }
+    - { id: d, text: { ko: "메시지 ID가 작은 것부터 처리한다" } }
+  answer: a
+  explanation: { ko: "표준 대기열은 순서를 최대한 지키려 할 뿐 보장하지 않는다. 최신 값만 필요하면 시각이나 버전으로 오래된 메시지를 버리면 된다. b 같은 옵션은 표준 대기열에 없다. 순서가 필요하면 FIFO 큐를 새로 만들어야 한다. c는 소비자가 하나여도 순서가 바뀌어 도착할 수 있다. d의 메시지 ID는 순서를 나타내는 값이 아니다." }
+  facts: []

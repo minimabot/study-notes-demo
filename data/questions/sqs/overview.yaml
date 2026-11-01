@@ -1,0 +1,42 @@
+# 장 sqs/overview 퀴즈. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.overview-spike
+  type: quiz
+  chapter: sqs/overview
+  topic: sqs/overview/buffering
+  question: { ko: "주문 API가 결제 작업자를 직접 호출한다. 할인 행사 때 요청이 평소보다 크게 몰리면 작업자가 감당하지 못해 주문이 실패한다. 작업자의 처리 능력은 그대로 두고 주문 실패를 막으려면 어떻게 하는가?" }
+  choices:
+    - { id: a, text: { ko: "주문 API와 작업자 사이에 SQS 큐를 두고, 작업자는 자기 속도로 큐에서 꺼내 처리하게 한다" } }
+    - { id: b, text: { ko: "주문 API가 실패하면 즉시 같은 요청을 계속 다시 보내게 한다" } }
+    - { id: c, text: { ko: "SNS 주제를 두고 작업자를 구독시킨다" } }
+    - { id: d, text: { ko: "주문 API 서버 수를 늘린다" } }
+  answer: a
+  explanation: { ko: "큐가 몰린 요청을 받아 두면 작업자는 감당할 수 있는 속도로 꺼내 처리하고, 쌓인 양은 요청이 줄면 소진된다(부하 평준화). b는 이미 넘친 작업자에게 요청을 더 보내 상황을 악화시킨다. c의 SNS는 구독자에게 바로 밀어 주므로 몰린 양이 그대로 작업자에게 간다. d는 앞단만 늘릴 뿐 작업자의 한계는 그대로다." }
+  facts: []
+
+- id: sqs.q.overview-retention
+  type: quiz
+  chapter: sqs/overview
+  topic: sqs/overview/buffering
+  question: { ko: "소비자 장애로 큐의 메시지를 며칠째 아무도 처리하지 못하고 있다. 큐 설정은 모두 기본값이다. 메시지는 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "처리될 때까지 기간 제한 없이 큐에 남는다" } }
+    - { id: b, text: { ko: "기본 보존 기간인 {{fact:sqs.retention.default}}이 지나면 처리 여부와 관계없이 지워진다" } }
+    - { id: c, text: { ko: "{{fact:sqs.retention.max}}이 지나면 자동으로 데드레터 큐로 옮겨진다" } }
+    - { id: d, text: { ko: "큐가 가득 차서 생산자의 SendMessage가 실패하기 시작한다" } }
+  answer: b
+  explanation: { ko: "메시지는 보존 기간이 지나면 SQS가 지운다. 기본값은 {{fact:sqs.retention.default}}이고 최대 {{fact:sqs.retention.max}}까지 늘릴 수 있다. a는 보존 기간을 무시한 설명이다. c처럼 보존 기간 만료로 데드레터 큐에 옮겨지는 동작은 없다. d는 틀렸다. 큐에 쌓을 수 있는 메시지 수는 {{fact:sqs.backlog.max}}이다." }
+  facts: [sqs.retention.default, sqs.retention.max, sqs.backlog.max]
+
+- id: sqs.q.overview-compare
+  type: quiz
+  chapter: sqs/overview
+  topic: sqs/overview/compare
+  question: { ko: "온프레미스에서 JMS와 AMQP를 쓰는 메시지 브로커 위에 돌아가는 애플리케이션을 AWS로 옮긴다. 메시징 코드는 되도록 고치지 않으려 한다. 어떤 서비스가 맞는가?" }
+  choices:
+    - { id: a, text: { ko: "Amazon SQS 표준 대기열" } }
+    - { id: b, text: { ko: "Amazon SQS FIFO 대기열" } }
+    - { id: c, text: { ko: "Amazon MQ" } }
+    - { id: d, text: { ko: "Amazon SNS" } }
+  answer: c
+  explanation: { ko: "Amazon MQ는 ActiveMQ·RabbitMQ 호환 브로커로 JMS, AMQP 같은 표준 API와 프로토콜을 지원한다. 기존 브로커에 기대는 애플리케이션을 옮길 때 AWS가 권하는 선택이다. SQS(a, b)와 SNS(d)는 자체 API를 쓰므로 메시징 코드를 고쳐야 한다." }
+  facts: []

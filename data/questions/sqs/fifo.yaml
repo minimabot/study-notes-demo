@@ -1,0 +1,82 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.fifo-dedup-attrs
+  type: quiz
+  chapter: sqs/fifo
+  topic: sqs/fifo/dedup
+  question: { ko: "콘텐츠 기반 중복 제거를 켠 FIFO 큐에, 본문은 같고 메시지 속성만 다른 메시지 두 개를 짧은 간격으로 보냈다. 둘 다 따로 처리되어야 한다. 어떻게 되며, 무엇을 해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "속성이 다르므로 둘 다 전달된다. 할 일은 없다" } }
+    - { id: b, text: { ko: "두 번째는 중복으로 보고 전달되지 않는다. 메시지마다 다른 중복 제거 ID를 직접 넣는다" } }
+    - { id: c, text: { ko: "두 번째 전송이 오류로 실패한다. 메시지 그룹 ID를 다르게 주면 해결된다" } }
+    - { id: d, text: { ko: "두 번째는 중복으로 보고 전달되지 않는다. 중복 제거 간격을 줄이도록 큐 설정을 바꾼다" } }
+  answer: b
+  explanation: { ko: "콘텐츠 기반 중복 제거는 본문만 SHA-256으로 해시하고 속성은 보지 않는다. 그래서 {{fact:sqs.fifo.dedup.interval}} 안에 온 두 번째 메시지는 성공 응답만 받고 전달되지 않는다(a, c는 틀림). 직접 넣은 중복 제거 ID가 콘텐츠 기반 ID보다 우선하므로 메시지마다 다른 ID를 넣으면 된다. 중복 제거 간격은 바꿀 수 있는 설정이 아니다(d)." }
+  facts: [sqs.fifo.dedup.interval]
+
+- id: sqs.q.fifo-hol
+  type: quiz
+  chapter: sqs/fifo
+  topic: sqs/fifo/hol
+  question: { ko: "FIFO 큐에서 고객 ID를 메시지 그룹 ID로 쓴다. 고객 A의 첫 메시지가 계속 처리에 실패하고, DLQ는 설정하지 않았다. 어떤 일이 생기는가?" }
+  choices:
+    - { id: a, text: { ko: "큐 전체가 멈춰서 모든 고객의 메시지가 처리되지 않는다" } }
+    - { id: b, text: { ko: "SQS가 실패한 메시지를 건너뛰고 고객 A의 다음 메시지를 전달한다" } }
+    - { id: c, text: { ko: "고객 A의 뒤 메시지들은 기다리고, 다른 고객의 메시지는 계속 처리된다" } }
+    - { id: d, text: { ko: "고객 A의 메시지들이 다른 소비자에게 나뉘어 동시에 처리된다" } }
+  answer: c
+  explanation: { ko: "같은 그룹은 앞 메시지가 삭제되거나 다시 보이기 전에는 다음 메시지를 주지 않는다. 실패한 메시지는 가시성 제한 시간이 끝나면 다시 보이고 또 실패하므로 그룹 A가 계속 막힌다(b는 틀림). 다른 그룹은 영향을 받지 않는다(a는 틀림). 같은 그룹의 메시지가 동시에 처리되는 일은 없다(d는 틀림). 반복 실패 메시지를 빼내려면 DLQ를 둔다." }
+  facts: []
+
+- id: sqs.q.fifo-lambda-concurrency
+  type: quiz
+  chapter: sqs/fifo
+  topic: sqs/fifo/adopt
+  question: { ko: "Lambda가 FIFO 큐를 읽는다. 메시지 그룹 ID 값이 {{raw:3개}}뿐이고 최대 동시성 설정은 넉넉하다. 메시지가 밀려서 처리를 빠르게 하고 싶다. 가장 효과가 있는 조치는 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "Lambda 최대 동시성 설정을 더 올린다" } }
+    - { id: b, text: { ko: "순서가 필요한 단위를 유지하는 범위에서 메시지 그룹 ID를 더 잘게 나눈다" } }
+    - { id: c, text: { ko: "배치 크기를 Standard 큐 최댓값인 {{fact:lambda.sqs.batch.max-standard}}로 올린다" } }
+    - { id: d, text: { ko: "큐 유형을 Standard로 바꾸는 설정을 켠다" } }
+  answer: b
+  explanation: { ko: "FIFO 큐에서 Lambda 동시 실행 수는 그룹 수와 최대 동시성 중 작은 값을 넘지 못한다. 그룹이 셋이면 동시성을 올려도 실행은 셋이 한계다(a는 틀림). FIFO 큐의 배치 크기는 최대 {{fact:lambda.sqs.batch.max-fifo}}다(c는 틀림). 큐 유형은 만든 뒤 바꿀 수 없다(d는 틀림)." }
+  facts: [lambda.sqs.batch.max-fifo, lambda.sqs.batch.max-standard]
+
+- id: sqs.q.fifo-migrate
+  type: quiz
+  chapter: sqs/fifo
+  topic: sqs/fifo/adopt
+  question: { ko: "운영 중인 Standard 큐 orders에 순서 보장이 필요해졌다. 생산자는 메시지마다 DelaySeconds를 다르게 준다. 맞는 방법은 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "orders 큐의 속성에서 FifoQueue를 true로 바꾼다" } }
+    - { id: b, text: { ko: "orders.fifo 큐를 새로 만들고, 메시지별 지연을 없애 큐 단위 지연으로 바꾸고, 모든 메시지에 그룹 ID를 넣는다" } }
+    - { id: c, text: { ko: "orders.fifo 큐를 새로 만든다. 메시지별 지연과 그룹 ID는 그대로 둬도 된다" } }
+    - { id: d, text: { ko: "orders 큐에 높은 처리량 모드를 켜면 순서가 보장된다" } }
+  answer: b
+  explanation: { ko: "기존 Standard 큐를 FIFO로 바꿀 수 없으므로 .fifo로 끝나는 새 큐를 만든다(a는 틀림). FIFO 큐는 메시지별 지연을 지원하지 않고, 그룹 ID가 없는 전송은 실패한다(c는 틀림). 높은 처리량 모드는 FIFO 큐의 기능이며 Standard 큐에 순서를 주지 않는다(d는 틀림)." }
+  facts: [sqs.delay.max]
+
+- id: sqs.d.fifo-vehicle-events
+  type: design
+  chapter: sqs/fifo
+  topic: sqs/fifo/throughput
+  scenario: { ko: "서울 리전에서 차량 수만 대의 이벤트(시동, 문 잠금, 주행 종료 등)를 받는 수집 서비스(ECS)를 운영한다. 주행 요금 계산 때문에 같은 차량의 이벤트는 반드시 발생 순서대로 처리해야 한다. 다른 차량끼리는 순서가 상관없다. 피크 때는 초당 수천 건이 들어온다. 차량은 통신이 끊기면 응답을 받지 못한 이벤트를 연결이 돌아온 뒤 다시 보내는데, 끊김이 길면 몇십 분 뒤에 재전송하기도 한다. 수집 서비스와 처리 서비스 사이의 큐를 설계하라." }
+  choices:
+    - { id: a, text: { ko: "FIFO 큐를 쓰고 메시지 그룹 ID를 차량 ID로 하며, 높은 처리량 모드를 켠다" } }
+    - { id: b, text: { ko: "FIFO 큐를 쓰고 모든 이벤트에 같은 메시지 그룹 ID를 준다" } }
+    - { id: c, text: { ko: "이벤트마다 차량이 만든 이벤트 ID와 차량별 순번을 넣고, 처리 서비스는 이미 처리한 이벤트를 건너뛰도록(멱등하게) 만든다" } }
+    - { id: d, text: { ko: "FIFO 큐의 중복 제거가 있으므로 처리 서비스의 멱등성은 필요 없다" } }
+    - { id: e, text: { ko: "AWS IoT 규칙 작업으로 차량 메시지를 FIFO 큐에 바로 넣어 수집 서비스를 없앤다" } }
+    - { id: f, text: { ko: "깨진 이벤트 하나가 그 차량의 이벤트를 끝없이 막지 않도록 최대 수신 횟수와 DLQ를 두고, DLQ로 빠진 이벤트는 순서에서 빠진다는 점을 처리 서비스가 감안한다" } }
+    - { id: g, text: { ko: "Standard 큐를 쓰고 이벤트 시각이 더 오래된 이벤트는 버린다" } }
+  answer_set: [a, c, f]
+  rubric:
+    ko:
+      - "a, c, f를 모두 고르면 정답이다."
+      - "a: 순서가 필요한 단위(차량)를 그룹으로 삼으면 차량끼리는 병렬로 처리된다. 그룹 ID 값이 많아 파티션에 고르게 퍼진다. 서울 리전은 높은 처리량 FIFO에서 기타 리전 한도({{fact:sqs.fifo.ht.tps.other}}, 배치 없이)가 적용되고, 기본 모드는 {{fact:sqs.fifo.tps.per-partition}}이므로 피크를 감당하려면 높은 처리량 모드와 배치가 필요하다."
+      - "c: 중복 제거 간격({{fact:sqs.fifo.dedup.interval}})이 지난 뒤의 재전송은 새 메시지로 저장된다. 소비자 장애로 가시성 제한 시간이 끝나도 같은 이벤트가 다시 처리된다. 그래서 이벤트 ID 기반의 멱등 처리가 필요하다. 차량별 순번은 재전송된 오래된 이벤트를 알아보는 데도 쓴다."
+      - "f: 같은 그룹의 앞 메시지가 계속 실패하면 그 차량의 뒤 이벤트가 모두 막힌다(Head-of-line blocking). DLQ는 막힘을 풀지만 순서를 깨므로 처리 서비스가 이를 알고 있어야 한다."
+      - "b는 감점: 큐 전체가 한 줄이 되어 소비자 하나의 속도로만 흐르고, 메시지 하나가 실패하면 모든 차량이 멈춘다. 그룹 ID 값이 하나라 파티션도 나뉘지 않는다."
+      - "d는 감점: 중복 제거는 간격 안의 재전송만 막는다. 간격 이후 재전송과 소비자 쪽 재처리는 막지 못한다."
+      - "e는 감점: AWS IoT 규칙 작업은 SQS 문서에 FIFO 큐와 호환되지 않는 기능으로 적혀 있다."
+      - "g는 감점: 이 시나리오는 최신 상태 하나가 아니라 모든 이벤트를 순서대로 처리해야 한다. 오래된 이벤트를 버리면 요금 계산에 필요한 이벤트가 사라진다. 최신 상태만 필요한 경우라면 Standard 큐와 애플리케이션 쪽 순서 처리가 대안이 될 수 있다."
+  facts: [sqs.fifo.ht.tps.other, sqs.fifo.tps.per-partition, sqs.fifo.dedup.interval]

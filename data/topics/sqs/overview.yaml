@@ -1,0 +1,47 @@
+# 장: SQS 개요
+chapter:
+  id: sqs/overview
+  title:
+    ko: SQS는 왜 필요한가
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
+  topics:
+    - id: sqs/overview/decoupling
+      title:
+        ko: 직접 호출의 문제와 분리(decoupling)
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
+    - id: sqs/overview/buffering
+      title:
+        ko: 몰리는 요청을 큐가 받아 둔다 (부하 평준화)
+      exam_tags:
+        - SAA-C03#2.1
+        - SAA-C03#3.2
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-using-sqs-queue.html
+    - id: sqs/overview/architecture
+      title:
+        ko: 생산자, 큐, 소비자
+      exam_tags:
+        - SAA-C03#2.1
+        - SAA-C03#2.2
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html#sqs-basic-architecture
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html
+    - id: sqs/overview/compare
+      title:
+        ko: SNS, Amazon MQ와 무엇이 다른가
+      exam_tags:
+        - SAA-C03#2.1
+      recommended:
+        - claim:
+            ko: 새로 만드는 애플리케이션에는 SQS와 SNS를, 기존 브로커(JMS·AMQP 등)에 기대는 애플리케이션을 옮길 때는 Amazon MQ를 쓴다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html#sqs-difference-from-amazon-mq-sns
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html#sqs-difference-from-amazon-mq-sns

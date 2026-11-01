@@ -1,0 +1,93 @@
+# 장: 모범 사례
+chapter:
+  id: sqs/best-practices
+  title:
+    ko: 모범 사례 (Best practices)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-best-practices.html
+  topics:
+    - id: sqs/best-practices/idempotency
+      title:
+        ko: 같은 메시지를 두 번 받아도 괜찮게
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      recommended:
+        - claim:
+            ko: 같은 메시지를 여러 번 처리해도 결과가 나빠지지 않도록(멱등하게) 애플리케이션을 설계한다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/standard-queues-at-least-once-delivery.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoding-processing-duplicates-in-multiple-producer-consumer-system.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-message-deduplication.html
+    - id: sqs/best-practices/retries
+      title:
+        ko: 요청 오류와 재시도, 처리할 수 없는 메시지
+      exam_tags:
+        - DVA-C03#1.1
+        - SAP-C03#5.4
+      recommended:
+        - claim:
+            ko: AWS SDK의 자동 재시도·백오프를 쓰고, 쓰지 않는다면 ReceiveMessage 재시도 사이에 점점 길어지는 대기를 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/handling-request-errors.html
+          checked: 2026-11-01
+        - claim:
+            ko: 처리할 수 없는 메시지를 모으고 CloudWatch 지표를 정확하게 하려면 데드레터 큐를 구성한다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/capturing-problematic-messages.html
+          checked: 2026-11-01
+        - claim:
+            ko: 데드레터 큐의 최대 수신 횟수를 1로 두지 않는다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoiding-inconsistent-message-processing.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/handling-request-errors.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/capturing-problematic-messages.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoiding-inconsistent-message-processing.html
+    - id: sqs/best-practices/throughput
+      title:
+        ko: 처리량 늘리기 — 수평적 조정과 배치
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: 배치 요청이 성공해도 메시지별 실패가 있을 수 있으므로 항상 개별 결과를 확인하고 필요하면 다시 보낸다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-throughput-horizontal-scaling-and-batching.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-throughput-horizontal-scaling-and-batching.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html
+    - id: sqs/best-practices/timing
+      title:
+        ko: 처리 시간과 폴링 맞추기
+      exam_tags:
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: 처리 시간을 모르면 하트비트로 가시성 제한 시간을 주기적으로 연장한다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-processing-messages-timely-manner.html
+          checked: 2026-11-01
+        - claim:
+            ko: 대부분의 경우 짧은 폴링보다 긴 폴링을 쓰고, 여러 큐를 긴 폴링할 때는 큐마다 스레드를 따로 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-processing-messages-timely-manner.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-using-appropriate-polling-mode.html
+    - id: sqs/best-practices/mistakes
+      title:
+        ko: 자주 하는 실수 10가지
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      recommended:
+        - claim:
+            ko: Standard 큐의 데드레터 큐 보관 기간은 원본 큐보다 길게 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/setting-up-dead-letter-queue-retention.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-best-practices.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/setting-up-dead-letter-queue-retention.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html

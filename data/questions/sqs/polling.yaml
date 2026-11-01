@@ -1,0 +1,42 @@
+# 퀴즈: 짧은 폴링과 긴 폴링. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.polling-empty-cost
+  type: quiz
+  chapter: sqs/polling
+  topic: sqs/polling/cost
+  question: { ko: "메시지가 하루에 몇 번만 들어오는 큐를 소비자가 기본 설정 그대로 쉬지 않고 읽고 있다. SQS 요청 요금이 예상보다 많이 나온다. 코드 변경을 가장 적게 하면서 요금을 줄이는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "큐 속성 ReceiveMessageWaitTimeSeconds를 0보다 큰 값(예: 최댓값 {{fact:sqs.longpoll.wait.max}})으로 바꿔 긴 폴링을 켠다" } }
+    - { id: b, text: { ko: "큐의 가시성 제한 시간을 늘린다" } }
+    - { id: c, text: { ko: "큐를 FIFO 큐로 바꾼다" } }
+    - { id: d, text: { ko: "전송 지연(DelaySeconds)을 최댓값으로 둔다" } }
+  answer: a
+  explanation: { ko: "기본값은 짧은 폴링이라 메시지가 없어도 바로 빈 응답이 오고, 빈 응답도 요청 한 건으로 요금이 나간다. 긴 폴링은 메시지가 올 때까지 기다리므로 빈 응답과 요청 수가 줄어든다. 큐 속성만 바꾸면 요청에 WaitTimeSeconds를 넣지 않은 소비자 모두에게 적용된다. 가시성 제한 시간(b)은 받은 뒤 숨기는 시간이라 빈 요청 수와 관계없다. FIFO(c)는 순서와 중복 제거를 위한 큐 종류이고 빈 응답을 줄이는 기능이 아니다. 전송 지연(d)은 메시지를 늦게 보이게 할 뿐 빈 응답을 줄이지 않는다." }
+  facts: [sqs.longpoll.wait.max, sqs.receive-wait.default]
+
+- id: sqs.q.polling-false-empty
+  type: quiz
+  chapter: sqs/polling
+  topic: sqs/polling/short-vs-long
+  question: { ko: "큐에 메시지가 몇 개 남아 있는데, 짧은 폴링으로 보낸 ReceiveMessage가 빈 응답을 돌려줬다. 가장 알맞은 설명은?" }
+  choices:
+    - { id: a, text: { ko: "메시지가 유실되었으므로 생산자가 다시 보내야 한다" } }
+    - { id: b, text: { ko: "짧은 폴링은 일부 서버만 살펴보므로 이번 응답에 빠졌을 뿐이다. 다시 요청하면 받을 수 있다" } }
+    - { id: c, text: { ko: "메시지가 모두 데드레터 큐로 옮겨졌다" } }
+    - { id: d, text: { ko: "짧은 폴링은 메시지가 {{fact:sqs.batch.max-messages}} 이상 쌓여야 응답한다" } }
+  answer: b
+  explanation: { ko: "짧은 폴링은 가중치를 둔 무작위 방식으로 고른 일부 서버만 보고 바로 답한다. 메시지가 그 서버들에 없으면 빈 응답(거짓 빈 응답)이 온다. 계속 요청하면 모든 서버를 거치므로 결국 받는다. 유실(a)이나 DLQ 이동(c)과는 관계없다. 쌓인 개수 조건(d) 같은 규칙은 없다. 긴 폴링은 모든 서버를 보므로 거짓 빈 응답이 줄어든다." }
+  facts: [sqs.shortpoll.small-queue]
+
+- id: sqs.q.polling-http-timeout
+  type: quiz
+  chapter: sqs/polling
+  topic: sqs/polling/settings
+  question: { ko: "WaitTimeSeconds를 최댓값으로 두고 긴 폴링을 켰더니, 큐가 비어 있을 때마다 클라이언트에서 HTTP 시간 초과 오류가 난다. 원인으로 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "WaitTimeSeconds가 허용 범위를 넘었다" } }
+    - { id: b, text: { ko: "HTTP 클라이언트의 응답 시간 제한이 WaitTimeSeconds보다 짧다" } }
+    - { id: c, text: { ko: "MaxNumberOfMessages를 지정하지 않았다" } }
+    - { id: d, text: { ko: "큐 속성 ReceiveMessageWaitTimeSeconds가 0이라 요청 값과 충돌한다" } }
+  answer: b
+  explanation: { ko: "긴 폴링은 메시지가 없으면 대기 시간이 끝날 때까지 응답을 보내지 않는다. 클라이언트의 응답 시간 제한이 그보다 짧으면 클라이언트가 먼저 끊어 오류가 난다. AWS는 응답 시간 제한을 WaitTimeSeconds보다 길게 잡으라고 안내한다. 최댓값 {{fact:sqs.longpoll.wait.max}}은 허용 범위 안이다(a). MaxNumberOfMessages(c)는 받을 개수일 뿐이다. 요청에 WaitTimeSeconds를 넣으면 그 값이 쓰이므로 큐 속성과 충돌하지 않는다(d)." }
+  facts: [sqs.longpoll.wait.max]

@@ -1,0 +1,42 @@
+# 장: 큐 설정값 총정리
+chapter:
+  id: sqs/queue-config
+  title:
+    ko: 큐 설정값 총정리
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-queue-parameters.html
+  topics:
+    - id: sqs/queue-config/core
+      title:
+        ko: 시간과 크기에 관한 설정 다섯 가지
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-queue-parameters.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+    - id: sqs/queue-config/other
+      title:
+        ko: 나머지 설정 — 실패 처리, 암호화, FIFO 옵션
+      exam_tags:
+        - SAA-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-queue-parameters.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-edit-queue.html
+    - id: sqs/queue-config/changes
+      title:
+        ko: 설정을 바꾸면 언제 반영되나
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SetQueueAttributes.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-edit-queue.html
+    - id: sqs/queue-config/purge-delete
+      title:
+        ko: 비우기(제거)와 삭제
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-purge-queue.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/step-delete-queue.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/confirm-queue-is-empty.html

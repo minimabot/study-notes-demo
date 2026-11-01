@@ -1,0 +1,64 @@
+# 장: 다른 서비스와의 연동
+chapter:
+  id: sqs/integrations
+  title:
+    ko: 다른 서비스와의 연동 (SNS, Lambda, EventBridge)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-lambda-function-trigger.html
+  topics:
+    - id: sqs/integrations/sns-fanout
+      title:
+        ko: SNS 주제 → 여러 SQS 큐 (팬아웃)
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#4.3
+        - DOP-C02#5.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-subscribe-queue-sns-topic.html
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-large-payload-raw-message-delivery.html
+    - id: sqs/integrations/lambda-esm
+      title:
+        ko: Lambda 이벤트 소스 매핑의 기본
+      exam_tags:
+        - DVA-C03#1.2
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventfiltering.html
+    - id: sqs/integrations/lambda-errors
+      title:
+        ko: 부분 배치 응답과 DLQ
+      exam_tags:
+        - DVA-C03#1.2
+        - DOP-C02#5.1
+      recommended:
+        - claim:
+            ko: Lambda가 읽는 원본 큐의 maxReceiveCount를 5 이상으로 두어 DLQ로 보내기 전에 재시도할 여유를 준다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+    - id: sqs/integrations/lambda-scaling
+      title:
+        ko: 확장과 동시성 제어
+      exam_tags:
+        - DVA-C03#4.3
+        - DVA-C03#1.2
+      recommended:
+        - claim:
+            ko: 엄격한 성능 요구가 있는 SQS 이벤트 처리에는 프로비저닝 모드를 쓴다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html#sqs-provisioned-mode
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html
+    - id: sqs/integrations/eventbridge
+      title:
+        ko: EventBridge 규칙과 Pipes
+      exam_tags:
+        - DOP-C02#5.1
+        - SAA-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-automating-using-eventbridge.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/eb-pipes-integration.html

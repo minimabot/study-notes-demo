@@ -1,0 +1,21 @@
+# 장 sqs/standard 전용 사실 항목. 큐·메시지 식별자의 길이 한도.
+
+- id: sqs.message-id.max-length
+  value: 100
+  unit: char
+  display: { ko: "100자" }
+  label: { ko: "메시지 ID 최대 길이" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.receipt-handle.max-length
+  value: 1024
+  unit: char
+  display: { ko: "1,024자" }
+  label: { ko: "수신 핸들(receipt handle) 최대 길이" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html
+  checked: 2026-11-01
+  volatile: false

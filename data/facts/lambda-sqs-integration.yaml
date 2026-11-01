@@ -1,0 +1,131 @@
+# sqs/integrations 장 전용 Lambda 이벤트 소스 매핑 사실. 배치 크기 최댓값·제한 시간·가시성 배수는 lambda.yaml, Lambda용 maxReceiveCount 권장값은 sqs-dlq.yaml(sqs.dlq.lambda-max-receive.recommended)을 재사용한다.
+
+- id: lambda.sqs.batch.default
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "Lambda가 SQS에서 한 번에 가져오는 기본 배치 크기" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-sqs.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.sqs.batch.window-threshold
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "배치 크기가 이 값을 넘으면 배치 기간(MaximumBatchingWindowInSeconds)을 함께 설정해야 함" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.sqs.batch.window.min-large
+  value: 1
+  unit: s
+  display: { ko: "1초" }
+  label: { ko: "큰 배치(기준값 초과)를 쓸 때 필요한 배치 기간 최솟값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.sqs.batch.window.default
+  value: 0
+  unit: s
+  display: { ko: "0초" }
+  label: { ko: "SQS 이벤트 소스 매핑의 배치 기간 기본값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/api/API_CreateEventSourceMapping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/api/API_CreateEventSourceMapping.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.sqs.batch.window.max
+  value: 300
+  unit: s
+  display: { ko: "300초(5분)" }
+  label: { ko: "이벤트 소스 매핑 배치 기간 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/api/API_CreateEventSourceMapping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/api/API_CreateEventSourceMapping.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.payload.sync.max
+  value: 6
+  unit: MB
+  display: { ko: "6 MB" }
+  label: { ko: "동기 호출 페이로드 크기 한도 (SQS 배치 전체가 이 안에 들어가야 함)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: lambda.sqs.reserved.min-recommended
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "예약된 동시성을 걸 때 권장하는 최소 동시 실행 수 (스로틀 줄이기)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.sqs.scaling.initial
+  value: 5
+  unit: count
+  display: { ko: "동시 호출 5개" }
+  label: { ko: "Standard 큐에 메시지가 생겼을 때 Lambda가 처음 여는 동시 호출 수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-scaling.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: lambda.sqs.scaling.ramp
+  value: 300
+  unit: count/min
+  display: { ko: "분당 최대 300개" }
+  label: { ko: "메시지가 남아 있을 때 늘어나는 동시 호출 수 (기본 모드)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-scaling.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: lambda.sqs.scaling.max-default
+  value: 1250
+  unit: count
+  display: { ko: "1,250개" }
+  label: { ko: "기본 모드 이벤트 소스 매핑 하나가 동시에 처리하는 호출 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-scaling.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: lambda.sqs.max-concurrency.min
+  value: 2
+  unit: count
+  display: { ko: "2" }
+  label: { ko: "이벤트 소스 매핑 최대 동시성(Maximum concurrency) 설정 최솟값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-scaling.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.sqs.max-concurrency.max
+  value: 1000
+  unit: count
+  display: { ko: "1,000" }
+  label: { ko: "이벤트 소스 매핑 최대 동시성(Maximum concurrency) 설정 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-scaling.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: lambda.sqs.provisioned.max-concurrency
+  value: 100000
+  unit: count
+  display: { ko: "100,000개" }
+  label: { ko: "프로비저닝 모드에서 이벤트 소스 매핑이 늘어날 수 있는 동시 호출 수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-sqs.html
+  checked: 2026-11-01
+  volatile: true

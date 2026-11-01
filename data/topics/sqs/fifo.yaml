@@ -1,0 +1,87 @@
+# 장: FIFO 큐
+chapter:
+  id: sqs/fifo
+  title:
+    ko: FIFO 큐 (순서와 중복 제거)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html
+  topics:
+    - id: sqs/fifo/ordering
+      title:
+        ko: 메시지 그룹 ID가 순서의 단위다
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.1
+        - SAP-C03#1.1
+      recommended:
+        - claim:
+            ko: 여러 생산자가 보내는 메시지의 순서를 엄격하게 지키려면 생산자마다 고유한 메시지 그룹 ID를 쓴다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-understanding-logic.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-understanding-logic.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-key-terms.html
+    - id: sqs/fifo/dedup
+      title:
+        ko: 중복 제거와 '정확히 한 번 처리'의 범위
+      exam_tags:
+        - DVA-C03#1.1
+        - SAP-C03#1.1
+      recommended:
+        - claim:
+            ko: 네트워크 장애에 대비해 ReceiveMessage 호출에 수신 요청 시도 ID를 넣고, 실패하면 같은 ID로 다시 시도한다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/using-receiverequestattemptid-request-parameter.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-exactly-once-processing.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/providing-message-deduplication-id.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/designing-for-outage-recovery-scenarios.html
+    - id: sqs/fifo/hol
+      title:
+        ko: 한 메시지가 그룹 전체를 막는다 (Head-of-line blocking)
+      exam_tags:
+        - DVA-C03#4.3
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/interleaving-multiple-ordered-message-groups.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoid-backlog-with-the-same-message-group-id.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+    - id: sqs/fifo/throughput
+      title:
+        ko: 처리량 한도, 높은 처리량 모드, 파티션
+      exam_tags:
+        - SAA-C03#3.2
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: FIFO 큐의 처리량을 늘리려면 높은 처리량 모드를 쓴다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-moving.html
+          checked: 2026-11-01
+        - claim:
+            ko: 서로 다른 값이 많이 나오는 메시지 그룹 ID를 써서 파티션에 고르게 퍼지게 한다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/high-throughput-fifo.html#partitions-and-data-distribution
+          checked: 2026-11-01
+        - claim:
+            ko: SendMessageBatch에는 가능하면 같은 메시지 그룹 ID의 메시지를 묶는다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/high-throughput-fifo.html#data-distribution-partition-limitations
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/high-throughput-fifo.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/enable-high-throughput-fifo.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+    - id: sqs/fifo/adopt
+      title:
+        ko: Standard에서 옮기기, Lambda와 함께 쓰기
+      exam_tags:
+        - DVA-C03#1.1
+        - DVA-C03#1.2
+      recommended:
+        - claim:
+            ko: FIFO 큐에서 부분 배치 응답을 쓸 때는 첫 실패 이후 처리를 멈추고, 실패한 메시지와 처리하지 않은 메시지를 모두 batchItemFailures로 돌려준다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-moving.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/fifo-queue-lambda-behavior.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-scaling.html

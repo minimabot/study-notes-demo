@@ -1,0 +1,94 @@
+# sqs/security 장 전용 사실 항목. 공용 항목(sqs.policy.max-size 등)은 sqs-core.yaml을 재사용한다.
+
+- id: sqs.sse.key-reuse.default
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "SSE-KMS 데이터 키 재사용 기간 기본값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.sse.key-reuse.min
+  value: 60
+  unit: s
+  display: { ko: "1분" }
+  label: { ko: "SSE-KMS 데이터 키 재사용 기간 최솟값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.sse.key-reuse.max
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "SSE-KMS 데이터 키 재사용 기간 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.sse.producer-kms-actions
+  value: "kms:GenerateDataKey"
+  unit: permission
+  display: { ko: "kms:GenerateDataKey" }
+  label: { ko: "SSE-KMS 큐에 SendMessage 할 때 생산자에게 필요한 KMS 권한 (문서 기록 기준)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-release-notes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-release-notes.html
+  checked: 2026-11-01
+  volatile: true
+  history:
+    - { date: "2024-07-24", from: "kms:Decrypt + kms:GenerateDataKey", to: "kms:GenerateDataKey", source: "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-release-notes.html" }
+  note: "키 관리 페이지(sqs-key-management.html#send-to-encrypted-queue)는 2026-11-01 현재도 생산자에게 kms:Decrypt와 kms:GenerateDataKey를 둘 다 요구한다고 적혀 있다. 문서 사이 불일치."
+
+- id: sqs.policy.max-statements
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "큐 정책 하나에 넣을 수 있는 문(statement) 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.policy.max-principals
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "큐 정책 하나에 넣을 수 있는 보안 주체(principal) 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.policy.max-conditions
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "큐 정책 하나에 넣을 수 있는 조건(condition) 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.policy.max-actions-per-statement
+  value: 7
+  unit: count
+  display: { ko: "7개" }
+  label: { ko: "큐 정책의 문 하나에 넣을 수 있는 작업(action) 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.tls.min-version
+  value: "1.2"
+  unit: version
+  display: { ko: "TLS 1.2" }
+  label: { ko: "SQS API 호출에 클라이언트가 지원해야 하는 최소 TLS 버전 (AWS는 TLS 1.3 권장)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/infrastructure-security.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/infrastructure-security.html
+  checked: 2026-11-01
+  volatile: true

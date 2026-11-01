@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.queue-config-defaults
+  type: quiz
+  chapter: sqs/queue-config
+  topic: sqs/queue-config/core
+  question: { ko: "설정을 바꾸지 않고 만든 Standard 큐의 기본값으로 맞는 조합은?" }
+  choices:
+    - { id: a, text: { ko: "가시성 제한 시간 {{fact:sqs.visibility.default}}, 보존 기간 {{fact:sqs.retention.default}}, 수신 대기 시간 {{fact:sqs.receive-wait.default}}" } }
+    - { id: b, text: { ko: "가시성 제한 시간 {{fact:sqs.visibility.default}}, 보존 기간 {{fact:sqs.retention.max}}, 수신 대기 시간 {{fact:sqs.longpoll.wait.max}}" } }
+    - { id: c, text: { ko: "가시성 제한 시간 {{fact:sqs.visibility.max}}, 보존 기간 {{fact:sqs.retention.default}}, 수신 대기 시간 {{fact:sqs.receive-wait.default}}" } }
+    - { id: d, text: { ko: "가시성 제한 시간 {{fact:sqs.visibility.default}}, 보존 기간 {{fact:sqs.retention.min}}, 전송 지연 {{fact:sqs.delay.max}}" } }
+  answer: a
+  explanation: { ko: "기본값은 가시성 제한 시간 {{fact:sqs.visibility.default}}, 보존 기간 {{fact:sqs.retention.default}}, 수신 대기 시간 {{fact:sqs.receive-wait.default}}(짧은 폴링)이다. b의 {{fact:sqs.retention.max}}와 {{fact:sqs.longpoll.wait.max}}는 최댓값이다. c의 {{fact:sqs.visibility.max}}도 최댓값이다. d의 보존 기간 {{fact:sqs.retention.min}}은 최솟값이고, 전송 지연 기본값은 {{fact:sqs.delay.default}}이다." }
+  facts: [sqs.visibility.default, sqs.retention.default, sqs.receive-wait.default, sqs.retention.max, sqs.longpoll.wait.max, sqs.visibility.max, sqs.retention.min, sqs.delay.max, sqs.delay.default]
+
+- id: sqs.q.queue-config-purge
+  type: quiz
+  chapter: sqs/queue-config
+  topic: sqs/queue-config/purge-delete
+  question: { ko: "테스트 큐에 쌓인 메시지만 모두 지우고, 큐 URL과 설정은 그대로 쓰고 싶다. 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "DeleteQueue로 지운 뒤 같은 이름으로 바로 다시 만든다" } }
+    - { id: b, text: { ko: "PurgeQueue로 제거하고, 끝날 때까지 기다린 뒤 새 메시지를 보낸다" } }
+    - { id: c, text: { ko: "보존 기간을 최솟값으로 줄였다가 되돌린다" } }
+    - { id: d, text: { ko: "PurgeQueue를 연달아 여러 번 호출해 빨리 끝낸다" } }
+  answer: b
+  explanation: { ko: "제거(PurgeQueue)는 메시지만 지우고 큐와 URL은 남긴다. 끝나기까지 {{fact:sqs.purge.duration}}가 걸리며, 그 사이에 보낸 메시지도 지워질 수 있다. DeleteQueue(a)는 큐 자체를 없애고, 같은 이름은 {{fact:sqs.delete-queue.name-reuse-wait}} 기다려야 쓸 수 있다. 보존 기간 변경(c)은 반영에 {{fact:sqs.attributes.retention-propagation}}이 걸리고 의도가 분명하지 않다. 진행 중에 다시 제거하면(d) PurgeQueueInProgress 오류가 난다." }
+  facts: [sqs.purge.duration, sqs.delete-queue.name-reuse-wait, sqs.attributes.retention-propagation]
+
+- id: sqs.q.queue-config-retention-change
+  type: quiz
+  chapter: sqs/queue-config
+  topic: sqs/queue-config/changes
+  question: { ko: "메시지가 쌓여 있는 큐의 보존 기간을 줄였다. 일어나는 일로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "새로 들어오는 메시지에만 적용되고, 이미 있는 메시지는 예전 값을 따른다" } }
+    - { id: b, text: { ko: "이미 큐에 있는 메시지에도 적용되어, 새 보존 기간보다 오래된 메시지는 지워질 수 있다" } }
+    - { id: c, text: { ko: "큐 종류처럼 만든 뒤에는 바꿀 수 없다" } }
+    - { id: d, text: { ko: "바로 모든 곳에 적용된다" } }
+  answer: b
+  explanation: { ko: "보존 기간 변경은 이미 있는 메시지에도 적용되므로 a는 틀리다. 보존 기간은 편집 화면이나 SetQueueAttributes로 바꿀 수 있고, 만든 뒤 바꿀 수 없는 것은 큐 종류다(c). 변경이 퍼지는 데 {{fact:sqs.attributes.retention-propagation}}이 걸리므로 d도 틀리다." }
+  facts: [sqs.attributes.retention-propagation]
