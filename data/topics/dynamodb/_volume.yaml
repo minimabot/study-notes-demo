@@ -1,0 +1,26 @@
+# 권 정의와 장 순서. 장 구성의 근거: DynamoDB 개발자 안내서 목차 (2026-11-01 확인)
+volume:
+  id: dynamodb
+  title: { ko: "Amazon DynamoDB" }
+  structure_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+order:
+  - dynamodb/overview
+  - dynamodb/core-components
+  - dynamodb/partitions
+  - dynamodb/reads-writes
+  - dynamodb/capacity
+  - dynamodb/secondary-indexes
+  - dynamodb/query-scan
+  - dynamodb/transactions
+  - dynamodb/streams-ttl
+  - dynamodb/global-tables
+  - dynamodb/dax
+  - dynamodb/backup-restore
+  - dynamodb/security
+  - dynamodb/monitoring
+  - dynamodb/data-modeling
+  - dynamodb/limits
+  - dynamodb/cost
+  - dynamodb/integrations
+  - dynamodb/sdk
+  - dynamodb/labs

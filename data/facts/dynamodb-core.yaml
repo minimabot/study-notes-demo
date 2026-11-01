@@ -1,0 +1,201 @@
+# DynamoDB 권 공용 핵심 수치 (출처: 개발자 안내서 한도·용량 페이지, 2026-11-01 대조). 여러 장이 함께 쓴다.
+
+- id: dynamodb.item.max-size
+  value: 409600
+  unit: byte
+  display: { ko: "400 KB" }
+  label: { ko: "항목 하나의 최대 크기 (속성 이름 길이 포함)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.rcu.item-size
+  value: 4096
+  unit: byte
+  display: { ko: "4 KB" }
+  label: { ko: "읽기 용량 단위(RCU) 하나가 처리하는 항목 크기" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.wcu.item-size
+  value: 1024
+  unit: byte
+  display: { ko: "1 KB" }
+  label: { ko: "쓰기 용량 단위(WCU) 하나가 처리하는 항목 크기" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.read.eventual-per-unit
+  value: 2
+  unit: count
+  display: { ko: "2회" }
+  label: { ko: "읽기 단위 하나로 초당 할 수 있는 최종 일관성 읽기 횟수 (강한 일관성은 1회)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.txn.unit-multiplier
+  value: 2
+  unit: x
+  display: { ko: "2배" }
+  label: { ko: "트랜잭션 읽기·쓰기가 쓰는 용량 단위 배수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.partition.read.max
+  value: 3000
+  unit: units/s
+  display: { ko: "초당 읽기 단위 3,000" }
+  label: { ko: "파티션 하나가 낼 수 있는 최대 읽기 처리량" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.partition.write.max
+  value: 1000
+  unit: units/s
+  display: { ko: "초당 쓰기 단위 1,000" }
+  label: { ko: "파티션 하나가 낼 수 있는 최대 쓰기 처리량" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.lsi.max
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "테이블 하나에 만들 수 있는 로컬 보조 인덱스(LSI) 수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.gsi.default-quota
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "테이블 하나의 글로벌 보조 인덱스(GSI) 기본 한도" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.lsi.item-collection.max
+  value: 10737418240
+  unit: byte
+  display: { ko: "10 GB" }
+  label: { ko: "LSI가 있는 테이블에서 파티션 키 값 하나의 항목 모음 최대 크기" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/LSI.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.query.page.max
+  value: 1048576
+  unit: byte
+  display: { ko: "1 MB" }
+  label: { ko: "Query·Scan 호출 한 번에 돌려주는 결과 최대 크기" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.batch-write.max-requests
+  value: 25
+  unit: count
+  display: { ko: "25개" }
+  label: { ko: "BatchWriteItem 한 번에 담을 수 있는 Put·Delete 요청 수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.batch-get.max-items
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "BatchGetItem 한 번에 가져올 수 있는 항목 수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.batch.max-total-size
+  value: 16777216
+  unit: byte
+  display: { ko: "16 MB" }
+  label: { ko: "BatchGetItem·BatchWriteItem 한 번의 전체 항목 크기 합 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.txn.max-items
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "트랜잭션 하나에 담을 수 있는 서로 다른 항목 수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.txn.max-size
+  value: 4194304
+  unit: byte
+  display: { ko: "4 MB" }
+  label: { ko: "트랜잭션 하나의 데이터 크기 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.expression.max-length
+  value: 4096
+  unit: byte
+  display: { ko: "4 KB" }
+  label: { ko: "식(조건식 등) 문자열 하나의 최대 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.pitr.window.max
+  value: 3024000
+  unit: s
+  display: { ko: "35일" }
+  label: { ko: "시점 복구(PITR)로 되돌릴 수 있는 최대 기간" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Point-in-time-recovery.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Point-in-time-recovery.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.streams.retention
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "DynamoDB Streams 레코드 보관 기간" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Streams.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.streams.readers-per-shard
+  value: 2
+  unit: count
+  display: { ko: "2개" }
+  label: { ko: "단일 리전 테이블에서 같은 Streams 샤드를 동시에 읽도록 설계할 수 있는 프로세스 수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Streams.html
+  checked: 2026-11-01
+  volatile: false
