@@ -1,0 +1,116 @@
+# sqs/cost 장 전용 사실 항목.
+# 요금 숫자는 요금 페이지(JS로 그려짐) 대신 AWS Price List API 가격표에서 읽었다.
+#   SQS: https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSQueueService/20260911124607/{ap-northeast-2,us-east-1}/index.json
+#   KMS: https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/awskms/20261026201814/{ap-northeast-2,us-east-1}/index.json
+# 64 KB 단위 과금(sqs.billing.chunk-size)과 1 MiB = 16건(sqs.billing.requests-per-max-message)은 sqs-large-messages.yaml을 재사용한다.
+# kms.* 항목은 원래 data/facts/kms.yaml에 두어야 한다(AUTHORING 8절). 이 작업에서 만들 수 있는 파일이 이것뿐이라 임시로 여기에 둔다. ID는 옮겨도 그대로 쓸 수 있게 kms. 접두어를 붙였다.
+
+- id: sqs.price.offer-version
+  value: "2026-09-11"
+  unit: date
+  display: { ko: "2026-09-11 게시 가격표 (2026-11-01 확인)" }
+  label: { ko: "이 장의 SQS 요금 수치를 읽은 가격표. AWS Price List API AWSQueueService 오퍼 파일 버전 20260911124607" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.price.free-tier.requests
+  value: 1000000
+  unit: count/month
+  display: { ko: "매월 100만 요청" }
+  label: { ko: "SQS 프리 티어. 모든 리전(GovCloud 제외) 사용량을 합쳐 매월 적용하고, 남은 양은 다음 달로 넘어가지 않는다 (Price List API: Global-Requests)" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.price.standard.apne2
+  value: 0.40
+  unit: usd/1M-requests
+  display: { ko: "100만 요청당 0.40 USD" }
+  label: { ko: "Standard 큐 요청 단가, 서울(ap-northeast-2), 월 100만~1,000억 요청 구간 (Price List API: APN2-Requests-Tier1)" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.price.fifo.apne2
+  value: 0.50
+  unit: usd/1M-requests
+  display: { ko: "100만 요청당 0.50 USD" }
+  label: { ko: "FIFO 큐 요청 단가, 서울(ap-northeast-2), 월 100만~1,000억 요청 구간 (Price List API: APN2-Requests-FIFO-Tier1)" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.price.standard.use1
+  value: 0.40
+  unit: usd/1M-requests
+  display: { ko: "100만 요청당 0.40 USD" }
+  label: { ko: "Standard 큐 요청 단가, 미국 동부 버지니아 북부(us-east-1), 월 100만~1,000억 요청 구간 (Price List API: Requests-RBP)" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.price.fifo.use1
+  value: 0.50
+  unit: usd/1M-requests
+  display: { ko: "100만 요청당 0.50 USD" }
+  label: { ko: "FIFO 큐 요청 단가, 미국 동부 버지니아 북부(us-east-1), 월 100만~1,000억 요청 구간 (Price List API: Requests-FIFO-RBP)" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.price.tier1.max
+  value: 100000000000
+  unit: count/month
+  display: { ko: "월 1,000억 요청" }
+  label: { ko: "첫 유료 구간의 상한. 이를 넘는 요청은 더 낮은 단가 구간으로 계산된다 (서울·us-east-1 공통)" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.price.fair.apne2
+  value: 0.10
+  unit: usd/1M-requests
+  display: { ko: "100만 요청당 0.10 USD" }
+  label: { ko: "공정 큐(fair queue) 요청 추가 단가, 서울(ap-northeast-2). Standard 요청 요금과 별도로 더해진다 (Price List API: APN2-Requests-Fair-Tier1)" }
+  source_en: https://aws.amazon.com/sqs/pricing/
+  source_ko: https://aws.amazon.com/ko/sqs/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: kms.price.requests.apne2
+  value: 0.03
+  unit: usd/10k-requests
+  display: { ko: "1만 요청당 0.03 USD" }
+  label: { ko: "AWS KMS 대칭 키 API 요청 단가, 서울(ap-northeast-2). 확인 시점 us-east-1도 같은 값 (Price List API: ap-northeast-2-KMS-Requests)" }
+  source_en: https://aws.amazon.com/kms/pricing/
+  source_ko: https://aws.amazon.com/ko/kms/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: kms.price.free-tier.requests
+  value: 20000
+  unit: count/month
+  display: { ko: "매월 2만 요청" }
+  label: { ko: "AWS KMS 요청 프리 티어. 리전 전체 합산 (Price List API: Global-KMS-Requests)" }
+  source_en: https://aws.amazon.com/kms/pricing/
+  source_ko: https://aws.amazon.com/ko/kms/pricing/
+  checked: 2026-11-01
+  volatile: true
+
+- id: kms.price.key-month.apne2
+  value: 1
+  unit: usd/key-month
+  display: { ko: "키(버전)마다 월 1 USD" }
+  label: { ko: "고객 관리형 KMS 키의 월 보관 요금, 서울(ap-northeast-2). 확인 시점 us-east-1도 같은 값 (Price List API: ap-northeast-2-KMS-Keys)" }
+  source_en: https://aws.amazon.com/kms/pricing/
+  source_ko: https://aws.amazon.com/ko/kms/pricing/
+  checked: 2026-11-01
+  volatile: true

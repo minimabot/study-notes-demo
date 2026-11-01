@@ -1,0 +1,112 @@
+# Amazon SNS 사실 항목. ID 접두어 sns.
+# 출처: SNS 한도(general reference), SNS 개발자 안내서. 2026-11-01 대조.
+
+- id: sns.subscriptions.standard.max
+  value: 12500000
+  unit: count
+  display: { ko: "주제당 1,250만 개" }
+  label: { ko: "표준 주제 하나의 구독 수 기본 한도" }
+  source_en: https://docs.aws.amazon.com/general/latest/gr/sns.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/general/latest/gr/sns.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sns.subscriptions.fifo.max
+  value: 100
+  unit: count
+  display: { ko: "주제당 100개" }
+  label: { ko: "FIFO 주제 하나의 구독 수 기본 한도" }
+  source_en: https://docs.aws.amazon.com/general/latest/gr/sns.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/general/latest/gr/sns.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sns.filter-policies.per-topic
+  value: 200
+  unit: count
+  display: { ko: "주제당 200개" }
+  label: { ko: "주제 하나에 둘 수 있는 구독 필터 정책 수 기본 한도" }
+  source_en: https://docs.aws.amazon.com/general/latest/gr/sns.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/general/latest/gr/sns.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sns.filter-policy.propagation
+  value: 900
+  unit: s
+  display: { ko: "최대 15분" }
+  label: { ko: "구독 필터 정책을 추가·변경한 뒤 완전히 적용될 때까지 걸리는 시간" }
+  source_en: https://docs.aws.amazon.com/sns/latest/dg/sns-subscription-filter-policies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/sns/latest/dg/sns-subscription-filter-policies.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sns.raw.max-attributes
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "원시 메시지 전송을 켠 SQS 구독에 보낼 수 있는 메시지 속성 수 최댓값 (넘으면 메시지가 버려짐)" }
+  source_en: https://docs.aws.amazon.com/sns/latest/dg/sns-large-payload-raw-message-delivery.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/sns/latest/dg/sns-large-payload-raw-message-delivery.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sns.fifo.dedup.interval
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "SNS FIFO 주제의 중복 제거 간격" }
+  source_en: https://docs.aws.amazon.com/sns/latest/dg/fifo-message-dedup.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/sns/latest/dg/fifo-message-dedup.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sns.fifo.group.max-mps
+  value: 300
+  unit: msg/s
+  display: { ko: "초당 300건" }
+  label: { ko: "SNS FIFO 주제의 메시지 그룹 하나당 최대 전송 속도" }
+  source_en: https://docs.aws.amazon.com/sns/latest/dg/fifo-message-grouping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/sns/latest/dg/fifo-message-grouping.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sns.fifo.topic.default-mps
+  value: 3000
+  unit: msg/s
+  display: { ko: "초당 3,000건 또는 초당 20MB 중 먼저 닿는 값" }
+  label: { ko: "SNS FIFO 주제 하나의 기본 처리량 (FifoThroughputScope가 Topic일 때)" }
+  source_en: https://docs.aws.amazon.com/general/latest/gr/sns.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/general/latest/gr/sns.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sns.publish.standard.seoul
+  value: 1500
+  unit: msg/s
+  display: { ko: "초당 1,500건" }
+  label: { ko: "서울 리전 계정당 표준 주제 게시 한도 기본값 (Publish+PublishBatch 메시지 수, 리전마다 다르고 올릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/general/latest/gr/sns.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/general/latest/gr/sns.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sns.archive.retention.max
+  value: 31536000
+  unit: s
+  display: { ko: "365일" }
+  label: { ko: "SNS FIFO 주제 메시지 아카이브 보관 기간 최댓값" }
+  source_en: https://docs.aws.amazon.com/sns/latest/dg/fifo-message-archiving-replay.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/sns/latest/dg/fifo-message-archiving-replay.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sns.retry.aws-managed
+  value: 100015
+  unit: count
+  display: { ko: "23일에 걸쳐 최대 100,015회" }
+  label: { ko: "SQS·Lambda 구독에 서버 쪽 오류가 날 때 SNS의 재시도 횟수와 기간" }
+  source_en: https://docs.aws.amazon.com/sns/latest/dg/sns-dead-letter-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/sns/latest/dg/sns-dead-letter-queues.html
+  checked: 2026-11-01
+  volatile: false

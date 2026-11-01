@@ -1,0 +1,77 @@
+# 장: SNS → SQS 팬아웃
+chapter:
+  id: common/fanout
+  title:
+    ko: "팬아웃: SNS 주제 하나, SQS 큐 여럿"
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html
+  topics:
+    - id: common/fanout/why
+      title:
+        ko: 왜 주제 뒤에 큐를 두는가
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#4.3
+        - DOP-C02#5.1
+      recommended:
+        - claim:
+            ko: SNS 구독 DLQ의 메시지 보관 기간은 최댓값(14일)으로 둔다
+          source: https://docs.aws.amazon.com/sns/latest/dg/sns-dead-letter-queues.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/sns/latest/dg/welcome.html
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-dead-letter-queues.html
+    - id: common/fanout/permissions
+      title:
+        ko: 큐 정책, 다른 계정, 다른 리전
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: 큐 정책에 aws:SourceArn(또는 aws:SourceAccount) 조건을 넣어 혼동된 대리자 문제를 막는다
+          source: https://docs.aws.amazon.com/sns/latest/dg/subscribe-sqs-queue-to-sns-topic.html
+          checked: 2026-11-01
+        - claim:
+            ko: 다른 계정의 큐를 구독할 때는 가능하면 큐 소유자가 구독을 만든다
+          source: https://docs.aws.amazon.com/sns/latest/dg/sns-send-message-to-sqs-cross-account.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/sns/latest/dg/subscribe-sqs-queue-to-sns-topic.html
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-send-message-to-sqs-cross-account.html
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-cross-region-delivery.html
+    - id: common/fanout/raw-and-filter
+      title:
+        ko: 원시 메시지 전송과 구독 필터 정책
+      exam_tags:
+        - DVA-C03#4.3
+      sources:
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-large-payload-raw-message-delivery.html
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-message-filtering.html
+        - https://docs.aws.amazon.com/sns/latest/dg/sns-subscription-filter-policies.html
+    - id: common/fanout/fifo
+      title:
+        ko: 순서 있는 팬아웃 (FIFO 주제 → FIFO 큐)
+      exam_tags:
+        - DVA-C03#4.3
+        - SAP-C03#1.1
+      recommended:
+        - claim:
+            ko: SNS FIFO 주제의 처리량을 높이려면 서로 다른 메시지 그룹 ID를 많이 쓰고, 구독한 SQS FIFO 큐에는 높은 처리량 모드를 켠다
+          source: https://docs.aws.amazon.com/sns/latest/dg/fifo-message-grouping.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/sns/latest/dg/fifo-message-delivery.html
+        - https://docs.aws.amazon.com/sns/latest/dg/fifo-message-grouping.html
+        - https://docs.aws.amazon.com/sns/latest/dg/fifo-message-archiving-replay.html
+    - id: common/fanout/alternatives
+      title:
+        ko: 다른 팬아웃 방법
+      exam_tags:
+        - DOP-C02#5.1
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html
+        - https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-cross-account.html
+        - https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-retry-policy.html

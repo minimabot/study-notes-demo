@@ -1,0 +1,47 @@
+# 장: 요금과 비용 줄이기. 요금 수치는 AWS Price List API 가격표(data/facts/sqs-cost.yaml 머리 주석)에서 확인했다.
+chapter:
+  id: sqs/cost
+  title:
+    ko: 요금과 비용 줄이기
+  track: practice
+  doc_source: https://aws.amazon.com/sqs/pricing/
+  topics:
+    - id: sqs/cost/requests
+      title:
+        ko: 요금은 요청 수로 매긴다
+      exam_tags: []
+      sources:
+        - https://aws.amazon.com/sqs/pricing/
+    - id: sqs/cost/payload
+      title:
+        ko: 페이로드 크기와 조각 단위 계산
+      exam_tags: []
+      sources:
+        - https://aws.amazon.com/sqs/pricing/
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+    - id: sqs/cost/fewer-requests
+      title:
+        ko: 요청 수 줄이기 - 긴 폴링과 배치
+      exam_tags:
+        - SAA-C03#4.2
+      recommended:
+        - claim:
+            ko: 배치 API로 메시지를 보내고, 받고, 지우고, 가시성을 바꿔 API 호출 수와 비용을 줄인다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html
+          checked: 2026-11-01
+        - claim:
+            ko: 긴 폴링을 쓰고, 대부분은 대기 시간을 최댓값으로 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/best-practices-setting-up-long-polling.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html
+    - id: sqs/cost/other-charges
+      title:
+        ko: 요청 말고 붙는 요금 - 데이터 전송, KMS
+      exam_tags: []
+      sources:
+        - https://aws.amazon.com/sqs/pricing/
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-key-management.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html

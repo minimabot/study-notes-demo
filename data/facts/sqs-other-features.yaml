@@ -1,0 +1,71 @@
+# 사실 항목: 기타 기능 장 전용 (임시 큐, 메시지 메타데이터, 태그, 목록 페이지). 2026-11-01 영어 원문과 대조.
+
+- id: sqs.temp-queues.idle-cleanup
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "Temporary Queue Client 기본값: 사용 중 큐에 태그를 다는 주기이자, 태그가 갱신되지 않은 호스트 큐를 지우는 기준 시간 (설정 가능)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-temporary-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-temporary-queues.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.message.attribute-name.max-length
+  value: 256
+  unit: char
+  display: { ko: "256자" }
+  label: { ko: "메시지 속성 이름 최대 길이 (데이터 형식 이름도 같은 한도)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-metadata.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-metadata.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.tags.recommended-max
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "큐 하나에 붙이기를 권장하는 태그 수 상한 (AWS가 이보다 많이 붙이는 것을 권장하지 않음)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.tags.key.max-length
+  value: 128
+  unit: char
+  display: { ko: "128자" }
+  label: { ko: "큐 태그 키 최대 길이 (UTF-8 유니코드 문자)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.tags.value.max-length
+  value: 256
+  unit: char
+  display: { ko: "256자" }
+  label: { ko: "큐 태그 값 최대 길이 (UTF-8 유니코드 문자, 비워도 됨)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.tags.api.tps
+  value: 30
+  unit: tps
+  display: { ko: "초당 30건" }
+  label: { ko: "태그 작업 호출 한도 (AWS 계정당, 상향 요청 가능)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.list-queues.max-results
+  value: 1000
+  unit: count
+  display: { ko: "1,000개" }
+  label: { ko: "ListQueues·ListDeadLetterSourceQueues 응답 하나에 담기는 큐 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/list-all-queues-pagination.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/list-all-queues-pagination.html
+  checked: 2026-11-01
+  volatile: false

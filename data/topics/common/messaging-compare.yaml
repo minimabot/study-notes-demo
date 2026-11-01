@@ -1,0 +1,64 @@
+# 장: 메시징 서비스 비교 (SQS / SNS / EventBridge / Kinesis Data Streams)
+chapter:
+  id: common/messaging-compare
+  title:
+    ko: "메시징 서비스 비교: SQS, SNS, EventBridge, Kinesis"
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/decision-guides/latest/sns-or-sqs-or-eventbridge/sns-or-sqs-or-eventbridge.html
+  topics:
+    - id: common/messaging-compare/models
+      title:
+        ko: 큐, 게시/구독, 이벤트 버스, 스트림
+      exam_tags:
+        - SAA-C03#2.1
+        - DOP-C02#5.1
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/decision-guides/latest/sns-or-sqs-or-eventbridge/sns-or-sqs-or-eventbridge.html
+        - https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+        - https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/welcome.html
+    - id: common/messaging-compare/ordering
+      title:
+        ko: 순서와 중복
+      exam_tags:
+        - SAA-C03#2.1
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/decision-guides/latest/sns-or-sqs-or-eventbridge/sns-or-sqs-or-eventbridge.html
+        - https://docs.aws.amazon.com/sns/latest/dg/fifo-topic-message-ordering.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-record-processor-duplicates.html
+    - id: common/messaging-compare/retention
+      title:
+        ko: 보관과 다시 읽기
+      exam_tags:
+        - SAA-C03#2.1
+        - DOP-C02#5.1
+      recommended:
+        - claim:
+            ko: EventBridge 아카이브의 이벤트를 재생할 때는 아카이브 도착 지연을 고려해 10분 정도 미룬다
+          source: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-archive.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+        - https://docs.aws.amazon.com/sns/latest/dg/fifo-message-archiving-replay.html
+        - https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-archive.html
+    - id: common/messaging-compare/throughput
+      title:
+        ko: 처리량과 용량 관리
+      exam_tags:
+        - SAA-C03#2.1
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/general/latest/gr/sns.html
+        - https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-quota.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+    - id: common/messaging-compare/choose
+      title:
+        ko: 어떻게 고르나
+      exam_tags:
+        - SAA-C03#2.1
+        - DOP-C02#5.1
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/decision-guides/latest/sns-or-sqs-or-eventbridge/sns-or-sqs-or-eventbridge.html
+        - https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html

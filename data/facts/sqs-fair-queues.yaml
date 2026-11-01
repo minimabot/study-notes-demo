@@ -1,0 +1,42 @@
+# 사실 항목: 공정 큐(Fair Queues) 장 전용. 2026-11-01 영어 원문과 대조.
+# 감지 기준은 문서가 '대략적인 값'이라고 밝히므로 volatile: true.
+
+- id: sqs.fair.noisy.concurrency-share
+  value: 10
+  unit: percent
+  display: { ko: "10%" }
+  label: { ko: "시끄러운 이웃 판정: 큐 전체 처리 중 메시지에서 한 테넌트가 차지하는 비율 기준 (대략값)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.fair.noisy.min-inflight
+  value: 30
+  unit: count
+  display: { ko: "30개" }
+  label: { ko: "시끄러운 이웃 판정(동시 처리 비율 기준)에 함께 필요한 그 테넌트의 처리 중 메시지 수 (대략값)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.fair.noisy.processing-time-share
+  value: 10
+  unit: percent
+  display: { ko: "10%" }
+  label: { ko: "시끄러운 이웃 판정: 최근 소비자 처리 시간에서 한 테넌트가 차지하는 비율 기준 (대략값)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.fair.quiet.idle-period
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "처리 중 메시지가 이 시간 동안 계속 없으면 시끄러운 이웃 판정이 풀린다" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+  checked: 2026-11-01
+  volatile: true

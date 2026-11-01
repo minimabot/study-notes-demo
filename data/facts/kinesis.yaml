@@ -1,0 +1,62 @@
+# Amazon Kinesis Data Streams 사실 항목. ID 접두어 kinesis.
+# 출처: Kinesis Data Streams 개발자 안내서(용어와 개념, 한도, 보존 기간, 향상된 팬아웃). 2026-11-01 대조.
+
+- id: kinesis.retention.default
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "데이터 스트림 보존 기간 기본값 (최솟값이기도 함)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/kinesis-extended-retention.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: kinesis.retention.max
+  value: 31536000
+  unit: s
+  display: { ko: "365일(8,760시간)" }
+  label: { ko: "데이터 스트림 보존 기간 최댓값 (기본값보다 길면 추가 요금)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/kinesis-extended-retention.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: kinesis.shard.write
+  value: 1
+  unit: MB
+  display: { ko: "초당 1 MB 또는 초당 1,000건" }
+  label: { ko: "프로비저닝 모드 샤드 하나의 쓰기 용량" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/key-concepts.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: kinesis.shard.read
+  value: 2
+  unit: MB
+  display: { ko: "초당 2 MB (읽기 트랜잭션은 초당 5회)" }
+  label: { ko: "샤드 하나의 공유 읽기 용량 (공유 처리량 소비자들이 나눠 씀)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/key-concepts.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: kinesis.efo.throughput
+  value: 2
+  unit: MB
+  display: { ko: "샤드당 초당 2 MB" }
+  label: { ko: "향상된 팬아웃 소비자 하나가 받는 전용 읽기 처리량" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/enhanced-consumers.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: kinesis.efo.consumers.max
+  value: 20
+  unit: count
+  display: { ko: "스트림당 20개" }
+  label: { ko: "향상된 팬아웃 소비자 등록 수 (온디맨드 표준·프로비저닝 모드. On-demand Advantage 모드는 50개)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-01
+  volatile: true

@@ -1,0 +1,72 @@
+# Amazon EventBridge 사실 항목. ID 접두어 eventbridge.
+# 별도 표기가 없으면 규칙·대상으로 라우팅하는 "Custom Event Bus - Classic" 기준이다. 2026-11-01 대조.
+
+- id: eventbridge.targets-per-rule.max
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "규칙 하나에 붙일 수 있는 대상 수 (올릴 수 없음)" }
+  source_en: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-quota.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-quota.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: eventbridge.putevents.seoul
+  value: 600
+  unit: tps
+  display: { ko: "초당 600건" }
+  label: { ko: "서울 리전 PutEvents 요청 한도 기본값 (리전마다 다르고 올릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-quota.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-quota.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: eventbridge.invocations.seoul
+  value: 1100
+  unit: tps
+  display: { ko: "초당 1,100건" }
+  label: { ko: "서울 리전 대상 호출 한도 기본값 (넘으면 호출이 지연됨, 리전마다 다름)" }
+  source_en: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-quota.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-quota.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: eventbridge.retry.default-duration
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "대상 전달 실패 시 기본 재시도 기간" }
+  source_en: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-retry-policy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-rule-retry-policy.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: eventbridge.retry.default-attempts
+  value: 185
+  unit: count
+  display: { ko: "185회" }
+  label: { ko: "대상 전달 실패 시 기본 최대 재시도 횟수" }
+  source_en: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-retry-policy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-rule-retry-policy.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: eventbridge.archive.replay-delay.recommended
+  value: 600
+  unit: s
+  display: { ko: "10분" }
+  label: { ko: "아카이브 도착 지연을 고려해 재생을 미루라고 권장하는 시간" }
+  source_en: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-archive.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-archive.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: eventbridge.bus-v2.retention.max
+  value: 31536000
+  unit: s
+  display: { ko: "365일" }
+  label: { ko: "새 Custom Event Bus(구독자 방식)의 이벤트 보관 기간 최댓값" }
+  source_en: https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-quota.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/eventbridge/latest/userguide/eb-quota.html
+  checked: 2026-11-01
+  volatile: true

@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.fair-queues-group-order
+  type: quiz
+  chapter: sqs/fair-queues
+  topic: sqs/fair-queues/usage
+  question: { ko: "Standard 큐에 고객 ID를 MessageGroupId로 넣어 보내기 시작했다. 이 변화로 생기는 일로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "같은 고객의 메시지가 보낸 순서대로 처리된다" } }
+    - { id: b, text: { ko: "공정 큐가 적용되어, 한 고객이 몰려도 다른 고객의 메시지가 먼저 전달될 수 있다" } }
+    - { id: c, text: { ko: "같은 고객의 메시지는 한 번에 하나씩만 처리된다" } }
+    - { id: d, text: { ko: "소비자가 ReceiveMessage에 MessageGroupId를 지정하도록 코드를 고쳐야 한다" } }
+  answer: b
+  explanation: { ko: "Standard 큐에서 MessageGroupId는 공정 큐용 테넌트 표시일 뿐이다. 순서 보장(a)과 그룹 안 한 번에 하나씩 처리(c)는 FIFO 큐의 동작이다. 공정 큐는 소비자 코드 변경 없이(d가 틀림) 생산자가 MessageGroupId만 넣으면 자동으로 적용된다." }
+  facts: []
+
+- id: sqs.q.fair-queues-noisy-fate
+  type: quiz
+  chapter: sqs/fair-queues
+  topic: sqs/fair-queues/detection
+  question: { ko: "공정 큐에서 고객 A가 시끄러운 이웃으로 판정되었다. 고객 A의 메시지는 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "판정이 풀릴 때까지 SQS가 고객 A의 메시지 수신을 스로틀한다" } }
+    - { id: b, text: { ko: "고객 A의 메시지는 데드레터 큐로 옮겨진다" } }
+    - { id: c, text: { ko: "다른 고객의 메시지가 먼저 나가고, 그런 메시지가 없으면 고객 A의 메시지도 평소처럼 나간다" } }
+    - { id: d, text: { ko: "고객 A의 메시지 중 처리 중 메시지가 {{fact:sqs.fair.noisy.min-inflight}}를 넘는 분량은 버려진다" } }
+  answer: c
+  explanation: { ko: "공정 큐는 시끄러운 테넌트의 메시지를 버리거나 스로틀하지 않는다(a, d가 틀림). 조용한 테넌트의 메시지를 먼저 내줄 뿐이고, 그런 메시지가 없으면 시끄러운 테넌트의 메시지도 받는다. 데드레터 큐(b)는 최대 수신 횟수를 넘은 메시지가 가는 곳으로 공정 큐 판정과 관계없다. {{fact:sqs.fair.noisy.min-inflight}}는 판정 조건의 일부일 뿐 상한이 아니다." }
+  facts: [sqs.fair.noisy.min-inflight]
+
+- id: sqs.q.fair-queues-metric
+  type: quiz
+  chapter: sqs/fair-queues
+  topic: sqs/fair-queues/metrics
+  question: { ko: "한 고객의 폭주로 큐 전체의 ApproximateAgeOfOldestMessage가 크게 올랐다. 나머지 고객의 체류 시간 약속이 지켜지는지 보려면 어떤 지표를 보는가?" }
+  choices:
+    - { id: a, text: { ko: "ApproximateAgeOfOldestMessageInQuietGroups" } }
+    - { id: b, text: { ko: "ApproximateNumberOfMessagesVisible" } }
+    - { id: c, text: { ko: "NumberOfMessagesSent" } }
+    - { id: d, text: { ko: "ApproximateNumberOfGroupsWithInflightMessages" } }
+  answer: a
+  explanation: { ko: "InQuietGroups 지표는 시끄러운 그룹의 메시지를 빼고 센다. 그래서 다른 고객이 영향을 받는지 따로 볼 수 있다. b는 큐 전체 밀린 메시지 수라 폭주한 고객이 섞여 있다. c는 보낸 메시지 수로 체류 시간과 직접 관계가 없다. d는 FIFO 큐용 지표다." }
+  facts: []

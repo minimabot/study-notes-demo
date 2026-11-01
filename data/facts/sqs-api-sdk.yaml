@@ -1,0 +1,21 @@
+# 장 sqs/api-sdk 전용 사실 항목. 배치 메시지 수·긴 폴링 대기 최댓값 등 공용 값은 sqs-core.yaml을 재사용한다.
+
+- id: sqs.api.batch.max-total-size
+  value: 1048576
+  unit: byte
+  display: { ko: "1 MiB" }
+  label: { ko: "SendMessageBatch 요청 하나에 담는 메시지 전체 크기의 합 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.api.json.latency-reduction
+  value: 23
+  unit: percent
+  display: { ko: "최대 23%" }
+  label: { ko: "AWS JSON 프로토콜이 AWS query 프로토콜보다 줄인 종단 간 처리 지연 (AWS 성능 시험, 5 KB 메시지 기준)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-json-faqs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-json-faqs.html
+  checked: 2026-11-01
+  volatile: false

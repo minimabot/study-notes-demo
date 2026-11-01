@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.api-sdk-batch-partial
+  type: quiz
+  chapter: sqs/api-sdk
+  topic: sqs/api-sdk/batch
+  question: { ko: "SendMessageBatch 호출이 예외 없이 성공 응답을 돌려줬다. 다음으로 해야 할 일은?" }
+  choices:
+    - { id: a, text: { ko: "아무것도 없다. 응답이 성공이면 모든 메시지가 큐에 들어갔다" } }
+    - { id: b, text: { ko: "응답의 Failed 목록을 확인하고, 실패한 항목만 다시 보낸다" } }
+    - { id: c, text: { ko: "배치 전체를 한 번 더 보내 누락을 막는다" } }
+    - { id: d, text: { ko: "ReceiveMessage로 큐를 읽어 메시지가 들어갔는지 확인한다" } }
+  answer: b
+  explanation: { ko: "배치 요청은 전체가 성공으로 돌아와도 항목별로 실패할 수 있다. 결과는 Successful과 Failed로 나뉘어 오고, 항목의 Id로 어느 메시지인지 맞춘다. a는 부분 실패를 놓친다. c는 이미 들어간 메시지를 중복으로 넣는다. d는 다른 소비자의 처리를 방해하고, 받은 메시지는 가시성 제한 시간 동안 숨겨지므로 확인 방법으로 맞지 않다." }
+  facts: []
+
+- id: sqs.q.api-sdk-batch-permission
+  type: quiz
+  chapter: sqs/api-sdk
+  topic: sqs/api-sdk/batch
+  question: { ko: "생산자 역할이 SendMessageBatch를 쓰도록 IAM 정책을 쓰려 한다. 어떤 작업을 허용해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "sqs:SendMessageBatch만 허용한다" } }
+    - { id: b, text: { ko: "sqs:SendMessage와 sqs:SendMessageBatch를 둘 다 허용한다" } }
+    - { id: c, text: { ko: "sqs:SendMessage를 허용한다. 배치 작업은 이 권한을 따른다" } }
+    - { id: d, text: { ko: "배치 작업은 콘솔에서만 되므로 콘솔 접근 권한을 준다" } }
+  answer: c
+  explanation: { ko: "배치 작업에는 권한을 따로 둘 수 없다. SendMessage를 허용하면 SendMessageBatch도 허용된다. DeleteMessage와 ChangeMessageVisibility도 같다. 그래서 a와 b처럼 배치 작업 이름으로 권한을 주는 방식은 맞지 않다. 콘솔은 오히려 배치 작업을 지원하지 않으므로 d도 틀리다." }
+  facts: []
+
+- id: sqs.q.api-sdk-buffered-fifo
+  type: quiz
+  chapter: sqs/api-sdk
+  topic: sqs/api-sdk/batch
+  question: { ko: "Java 1.x 애플리케이션이 요청 수를 줄이려고 AmazonSQSBufferedAsyncClient를 도입하려 한다. 이 방법을 쓸 수 없는 경우는?" }
+  choices:
+    - { id: a, text: { ko: "대상 큐가 FIFO 큐일 때" } }
+    - { id: b, text: { ko: "긴 폴링을 쓰고 싶을 때" } }
+    - { id: c, text: { ko: "기존 코드가 AmazonSQSAsyncClient를 쓰고 있을 때" } }
+    - { id: d, text: { ko: "한 요청에 메시지를 {{fact:sqs.batch.max-messages}}까지 묶고 싶을 때" } }
+  answer: a
+  explanation: { ko: "버퍼링 비동기 클라이언트는 FIFO 큐를 지원하지 않는다. 긴 폴링(b)은 이 클라이언트의 기본 동작이다. AmazonSQSAsyncClient(c)와 인터페이스가 같아서 옮기기 쉽다. 배치 하나에 {{fact:sqs.batch.max-messages}}까지 묶는 것(d)도 이 클라이언트가 하는 일이다." }
+  facts: [sqs.batch.max-messages]

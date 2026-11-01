@@ -1,0 +1,59 @@
+# 장: API와 SDK
+chapter:
+  id: sqs/api-sdk
+  title:
+    ko: API와 SDK로 SQS 다루기
+  track: practice
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-working-with-apis.html
+  topics:
+    - id: sqs/api-sdk/access
+      title:
+        ko: SQS에 요청을 보내는 길
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-working-with-apis.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sdk-general-information-section.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-making-api-requests-xml.html
+    - id: sqs/api-sdk/protocol
+      title:
+        ko: AWS JSON 프로토콜과 AWS query 프로토콜
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-working-with-apis.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-json-faqs.html
+    - id: sqs/api-sdk/batch
+      title:
+        ko: 배치 작업과 클라이언트 쪽 버퍼링
+      exam_tags:
+        - DVA-C03#1.1
+      recommended:
+        - claim:
+            ko: 배치 API로 메시지 여러 개를 한 번에 보내고·지우고·가시성을 바꿔 요청 수와 비용을 줄인다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html#batching-message-actions
+          checked: 2026-11-01
+        - claim:
+            ko: 긴 폴링과 AWS SDK for Java의 버퍼링 비동기 클라이언트를 함께 써서 요청 수를 줄인다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html#batching-message-actions
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-batch-api-actions.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-client-side-buffering-request-batching.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_SendMessageBatch.html
+    - id: sqs/api-sdk/cli
+      title:
+        ko: AWS CLI로 보내고 받고 지우기
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/cli/latest/reference/sqs/index.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/example_sqs_ReceiveMessage_section.html
+    - id: sqs/api-sdk/java
+      title:
+        ko: Java SDK v2 예제
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/example_sqs_Scenario_SendReceiveBatch_section.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_ReceiveMessage.html

@@ -1,0 +1,63 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.cost-chunk
+  type: quiz
+  chapter: sqs/cost
+  topic: sqs/cost/payload
+  question: { ko: "{{raw:100 KB}} 메시지 하나를 `SendMessage`로 보낸다. 요금에는 요청 몇 건으로 계산되는가?" }
+  choices:
+    - { id: a, text: { ko: "{{raw:1건}}. 호출 한 번은 항상 요청 한 건이다" } }
+    - { id: b, text: { ko: "{{raw:2건}}. 페이로드를 {{fact:sqs.billing.chunk-size}} 조각으로 나눠 센다" } }
+    - { id: c, text: { ko: "{{raw:100건}}. {{raw:1 KB}}마다 한 건이다" } }
+    - { id: d, text: { ko: "{{fact:sqs.billing.requests-per-max-message}}. 최대 크기 기준으로 고정 계산된다" } }
+  answer: b
+  explanation: { ko: "SQS는 페이로드를 {{fact:sqs.billing.chunk-size}} 조각마다 요청 한 건으로 센다. {{raw:100 KB}}는 조각 두 개에 걸치므로 {{raw:2건}}이다. 호출 횟수만 세는 것(a)이 아니고, KB 단위로 세지도 않는다(c). {{fact:sqs.billing.requests-per-max-message}}(d)은 최대 크기({{fact:sqs.message.max-size}}) 페이로드일 때의 값이다." }
+  facts: [sqs.billing.chunk-size, sqs.billing.requests-per-max-message, sqs.message.max-size]
+
+- id: sqs.q.cost-empty
+  type: quiz
+  chapter: sqs/cost
+  topic: sqs/cost/fewer-requests
+  question: { ko: "하루 대부분 큐가 비어 있는데, 소비자 여러 대가 짧은 폴링 루프로 쉬지 않고 `ReceiveMessage`를 부른다. 청구된 요청 대부분이 빈 응답이다. 처리 지연을 크게 늘리지 않고 요금을 줄이는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "큐의 수신 대기 시간을 {{fact:sqs.longpoll.wait.max}}로 설정해 긴 폴링으로 바꾼다" } }
+    - { id: b, text: { ko: "FIFO 큐로 바꾼다" } }
+    - { id: c, text: { ko: "가시성 제한 시간을 늘린다" } }
+    - { id: d, text: { ko: "메시지 보존 기간을 줄인다" } }
+  answer: a
+  explanation: { ko: "긴 폴링은 메시지가 올 때까지 기다렸다가 응답하므로 빈 응답이 크게 준다. 메시지가 오면 바로 돌려주므로 지연도 늘지 않는다. FIFO(b)는 단가가 더 높고 빈 응답 수는 그대로다. 가시성 제한 시간(c)은 받은 메시지를 숨기는 시간이라 빈 응답과 관계없다. 보존 기간(d)은 요청 수와 관계없다." }
+  facts: [sqs.longpoll.wait.max, sqs.price.standard.apne2, sqs.price.fifo.apne2]
+
+- id: sqs.q.cost-kms
+  type: quiz
+  chapter: sqs/cost
+  topic: sqs/cost/other-charges
+  question: { ko: "SSE-KMS를 쓰는 큐에 보내는 보안 주체가 많아 KMS 요금이 예상보다 높다. 보안 요구가 허용하는 범위에서 KMS 호출을 줄이는 설정은?" }
+  choices:
+    - { id: a, text: { ko: "데이터 키 재사용 기간을 늘린다" } }
+    - { id: b, text: { ko: "데이터 키 재사용 기간을 {{fact:sqs.sse.key-reuse.min}}으로 줄인다" } }
+    - { id: c, text: { ko: "메시지 크기를 줄인다" } }
+    - { id: d, text: { ko: "긴 폴링을 끈다" } }
+  answer: a
+  explanation: { ko: "KMS 호출 수는 (기간 ÷ 재사용 기간) × (2 × 보내는 주체 + 받는 주체)로 추정한다. 재사용 기간을 늘리면(최대 {{fact:sqs.sse.key-reuse.max}}) 호출이 준다. 줄이면(b) 호출이 늘어난다. 메시지 크기(c)와 폴링 방식(d)은 이 식에 들어가지 않는다." }
+  facts: [sqs.sse.key-reuse.min, sqs.sse.key-reuse.max, kms.price.requests.apne2]
+
+- id: sqs.d.cost-chatty
+  type: design
+  chapter: sqs/cost
+  topic: sqs/cost/fewer-requests
+  scenario: { ko: "센서 수만 대의 상태 값을 Standard 큐로 모은다. 생산자는 {{raw:1 KB}} 안팎의 메시지를 하나씩 `SendMessage`로 보낸다. 가끔 디버그 필드가 붙어 {{raw:70 KB}}까지 커진다. 소비자 {{raw:20대}}는 짧은 폴링 루프로 계속 묻고, 처리한 메시지를 하나씩 지운다. 밤에는 메시지가 거의 없다. 처리 순서는 중요하지 않고 몇 초의 지연은 괜찮다. 요청 요금을 줄이는 변경을 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "생산자가 `SendMessageBatch`로 메시지를 {{fact:sqs.batch.max-messages}}까지 묶어 보낸다" } }
+    - { id: b, text: { ko: "소비자가 긴 폴링(대기 {{fact:sqs.longpoll.wait.max}})으로 여러 개를 한 번에 받고, `DeleteMessageBatch`로 지운다" } }
+    - { id: c, text: { ko: "디버그 필드를 빼서 메시지를 {{fact:sqs.billing.chunk-size}} 조각 하나 안으로 줄인다" } }
+    - { id: d, text: { ko: "FIFO 큐로 바꿔 중복 전달을 없애고 요청 수를 줄인다" } }
+    - { id: e, text: { ko: "짧은 폴링 루프의 대기 간격을 없애 메시지를 더 빨리 가져온다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다. 배치(a)는 보내는 요청 수를 묶은 개수만큼 나눈다. 작은 메시지는 묶어도 합계가 조각 하나 안에 든다."
+      - "b는 밤 시간의 빈 응답을 줄이고, 받기와 삭제 요청도 배치로 줄인다. 몇 초의 지연을 허용하므로 긴 폴링이 맞다."
+      - "c는 조각 경계를 넘어 요청이 두 배로 계산되는 메시지를 없앤다. 배치를 쓸 때도 합계 페이로드가 작을수록 조각 수가 준다."
+      - "d는 감점: FIFO 단가({{fact:sqs.price.fifo.apne2}}, 서울)가 Standard({{fact:sqs.price.standard.apne2}})보다 높고, 요청 수는 줄지 않는다. 순서가 필요 없는 작업이다."
+      - "e는 감점: 빈 응답이 더 늘어나 요금이 오른다."
+  facts: [sqs.batch.max-messages, sqs.longpoll.wait.max, sqs.billing.chunk-size, sqs.price.fifo.apne2, sqs.price.standard.apne2]

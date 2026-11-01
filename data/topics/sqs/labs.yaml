@@ -1,0 +1,45 @@
+# 장: 실습
+chapter:
+  id: sqs/labs
+  title:
+    ko: 실습 (AWS CLI, CloudFormation)
+  track: practice
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-getting-started.html
+  topics:
+    - id: sqs/labs/setup
+      title:
+        ko: 준비와 정리 원칙
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-setting-up.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/step-delete-queue.html
+    - id: sqs/labs/standard
+      title:
+        ko: "실습 1: Standard 큐, 긴 폴링, 가시성 제한 시간"
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/creating-sqs-standard-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/step-receive-delete-message.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html
+    - id: sqs/labs/dlq
+      title:
+        ko: "실습 2: 데드레터 큐와 재드라이브"
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-dead-letter-queue.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_StartMessageMoveTask.html
+    - id: sqs/labs/fifo
+      title:
+        ko: "실습 3: FIFO 큐의 순서와 중복 제거"
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/creating-sqs-fifo-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-queues-exactly-once-processing.html
+    - id: sqs/labs/iac-vpc
+      title:
+        ko: "실습 4: CloudFormation과 VPC 엔드포인트"
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/create-queue-cloudformation.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-sending-messages-from-vpc.html
+        - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-sqs-queue.html

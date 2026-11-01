@@ -1,0 +1,44 @@
+# 장: 공정 큐 (Fair Queues). 2025-07-21 추가 기능이므로 시험 반영 여부 불명.
+chapter:
+  id: sqs/fair-queues
+  title:
+    ko: 공정 큐 (Fair Queues)
+  track: practice
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues.html
+  topics:
+    - id: sqs/fair-queues/noisy-neighbor
+      title:
+        ko: 시끄러운 이웃 문제
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues.html
+    - id: sqs/fair-queues/usage
+      title:
+        ko: 켜는 법과 FIFO 메시지 그룹과의 차이
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 공정 큐로 보내는 모든 메시지에 MessageGroupId를 넣고, 고객 ID처럼 시스템의 실제 단위를 값으로 쓴다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html#sqs-fair-queues-tenant-identification
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues.html#sqs-fair-queues-using-fair-queues
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues.html#sqs-fair-queues-when-to-use
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html#sqs-fair-queues-tenant-identification
+    - id: sqs/fair-queues/detection
+      title:
+        ko: 시끄러운 이웃을 가려내는 기준
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues-detailed.html
+    - id: sqs/fair-queues/metrics
+      title:
+        ko: 효과 확인 (InQuietGroups 지표)
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fair-queues.html#sqs-fair-queues-cloudwatch-metrics
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-available-cloudwatch-metrics.html

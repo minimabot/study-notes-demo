@@ -1,0 +1,64 @@
+# 퀴즈와 설계 과제: 메시징 서비스 비교. 수치는 {{fact:ID}}로만 쓴다.
+- id: common.q.mc-replay
+  type: quiz
+  chapter: common/messaging-compare
+  topic: common/messaging-compare/retention
+  question: { ko: "클릭 기록을 실시간으로 받아 여러 분석 애플리케이션이 각자 읽는다. 분석 코드에 버그가 있으면 고친 뒤 지난 며칠치 기록을 처음부터 다시 처리해야 한다. 어느 서비스가 가장 알맞은가?" }
+  choices:
+    - { id: a, text: { ko: "SQS 표준 대기열 하나에 모든 분석 애플리케이션을 소비자로 붙인다" } }
+    - { id: b, text: { ko: "SNS 표준 주제에 분석 애플리케이션의 HTTP 엔드포인트를 구독시킨다" } }
+    - { id: c, text: { ko: "Kinesis Data Streams에 쓰고, 보존 기간을 필요한 만큼 늘린다" } }
+    - { id: d, text: { ko: "EventBridge 기본 이벤트 버스에 규칙을 만들어 각 애플리케이션을 대상으로 둔다" } }
+  answer: c
+  explanation: { ko: "Kinesis 기록은 읽어도 지워지지 않고 보존 기간(기본 {{fact:kinesis.retention.default}}, 최대 {{fact:kinesis.retention.max}}) 동안 남는다. 애플리케이션마다 자기 위치에서 읽고, 원하는 위치로 돌아가 다시 읽을 수 있다. SQS(a)는 소비자 하나가 받아 지우면 끝이고, 여러 소비자가 메시지를 나눠 가질 뿐이다. SNS 표준 주제(b)는 메시지를 쌓아 두지 않는다. EventBridge(d)도 아카이브를 따로 만들지 않으면 지난 이벤트를 다시 보낼 수 없고, 대량의 순서 있는 스트림 처리용이 아니다." }
+  facts: [kinesis.retention.default, kinesis.retention.max]
+
+- id: common.q.mc-order
+  type: quiz
+  chapter: common/messaging-compare
+  topic: common/messaging-compare/ordering
+  question: { ko: "계좌별 거래 이벤트를 여러 소비 서비스에 보낸다. 같은 계좌의 이벤트는 반드시 발생 순서대로 처리되어야 하고, 계좌끼리는 순서가 상관없다. 순서 보장 면에서 맞지 않는 설계는 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "SNS FIFO 주제에 계좌 ID를 메시지 그룹 ID로 게시하고, 서비스마다 SQS FIFO 큐를 구독시킨다" } }
+    - { id: b, text: { ko: "Kinesis Data Streams에 계좌 ID를 파티션 키로 써서 넣고, 서비스마다 소비자를 둔다" } }
+    - { id: c, text: { ko: "EventBridge 규칙 방식 이벤트 버스에 넣고, 규칙의 대상으로 각 서비스를 둔다" } }
+    - { id: d, text: { ko: "SNS FIFO 주제에서 순서가 필요한 서비스에는 SQS FIFO 큐를 구독시킨다" } }
+  answer: c
+  explanation: { ko: "규칙과 대상으로 라우팅하는 EventBridge 이벤트 버스는 순서를 보장하지 않고 임의 순서로 전달한다. SNS FIFO → SQS FIFO(a, d)는 메시지 그룹 안의 순서를 지킨다. Kinesis(b)는 같은 파티션 키를 같은 샤드로 보내고 샤드 안에서 순서대로 읽게 하므로 계좌별 순서가 지켜진다." }
+  facts: []
+
+- id: common.q.mc-targets
+  type: quiz
+  chapter: common/messaging-compare
+  topic: common/messaging-compare/models
+  question: { ko: "EC2 인스턴스 상태 변경 이벤트를 골라 Lambda 함수, SQS 큐, Step Functions 상태 머신에 보내려 한다. 코드를 쓰지 않고 이벤트 내용으로 고르는 가장 알맞은 방법은 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "EventBridge 규칙에 이벤트 패턴을 정하고 세 대상을 붙인다" } }
+    - { id: b, text: { ko: "SQS 큐 하나에 이벤트를 모으고, 세 서비스가 같은 큐를 폴링한다" } }
+    - { id: c, text: { ko: "Kinesis Data Streams에 이벤트를 넣는 생산자 코드를 EC2마다 설치한다" } }
+    - { id: d, text: { ko: "Amazon MQ 브로커를 만들고 세 서비스를 브로커에 연결한다" } }
+  answer: a
+  explanation: { ko: "AWS 서비스 이벤트는 EventBridge 이벤트 버스로 들어오고, 규칙의 이벤트 패턴으로 골라 대상으로 보낸다. 규칙 하나에 대상은 {{fact:eventbridge.targets-per-rule.max}}까지 붙일 수 있다. 같은 큐를 여럿이 폴링(b)하면 메시지 하나는 그중 한 곳만 받는다. Kinesis(c)는 생산자 코드가 필요하고 내용 기반 라우팅을 하지 않는다. Amazon MQ(d)는 기존 브로커 프로토콜 애플리케이션을 옮길 때 쓴다." }
+  facts: [eventbridge.targets-per-rule.max]
+
+- id: common.d.mc-choose
+  type: design
+  chapter: common/messaging-compare
+  topic: common/messaging-compare/choose
+  scenario: { ko: "쇼핑몰에 요구 사항이 셋 있다. (1) 업로드된 상품 이미지의 썸네일을 작업자들이 하나씩 만든다. 몰릴 때는 쌓아 두었다가 작업자 속도대로 처리한다. (2) 주문이 들어오면 결제, 재고, 알림 서비스가 같은 주문을 각자 처리한다. 한 서비스가 멈춰도 다른 서비스는 계속 돌아야 한다. (3) 매장 단말기의 센서 값이 끊임없이 들어온다. 실시간 대시보드와 이상 탐지가 같은 데이터를 각자 읽고, 탐지 모델을 고치면 지난 사흘치를 다시 돌려 본다. 알맞은 조합을 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "(1)은 SQS 표준 대기열에 작업을 넣고 작업자 여럿이 폴링한다" } }
+    - { id: b, text: { ko: "(2)는 SNS 주제에 주문을 게시하고, 서비스마다 SQS 큐를 하나씩 구독시킨다" } }
+    - { id: c, text: { ko: "(3)은 Kinesis Data Streams에 넣고, 보존 기간을 다시 돌려 볼 기간 이상으로 늘린다" } }
+    - { id: d, text: { ko: "(2)는 SQS 큐 하나를 만들고 결제·재고·알림 서비스가 같은 큐를 함께 폴링한다" } }
+    - { id: e, text: { ko: "(3)은 SNS 표준 주제에 센서 값을 게시하고 대시보드와 이상 탐지를 구독시킨다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 작업 하나를 작업자 한 명이 처리하고, 큐가 몰림을 받아 준다. 순서가 필요 없으므로 표준 대기열로 충분하다."
+      - "b: 팬아웃 구조다. 서비스마다 큐가 따로라 재시도, DLQ, 처리 속도가 서로 영향을 주지 않는다({{ch:common/fanout}})."
+      - "c: 여러 애플리케이션이 같은 기록을 각자 읽고, 보존 기간(최대 {{fact:kinesis.retention.max}}) 안에서 다시 읽을 수 있다. 기본 보존 기간은 {{fact:kinesis.retention.default}}이라 늘려야 한다."
+      - "d는 감점: 같은 큐를 여러 서비스가 폴링하면 주문 하나를 한 서비스만 받는다. 세 서비스가 모두 받지 못한다."
+      - "e는 감점: SNS 표준 주제는 메시지를 쌓아 두지 않으므로 지난 데이터를 다시 읽을 수 없다. 끊임없는 대량 데이터를 순서대로 다시 읽는 용도가 아니다."
+  facts: [kinesis.retention.default, kinesis.retention.max]

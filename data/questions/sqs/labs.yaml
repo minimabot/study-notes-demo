@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: sqs.q.labs-empty-receive
+  type: quiz
+  chapter: sqs/labs
+  topic: sqs/labs/standard
+  question: { ko: "실습 1에서 메시지를 한 번 받은 직후 다시 receive-message를 불렀더니 빈 응답이 왔다. 큐에는 메시지가 한 건뿐이다. 이유는?" }
+  choices:
+    - { id: a, text: { ko: "첫 번째 받기에서 메시지가 큐에서 삭제되었다" } }
+    - { id: b, text: { ko: "받은 메시지가 가시성 제한 시간 동안 숨겨져 있다" } }
+    - { id: c, text: { ko: "긴 폴링이 켜져 있으면 같은 메시지를 다시 주지 않는다" } }
+    - { id: d, text: { ko: "메시지가 데드레터 큐로 옮겨졌다" } }
+  answer: b
+  explanation: { ko: "받는 것만으로는 메시지가 지워지지 않는다. 가시성 제한 시간 동안 숨겨졌다가, 지우지 않으면 다시 보인다. a는 DeleteMessage를 불러야 일어난다. 긴 폴링(c)은 대기 방식일 뿐 재전달을 막지 않는다. DLQ 이동(d)은 받은 횟수가 최대 수신 횟수를 넘어야 일어나며, 실습 1의 큐에는 DLQ가 없다." }
+  facts: []
+
+- id: sqs.q.labs-redrive-dest
+  type: quiz
+  chapter: sqs/labs
+  topic: sqs/labs/dlq
+  question: { ko: "실습 2에서 목적지 ARN 없이 aws sqs start-message-move-task --source-arn <DLQ ARN>을 실행했다. 메시지는 어디로 가는가?" }
+  choices:
+    - { id: a, text: { ko: "목적지가 없으므로 명령이 실패한다" } }
+    - { id: b, text: { ko: "DLQ에서 삭제되고 어디에도 남지 않는다" } }
+    - { id: c, text: { ko: "각 메시지가 원래 있던 원본 큐로 돌아간다" } }
+    - { id: d, text: { ko: "같은 계정의 첫 번째 큐로 간다" } }
+  answer: c
+  explanation: { ko: "StartMessageMoveTask에서 DestinationArn은 필수가 아니다. 비워 두면 메시지가 원래 원본 큐로 재드라이브된다. 그래서 명령은 실패하지 않고(a), 메시지가 버려지지도 않으며(b), 임의의 큐로 가지도 않는다(d)." }
+  facts: []
+
+- id: sqs.q.labs-fifo-blocked
+  type: quiz
+  chapter: sqs/labs
+  topic: sqs/labs/fifo
+  question: { ko: "실습 3에서 같은 메시지 그룹으로 세 건을 보낸 뒤 첫 메시지만 받고 지우지 않았다. 곧바로 다시 받으면 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "두 번째 메시지가 나온다" } }
+    - { id: b, text: { ko: "세 메시지가 모두 한꺼번에 나온다" } }
+    - { id: c, text: { ko: "그 그룹의 메시지는 나오지 않는다. 첫 메시지를 지우거나 가시성 제한 시간이 끝나야 다음이 나온다" } }
+    - { id: d, text: { ko: "첫 메시지가 중복 제거되어 사라지고 두 번째가 나온다" } }
+  answer: c
+  explanation: { ko: "FIFO 큐는 같은 메시지 그룹 안의 순서를 지키려고, 앞 메시지가 처리 중이면 그 그룹의 다음 메시지를 주지 않는다. 그래서 a와 b는 틀리다. 중복 제거(d)는 같은 중복 제거 ID로 {{fact:sqs.fifo.dedup.interval}} 안에 다시 보낸 메시지를 받지 않는 기능이고, 처리 중인 메시지와는 상관없다." }
+  facts: [sqs.fifo.dedup.interval]

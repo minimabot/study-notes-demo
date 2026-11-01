@@ -1,0 +1,56 @@
+# 퀴즈: SNS → SQS 팬아웃. 수치는 {{fact:ID}}로만 쓴다.
+- id: common.q.fanout-policy
+  type: quiz
+  chapter: common/fanout
+  topic: common/fanout/permissions
+  question: { ko: "SNS 주제에 SQS 큐를 구독시켰는데 큐에 메시지가 들어오지 않는다. 같은 계정, 같은 리전이고 큐는 암호화되지 않았다. 가장 먼저 확인할 것은 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "큐 정책이 서비스 주체 sns.amazonaws.com에 sqs:SendMessage를 허용하고, aws:SourceArn이 이 주제의 ARN인지" } }
+    - { id: b, text: { ko: "큐의 가시성 제한 시간이 SNS 재시도 간격보다 긴지" } }
+    - { id: c, text: { ko: "SNS 주제가 FIFO 주제인지" } }
+    - { id: d, text: { ko: "소비자의 IAM 역할에 sns:Publish 권한이 있는지" } }
+  answer: a
+  explanation: { ko: "SNS가 큐에 넣으려면 큐 정책에서 SNS의 SendMessage를 허용해야 하고, aws:SourceArn 조건이 다른 주제를 가리키면 거부된다. 가시성 제한 시간(b)은 소비자가 받은 뒤의 일이다. 표준 주제와 표준 큐 조합도 정상 동작하므로 주제 종류(c)는 원인이 아니다. 소비자의 sns:Publish(d)는 게시하는 쪽 권한이다." }
+  facts: []
+
+- id: common.q.fanout-filter
+  type: quiz
+  chapter: common/fanout
+  topic: common/fanout/raw-and-filter
+  question: { ko: "주문 주제를 구독한 큐 셋 중 '해외 배송' 큐는 country 속성이 KR이 아닌 주문만 받아야 한다. 생산자 코드는 고치지 않는다. 가장 알맞은 방법은 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "해외 배송 큐의 소비자가 모든 메시지를 받은 뒤 KR 주문을 지운다" } }
+    - { id: b, text: { ko: "해외 배송 큐의 구독에 country 속성에 대한 anything-but 조건의 필터 정책을 건다" } }
+    - { id: c, text: { ko: "주제를 국가별로 하나씩 새로 만들고 생산자가 국가에 맞는 주제에 게시하게 한다" } }
+    - { id: d, text: { ko: "해외 배송 큐에 원시 메시지 전송을 켠다" } }
+  answer: b
+  explanation: { ko: "필터 정책은 구독마다 걸고, 맞지 않는 메시지는 그 큐에 들어가지 않는다. anything-but 연산자로 'KR이 아닌 값'을 표현한다. 바꾼 정책은 완전히 적용되기까지 {{fact:sns.filter-policy.propagation}}이 걸릴 수 있다. a는 받고 버리는 요청이 낭비된다. c는 생산자 코드를 고쳐야 한다. 원시 메시지 전송(d)은 SNS 메타데이터를 뺄 뿐 거르지 않는다." }
+  facts: [sns.filter-policy.propagation]
+
+- id: common.q.fanout-fifo
+  type: quiz
+  chapter: common/fanout
+  topic: common/fanout/fifo
+  question: { ko: "상품 가격 변경을 SNS FIFO 주제로 게시해 여러 서비스에 순서대로 보내려 한다. 다음 중 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "FIFO 주제에는 가격 알림용 이메일 주소와 HTTPS 엔드포인트도 구독시킬 수 있다" } }
+    - { id: b, text: { ko: "순서가 필요한 서비스는 SQS FIFO 큐를, 순서가 필요 없는 분석 서비스는 SQS 표준 큐를 구독시킬 수 있다" } }
+    - { id: c, text: { ko: "메시지 그룹 ID는 선택 사항이고, 넣지 않으면 주제 전체의 순서가 지켜진다" } }
+    - { id: d, text: { ko: "메시지 그룹마다 특정 구독 큐 하나에만 전달된다" } }
+  answer: b
+  explanation: { ko: "SNS FIFO 주제는 FIFO 큐와 표준 큐를 모두 구독시킬 수 있다. 표준 큐에서는 순서와 중복 제거가 보장되지 않는 대신 비용이 준다. 이메일·HTTP(S) 같은 고객 관리 엔드포인트(a)는 구독할 수 없다. 메시지 그룹 ID(c)는 FIFO 주제에 게시할 때 반드시 넣는다. 그룹과 구독 사이에는 짝이 없어서(d) 모든 구독 큐로 간다. 그룹 하나는 {{fact:sns.fifo.group.max-mps}}까지 전달하므로 상품 ID처럼 다양한 값을 그룹 ID로 쓴다." }
+  facts: [sns.fifo.group.max-mps]
+
+- id: common.q.fanout-eb-targets
+  type: quiz
+  chapter: common/fanout
+  topic: common/fanout/alternatives
+  question: { ko: "EventBridge 규칙 하나로 같은 이벤트를 여덟 곳에 보내려 했더니 대상을 더 붙일 수 없다. 알맞은 대응은 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "Service Quotas에서 규칙당 대상 수 한도를 올린다" } }
+    - { id: b, text: { ko: "같은 이벤트 패턴의 규칙을 하나 더 만들어 대상을 나누거나, 대상으로 SNS 주제를 두어 다시 퍼뜨린다" } }
+    - { id: c, text: { ko: "EventBridge Pipes를 여러 개 만들어 같은 이벤트 버스를 원본으로 둔다" } }
+    - { id: d, text: { ko: "SQS 큐 하나를 대상으로 두고 여덟 소비자가 같은 큐를 폴링한다" } }
+  answer: b
+  explanation: { ko: "규칙당 대상 수({{fact:eventbridge.targets-per-rule.max}})는 올릴 수 없는 한도다. 규칙을 늘리거나 SNS 주제로 팬아웃한다. Pipes(c)는 원본 하나와 대상 하나를 잇는 점대점 연결이고 이벤트 버스는 파이프의 원본이 아니다. 큐 하나를 여럿이 폴링(d)하면 메시지 하나를 한 소비자만 받는다." }
+  facts: [eventbridge.targets-per-rule.max]

@@ -1,0 +1,54 @@
+# 장: 기타 기능 (임시 큐, 메시지 메타데이터, 비용 할당 태그, 목록 페이지)
+chapter:
+  id: sqs/other-features
+  title:
+    ko: 기타 기능
+  track: practice
+  doc_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-metadata.html
+  topics:
+    - id: sqs/other-features/temporary-queues
+      title:
+        ko: 임시 큐와 가상 큐
+      exam_tags: []
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 같은 호스트 큐를 쓰는 가상 큐끼리 같은 MessageGroupId를 다시 쓰지 않는다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoiding-reusing-message-group-id-with-virtual-queues.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-temporary-queues.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/avoiding-reusing-message-group-id-with-virtual-queues.html
+    - id: sqs/other-features/message-attributes
+      title:
+        ko: 메시지 속성과 시스템 속성
+      exam_tags:
+        - DVA-C03#1.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-metadata.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-using-send-message-with-attributes.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-troubleshooting-using-x-ray.html
+    - id: sqs/other-features/cost-tags
+      title:
+        ko: 비용 할당 태그
+      exam_tags:
+        - SAA-C03#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 큐 하나에 붙이는 태그 수를 문서의 권장 상한 이하로 둔다
+          source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-tags.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-tag-queue.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+    - id: sqs/other-features/list-pagination
+      title:
+        ko: 큐 목록 페이지 나누기
+      exam_tags:
+        - DVA-C03#1.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/list-all-queues-pagination.html
