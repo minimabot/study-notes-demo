@@ -1,0 +1,56 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.dax-strong-read
+  type: quiz
+  chapter: dynamodb/dax
+  topic: dynamodb/dax/caches
+  question: { ko: "재고 앱이 DAX 클라이언트로 GetItem을 부르면서 ConsistentRead를 true로 준다. DAX는 이 요청을 어떻게 처리하는가?" }
+  choices:
+    - { id: a, text: { ko: "항목 캐시에 있으면 캐시에서 돌려주고, 없으면 DynamoDB에서 읽어 캐시에 넣는다" } }
+    - { id: b, text: { ko: "DynamoDB로 넘겨 결과를 돌려주지만 캐시에는 넣지 않는다" } }
+    - { id: c, text: { ko: "DAX는 강력한 일관된 읽기를 거부하고 오류를 돌려준다" } }
+    - { id: d, text: { ko: "기본 노드의 캐시에서만 읽어 강력한 일관성을 보장한다" } }
+  answer: b
+  explanation: { ko: "강력한 일관된 읽기와 TransactGetItems는 DAX가 DynamoDB로 그대로 넘기고 결과를 캐시하지 않는다. a는 최종적 일관된 읽기의 흐름이다. DAX는 이런 요청을 거부하지 않으며(c), 노드 사이 복제도 최종적 일관성이라 기본 노드에서 읽어도 강력한 일관성이 되지 않는다(d). 그래서 이런 읽기는 처음부터 DynamoDB로 직접 보내는 편이 낫다." }
+  facts: []
+
+- id: dynamodb.q.dax-query-cache-stale
+  type: quiz
+  chapter: dynamodb/dax
+  topic: dynamodb/dax/consistency
+  question: { ko: "앱이 DAX로 Query를 실행해 사용자의 주문 목록을 받았다. 곧이어 같은 DAX 클라이언트로 새 주문을 PutItem 했고, 같은 Query를 다시 실행했더니 새 주문이 보이지 않는다. 이유는?" }
+  choices:
+    - { id: a, text: { ko: "PutItem이 실패했다. DAX 라이트-스루는 DynamoDB 쓰기가 실패해도 캐시만 고친다" } }
+    - { id: b, text: { ko: "DAX 쓰기는 항목 캐시만 고치고, 쿼리 캐시의 결과 집합은 TTL이 끝날 때까지 그대로이기 때문이다" } }
+    - { id: c, text: { ko: "DAX는 Query를 캐시하지 않으므로 DynamoDB 복제 지연 때문이다" } }
+    - { id: d, text: { ko: "항목 캐시 TTL 기본값 {{fact:dynamodb.dax.item-ttl.default}}이 지나야 쓰기가 DynamoDB에 반영되기 때문이다" } }
+  answer: b
+  explanation: { ko: "항목 캐시와 쿼리 캐시는 서로 독립이다. 라이트-스루 쓰기는 항목 캐시만 고치고 쿼리 캐시는 무효화하지 않는다. DynamoDB 쓰기가 실패하면 캐시에도 남지 않으므로 a는 반대다. DAX는 Query 결과를 쿼리 캐시에 저장한다(c는 틀림). 라이트-스루는 DynamoDB에 먼저 동기로 쓰므로 TTL과 반영 시점은 관계없다(d는 틀림)." }
+  facts: [dynamodb.dax.item-ttl.default]
+
+- id: dynamodb.q.dax-when
+  type: quiz
+  chapter: dynamodb/dax
+  topic: dynamodb/dax/consistency
+  question: { ko: "다음 중 DAX를 붙였을 때 효과를 가장 기대할 수 있는 워크로드는?" }
+  choices:
+    - { id: a, text: { ko: "IoT 센서가 초마다 새 항목을 쓰고, 쓴 데이터는 하루 한 번 일괄 분석하는 테이블" } }
+    - { id: b, text: { ko: "결제 직후 잔액을 반드시 최신 값으로 읽어야 하는 계좌 테이블" } }
+    - { id: c, text: { ko: "할인 행사 동안 소수의 인기 상품 정보를 수많은 사용자가 반복해 읽는 상품 테이블" } }
+    - { id: d, text: { ko: "매번 다른 키를 한 번씩만 읽는 보관용 로그 테이블" } }
+  answer: c
+  explanation: { ko: "DAX는 같은 키를 반복해 읽는 읽기 위주 워크로드에 맞다. 핫 키 읽기를 캐시가 받아 파티션 한도({{fact:dynamodb.partition.read.max}})와 RCU 부담을 덜어 준다. a는 쓰기 위주라 노드 간 복제 부담만 는다. b는 강력한 일관된 읽기가 필요해 DAX가 통과만 시킨다. d는 반복 읽기가 없어 적중률이 낮다. DAX는 적중률 {{fact:dynamodb.dax.hit-rate.best}}일 때 가장 좋다." }
+  facts: [dynamodb.partition.read.max, dynamodb.dax.hit-rate.best]
+
+- id: dynamodb.q.dax-iam-bypass
+  type: quiz
+  chapter: dynamodb/dax
+  topic: dynamodb/dax/security
+  question: { ko: "한 테이블에 사용자별로 dynamodb:LeadingKeys 조건을 건 IAM 정책을 쓰고 있다. 읽기 성능을 위해 이 테이블 앞에 DAX 클러스터를 두려 한다. 보안상 알아야 할 점은?" }
+  choices:
+    - { id: a, text: { ko: "DAX가 각 사용자의 IAM 정책 조건을 그대로 평가하므로 추가 조치가 필요 없다" } }
+    - { id: b, text: { ko: "DAX 경로에서는 클러스터 서비스 역할의 권한이 쓰여 사용자별 조건이 적용되지 않는다. 격리가 필요하면 클러스터를 나누고 서비스 역할을 좁힌다" } }
+    - { id: c, text: { ko: "DAX 저장 시 암호화에 고객 관리형 키를 지정하면 사용자별 접근이 분리된다" } }
+    - { id: d, text: { ko: "DAX 전송 중 암호화를 켜면 사용자별 IAM 조건이 강제된다" } }
+  answer: b
+  explanation: { ko: "DAX는 사용자 단위로 데이터를 나누지 않는다. DAX를 거친 사용자는 클러스터 서비스 역할의 권한을 물려받으므로 DynamoDB 쪽 세분화된 제한이 우회된다(a는 틀림). DAX 저장 시 암호화는 AWS 관리형 키만 쓰며 고객 관리형 키를 지원하지 않는다(c). 전송 중 암호화는 TLS로 통신을 보호할 뿐 권한 모델과 관계없다(d)." }
+  facts: []

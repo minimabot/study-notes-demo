@@ -1,0 +1,41 @@
+# DynamoDB 모니터링 장 전용 수치 (2026-11-02 대조). 공용 수치는 dynamodb-core.yaml에 있다.
+
+- id: dynamodb.metrics.period.fast
+  value: 60
+  unit: s
+  display: { ko: "1분" }
+  label: { ko: "소비 용량·스로틀·오류·지연 시간 등 주요 DynamoDB 지표의 CloudWatch 집계 간격" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/metrics-dimensions.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.metrics.period.default
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "그 밖의 DynamoDB 지표(계정 사용률, 프로비저닝 값 등)의 CloudWatch 집계 간격" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/metrics-dimensions.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.ise.escalation.rate
+  value: 1
+  unit: "%"
+  display: { ko: "1%" }
+  label: { ko: "내부 서버 오류가 이어질 때 AWS Support에 알릴 때로 안내하는 전체 실패율 기준" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TroubleshootingInternalServerErrors.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/TroubleshootingInternalServerErrors.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.ise.escalation.window
+  value: 900
+  unit: s
+  display: { ko: "최근 15분" }
+  label: { ko: "내부 서버 오류 실패율을 볼 기간 (AWS Support에 알릴지 판단할 때)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TroubleshootingInternalServerErrors.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/TroubleshootingInternalServerErrors.html
+  checked: 2026-11-02
+  volatile: false

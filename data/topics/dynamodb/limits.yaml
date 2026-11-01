@@ -1,0 +1,50 @@
+# 장: 할당량과 제약 (참조용)
+chapter:
+  id: dynamodb/limits
+  title:
+    ko: 할당량과 제약 한눈에 보기
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotasRevised.html
+  topics:
+    - id: dynamodb/limits/items
+      title:
+        ko: 항목과 속성
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+    - id: dynamodb/limits/keys-indexes
+      title:
+        ko: 키와 인덱스
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+    - id: dynamodb/limits/api
+      title:
+        ko: 배치, 트랜잭션, 식, 컨트롤 플레인
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+    - id: dynamodb/limits/throughput
+      title:
+        ko: 처리량과 계정 할당량
+      exam_tags:
+        - SOA-C03#2.1
+        - SOA-C03#1.2
+      recommended:
+        - claim:
+            ko: 계정 하나에 테이블이 10,000개 넘게 필요하면 계정을 여러 개로 나눈다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+    - id: dynamodb/limits/adjustable
+      title:
+        ko: 할당량 확인과 증가 요청
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotasRevised.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/RequestingQuotaIncrease.html

@@ -1,0 +1,66 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.security-key-choice
+  type: quiz
+  chapter: dynamodb/security
+  topic: dynamodb/security/encryption
+  question: { ko: "규정상 DynamoDB 테이블 암호화 키의 키 정책을 회사가 직접 정하고, 필요하면 키를 비활성화할 수 있어야 한다. 어떤 키를 써야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "AWS 소유 키. 기본값이고 추가 요금이 없다" } }
+    - { id: b, text: { ko: "AWS 관리형 키(aws/dynamodb)" } }
+    - { id: c, text: { ko: "고객 관리형 키" } }
+    - { id: d, text: { ko: "암호화를 끄고 클라이언트 측 암호화만 쓴다" } }
+  answer: c
+  explanation: { ko: "키 정책, 활성화·비활성화, 교체를 직접 통제할 수 있는 것은 고객 관리형 키뿐이다. AWS 소유 키는 보거나 감사할 수도 없다(a). AWS 관리형 키는 보고 감사할 수는 있지만 권한을 바꿀 수 없다(b). DynamoDB 저장 시 암호화는 끌 수 없다(d). 고객 관리형 키를 비활성화하면 테이블이 접근 불가가 되고, {{fact:dynamodb.cmk.inaccessible-grace}} 안에 되돌리지 않으면 보관 처리된다는 점도 알아 둔다." }
+  facts: [dynamodb.cmk.inaccessible-grace]
+
+- id: dynamodb.q.security-endpoint-type
+  type: quiz
+  chapter: dynamodb/security
+  topic: dynamodb/security/network
+  question: { ko: "온프레미스 데이터 센터의 애플리케이션이 Direct Connect로 AWS에 연결돼 있다. 이 앱이 퍼블릭 인터넷을 거치지 않고 DynamoDB에 접속하려면?" }
+  choices:
+    - { id: a, text: { ko: "VPC에 DynamoDB 게이트웨이 엔드포인트를 만들고 라우팅 테이블에 경로를 추가한다" } }
+    - { id: b, text: { ko: "VPC에 DynamoDB 인터페이스 엔드포인트(AWS PrivateLink)를 만들고 앱이 엔드포인트 전용 URL을 쓰게 한다" } }
+    - { id: c, text: { ko: "VPC에 NAT 게이트웨이를 두고 온프레미스 트래픽을 보낸다" } }
+    - { id: d, text: { ko: "DAX 클러스터를 만들어 온프레미스에서 직접 접속한다" } }
+  answer: b
+  explanation: { ko: "인터페이스 엔드포인트는 VPC의 프라이빗 IP를 쓰므로 VPN이나 Direct Connect로 온프레미스에서 접근할 수 있다. 게이트웨이 엔드포인트는 온프레미스와 다른 리전에서 쓸 수 없다(a). NAT는 결국 퍼블릭 엔드포인트로 나간다(c). DAX는 VPC 안의 애플리케이션을 위한 캐시이며 이 요구와 관계없다(d)." }
+  facts: []
+
+- id: dynamodb.q.security-leadingkeys-scan
+  type: quiz
+  chapter: dynamodb/security
+  topic: dynamodb/security/fgac
+  question: { ko: "사용자가 자기 UserId 파티션의 항목만 다루도록 dynamodb:LeadingKeys 조건을 건 정책을 만들고 있다. 허용 작업 목록에서 빼야 하는 것은?" }
+  choices:
+    - { id: a, text: { ko: "GetItem" } }
+    - { id: b, text: { ko: "Query" } }
+    - { id: c, text: { ko: "Scan" } }
+    - { id: d, text: { ko: "PutItem" } }
+  answer: c
+  explanation: { ko: "Scan은 파티션 키와 상관없이 테이블 전체를 읽으므로 LeadingKeys로 범위를 좁힐 수 없다. 그래서 AWS 예시 정책도 Scan을 넣지 않는다. GetItem, Query, PutItem은 요청에 파티션 키 값이 들어가므로 LeadingKeys 조건으로 사용자 자신의 파티션에 묶인다." }
+  facts: []
+
+- id: dynamodb.d.security-multitenant
+  type: design
+  chapter: dynamodb/security
+  topic: dynamodb/security/fgac
+  scenario: { ko: "모바일 앱 사용자의 메모를 DynamoDB 테이블 하나(UserNotes)에 저장한다. 파티션 키는 UserId, 정렬 키는 NoteId다. 사용자는 웹 자격 증명 연동으로 로그인해 임시 자격 증명을 받는다. 요구 사항은 세 가지다. (1) 각 사용자는 자기 메모만 읽고 쓸 수 있어야 한다. (2) 보안 감사팀이 암호화 키의 키 정책을 직접 관리하고, 사고 때 키를 비활성화할 수 있어야 한다. (3) 같은 테이블을 읽는 사내 배치 작업은 VPC의 프라이빗 서브넷에서 돌며, 인터넷 게이트웨이나 NAT 없이 DynamoDB에 접속해야 한다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "사용자 역할 정책에 ForAllValues:StringEquals 조건으로 dynamodb:LeadingKeys를 사용자 ID 정책 변수와 같게 걸고, GetItem·Query·PutItem·UpdateItem·DeleteItem만 허용한다" } }
+    - { id: b, text: { ko: "테이블 암호화 키를 고객 관리형 키로 바꾸고, 키 정책을 감사팀이 관리한다" } }
+    - { id: c, text: { ko: "배치 작업 VPC에 DynamoDB 게이트웨이 엔드포인트를 만들고, 엔드포인트 정책으로 UserNotes 테이블 접근만 허용한다" } }
+    - { id: d, text: { ko: "사용자 역할에 Scan을 허용하고, 앱 코드에서 결과를 UserId로 걸러 낸다" } }
+    - { id: e, text: { ko: "읽기 성능을 위해 사용자 앱 앞에 DAX 클러스터 하나를 두고 같은 IAM 조건을 기대한다" } }
+    - { id: f, text: { ko: "사용자 앱에 장기 액세스 키를 넣어 배포한다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 항목 단위 격리의 전형이다. LeadingKeys는 ForAllValues 한정자와 함께 쓴다. Scan은 넣지 않는다. 필요하면 dynamodb:Attributes, dynamodb:Select, dynamodb:ReturnValues로 속성까지 좁힌다."
+      - "b: 키 정책과 비활성화를 직접 통제할 수 있는 것은 고객 관리형 키뿐이다. AWS 관리형 키는 권한을 바꿀 수 없고, AWS 소유 키는 보거나 감사할 수도 없다. 키를 비활성화하면 테이블이 접근 불가가 되고 {{fact:dynamodb.cmk.inaccessible-grace}} 안에 되돌려야 한다는 운영 위험도 함께 적으면 좋다."
+      - "c: VPC 안에서만 접속하므로 무료인 게이트웨이 엔드포인트로 충분하다. 인터넷 게이트웨이·NAT·퍼블릭 IP가 필요 없다. 배치 역할 정책에 aws:sourceVpce 조건을 더하면 엔드포인트 경로만 허용할 수 있다. 인터페이스 엔드포인트를 골라도 요구는 충족하지만 요금이 들어 이 상황에선 과하다."
+      - "d는 감점: Scan은 파티션 키와 무관하게 모든 사용자의 항목을 읽는다. 앱 코드의 필터는 권한 경계가 아니다."
+      - "e는 감점: DAX 경로에서는 클러스터 서비스 역할의 권한이 쓰여 LeadingKeys 조건이 우회된다."
+      - "f는 감점: 장기 자격 증명은 자동 교체되지 않는다. 웹 자격 증명 연동이나 IAM 역할의 임시 자격 증명을 쓴다."
+  facts: [dynamodb.cmk.inaccessible-grace]

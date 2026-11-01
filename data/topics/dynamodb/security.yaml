@@ -1,0 +1,87 @@
+# 장: DynamoDB 보안
+chapter:
+  id: dynamodb/security
+  title:
+    ko: "보안 (IAM, 암호화, VPC 엔드포인트)"
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/security.html
+  topics:
+    - id: dynamodb/security/shared-iam
+      title:
+        ko: "공동 책임과 IAM 정책의 종류"
+      exam_tags:
+        - SAA-C03#1.3
+      recommended:
+        - claim:
+            ko: "액세스 키를 앱이나 EC2에 저장하지 말고 IAM 역할의 임시 자격 증명을 쓴다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+          checked: 2026-11-02
+        - claim:
+            ko: "최소 권한으로 IAM 정책을 준다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/security.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/access-control-resource-based.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/attribute-based-access-control.html
+    - id: dynamodb/security/fgac
+      title:
+        ko: "항목·속성 단위 제한 (세분화된 액세스 제어)"
+      exam_tags:
+        - SAA-C03#1.3
+      recommended:
+        - claim:
+            ko: "세분화된 액세스 제어 정책은 거부 기반보다 허용 기반으로 쓴다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/specifying-conditions.html
+          checked: 2026-11-02
+        - claim:
+            ko: "IAM 정책 조건으로 항목·속성 단위 접근을 제한한다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/specifying-conditions.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/identity-and-access-mgmt.html
+    - id: dynamodb/security/encryption
+      title:
+        ko: "저장 시 암호화의 세 가지 키와 전송 중 암호화"
+      exam_tags:
+        - SAA-C03#1.3
+        - DVA-C03#2.2
+        - SOA-C03#4.2
+      recommended:
+        - claim:
+            ko: "민감한 데이터는 클라이언트 측 암호화를 검토한다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+          checked: 2026-11-02
+        - claim:
+            ko: "기본 키와 GSI 키에 민감한 평문을 넣지 않는다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/encryption.howitworks.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/inter-network-traffic-privacy.html
+    - id: dynamodb/security/network
+      title:
+        ko: "VPC 엔드포인트: 게이트웨이와 인터페이스"
+      exam_tags:
+        - SOA-C03#4.2
+      recommended:
+        - claim:
+            ko: "VPC 안에서만 DynamoDB에 접근하면 VPC 엔드포인트로 접근 경로를 제한한다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/network-isolation.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/privatelink-interface-endpoints.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/inter-network-traffic-privacy.html
+    - id: dynamodb/security/protect
+      title:
+        ko: "삭제 방지와 보안 모범 사례"
+      exam_tags:
+        - SOA-C03#4.2
+        - SAA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.Basics.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-preventative.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices-security-detective.html

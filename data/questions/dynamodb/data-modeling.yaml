@@ -1,0 +1,104 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.data-modeling-begins-with
+  type: quiz
+  chapter: dynamodb/data-modeling
+  topic: dynamodb/data-modeling/sort-keys
+  question: { ko: "장바구니 테이블의 PK는 사용자 ID, SK는 `CART#ACTIVE#<상품>`, `CART#SAVED#<상품>`, `WISH#<목록>#<상품>` 형식이다. 결제 화면은 지금 결제할 상품만 필요하다. 읽기 용량을 가장 적게 쓰는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "PK만 주고 `Query`한 뒤, 필터 표현식으로 `CART#ACTIVE#`로 시작하는 항목만 남긴다" } }
+    - { id: b, text: { ko: "키 조건에 PK와 `begins_with(SK, \"CART#ACTIVE#\")`를 주고 `Query`한다" } }
+    - { id: c, text: { ko: "`Scan`에 사용자 ID와 SK 접두어를 필터로 건다" } }
+    - { id: d, text: { ko: "SK 접두어를 파티션 키로 하는 GSI를 만들어 `CART#ACTIVE`로 `Query`한다" } }
+  answer: b
+  explanation: { ko: "계층형 정렬 키는 왼쪽부터 일부만 키 조건으로 줄 수 있다. 키 조건에서 빠진 항목은 읽지 않으므로 용량도 쓰지 않는다. a는 사용자 항목 전부를 읽은 뒤 거르므로 필터로 버린 항목까지 용량을 쓴다. c는 테이블 전체를 읽는다. d는 모든 사용자의 활성 장바구니가 한 파티션 키 값에 몰리고, 인덱스 쓰기 비용도 더 든다." }
+  facts: []
+
+- id: dynamodb.q.data-modeling-adjacency-reverse
+  type: quiz
+  chapter: dynamodb/data-modeling
+  topic: dynamodb/data-modeling/relationships
+  question: { ko: "인접 목록으로 송장과 청구서의 다대다 관계를 저장했다. 송장 파티션(PK=`INV#…`) 안에 SK=`BILL#…` 항목으로 관계를 둔다. \"청구서 BILL#7이 들어 있는 송장 전부\"를 효율적으로 찾으려면?" }
+  choices:
+    - { id: a, text: { ko: "테이블을 `Scan`하고 SK = `BILL#7`로 필터링한다" } }
+    - { id: b, text: { ko: "기본 테이블의 SK를 파티션 키로(필요하면 PK를 정렬 키로) 하는 GSI를 만들어 `BILL#7`로 `Query`한다" } }
+    - { id: c, text: { ko: "같은 파티션 키를 쓰는 LSI를 만든다" } }
+    - { id: d, text: { ko: "청구서 항목에 송장 ID 목록을 리스트 속성으로 넣고, 그 속성으로 `Query`한다" } }
+  answer: b
+  explanation: { ko: "AWS 인접 목록 패턴은 역방향 조회에 테이블 정렬 키를 파티션 키로 하는 GSI를 쓴다. a는 테이블 전체를 읽는다. c의 LSI는 파티션 키가 기본 테이블과 같아 송장 파티션 안에서만 찾으므로 방향을 바꿀 수 없다. d는 리스트 같은 문서 속성을 키 조건이나 인덱스 키로 쓸 수 없고, 목록이 커지면 항목 크기 한도 {{fact:dynamodb.item.max-size}}에도 닿는다." }
+  facts: [dynamodb.item.max-size]
+
+- id: dynamodb.q.data-modeling-large-item
+  type: quiz
+  chapter: dynamodb/data-modeling
+  topic: dynamodb/data-modeling/time-series-large
+  question: { ko: "상품 카탈로그 항목에 고해상도 상품 이미지를 함께 저장하려 하자 쓰기가 `ValidationException`으로 실패한다. AWS 모범 사례에 맞는 해결책은?" }
+  choices:
+    - { id: a, text: { ko: "테이블의 최대 항목 크기 설정을 올린다" } }
+    - { id: b, text: { ko: "이미지를 S3 객체로 저장하고 항목에는 객체 키를 넣는다. S3 쓰기가 끝난 뒤 DynamoDB 쓰기가 실패하면 남는 객체를 앱이 치운다" } }
+    - { id: c, text: { ko: "이미지를 GSI의 프로젝션 속성으로 옮긴다" } }
+    - { id: d, text: { ko: "`TransactWriteItems`로 S3 업로드와 DynamoDB 쓰기를 한 트랜잭션으로 묶는다" } }
+  answer: b
+  explanation: { ko: "항목 크기 상한 {{fact:dynamodb.item.max-size}}는 바꿀 수 없다(a는 틀림). 큰 값은 S3에 두고 항목에는 식별자만 둔다. DynamoDB 트랜잭션은 S3를 포함하지 않으므로(d는 틀림) 실패 시 고아 객체 정리는 앱 책임이다. GSI 항목도 같은 크기 제한을 받고 기본 테이블 쓰기는 여전히 실패한다(c는 틀림)." }
+  facts: [dynamodb.item.max-size]
+
+- id: dynamodb.q.data-modeling-multi-table
+  type: quiz
+  chapter: dynamodb/data-modeling
+  topic: dynamodb/data-modeling/access-patterns
+  question: { ko: "AWS 문서가 다중 테이블 설계의 장점으로 드는 것은?" }
+  choices:
+    - { id: a, text: { ko: "여러 엔터티를 함께 읽을 때 요청 한 번으로 끝난다" } }
+    - { id: b, text: { ko: "관리할 IAM 정책과 CloudWatch 경보가 줄어든다" } }
+    - { id: c, text: { ko: "중요한 엔터티만 따로 백업하거나, 이력 데이터 테이블에만 Standard-IA 테이블 클래스를 적용할 수 있다" } }
+    - { id: d, text: { ko: "DynamoDB가 테이블 사이 JOIN을 서버에서 처리해 준다" } }
+  answer: c
+  explanation: { ko: "백업, 암호화 키, 테이블 클래스는 테이블 단위이므로 엔터티마다 요구가 다르면 테이블을 나누는 편이 맞다. a와 b는 단일 테이블 설계의 장점이다. DynamoDB에는 JOIN이 없어 여러 테이블의 데이터는 따로 읽어 앱에서 합친다(d는 틀림)." }
+  facts: []
+
+- id: dynamodb.d.data-modeling-trip-logs
+  type: design
+  chapter: dynamodb/data-modeling
+  topic: dynamodb/data-modeling/time-series-large
+  scenario: { ko: "차량 관제 서비스가 차량 수만 대의 운행 기록을 저장한다. 운행 중인 차량은 {{raw:5초}}마다 위치 점(시각, 좌표, 속도)을 보낸다. 운행이 끝나면 운행 요약(시작·종료 시각, 거리)을 만든다. 접근 패턴은 (1) 차량별 최근 운행 목록, (2) 운행 하나의 위치 점을 시간 순으로 보기, (3) 이번 달 데이터가 거의 모든 읽기·쓰기를 받고, 지난 달은 가끔, 그 이전은 드물게 읽는다. 위치 점은 {{raw:12개월}} 보관한 뒤 S3에 아카이브한다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "위치 점은 월마다 테이블을 하나씩 둔다. 다음 달 테이블을 미리 만들고, 월이 바뀌면 쓰기를 넘긴다. 지난 달 테이블은 용량을 낮추고 Standard-IA로 바꾼다" } }
+    - { id: b, text: { ko: "운행 요약은 PK=차량 ID, SK=운행 시작 시각(ISO 형식)#운행 ID로, 위치 점은 PK=운행 ID, SK=기록 시각으로 둔다" } }
+    - { id: c, text: { ko: "보관 기간이 지난 달의 테이블은 S3로 내보낸 뒤 테이블을 삭제한다" } }
+    - { id: d, text: { ko: "위치 점의 파티션 키를 기록 날짜(일 단위)로 두어 하루 데이터를 한 번에 읽는다" } }
+    - { id: e, text: { ko: "운행 요약 항목의 리스트 속성에 위치 점을 계속 덧붙인다" } }
+    - { id: f, text: { ko: "차량별 최근 운행은 테이블 `Scan`에 차량 ID 필터를 걸어 찾는다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 쓰기가 현재 기간에 몰리고 오래될수록 덜 읽는 대량 시계열에는 기간별 테이블이 AWS가 소개하는 패턴이다. 현재 테이블에 용량을 몰고, 지난 테이블은 처리량을 낮추고 저장 비용이 싼 Standard-IA로 옮긴다."
+      - "b: 운행 요약은 차량 ID로 모이고 시작 시각 순으로 정렬되어, ScanIndexForward=false인 Query 한 번으로 최근 운행을 읽는다. 위치 점은 운행 ID로 모이고 기록 시각 순이라 운행 하나를 시간 순으로 읽는다. 쓰기가 수많은 운행 ID에 퍼진다."
+      - "c: 기간별 테이블이면 오래된 데이터를 항목마다 지우지 않고 테이블 단위로 내보내고 삭제한다. 단일 테이블로 설계했다면 TTL 속성으로 무료 삭제하고, 스트림의 TTL 삭제 레코드를 Lambda로 S3에 옮기는 방법을 쓴다."
+      - "d는 감점: 그날의 모든 쓰기가 날짜 값 하나에 몰려 핫 파티션이 된다. 파티션 하나의 쓰기 한도 {{fact:dynamodb.partition.write.max}}에 막힌다."
+      - "e는 감점: 항목은 {{fact:dynamodb.item.max-size}}를 넘을 수 없고, 덧붙일 때마다 항목 전체 크기만큼 쓰기 단위를 쓴다. 위치 점은 별도 항목으로 둔다."
+      - "f는 감점: Scan은 테이블 전체를 읽고 필터로 버린 항목도 용량을 쓴다. 자주 쓰는 패턴은 키로 받는다."
+  facts: [dynamodb.partition.write.max, dynamodb.item.max-size]
+
+- id: dynamodb.d.data-modeling-user-groups
+  type: design
+  chapter: dynamodb/data-modeling
+  topic: dynamodb/data-modeling/relationships
+  scenario: { ko: "협업 앱에서 사용자는 여러 그룹에 가입하고, 그룹에는 여러 사용자가 있다. 접근 패턴은 (1) 그룹의 멤버 목록과 각 멤버의 역할·가입일, (2) 사용자가 속한 그룹 목록을 그룹 이름과 함께 보기, (3) 그룹 정보 보기다. 큰 그룹은 멤버가 수십만 명이다. 그룹 이름은 거의 바뀌지 않는다. 단일 테이블로 설계할 때 알맞은 것을 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "그룹 정보는 PK=`GROUP#g`, SK=`GROUP#g` 항목으로, 멤버십은 PK=`GROUP#g`, SK=`USER#u` 항목(역할, 가입일 포함)으로 둔다" } }
+    - { id: b, text: { ko: "테이블 SK를 파티션 키, PK를 정렬 키로 하는 GSI를 만들어, `USER#u`로 Query하면 그 사용자의 멤버십이 나오게 한다" } }
+    - { id: c, text: { ko: "멤버십 항목에 그룹 이름을 복사해 두고 GSI 프로젝션에 넣는다. 그룹 이름이 바뀌면 멤버십 항목들도 고친다" } }
+    - { id: d, text: { ko: "그룹 항목 하나에 멤버 사용자 ID 리스트 속성을 두고 가입할 때마다 덧붙인다" } }
+    - { id: e, text: { ko: "사용자 테이블과 그룹 테이블을 따로 두고, DynamoDB에서 두 테이블을 JOIN해 목록을 만든다" } }
+    - { id: f, text: { ko: "사용자의 그룹 목록은 테이블 Scan에 SK = `USER#u` 필터를 걸어 찾는다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 인접 목록 패턴이다. 그룹이 파티션이고 멤버십이 간선 항목이라, PK=`GROUP#g`로 Query하면 그룹 정보와 멤버 목록이 함께 온다. 멤버가 많아도 항목이 나뉘어 있어 페이지로 읽을 수 있다."
+      - "b: PK와 SK를 뒤집은 GSI(역 인덱스)로 반대 방향인 사용자 → 그룹을 Query 한 번에 읽는다. 사용자 ID는 값이 많아 GSI 쓰기도 고르게 퍼진다."
+      - "c: (2)는 그룹 이름이 필요하다. 거의 바뀌지 않는 값이라 간선 항목에 비정규화하면 그룹 항목을 다시 읽지 않는다. 대가로 이름 변경 시 멤버십 항목을 모두 고쳐야 하며, 이를 설계에 적어 둔다."
+      - "d는 감점: 큰 그룹은 리스트가 {{fact:dynamodb.item.max-size}}를 넘고, 덧붙일 때마다 항목 전체 크기만큼 쓰기 단위를 쓴다. 리스트로는 사용자 → 그룹 방향을 찾을 수도 없다."
+      - "e는 감점: DynamoDB에는 JOIN이 없다. 테이블을 나누면 따로 읽어 앱에서 합쳐야 한다."
+      - "f는 감점: Scan은 테이블 전체를 읽는다. 자주 쓰는 패턴은 GSI로 받는다."
+  facts: [dynamodb.item.max-size]

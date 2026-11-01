@@ -1,0 +1,93 @@
+# 장: DynamoDB Accelerator (DAX)
+chapter:
+  id: dynamodb/dax
+  title:
+    ko: "DAX (DynamoDB Accelerator)"
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html
+  topics:
+    - id: dynamodb/dax/what
+      title:
+        ko: "DAX는 무엇을 줄여 주는가"
+      exam_tags:
+        - DVA-C03#4.3
+        - SAP-C03#1.5
+        - SAA-C03#3.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.client.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/evaluate-dax-suitability.html
+    - id: dynamodb/dax/caches
+      title:
+        ko: "항목 캐시, 쿼리 캐시, 라이트-스루"
+      exam_tags:
+        - DVA-C03#4.3
+        - SAP-C03#1.5
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.consistency.html
+    - id: dynamodb/dax/consistency
+      title:
+        ko: "오래된 값을 읽는 경우와 DAX를 쓰지 않을 때"
+      exam_tags:
+        - DVA-C03#4.3
+        - SAP-C03#1.5
+        - SAA-C03#3.3
+      recommended:
+        - claim:
+            ko: "DAX를 쓰는 애플리케이션은 최종적 일관된 데이터를 견디도록 설계한다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.consistency.html
+          checked: 2026-11-02
+        - claim:
+            ko: "강력한 일관된 읽기와 TransactGetItems는 DAX를 거치지 않고 DynamoDB로 보낸다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/evaluate-dax-suitability.html
+          checked: 2026-11-02
+        - claim:
+            ko: "대량 쓰기는 DAX를 우회해 DynamoDB에 직접 쓴다(라이트 어라운드)"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/evaluate-dax-suitability.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.consistency.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/evaluate-dax-suitability.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html
+    - id: dynamodb/dax/cluster
+      title:
+        ko: "클러스터 구성과 크기 정하기"
+      exam_tags:
+        - SAP-C03#1.5
+        - SAA-C03#3.3
+      recommended:
+        - claim:
+            ko: "운영 환경에서는 노드 3개 이상을 각각 다른 가용 영역에 둔다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html
+          checked: 2026-11-02
+        - claim:
+            ko: "개별 노드가 아니라 클러스터 엔드포인트로 접속한다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html
+          checked: 2026-11-02
+        - claim:
+            ko: "유지 관리 기간을 사용량이 가장 적은 시간으로 잡는다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.concepts.cluster.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.sizing-guide.html
+    - id: dynamodb/dax/security
+      title:
+        ko: "DAX 접근 제어와 암호화"
+      exam_tags:
+        - DVA-C03#2.2
+        - SOA-C03#4.2
+      recommended:
+        - claim:
+            ko: "사용자별 격리가 필요하면 DAX 클러스터를 나누고 클러스터마다 서비스 역할 권한을 좁힌다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.access-control.html
+          checked: 2026-11-02
+        - claim:
+            ko: "클러스터 이름에 민감한 식별 정보를 넣지 않는다"
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.access-control.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.access-control.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAXEncryptionAtRest.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAXEncryptionInTransit.html

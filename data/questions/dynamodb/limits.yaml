@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.limits-item-size
+  type: quiz
+  chapter: dynamodb/limits
+  topic: dynamodb/limits/items
+  question: { ko: "LSI가 없는 테이블에서 항목 크기 한도({{fact:dynamodb.item.max-size}})를 계산할 때 들어가는 것은?" }
+  choices:
+    - { id: a, text: { ko: "속성 값의 길이만 들어간다" } }
+    - { id: b, text: { ko: "속성 이름과 속성 값의 길이(UTF-8 바이트)가 모두 들어간다" } }
+    - { id: c, text: { ko: "List·Map 안의 값은 들어가지 않는다" } }
+    - { id: d, text: { ko: "파티션 키와 정렬 키는 들어가지 않는다" } }
+  answer: b
+  explanation: { ko: "항목 크기에는 속성 이름의 바이트 길이와 값의 바이트 길이가 모두 들어간다(a는 틀림). List·Map·Set은 값 수에 따로 한도가 없는 대신 항목 크기 안에 들어야 한다(c는 틀림). 키 속성도 속성이므로 크기에 들어간다(d는 틀림)." }
+  facts: [dynamodb.item.max-size]
+
+- id: dynamodb.q.limits-account-quota
+  type: quiz
+  chapter: dynamodb/limits
+  topic: dynamodb/limits/throughput
+  question: { ko: "한 계정의 같은 리전에 온디맨드 테이블 여러 개가 있다. 리전별 계정 처리량 기본 한도({{fact:dynamodb.throughput.account-default}})에 대한 설명으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "온디맨드 테이블들이 실제로 쓴 양의 합이 이 한도를 넘으면 모두 스로틀된다" } }
+    - { id: b, text: { ko: "이 한도는 프로비저닝된 모드 테이블·GSI의 프로비저닝 합계에만 걸린다. 온디맨드 테이블에는 테이블당 한도만 걸린다" } }
+    - { id: c, text: { ko: "이 한도는 최대치라서 늘릴 수 없다" } }
+    - { id: d, text: { ko: "온디맨드 테이블에는 처리량 한도가 하나도 없다" } }
+  answer: b
+  explanation: { ko: "계정 처리량 한도는 프로비저닝된 모드에만 적용된다(a는 틀림). 온디맨드 테이블과 각 GSI에는 테이블당 한도({{fact:dynamodb.throughput.table-default}})가 걸리므로 한도가 없는 것도 아니다(d는 틀림). 표의 값은 기본값이고 증가를 요청할 수 있다(c는 틀림)." }
+  facts: [dynamodb.throughput.account-default, dynamodb.throughput.table-default]
+
+- id: dynamodb.q.limits-batch-vs-txn
+  type: quiz
+  chapter: dynamodb/limits
+  topic: dynamodb/limits/api
+  question: { ko: "주문 하나를 확정할 때 서로 다른 항목 {{raw:60개}}를 함께 써야 한다. 일부만 써지면 안 되고, 전체 데이터는 {{raw:1 MB}}쯤이다. 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "`BatchWriteItem` 한 번으로 보낸다" } }
+    - { id: b, text: { ko: "`BatchWriteItem`을 여러 번으로 나눠 보내고 `UnprocessedItems`를 재시도한다" } }
+    - { id: c, text: { ko: "`TransactWriteItems` 한 번으로 보낸다" } }
+    - { id: d, text: { ko: "항목 하나로 합쳐 `PutItem` 한 번으로 쓴다" } }
+  answer: c
+  explanation: { ko: "트랜잭션은 서로 다른 항목 {{fact:dynamodb.txn.max-items}}, 데이터 {{fact:dynamodb.txn.max-size}}까지 한꺼번에 성공하거나 실패한다. `BatchWriteItem`은 한 번에 {{fact:dynamodb.batch-write.max-requests}}까지만 담고(a는 틀림), 원자적이지 않아 일부만 써질 수 있다(b는 틀림). 하나로 합치면 항목 크기 한도 {{fact:dynamodb.item.max-size}}를 넘는다(d는 틀림)." }
+  facts: [dynamodb.txn.max-items, dynamodb.txn.max-size, dynamodb.batch-write.max-requests, dynamodb.item.max-size]

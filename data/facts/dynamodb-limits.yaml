@@ -1,0 +1,171 @@
+# DynamoDB 한도 장 전용 수치 (2026-11-02 대조). 이미 있는 한도는 dynamodb-core.yaml 등에서 재사용한다.
+
+- id: dynamodb.throughput.account-default
+  value: 80000
+  unit: units/s
+  display: { ko: "초당 80,000 단위 (읽기·쓰기 각각)" }
+  label: { ko: "리전별 계정 처리량 기본 한도 (프로비저닝된 모드 테이블·GSI 합계에만 적용)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.throughput.provisioned-min
+  value: 1
+  unit: units/s
+  display: { ko: "읽기 1단위, 쓰기 1단위" }
+  label: { ko: "프로비저닝된 테이블·GSI에 둘 수 있는 최소 처리량" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.capacity.decrease.available
+  value: 4
+  unit: count
+  display: { ko: "4회" }
+  label: { ko: "프로비저닝 용량 감소: 하루(UTC)를 시작할 때 쓸 수 있고, 한 시간에 1회씩 다시 채워지는 감소 횟수의 최대치" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.capacity.decrease.daily-max
+  value: 27
+  unit: count
+  display: { ko: "27회" }
+  label: { ko: "테이블(또는 GSI) 하나의 프로비저닝 용량을 하루(UTC) 동안 줄일 수 있는 최대 횟수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.reserved.account-max
+  value: 1000000
+  unit: units
+  display: { ko: "1,000,000 단위" }
+  label: { ko: "계정이 가질 수 있는 활성 예약 용량(RCU+WCU 합계) 기본 한도" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.tables.per-region.default
+  value: 2500
+  unit: count
+  display: { ko: "2,500개" }
+  label: { ko: "계정·리전별 테이블 수 초기 한도" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.tables.per-region.max
+  value: 10000
+  unit: count
+  display: { ko: "10,000개" }
+  label: { ko: "AWS 계정 팀과 협의해 늘릴 수 있는 계정·리전별 테이블 수 최대치" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.key.min-length
+  value: 1
+  unit: byte
+  display: { ko: "1바이트" }
+  label: { ko: "파티션 키·정렬 키 값의 최소 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.attribute.name.max-length
+  value: 65536
+  unit: byte
+  display: { ko: "64 KB" }
+  label: { ko: "속성 이름의 일반 최대 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.attribute.name.index-key.max-length
+  value: 255
+  unit: byte
+  display: { ko: "255바이트" }
+  label: { ko: "보조 인덱스 키 속성 이름과 LSI에 INCLUDE로 투영한 속성 이름의 최대 길이 (UTF-8)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.index.projected-attributes.max
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "테이블의 모든 LSI·GSI에 INCLUDE로 직접 지정해 투영하는 속성 수 합계 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.expression.placeholder.max-length
+  value: 255
+  unit: byte
+  display: { ko: "255바이트" }
+  label: { ko: "식 속성 이름(#name)·식 속성 값(:val) 하나의 최대 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.expression.substitution.max-total
+  value: 2097152
+  unit: byte
+  display: { ko: "2 MB" }
+  label: { ko: "식 하나의 ExpressionAttributeNames·ExpressionAttributeValues 길이 합 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.expression.operators.max
+  value: 300
+  unit: count
+  display: { ko: "300개" }
+  label: { ko: "식 하나에 쓸 수 있는 연산자·함수 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.expression.in-operands.max
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "IN 비교 연산자에 넣을 수 있는 피연산자 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.control-plane.concurrent.max
+  value: 500
+  unit: count
+  display: { ko: "500개" }
+  label: { ko: "CREATING·UPDATING·DELETING 상태에 동시에 있을 수 있는 테이블·인덱스 수 합계" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.control-plane.mutable-rps
+  value: 2500
+  unit: req/s
+  display: { ko: "초당 2,500건" }
+  label: { ko: "변경형 컨트롤 플레인 요청(CreateTable·UpdateTable·DeleteTable 등) 합계 속도 한도. 읽기 전용 요청(DescribeTable·ListTables 등)도 같은 값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Constraints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Constraints.html
+  checked: 2026-11-02
+  volatile: false
