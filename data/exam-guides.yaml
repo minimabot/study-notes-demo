@@ -1,0 +1,38 @@
+# 시험 가이드 항목. 태그는 이 ID로만 붙인다. 코드와 응시 언어도 바뀌므로 확인 날짜를 둔다.
+exams:
+  - code: SAA-C03
+    name: { ko: "솔루션스 아키텍트 – 어소시에이트" }
+    korean_exam: true
+    source: https://aws.amazon.com/certification/certified-solutions-architect-associate/
+    checked: 2026-11-01
+  - code: DVA-C03
+    name: { ko: "개발자 – 어소시에이트" }
+    korean_exam: true
+    source: https://aws.amazon.com/certification/certified-developer-associate/
+    checked: 2026-11-01
+  - code: SOA-C03
+    name: { ko: "CloudOps 엔지니어 – 어소시에이트" }
+    korean_exam: false
+    korean_note: { ko: "한국어 시험은 2026-11-19 이후 폐지" }
+    source: https://aws.amazon.com/certification/certified-cloudops-engineer-associate/
+    checked: 2026-11-01
+
+items:
+  - id: SAA-C03#2.1
+    exam: SAA-C03
+    task: "2.1"
+    text_en: "Design scalable and loosely coupled architectures"
+    source: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html
+    checked: 2026-11-01
+  - id: DVA-C03#1.1
+    exam: DVA-C03
+    task: "1.1"
+    text_en: "Develop code for applications that are hosted on AWS."
+    source: https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain1.html
+    checked: 2026-11-01
+  - id: DVA-C03#1.2
+    exam: DVA-C03
+    task: "1.2"
+    text_en: "Develop code for AWS Lambda."
+    source: https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain1.html
+    checked: 2026-11-01
