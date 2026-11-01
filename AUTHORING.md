@@ -72,3 +72,9 @@ chapter:
 - 여러 서비스를 비교하거나 묶는 내용은 `common` 권(`data/topics/common/`, `content/ko/common/`, `data/questions/common/`)에 쓴다. 장 ID는 `common/<이름>`.
 - SQS 밖 서비스의 수치는 서비스별 파일에 둔다: `data/facts/sns.yaml`, `eventbridge.yaml`, `kinesis.yaml` 등. ID 접두어는 서비스 이름(`sns.`, `eventbridge.`, `kinesis.`).
 - 요금은 리전마다 다르고 자주 바뀐다. 요금 사실은 기준 리전을 label에 쓰고 `volatile: true`로 둔다.
+
+## 9. 다른 권(DynamoDB 등)
+- 권마다 같은 규칙이다. 경로의 `sqs`를 권 ID로 바꾼다: `content/ko/dynamodb/<장>.md`, `data/topics/dynamodb/<장>.yaml`, `data/questions/dynamodb/<장>.yaml`, 새 사실은 `data/facts/dynamodb-<장>.yaml`.
+- 권 공용 수치는 `data/facts/dynamodb-core.yaml`에 있다(고치지 않는다). 문서 사본은 `../sources/dynamodb/*.md`.
+- 문항 ID: `dynamodb.q.<장>-<이름>`, `dynamodb.d.<장>-<이름>`.
+- 다른 권의 장으로 링크할 때도 `{{ch:sqs/integrations}}`처럼 쓴다.
