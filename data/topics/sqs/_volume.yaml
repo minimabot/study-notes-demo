@@ -1,0 +1,25 @@
+# 권 정의와 장 순서. 장 구성의 근거: SQS 개발자 안내서 목차 (2026-11-01 확인)
+volume:
+  id: sqs
+  title: { ko: "Amazon SQS" }
+  structure_source: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html
+order:
+  - sqs/overview
+  - sqs/queue-types
+  - sqs/standard
+  - sqs/fifo
+  - sqs/polling
+  - sqs/visibility-timeout
+  - sqs/dlq
+  - sqs/delay-timers
+  - sqs/large-messages
+  - sqs/queue-config
+  - sqs/security
+  - sqs/integrations
+  - sqs/best-practices
+  - sqs/monitoring
+  - sqs/fair-queues
+  - sqs/other-features
+  - sqs/api-sdk
+  - sqs/cost
+  - sqs/labs

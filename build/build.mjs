@@ -39,18 +39,28 @@ const guides = readYaml('data/exam-guides.yaml');
 const exams = new Map(guides.exams.map((e) => [e.code, e]));
 const examItems = new Map(guides.items.map((i) => [i.id, i]));
 
-const volumes = [];
+const volumes = new Map();
 const chapters = new Map();
 const topics = new Map();
+const chapterFiles = [];
 for (const f of listFiles('data/topics', '.yaml')) {
-  const v = readYaml(f);
-  volumes.push(v);
-  for (const ch of v.chapters) {
-    ch._volume = v.volume;
-    chapters.set(ch.id, ch);
-    for (const t of ch.topics) { t._chapter = ch.id; topics.set(t.id, t); }
+  const y = readYaml(f);
+  if (y.volume) volumes.set(y.volume.id, { ...y.volume, order: y.order || [] });
+  if (y.chapter) chapterFiles.push({ f, ch: y.chapter });
+  for (const ch of y.chapters || []) chapterFiles.push({ f, ch });
+}
+for (const { f, ch } of chapterFiles) {
+  const volId = ch.id.split('/')[0];
+  if (!volumes.has(volId)) { err(`[장] ${f}: 권 ${volId}의 _volume.yaml 없음`); continue; }
+  if (chapters.has(ch.id)) err(`[장] ID 중복: ${ch.id} (${f})`);
+  ch._volume = volumes.get(volId);
+  chapters.set(ch.id, ch);
+  for (const t of ch.topics || []) {
+    if (topics.has(t.id)) err(`[주제] ID 중복: ${t.id} (${f})`);
+    t._chapter = ch.id; topics.set(t.id, t);
   }
 }
+for (const v of volumes.values()) for (const id of v.order) if (!chapters.has(id)) warn(`[권 목차] ${v.id}: ${id} 장 정의 없음 (준비 중으로 표시)`);
 const questions = [];
 for (const f of listFiles('data/questions', '.yaml')) for (const q of readYaml(f) || []) questions.push({ ...q, _file: f });
 
@@ -97,9 +107,12 @@ for (const id of examItems.keys()) if (!linked.has(id)) warn(`[시험 범위] ${
 
 // 수치 직접 쓰기 검사: {{fact:..}}와 {{raw:..}}, 코드는 제외하고 "숫자+단위"가 남아 있으면 실패
 const UNIT_RE = /\d[\d,.]*\s*(초|분|시간|일|배|개|건|KiB|MiB|GiB|KB|MB|GB|TPS|%)/g;
-const REF_RE = /\{\{(fact|raw):([^}]+)\}\}/g;
+const REF_RE = /\{\{(fact|raw|ch):([^}]+)\}\}/g;
 function checkText(text, where) {
-  for (const m of text.matchAll(REF_RE)) if (m[1] === 'fact' && !facts.has(m[2])) err(`[참조] ${where}: 없는 사실 ID ${m[2]}`);
+  for (const m of text.matchAll(REF_RE)) {
+    if (m[1] === 'fact' && !facts.has(m[2])) err(`[참조] ${where}: 없는 사실 ID ${m[2]}`);
+    if (m[1] === 'ch' && !chapters.has(m[2])) err(`[참조] ${where}: 없는 장 ID ${m[2]}`);
+  }
   const stripped = text.replace(/```[\s\S]*?```/g, '').replace(/`[^`]*`/g, '').replace(REF_RE, '');
   for (const m of stripped.matchAll(UNIT_RE)) err(`[수치 직접 쓰기] ${where}: "${m[0]}" → 사실 항목으로 옮기고 {{fact:ID}}로 참조하세요 (의도한 예시 값이면 {{raw:..}})`);
 }
@@ -130,11 +143,23 @@ for (const q of questions) {
   }
 }
 
+for (const [id, t] of topics) if (t.exam_unknown && (t.exam_tags || []).length) warn(`[주제] ${id}: 시험 반영 여부 불명(exam_unknown)인데 시험 태그가 붙어 있음`);
+for (const p of pages) {
+  if (!questions.some((q) => q.chapter === p.chapterId && q.type === 'quiz')) err(`[문항] ${p.chapterId}: 퀴즈가 1문항도 없음`);
+  if (!/^@quiz\s*$/m.test(p.body)) err(`[본문] ${p.file}: @quiz 자리 없음`);
+}
+for (const ch of chapters.values()) if (!pages.some((p) => p.chapterId === ch.id)) warn(`[장] ${ch.id}: 본문 없음 (준비 중)`);
+
 if (errors.length) {
   console.error(`\n빌드 실패: 점검 오류 ${errors.length}건`);
   errors.forEach((e) => console.error('  ✗ ' + e));
   warnings.forEach((w) => console.error('  ! ' + w));
   process.exit(1);
+}
+if (process.argv.includes('--check')) {
+  console.log(`점검 통과 (출력 생략): 사실 ${facts.size}개, 문항 ${questions.length}개, 본문 ${pages.length}개`);
+  warnings.filter((w) => !w.startsWith('[권 목차]') && !w.startsWith('[장]')).forEach((w) => console.log('  ! ' + w));
+  process.exit(0);
 }
 
 // ───────────────────────── 3. 치환 ─────────────────────────
@@ -146,6 +171,7 @@ function makeFootnotes() {
   const order = [];
   const sub = (text, lang) => text.replace(REF_RE, (_, kind, id) => {
     if (kind === 'raw') return esc(id);
+    if (kind === 'ch') { const c = chapters.get(id); return `<a class="chlink" href="../../${esc(id)}/">${esc(c.title[lang])}</a>`; }
     const fct = facts.get(id);
     let n = order.indexOf(id) + 1;
     if (!n) { order.push(id); n = order.length; }
@@ -229,7 +255,12 @@ function htmlPage({ lang, title, body, inline, depth, sims, data }) {
 function chapterBody(r, { inline, depth }) {
   const { ch, T } = r; const up = '../'.repeat(depth);
   const toc = r.tocItems.map((t) => `<li><a href="#${t.id}">${esc(t.title)}</a></li>`).join('');
-  const homeLink = inline ? '' : `<a class="home" href="${up}ko/">${esc(ch._volume.title.ko)}</a>`;
+  const volId = ch._volume.id;
+  const homeLink = inline ? '' : `<a class="home" href="${up}ko/${volId}/">← ${esc(ch._volume.title.ko)} ${esc(T.vol_toc)}</a>`;
+  const ready = ch._volume.order.filter((id) => pages.some((p) => p.chapterId === id));
+  const i = ready.indexOf(ch.id);
+  const link = (id, label) => { const c = chapters.get(id); return `<a href="${up}ko/${id}/"><small>${label}</small>${esc(c.title.ko)}</a>`; };
+  const pager = inline ? '' : `<nav class="pager">${i > 0 ? link(ready[i - 1], T.prev) : '<span></span>'}${i >= 0 && i < ready.length - 1 ? link(ready[i + 1], T.next) : '<span></span>'}</nav>`;
   return `
 <header class="topbar"><button class="tocbtn" aria-expanded="false" aria-controls="toc">☰ ${esc(T.toc)}</button><span class="brand">${esc(T.site_name)}</span></header>
 <div class="shell">
@@ -241,8 +272,13 @@ function chapterBody(r, { inline, depth }) {
 <details class="legend"><summary>${esc(T.legend_title)}</summary><ul><li><span class="tag exam">SAA-C03 · Task 2.1</span> ${esc(T.legend_exam)}</li><li><span class="tag rec">${esc(T.rec)}</span> ${esc(T.legend_rec)}</li><li>${esc(T.legend_none)}</li></ul></details>
 ${r.segs}
 <section class="topic" id="sources"><h2>${esc(T.sources)}</h2><p class="muted">${esc(T.sources_note)}</p><ol class="notes">${r.notes}</ol></section>
-<footer><p>${esc(T.disclaimer)}</p><p><a href="#" aria-disabled="true">${esc(T.report)}</a> · ${esc(T.built)} ${TODAY.toISOString().slice(0, 10)}</p></footer>
+${pager}
+<footer><p>${esc(T.disclaimer)}</p><p><a href="${esc(T.report_url)}" target="_blank" rel="noopener">${esc(T.report)}</a> · ${esc(T.built)} ${TODAY.toISOString().slice(0, 10)}</p></footer>
 </main></div>`;
+}
+
+function simplePage(lang, T, title, inner, depth, crumbs = '') {
+  return htmlPage({ lang, title: `${title} · ${T.site_name}`, inline: false, depth, sims: [], body: `<main class="index">${crumbs}<h1>${esc(title)}</h1>${inner}<footer><p>${esc(T.disclaimer)}</p><p><a href="${esc(T.report_url)}" target="_blank" rel="noopener">${esc(T.report)}</a> · ${esc(T.built)} ${TODAY.toISOString().slice(0, 10)}</p></footer></main>` });
 }
 
 fs.rmSync(DIST, { recursive: true, force: true });
@@ -262,8 +298,42 @@ for (const page of pages) {
 }
 for (const lang of LANGS_PUBLISHED) {
   const T = i18n[lang];
-  const items = out.filter((o) => o.lang === lang).map((o) => `<li><a href="${o.vol}/${o.chap}/">${esc(o.title)}</a> <span class="track">${esc(o.track)}</span></li>`).join('');
-  write(`${lang}/index.html`, htmlPage({ lang, title: T.site_name, inline: false, depth: 1, sims: [], body: `<main class="index"><h1>${esc(T.site_name)}</h1><p>${esc(T.site_tagline)}</p>${volumes.map((v) => `<h2>${esc(v.volume.title[lang])}</h2>`).join('')}<ol>${items}</ol><footer><p>${esc(T.disclaimer)}</p></footer></main>` }));
+  const vols = [...volumes.values()];
+  write(`${lang}/index.html`, simplePage(lang, T, T.site_name, `<p>${esc(T.site_tagline)}</p><ul class="vlist">${vols.map((v) => `<li><a href="${v.id}/">${esc(v.title[lang])}</a> <span class="muted">${out.filter((o) => o.vol === v.id).length} / ${v.order.length}</span></li>`).join('')}</ul>`, 1));
+  for (const v of vols) {
+    const crumbs = `<p class="crumb"><a href="../">${esc(T.site_name)}</a></p>`;
+    const rows = v.order.map((id, n) => {
+      const c = chapters.get(id); const done = out.some((o) => `${o.vol}/${o.chap}` === id);
+      const title = c ? c.title[lang] : id;
+      const tags = c ? [...new Set(c.topics.flatMap((t) => t.exam_tags || []).map((x) => examItems.get(x).exam))].map((e) => `<span class="tag exam">${esc(e)}</span>`).join('') : '';
+      const track = c ? `<span class="track">${esc(T['track_' + c.track])}</span>` : '';
+      return `<li class="${done ? '' : 'todo'}"><span class="n">${n + 1}</span><div>${done ? `<a href="../${id}/">${esc(title)}</a>` : `${esc(title)} <em>${esc(T.coming)}</em>`} ${track}<div class="tags">${tags}</div></div></li>`;
+    }).join('');
+    const extras = `<p class="extras"><a href="numbers/">${esc(T.numbers_title)}</a> · <a href="coverage/">${esc(T.coverage_title)}</a> · <a href="changes/">${esc(T.changes_title)}</a></p>`;
+    write(`${lang}/${v.id}/index.html`, simplePage(lang, T, v.title[lang], `${extras}<details class="legend"><summary>${esc(T.legend_title)}</summary><ul><li>${esc(T.legend_exam)}</li><li>${esc(T.legend_rec)}</li><li>${esc(T.legend_none)}</li></ul></details><ol class="chlist">${rows}</ol>`, 2, crumbs));
+
+    // 숫자 모음: 사실 항목 전체 (치트시트 대체)
+    const volFacts = [...facts.values()].filter((x) => x.id.startsWith(v.id + '.') || (x.used_by || []).includes(v.id) || pages.some((p) => p.chapterId.startsWith(v.id + '/') && p.body.includes(`{{fact:${x.id}}}`)));
+    const fRows = volFacts.map((x) => `<tr><td>${esc(x.label[lang])}</td><td><b>${esc(x.display[lang])}</b>${x.volatile ? ' <span class="volatile">자주 바뀜</span>' : ''}</td><td><a href="${esc(x.source_en)}" target="_blank" rel="noopener">${esc(T.sources)}</a> · ${esc(x.checked)}</td></tr>`).join('');
+    const sub = `<p class="crumb"><a href="../">${esc(v.title[lang])}</a></p>`;
+    write(`${lang}/${v.id}/numbers/index.html`, simplePage(lang, T, `${v.title[lang]} ${T.numbers_title}`, `<p class="muted">${esc(T.sources_note)}</p><div class="tablewrap"><table class="ftable"><thead><tr><th>${esc(T.col_item)}</th><th>${esc(T.col_value)}</th><th>${esc(T.sources)}</th></tr></thead><tbody>${fRows}</tbody></table></div>`, 3, sub));
+
+    // 시험 범위 대응표
+    const cov = [...exams.values()].map((e) => {
+      const items = [...examItems.values()].filter((it) => it.exam === e.code).map((it) => {
+        const ts = [...topics.values()].filter((t) => (t.exam_tags || []).includes(it.id) && t._chapter.startsWith(v.id + '/'));
+        const list = ts.map((t) => `<a href="../../${t._chapter}/#${slug(t.id)}">${esc(t.title[lang])}</a>`).join(', ');
+        return `<li><b>Task ${esc(it.task)}</b> <span class="muted">${esc(it.text_en)}</span><br>${list || `<span class="volatile">${esc(T.coverage_none)}</span>`}</li>`;
+      }).join('');
+      return `<h2>${esc(e.code)} ${esc(e.name[lang])}${e.korean_exam ? '' : ` <small class="volatile">${esc(e.korean_note?.[lang] || T.legend_ko_off)}</small>`}</h2><ul class="cov">${items}</ul>`;
+    }).join('');
+    write(`${lang}/${v.id}/coverage/index.html`, simplePage(lang, T, `${v.title[lang]} ${T.coverage_title}`, `<p class="muted">${esc(T.coverage_note)}</p>${cov}`, 3, sub));
+
+    // 변경 이력: 사실 항목의 history
+    const hist = volFacts.flatMap((x) => (x.history || []).map((h) => ({ ...h, x }))).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    const hRows = hist.map((h) => `<li><b>${esc(h.date)}</b> ${esc(h.x.label[lang])}: ${esc(h.from)} → ${esc(h.to)} <a href="${esc(h.source || h.x.source_en)}" target="_blank" rel="noopener">${esc(T.sources)}</a></li>`).join('') || `<li class="muted">-</li>`;
+    write(`${lang}/${v.id}/changes/index.html`, simplePage(lang, T, `${v.title[lang]} ${T.changes_title}`, `<p class="muted">${esc(T.changes_note)}</p><ul class="cov">${hRows}</ul>`, 3, sub));
+  }
 }
 
 console.log(`빌드 성공: 페이지 ${out.length}개, 사실 ${facts.size}개, 문항 ${questions.length}개`);

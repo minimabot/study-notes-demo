@@ -1,0 +1,41 @@
+# SQS 권이 참조하는 Lambda 쪽 사실. Lambda 권을 만들 때 재사용한다.
+
+- id: lambda.sqs.vt-multiplier
+  value: 6
+  unit: x
+  display: { ko: "6배" }
+  label: { ko: "Lambda 연동 시 큐 가시성 제한 시간 권장 배수 (함수 제한 시간 기준)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: lambda.timeout.max
+  value: 900
+  unit: s
+  display: { ko: "900초(15분)" }
+  label: { ko: "Lambda 함수 제한 시간 최댓값 (Managed Instances 제외)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: lambda.sqs.batch.max-standard
+  value: 10000
+  unit: count
+  display: { ko: "10,000개" }
+  label: { ko: "Lambda 이벤트 소스 매핑 배치 크기 최댓값 (Standard 큐)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: lambda.sqs.batch.max-fifo
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "Lambda 이벤트 소스 매핑 배치 크기 최댓값 (FIFO 큐)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-sqs-configure.html
+  checked: 2026-11-01
+  volatile: true

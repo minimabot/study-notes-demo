@@ -1,38 +1,61 @@
-# 시험 가이드 항목. 태그는 이 ID로만 붙인다. 코드와 응시 언어도 바뀌므로 확인 날짜를 둔다.
+# 시험 가이드 항목. 태그는 이 ID로만 붙인다. 코드·응시 언어·과제 문장도 바뀌므로 확인 날짜를 둔다.
+# 각 시험의 출제 범위 서비스 목록(in_scope)에 Amazon SQS가 들어 있음을 2026-11-01에 확인했다.
 exams:
   - code: SAA-C03
     name: { ko: "솔루션스 아키텍트 – 어소시에이트" }
     korean_exam: true
     source: https://aws.amazon.com/certification/certified-solutions-architect-associate/
+    in_scope: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/saa-03-in-scope-services.html
     checked: 2026-11-01
   - code: DVA-C03
     name: { ko: "개발자 – 어소시에이트" }
     korean_exam: true
     source: https://aws.amazon.com/certification/certified-developer-associate/
+    in_scope: https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/dva-03-in-scope-services.html
     checked: 2026-11-01
   - code: SOA-C03
     name: { ko: "CloudOps 엔지니어 – 어소시에이트" }
     korean_exam: false
     korean_note: { ko: "한국어 시험은 2026-11-19 이후 폐지" }
     source: https://aws.amazon.com/certification/certified-cloudops-engineer-associate/
+    in_scope: https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/soa-03-in-scope-services.html
+    checked: 2026-11-01
+  - code: SAP-C03
+    name: { ko: "솔루션스 아키텍트 – 프로페셔널" }
+    korean_exam: true
+    source: https://aws.amazon.com/certification/certified-solutions-architect-professional/
+    in_scope: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-03/sap-03-in-scope-services.html
+    checked: 2026-11-01
+  - code: DOP-C02
+    name: { ko: "DevOps 엔지니어 – 프로페셔널" }
+    korean_exam: false
+    korean_note: { ko: "한국어 시험은 2026-12-31 이후 폐지" }
+    source: https://aws.amazon.com/certification/certified-devops-engineer-professional/
+    in_scope: https://docs.aws.amazon.com/aws-certification/latest/devops-engineer-professional-02/dop-02-in-scope-services.html
     checked: 2026-11-01
 
 items:
-  - id: SAA-C03#2.1
-    exam: SAA-C03
-    task: "2.1"
-    text_en: "Design scalable and loosely coupled architectures"
-    source: https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html
-    checked: 2026-11-01
-  - id: DVA-C03#1.1
-    exam: DVA-C03
-    task: "1.1"
-    text_en: "Develop code for applications that are hosted on AWS."
-    source: https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain1.html
-    checked: 2026-11-01
-  - id: DVA-C03#1.2
-    exam: DVA-C03
-    task: "1.2"
-    text_en: "Develop code for AWS Lambda."
-    source: https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain1.html
-    checked: 2026-11-01
+  # SAA-C03
+  - { id: "SAA-C03#1.3", exam: SAA-C03, task: "1.3", text_en: "Determine appropriate data security controls", source: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain1.html", checked: 2026-11-01 }
+  - { id: "SAA-C03#2.1", exam: SAA-C03, task: "2.1", text_en: "Design scalable and loosely coupled architectures", source: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html", checked: 2026-11-01 }
+  - { id: "SAA-C03#2.2", exam: SAA-C03, task: "2.2", text_en: "Design highly available and/or fault-tolerant architectures", source: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain2.html", checked: 2026-11-01 }
+  - { id: "SAA-C03#3.2", exam: SAA-C03, task: "3.2", text_en: "Design high-performing and elastic compute solutions", source: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain3.html", checked: 2026-11-01 }
+  - { id: "SAA-C03#4.2", exam: SAA-C03, task: "4.2", text_en: "Design cost-optimized compute solutions", source: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-associate-03/solutions-architect-associate-03-domain4.html", checked: 2026-11-01 }
+  # DVA-C03
+  - { id: "DVA-C03#1.1", exam: DVA-C03, task: "1.1", text_en: "Develop code for applications that are hosted on AWS.", source: "https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain1.html", checked: 2026-11-01 }
+  - { id: "DVA-C03#1.2", exam: DVA-C03, task: "1.2", text_en: "Develop code for AWS Lambda.", source: "https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain1.html", checked: 2026-11-01 }
+  - { id: "DVA-C03#2.2", exam: DVA-C03, task: "2.2", text_en: "Implement encryption and manage sensitive data by using AWS services.", source: "https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain2.html", checked: 2026-11-01 }
+  - { id: "DVA-C03#4.3", exam: DVA-C03, task: "4.3", text_en: "Optimize applications by using AWS services and features.", source: "https://docs.aws.amazon.com/aws-certification/latest/developer-associate-03/developer-associate-03-domain4.html", checked: 2026-11-01 }
+  # SOA-C03
+  - { id: "SOA-C03#1.1", exam: SOA-C03, task: "1.1", text_en: "Implement metrics, alarms, and filters by using AWS monitoring and logging services.", source: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain1.html", checked: 2026-11-01 }
+  - { id: "SOA-C03#1.2", exam: SOA-C03, task: "1.2", text_en: "Identify and remediate issues by using monitoring and availability metrics.", source: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain1.html", checked: 2026-11-01 }
+  - { id: "SOA-C03#2.2", exam: SOA-C03, task: "2.2", text_en: "Implement highly available and resilient environments.", source: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain2.html", checked: 2026-11-01 }
+  - { id: "SOA-C03#4.2", exam: SOA-C03, task: "4.2", text_en: "Implement strategies to protect data and infrastructure.", source: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/sysops-administrator-associate-03-domain4.html", checked: 2026-11-01 }
+  # SAP-C03
+  - { id: "SAP-C03#1.1", exam: SAP-C03, task: "1.1", text_en: "Design architectures built for the cloud.", source: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-03/solutions-architect-professional-03-domain1.html", checked: 2026-11-01 }
+  - { id: "SAP-C03#5.4", exam: SAP-C03, task: "5.4", text_en: "Design operational automation and resilient systems.", source: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-03/solutions-architect-professional-03-domain5.html", checked: 2026-11-01 }
+  # DOP-C02
+  - { id: "DOP-C02#3.2", exam: DOP-C02, task: "3.2", text_en: "Implement solutions that are scalable to meet business requirements.", source: "https://docs.aws.amazon.com/aws-certification/latest/devops-engineer-professional-02/devops-engineer-professional-02-domain3.html", checked: 2026-11-01 }
+  - { id: "DOP-C02#4.2", exam: DOP-C02, task: "4.2", text_en: "Audit, monitor, and analyze logs and metrics to detect issues.", source: "https://docs.aws.amazon.com/aws-certification/latest/devops-engineer-professional-02/devops-engineer-professional-02-domain4.html", checked: 2026-11-01 }
+  - { id: "DOP-C02#5.1", exam: DOP-C02, task: "5.1", text_en: "Manage event sources to process, notify, and take action in response to events.", source: "https://docs.aws.amazon.com/aws-certification/latest/devops-engineer-professional-02/devops-engineer-professional-02-domain5.html", checked: 2026-11-01 }
+  - { id: "DOP-C02#5.3", exam: DOP-C02, task: "5.3", text_en: "Troubleshoot system and application failures.", source: "https://docs.aws.amazon.com/aws-certification/latest/devops-engineer-professional-02/devops-engineer-professional-02-domain5.html", checked: 2026-11-01 }

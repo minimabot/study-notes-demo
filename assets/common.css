@@ -117,3 +117,25 @@ button:focus-visible,a:focus-visible{outline:3px solid #F2A7C6;outline-offset:2p
   .topic td:first-child{font-weight:700}
 }
 .index{max-width:760px;margin:0 auto;padding:40px 20px}
+
+/* pages */
+.pager{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:40px 0 0}
+.pager a{display:block;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;text-decoration:none;color:var(--ink);font-weight:700;font-size:15px}
+.pager a:last-child{text-align:right}
+.pager small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.chlist{list-style:none;padding:0;margin:16px 0}
+.chlist li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.chlist .n{font-family:var(--mono);color:var(--muted);min-width:24px;padding-top:2px}
+.chlist a{font-weight:700;font-size:17px}
+.chlist li.todo{color:var(--muted)} .chlist em{font-style:normal;font-size:12px;border:1px solid var(--line2);border-radius:4px;padding:0 5px}
+.chlist .tags{margin:6px 0 0}
+.extras{font-size:14px}
+.vlist li{font-size:18px;margin:8px 0}
+.tablewrap{overflow-x:auto}
+.ftable{border-collapse:collapse;width:100%;font-size:14px;background:#fff}
+.ftable th,.ftable td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.ftable th{background:#ECE8DF}
+.cov{padding-left:18px}.cov li{margin:0 0 10px;font-size:14.5px}
+.index h2{margin-top:28px}
+.chlink{font-weight:700}
+@media (max-width:600px){.ftable thead{display:none}.ftable tr{display:block;border-bottom:1px solid var(--line);padding:8px 0}.ftable td{display:block;border:0;padding:2px 10px}}

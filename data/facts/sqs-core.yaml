@@ -1,0 +1,265 @@
+# 사실 항목 (단일 원본). 값·출처·확인 날짜는 언어와 무관하게 한 벌만 둔다.
+# 본문·퀴즈·시뮬레이터는 {{fact:ID}}로 참조한다. 이 파일 밖에 수치를 직접 쓰지 않는다.
+
+- id: sqs.visibility.default
+  value: 30
+  unit: s
+  display: { ko: "30초" }
+  label: { ko: "가시성 제한 시간 기본값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.visibility.min
+  value: 0
+  unit: s
+  display: { ko: "0초" }
+  label: { ko: "가시성 제한 시간 최솟값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.visibility.max
+  value: 43200
+  unit: s
+  display: { ko: "12시간" }
+  label: { ko: "가시성 제한 시간 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.visibility.max-from-first-receive
+  value: 43200
+  unit: s
+  display: { ko: "첫 수신 시점부터 12시간" }
+  label: { ko: "연장해도 넘을 수 없는 한도 (연장해도 초기화되지 않음)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.visibility.initial-suggestion
+  value: 120
+  unit: s
+  display: { ko: "2분" }
+  label: { ko: "처리 시간을 모를 때 AWS가 예로 든 시작값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.inflight.standard.max
+  value: 120000
+  unit: count
+  display: { ko: "약 120,000개" }
+  label: { ko: "Standard 큐의 처리 중(in-flight) 메시지 한도" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: true
+
+# ── 여러 장이 함께 쓰는 핵심 한도 (출처: SQS 한도 페이지들, 2026-11-01 대조) ──
+- id: sqs.message.max-size
+  value: 1048576
+  unit: byte
+  display: { ko: "1 MiB" }
+  label: { ko: "메시지 최대 크기" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: true
+  history:
+    - { date: "2025-08-04", from: "256 KiB", to: "1 MiB", source: "https://aws.amazon.com/about-aws/whats-new/2025/08/amazon-sqs-max-payload-size-1mib/" }
+
+- id: sqs.message.min-size
+  value: 1
+  unit: byte
+  display: { ko: "1바이트" }
+  label: { ko: "메시지 최소 크기" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.retention.default
+  value: 345600
+  unit: s
+  display: { ko: "4일" }
+  label: { ko: "메시지 보관 기간 기본값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.retention.min
+  value: 60
+  unit: s
+  display: { ko: "60초(1분)" }
+  label: { ko: "메시지 보관 기간 최솟값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.retention.max
+  value: 1209600
+  unit: s
+  display: { ko: "14일" }
+  label: { ko: "메시지 보관 기간 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.delay.default
+  value: 0
+  unit: s
+  display: { ko: "0초" }
+  label: { ko: "지연(지연 큐·메시지 타이머) 기본값이자 최솟값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.delay.max
+  value: 900
+  unit: s
+  display: { ko: "15분" }
+  label: { ko: "지연(지연 큐·메시지 타이머) 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.longpoll.wait.max
+  value: 20
+  unit: s
+  display: { ko: "20초" }
+  label: { ko: "긴 폴링 대기 시간 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.batch.max-messages
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "배치 요청 하나에 담을 수 있는 메시지 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.message.attributes.max
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "메시지 하나에 붙일 수 있는 메시지 속성 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.inflight.fifo.max
+  value: 120000
+  unit: count
+  display: { ko: "120,000개" }
+  label: { ko: "FIFO 큐의 처리 중(in-flight) 메시지 한도" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-fifo.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-fifo.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.backlog.max
+  value: -1
+  unit: count
+  display: { ko: "무제한" }
+  label: { ko: "큐에 쌓아 둘 수 있는 메시지 수" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.queue-name.max-length
+  value: 80
+  unit: char
+  display: { ko: "80자" }
+  label: { ko: "큐 이름 최대 길이 (FIFO는 .fifo 접미사 포함)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-queues.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.fifo.dedup.interval
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "FIFO 중복 제거 간격" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-key-terms.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/FIFO-key-terms.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: sqs.fifo.tps.per-partition
+  value: 300
+  unit: tps
+  display: { ko: "초당 300건" }
+  label: { ko: "FIFO 큐(높은 처리량 모드 아님) 파티션당 API 작업별 처리량" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.fifo.batched.msgs-per-sec
+  value: 3000
+  unit: msg/s
+  display: { ko: "초당 메시지 3,000개" }
+  label: { ko: "FIFO 큐(높은 처리량 모드 아님)에서 배치를 쓸 때 처리량" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.fifo.ht.tps.us-east-1
+  value: 70000
+  unit: tps
+  display: { ko: "초당 70,000건" }
+  label: { ko: "높은 처리량 FIFO, 배치 없이 (버지니아 북부·오레곤·아일랜드)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.fifo.ht.tps.tokyo
+  value: 9000
+  unit: tps
+  display: { ko: "초당 9,000건" }
+  label: { ko: "높은 처리량 FIFO, 배치 없이 (도쿄·싱가포르·시드니·뭄바이·스페인)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.fifo.ht.tps.other
+  value: 2400
+  unit: tps
+  display: { ko: "초당 2,400건" }
+  label: { ko: "높은 처리량 FIFO, 배치 없이 (목록에 없는 리전. 서울 포함)" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-messages.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: sqs.policy.max-size
+  value: 8192
+  unit: byte
+  display: { ko: "8,192바이트" }
+  label: { ko: "큐 정책 최대 크기" }
+  source_en: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSSimpleQueueService/latest/SQSDeveloperGuide/quotas-policies.html
+  checked: 2026-11-01
+  volatile: false
