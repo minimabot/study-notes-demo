@@ -1,0 +1,90 @@
+# DynamoDB 백업·복원 장 전용 수치 (2026-11-02 대조). PITR 최대 기간(dynamodb.pitr.window.max)은 dynamodb-core.yaml에 있다.
+
+- id: dynamodb.pitr.window.min
+  value: 86400
+  unit: s
+  display: { ko: "1일" }
+  label: { ko: "PITR 복구 기간(RecoveryPeriodInDays)으로 정할 수 있는 최솟값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+  checked: 2026-11-02
+  volatile: false
+  history:
+    - { date: 2025-01-07, note: "복구 기간 설정 기능 추가. 그전에는 항상 최대 기간으로 고정. 문서 기록(DocumentHistory) 기준" }
+
+- id: dynamodb.pitr.latest-restorable-lag
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "PITR로 복원할 수 있는 가장 늦은 시점(LatestRestorableDateTime)이 현재 시각보다 앞서는 일반적인 간격" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.pitr.deleted-system-backup.retention
+  value: 3024000
+  unit: s
+  display: { ko: "35일" }
+  label: { ko: "PITR가 켜진 테이블을 삭제하면 자동으로 만드는 시스템 백업($DeletedTableBackup)의 무료 보관 기간" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.export.incremental.min-period
+  value: 900
+  unit: s
+  display: { ko: "15분" }
+  label: { ko: "S3 증분 내보내기 한 번이 다룰 수 있는 가장 짧은 기간" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-pitr-recovery-inplace-rollback.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-pitr-recovery-inplace-rollback.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.export.incremental.max-period
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "S3 증분 내보내기 한 번이 다룰 수 있는 가장 긴 기간" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-pitr-recovery-inplace-rollback.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-pitr-recovery-inplace-rollback.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.backup.aws-backup.min-frequency
+  value: 3600
+  unit: s
+  display: { ko: "1시간" }
+  label: { ko: "AWS Backup 백업 계획의 가장 짧은 일정 간격(매시간). DR 안내서가 제시하는 RPO도 이 값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamodbDisasterRecoveryStrategy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/DynamodbDisasterRecoveryStrategy.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.pitr.us-east-1
+  value: 0.20
+  unit: USD/GB-month
+  display: { ko: "GB-월당 0.20달러" }
+  label: { ko: "PITR 요금 (미국 동부(버지니아 북부), 테이블+LSI 크기 기준)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamodbDisasterRecoveryStrategy.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.backup.us-east-1
+  value: 0.10
+  unit: USD/GB-month
+  display: { ko: "GB-월당 0.10달러" }
+  label: { ko: "온디맨드 백업(DynamoDB·AWS Backup 웜 스토리지) 보관 요금 (미국 동부(버지니아 북부))" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamodbDisasterRecoveryStrategy.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.restore.us-east-1
+  value: 0.15
+  unit: USD/GB
+  display: { ko: "GB당 0.15달러" }
+  label: { ko: "백업·PITR에서 복원할 때 한 번 내는 요금 (미국 동부(버지니아 북부))" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamodbDisasterRecoveryStrategy.html
+  checked: 2026-11-02
+  volatile: true

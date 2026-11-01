@@ -1,0 +1,11 @@
+# dynamodb/transactions 장 전용 사실 항목 (2026-11-02 대조). 트랜잭션 항목 수·크기·단위 배수는 dynamodb-core.yaml을 재사용한다.
+
+- id: dynamodb.txn.client-token.window
+  value: 600
+  unit: s
+  display: { ko: "10분" }
+  label: { ko: "TransactWriteItems 클라이언트 토큰(ClientRequestToken)의 멱등성 유효 기간 (요청이 끝난 뒤부터)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/transaction-apis.html
+  checked: 2026-11-02
+  volatile: false

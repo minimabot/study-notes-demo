@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.global-tables-conflict
+  type: quiz
+  chapter: dynamodb/global-tables
+  topic: dynamodb/global-tables/mrec
+  question: { ko: "MREC 글로벌 테이블에 서울과 도쿄 복제본이 있다. 두 리전의 사용자가 같은 항목의 같은 속성을 거의 동시에 서로 다른 값으로 고쳤다. 첫 쓰기가 복제되기 전에 두 번째 쓰기가 일어났다. 결과는?" }
+  choices:
+    - { id: a, text: { ko: "두 번째 쓰기가 ReplicatedWriteConflictException으로 실패한다" } }
+    - { id: b, text: { ko: "두 값이 합쳐져 속성에 목록으로 저장된다" } }
+    - { id: c, text: { ko: "더 늦게 쓴 값이 모든 복제본에 남고, 진 쓰기는 따로 기록되지 않는다" } }
+    - { id: d, text: { ko: "충돌이 CloudTrail에 기록되고 관리자가 승인할 때까지 복제가 멈춘다" } }
+  answer: c
+  explanation: { ko: "MREC는 항목의 쓰기 시각을 비교하는 마지막 쓰기 우선(Last writer wins)으로 충돌을 푼다. 모든 복제본이 늦은 쓰기로 맞춰지고, 진 쓰기는 CloudWatch나 CloudTrail에 남지 않는다(d는 틀림). 값을 합치는 기능은 없다(b). ReplicatedWriteConflictException은 MRSC 테이블에서 나는 예외다(a). 충돌이 싫으면 한 리전에만 쓰거나 멱등 쓰기로 설계한다." }
+  facts: [dynamodb.gt.mrec.typical-propagation]
+
+- id: dynamodb.q.global-tables-billing
+  type: quiz
+  chapter: dynamodb/global-tables
+  topic: dynamodb/global-tables/capacity-cost
+  question: { ko: "온디맨드 글로벌 테이블에 복제본이 {{raw:3개}} 리전에 있고 GSI는 없다. 한 리전에서 {{fact:dynamodb.wcu.item-size}} 이하 항목을 {{raw:100건}} 썼다. 쓰기에 관한 요금으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "쓴 리전에서만 rWRU {{raw:100}}이 나오고, 나머지 두 리전은 데이터 전송 요금만 나온다" } }
+    - { id: b, text: { ko: "세 리전에서 각각 rWRU {{raw:100}}, 모두 rWRU {{raw:300}}이 나오고, 복제용 리전 간 데이터 전송 요금은 없다" } }
+    - { id: c, text: { ko: "세 리전에서 각각 rWRU {{raw:100}}에 더해 복제 데이터 전송 요금이 나온다" } }
+    - { id: d, text: { ko: "글로벌 테이블의 복제 쓰기는 무료이므로 일반 WRU {{raw:100}}만 나온다" } }
+  answer: b
+  explanation: { ko: "복제본 테이블의 쓰기는 복제본이 있는 모든 리전에서 복제된 쓰기 요청 단위(rWRU)로 매긴다. 그래서 리전 수만큼 쓰기 요금이 나온다(a, d는 틀림). 글로벌 테이블 복제에는 리전 간 데이터 전송 요금이 없다(c는 틀림). GSI가 있었다면 각 리전에서 GSI 갱신용 WRU가 더 붙는다." }
+  facts: [dynamodb.wcu.item-size]
+
+- id: dynamodb.q.global-tables-transaction
+  type: quiz
+  chapter: dynamodb/global-tables
+  topic: dynamodb/global-tables/mrec
+  question: { ko: "MREC 글로벌 테이블의 미국 동부(오하이오) 복제본에서 TransactWriteItems로 항목 두 개를 함께 고쳤다. 같은 순간 미국 서부(오리건) 복제본을 읽는 애플리케이션이 볼 수 있는 것은?" }
+  choices:
+    - { id: a, text: { ko: "트랜잭션이 리전 간에도 원자적이므로 두 항목이 항상 함께 바뀐 상태 또는 둘 다 안 바뀐 상태만 보인다" } }
+    - { id: b, text: { ko: "트랜잭션은 오하이오 안에서만 원자적이라, 오리건에서는 한 항목만 바뀐 상태가 잠깐 보일 수 있다" } }
+    - { id: c, text: { ko: "글로벌 테이블에서는 트랜잭션 API를 호출하면 항상 오류가 난다" } }
+    - { id: d, text: { ko: "오리건에서 강력한 일관된 읽기를 하면 오하이오의 최신 값을 반드시 받는다" } }
+  answer: b
+  explanation: { ko: "MREC에서 트랜잭션은 호출한 리전 안에서만 원자적이고, 다른 리전에는 항목 단위로 복제된다. 그래서 다른 리전에서는 일부만 반영된 상태가 보일 수 있다(a는 틀림). 트랜잭션 API를 거부하는 것은 MRSC 테이블이다(c). MREC에서 강력한 일관된 읽기는 같은 리전의 쓰기에만 의미가 있다(d)." }
+  facts: []

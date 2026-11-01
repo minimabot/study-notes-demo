@@ -1,0 +1,53 @@
+# DynamoDB 글로벌 테이블 장 전용 수치 (2026-11-02 대조). 공용 수치는 dynamodb-core.yaml에 있다.
+
+- id: dynamodb.gt.sla.availability
+  value: 99.999
+  unit: percent
+  display: { ko: "99.999%" }
+  label: { ko: "글로벌 테이블의 가용성 SLA (단일 리전 테이블은 dynamodb.sla.availability.standard)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.gt.mrec.typical-propagation
+  value: 1
+  unit: s
+  display: { ko: "보통 1초 이내" }
+  label: { ko: "MREC 글로벌 테이블에서 새로 쓴 항목이 다른 복제본에 퍼지는 일반적인 시간 (SLA 아님)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-global-table-design.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-global-table-design.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.gt.source-delete-wait
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "새 복제본을 추가하는 데 쓴 원본 테이블을 삭제할 수 없는 기간 (복제본 생성 후)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.gt.region-disable-convert
+  value: 72000
+  unit: s
+  display: { ko: "20시간" }
+  label: { ko: "복제본이 있는 리전을 비활성화한 뒤 그 복제본이 단일 리전 테이블로 영구 전환되기까지의 시간" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.gt.mrsc.region-count
+  value: 3
+  unit: count
+  display: { ko: "정확히 3개 리전" }
+  label: { ko: "MRSC 글로벌 테이블이 배포되어야 하는 리전 수 (복제본 3개, 또는 복제본 2개와 위트니스 1개)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-global-table-design.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-global-table-design.html
+  checked: 2026-11-02
+  volatile: true
+  history:
+    - { date: 2025-06-30, note: "MRSC 정식 출시 (2024-12-03 미리 보기). 문서 기록(DocumentHistory) 기준" }

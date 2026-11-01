@@ -1,0 +1,66 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.transactions-token
+  type: quiz
+  chapter: dynamodb/transactions
+  topic: dynamodb/transactions/idempotency-conflicts
+  question: { ko: "결제 서비스가 TransactWriteItems를 보냈는데 응답 전에 연결이 끊겼다. 같은 ClientRequestToken으로 곧바로 같은 요청을 다시 보냈다. 첫 요청은 실제로 성공했었다. 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "트랜잭션이 한 번 더 반영되어 금액이 두 번 빠진다" } }
+    - { id: b, text: { ko: "아무것도 바꾸지 않고 성공 응답을 돌려준다" } }
+    - { id: c, text: { ko: "IdempotentParameterMismatch 오류가 난다" } }
+    - { id: d, text: { ko: "TransactionConflictException이 난다" } }
+  answer: b
+  explanation: { ko: "토큰은 요청이 끝난 뒤 {{fact:dynamodb.txn.client-token.window}} 동안 유효하다. 그 안에 같은 토큰·같은 파라미터로 다시 보내면 변경 없이 성공만 돌려준다(a는 틀림). IdempotentParameterMismatch(c)는 같은 토큰으로 다른 파라미터를 보냈을 때 난다. TransactionConflictException(d)은 진행 중인 트랜잭션과 충돌한 일반 쓰기가 받는 오류다. 유효 기간이 지난 뒤 같은 토큰을 쓰면 새 요청으로 처리된다는 점도 기억한다." }
+  facts: [dynamodb.txn.client-token.window]
+
+- id: dynamodb.q.transactions-capacity
+  type: quiz
+  chapter: dynamodb/transactions
+  topic: dynamodb/transactions/isolation-capacity
+  question: { ko: "프로비저닝된 모드 테이블에서 초당 트랜잭션 {{raw:1건}}을 실행한다. 트랜잭션마다 {{raw:500바이트}} 항목 {{raw:3개}}를 TransactWriteItems로 쓴다. 필요한 WCU와 그 이유로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "{{raw:3}} WCU. 트랜잭션은 일반 쓰기와 같은 단위를 쓴다" } }
+    - { id: b, text: { ko: "{{raw:6}} WCU. 항목마다 준비와 커밋 두 번 쓰기가 일어나고, 조건 실패로 취소돼도 용량을 쓴다" } }
+    - { id: c, text: { ko: "{{raw:6}} WCU. 다만 취소된 트랜잭션은 용량을 쓰지 않는다" } }
+    - { id: d, text: { ko: "{{raw:1}} WCU. 트랜잭션 하나가 한 번의 쓰기로 계산된다" } }
+  answer: b
+  explanation: { ko: "{{raw:500바이트}} 항목은 일반 쓰기로 {{fact:dynamodb.wcu.item-size}} 단위 하나지만, 트랜잭션은 준비·커밋 두 번을 하므로 {{fact:dynamodb.txn.unit-multiplier}}를 쓴다. 그래서 항목 {{raw:3개}} × {{raw:2}} = {{raw:6}} WCU다(a, d는 틀림). 조건이 거짓이라 취소된 트랜잭션도 시도한 항목만큼 용량을 쓴다(c는 틀림)." }
+  facts: [dynamodb.txn.unit-multiplier, dynamodb.wcu.item-size]
+
+- id: dynamodb.q.transactions-atomic-counter
+  type: quiz
+  chapter: dynamodb/transactions
+  topic: dynamodb/transactions/conditional-writes
+  question: { ko: "포인트 적립을 UpdateItem의 SET points = points + :inc로 구현했다. 시간 초과 뒤 클라이언트가 자동 재시도하면서 포인트가 가끔 두 번 쌓인다. 가장 알맞은 고침은?" }
+  choices:
+    - { id: a, text: { ko: "강력한 일관된 읽기로 바꾼다" } }
+    - { id: b, text: { ko: "BatchWriteItem으로 묶어 보낸다" } }
+    - { id: c, text: { ko: "원자성 카운터는 멱등적이지 않으므로, 적립 건 ID나 현재 값을 조건으로 확인하는 조건부 업데이트(또는 클라이언트 토큰을 넣은 트랜잭션)로 바꾼다" } }
+    - { id: d, text: { ko: "재시도를 늘려 결국 맞는 값이 되게 한다" } }
+  answer: c
+  explanation: { ko: "원자성 카운터는 부를 때마다 더하므로 재시도하면 과다 집계가 생긴다. 틀리면 안 되는 값에는 조건부 업데이트를 쓰라고 AWS는 안내한다. 조건이 바꾸려는 상태를 확인하면 재시도해도 한 번만 반영된다. 읽기 일관성(a)은 쓰기 중복과 관계없다. BatchWriteItem(b)은 Put·Delete만 담고 멱등성을 주지 않는다. 재시도를 늘리면(d) 중복이 더 늘어난다." }
+  facts: []
+
+- id: dynamodb.d.transactions-transfer
+  type: design
+  chapter: dynamodb/transactions
+  topic: dynamodb/transactions/concurrency
+  scenario: { ko: "포인트 지갑 서비스를 DynamoDB로 만든다. 요구 사항은 세 가지다. (1) 사용자 A가 사용자 B에게 포인트를 보내면, A의 잔액 감소와 B의 잔액 증가, 이체 기록 항목 생성이 함께 되거나 함께 안 되어야 한다. A의 잔액이 모자라면 아무것도 바뀌면 안 된다. 모바일 네트워크가 불안정해 클라이언트가 같은 이체를 다시 보낼 때가 있다. (2) 사용자는 프로필의 닉네임과 소개글을 가끔 고친다. 여러 기기에서 동시에 고칠 수 있지만 충돌은 드물고, 나중 저장이 앞 저장을 몰래 덮어쓰면 안 된다. (3) 이벤트 페이지의 조회수를 센다. 약간의 오차는 괜찮고 쓰기가 많다. 각 요구에 맞는 설계를 고르라." }
+  choices:
+    - { id: a, text: { ko: "(1)은 TransactWriteItems 하나에 A의 Update(조건: 잔액 ≥ 이체액), B의 Update, 이체 기록 Put(조건: attribute_not_exists)을 넣고, 같은 이체에는 같은 ClientRequestToken을 쓴다" } }
+    - { id: b, text: { ko: "(2)는 프로필 항목에 버전 속성을 두고, 버전이 읽은 값과 같을 때만 쓰는 조건부 쓰기(낙관적 잠금)로 고친다" } }
+    - { id: c, text: { ko: "(3)은 UpdateItem의 원자성 카운터(ADD 또는 SET n = n + :inc)로 센다" } }
+    - { id: d, text: { ko: "(1)은 A와 B의 잔액을 BatchWriteItem 한 번으로 함께 고친다" } }
+    - { id: e, text: { ko: "(1)은 A 차감과 B 증가를 각각 원자성 카운터로 처리하고, 실패하면 클라이언트가 다시 보낸다" } }
+    - { id: f, text: { ko: "(3)도 정확성을 위해 매 조회를 TransactWriteItems로 기록한다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 여러 항목을 함께 바꾸고 조건 확인까지 묶어야 하므로 트랜잭션이 맞다. 잔액 조건이 거짓이면 전체가 취소된다. 같은 토큰을 쓰면 재전송이 {{fact:dynamodb.txn.client-token.window}} 안에서는 두 번 반영되지 않는다. 이체 기록 Put의 attribute_not_exists 조건은 그 뒤의 중복도 막는 보조 장치다."
+      - "b: 항목 하나, 드문 충돌, 싼 재시도이므로 AWS가 낙관적 잠금을 권하는 경우다. 먼저 저장된 쪽이 있으면 조건 실패로 알려 주고, 다시 읽어 재시도한다."
+      - "c: 약간의 오차를 허용하고 쓰기가 많은 집계는 원자성 카운터가 맞다. 값을 읽지 않고 더하므로 다른 쓰기를 방해하지 않는다."
+      - "d는 감점: BatchWriteItem은 일부만 성공할 수 있고 Update를 담지 못하며 조건도 걸 수 없다."
+      - "e는 감점: 원자성 카운터는 멱등적이지 않아 재전송 때 이중 차감·이중 지급이 생기고, 두 항목이 함께 바뀐다는 보장도 없다."
+      - "f는 감점: 트랜잭션은 항목마다 {{fact:dynamodb.txn.unit-multiplier}} 용량을 쓰고 충돌로 취소될 수 있다. 꼭 필요하지 않은 곳에 트랜잭션을 쓰지 말라는 것이 AWS 권장이다."
+  facts: [dynamodb.txn.client-token.window, dynamodb.txn.unit-multiplier]

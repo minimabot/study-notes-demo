@@ -1,0 +1,76 @@
+# 장: 글로벌 테이블
+chapter:
+  id: dynamodb/global-tables
+  title:
+    ko: 글로벌 테이블 (다중 리전 복제)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html
+  topics:
+    - id: dynamodb/global-tables/concepts
+      title:
+        ko: 글로벌 테이블과 복제본, 버전
+      exam_tags:
+        - SAA-C03#2.2
+        - SAP-C03#1.5
+        - DOP-C02#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 글로벌 테이블은 현재 버전(2019.11.21)을 쓴다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/V2globaltables_versions.html
+          checked: 2026-11-02
+        - claim:
+            ko: 레거시 버전에서 현재 버전으로 올리는 동안에는 테이블을 온디맨드 모드로 둔다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/V2globaltables_versions.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/V2globaltables_versions.html
+    - id: dynamodb/global-tables/mrec
+      title:
+        ko: 최종 일관성 복제(MREC)와 충돌 해결
+      exam_tags:
+        - SAA-C03#2.2
+        - SAP-C03#1.5
+        - DOP-C02#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-global-table-design.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables_HowItWorks.html
+    - id: dynamodb/global-tables/new-modes
+      title:
+        ko: 새 기능 — 강력한 일관성(MRSC)과 다중 계정 글로벌 테이블
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-global-table-design.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-MultiAccount.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DocumentHistory.html
+    - id: dynamodb/global-tables/capacity-cost
+      title:
+        ko: 복제 쓰기의 용량과 요금
+      exam_tags:
+        - SAP-C03#3.4
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/global-tables-billing.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html
+    - id: dynamodb/global-tables/operations
+      title:
+        ko: 쓰기 방식, 리전 비우기, 장애 시험
+      exam_tags:
+        - DOP-C02#3.1
+        - DOP-C02#3.3
+        - SAP-C03#1.5
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 가능하면 어느 리전에나 쓰는(write to any Region) 방식으로 설계한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-global-table-design.prescriptive-guidance.writemodes.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-global-table-design.prescriptive-guidance.writemodes.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-global-table-design.prescriptive-guidance.evacuation.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/globaltables-CoreConcepts.html

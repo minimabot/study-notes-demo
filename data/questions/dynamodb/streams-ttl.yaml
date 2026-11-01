@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.streams-ttl-ttl-timing
+  type: quiz
+  chapter: dynamodb/streams-ttl
+  topic: dynamodb/streams-ttl/ttl
+  question: { ko: "세션 테이블에 TTL을 켜고 expireAt 속성에 만료 시각(Unix epoch 초)을 넣었다. 그런데 만료 시각이 지난 세션이 Query 결과에 가끔 나온다. 옳은 설명과 대응은?" }
+  choices:
+    - { id: a, text: { ko: "TTL은 만료 즉시 지우므로 expireAt 형식이 틀린 것이다. 밀리초로 바꾼다" } }
+    - { id: b, text: { ko: "TTL 삭제는 보통 만료 뒤 며칠 안에 일어나므로, Query에 expireAt > 현재 시각 필터 표현식을 건다" } }
+    - { id: c, text: { ko: "TTL 삭제는 WCU를 쓰므로 쓰기 용량이 모자라 밀렸다. WCU를 늘린다" } }
+    - { id: d, text: { ko: "만료된 항목은 스트림에 남지 않으므로 Streams를 꺼야 바로 지워진다" } }
+  answer: b
+  explanation: { ko: "TTL은 백그라운드에서 보통 만료 뒤 며칠 안에 지운다. 그 전에는 읽기 결과에 나오므로 필터 표현식으로 거른다. 값은 초 단위 숫자여야 하고 밀리초면 오히려 무시된다(a는 틀림). TTL 삭제는 WCU를 쓰지 않는다(c는 틀림). 삭제는 스트림에 서비스 삭제로 남고, 스트림과 삭제 속도는 관계없다(d는 틀림)." }
+  facts: []
+
+- id: dynamodb.q.streams-ttl-choose-cdc
+  type: quiz
+  chapter: dynamodb/streams-ttl
+  topic: dynamodb/streams-ttl/cdc-options
+  question: { ko: "주문 테이블의 변경을 서로 다른 팀의 소비자 여러 개가 읽어야 하고, 장애 때 며칠 전 변경부터 다시 처리할 수 있어야 한다. 변경은 Amazon Data Firehose로도 보내야 한다. 가장 알맞은 방식은?" }
+  choices:
+    - { id: a, text: { ko: "DynamoDB Streams를 켜고 각 팀이 Lambda 함수를 하나씩 붙인다" } }
+    - { id: b, text: { ko: "Kinesis Data Streams for DynamoDB를 켜고, 소비자는 ApproximateCreationDateTime으로 순서를 맞추고 중복을 거른다" } }
+    - { id: c, text: { ko: "TTL을 켜서 삭제 이벤트만 받는다" } }
+    - { id: d, text: { ko: "DynamoDB Streams 보관 기간을 며칠로 늘린다" } }
+  answer: b
+  explanation: { ko: "Kinesis Data Streams 방식은 최대 {{fact:kinesis.retention.max}}까지 보관하고, 샤드당 {{fact:dynamodb.kds.consumers-per-shard}}(향상된 팬아웃이면 {{fact:dynamodb.kds.consumers-per-shard.efo}}) 소비자를 두며, Firehose로 바로 보낼 수 있다. 대신 순서가 바뀌거나 중복이 올 수 있어 소비자가 처리해야 한다. DynamoDB Streams는 샤드당 {{fact:dynamodb.streams.readers-per-shard}}를 넘기면 스로틀될 수 있고(a), 보관 기간은 {{fact:dynamodb.streams.retention}}로 고정이다(d). TTL(c)은 변경 캡처가 아니다." }
+  facts: [kinesis.retention.max, dynamodb.kds.consumers-per-shard, dynamodb.kds.consumers-per-shard.efo, dynamodb.streams.readers-per-shard, dynamodb.streams.retention]
+
+- id: dynamodb.q.streams-ttl-lambda-duplicate
+  type: quiz
+  chapter: dynamodb/streams-ttl
+  topic: dynamodb/streams-ttl/lambda-triggers
+  question: { ko: "DynamoDB 스트림에 연결한 Lambda 함수가 새 주문마다 고객에게 메일을 보낸다. 배치 처리 중 한 레코드에서 오류가 나자, 일부 고객이 같은 메일을 두 번 받았고 그 샤드의 뒤 주문 처리도 한동안 멈췄다. 옳은 설명은?" }
+  choices:
+    - { id: a, text: { ko: "DynamoDB Streams는 레코드가 스트림에 한 번만 나타나므로 중복 메일은 Lambda 버그일 수밖에 없다" } }
+    - { id: b, text: { ko: "Lambda는 실패한 배치를 성공하거나 레코드가 만료될 때까지 재시도한다. 소비자는 최소 한 번 처리이므로 함수를 멱등적으로 만들고, 재시도 제한·배치 나누기 같은 실패 옵션을 둔다" } }
+    - { id: c, text: { ko: "스트림 보기 유형을 KEYS_ONLY에서 NEW_IMAGE로 바꾸면 재시도가 사라진다" } }
+    - { id: d, text: { ko: "같은 스트림에 Lambda 함수를 더 붙이면 막힌 샤드가 풀린다" } }
+  answer: b
+  explanation: { ko: "오류가 나면 Lambda는 같은 배치를 다시 처리하므로 이미 보낸 메일이 또 나가고, 그 샤드의 뒤 레코드는 막힌다. '스트림에 정확히 한 번'은 저장 보장일 뿐 소비자 처리 횟수 보장이 아니다(a는 틀림). 보기 유형(c)은 레코드 내용만 정한다. 한 스트림에 함수를 {{fact:dynamodb.streams.readers-per-shard}}보다 많이 붙이면 오히려 읽기 스로틀이 날 수 있다(d는 틀림)." }
+  facts: [dynamodb.streams.readers-per-shard]

@@ -1,0 +1,66 @@
+# 장: 파티션과 파티션 키 설계
+chapter:
+  id: dynamodb/partitions
+  title:
+    ko: 파티션과 파티션 키 설계
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+  topics:
+    - id: dynamodb/partitions/basics
+      title:
+        ko: 파티션과 데이터 배치
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html
+    - id: dynamodb/partitions/key-design
+      title:
+        ko: 고르게 퍼지는 파티션 키
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+        - SAP-C03#1.5
+      recommended:
+        - claim:
+            ko: 테이블 항목 수에 비해 서로 다른 값이 많은 파티션 키를 고른다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+          checked: 2026-11-01
+        - claim:
+            ko: 테이블과 보조 인덱스의 모든 파티션 키에 걸쳐 활동이 고르게 되도록 애플리케이션을 설계한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html
+    - id: dynamodb/partitions/write-sharding
+      title:
+        ko: 쓰기 샤딩
+      exam_tags:
+        - DVA-C03#1.3
+        - SAP-C03#1.5
+      recommended:
+        - claim:
+            ko: 파티션 키 값 종류가 적으면 접미사를 붙여 쓰기를 더 많은 키 값에 나눈다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html
+    - id: dynamodb/partitions/adaptive
+      title:
+        ko: 적응형 용량과 그 한계
+      exam_tags:
+        - SAA-C03#3.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html
+    - id: dynamodb/partitions/hot-key-throttling
+      title:
+        ko: 핫 키 스로틀링 찾기
+      exam_tags:
+        - SOA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/throttling-diagnosing-workflow.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/troubleshooting-throttling-diagnostics.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights.html

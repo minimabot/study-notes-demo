@@ -1,3 +1,7 @@
 # DynamoDB 파티션 장 전용 사실 (2026-11-01 대조)
+# 이 장이 쓰는 수치는 공용 파일에 이미 있어 새 항목이 없다.
+#   파티션 한도: dynamodb.partition.read.max, dynamodb.partition.write.max (dynamodb-core.yaml)
+#   읽기 단위 크기: dynamodb.rcu.item-size (dynamodb-core.yaml)
+#   버스트 용량 보관분: dynamodb.burst.retention (dynamodb-capacity.yaml)
 
 []

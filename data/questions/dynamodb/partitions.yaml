@@ -1,0 +1,66 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.partitions-keyrange
+  type: quiz
+  chapter: dynamodb/partitions
+  topic: dynamodb/partitions/hot-key-throttling
+  question: { ko: "주문 테이블의 파티션 키가 `OrderStatus`(값은 몇 개뿐)다. 테이블 전체 소비량은 프로비저닝 WCU보다 한참 낮은데, 쓰기가 `TableWriteKeyRangeThroughputExceeded` 이유로 스로틀된다. 가장 알맞은 대응은?" }
+  choices:
+    - { id: a, text: { ko: "테이블의 프로비저닝 WCU를 크게 올린다" } }
+    - { id: b, text: { ko: "온디맨드 모드로 바꾼다. 온디맨드에는 파티션 한도가 없다" } }
+    - { id: c, text: { ko: "주문 ID처럼 값이 많은 키로 다시 설계하거나, 상태 값에 접미사를 붙여 쓰기를 나눈다" } }
+    - { id: d, text: { ko: "쓰기 요청을 강력한 일관성으로 바꾼다" } }
+  answer: c
+  explanation: { ko: "키 범위 처리량 초과는 파티션 하나가 한도({{fact:dynamodb.partition.write.max}})를 넘었다는 뜻이다. 값이 몇 개뿐인 키에 쓰기가 몰린 핫 파티션이므로 키를 다시 설계하거나 쓰기 샤딩을 한다(c). 테이블 용량(a)은 이미 남아 있고, 올려도 파티션 하나의 한도는 그대로다. 파티션 한도는 온디맨드에도 걸린다(b는 틀림). 일관성(d)은 읽기에만 있는 선택이다." }
+  facts: [dynamodb.partition.write.max]
+
+- id: dynamodb.q.partitions-item-size
+  type: quiz
+  chapter: dynamodb/partitions
+  topic: dynamodb/partitions/basics
+  question: { ko: "크기가 {{raw:20 KB}}인 항목 하나를 강력한 일관성으로만 읽는다. 다른 요청이 없을 때, 이 항목 하나로 파티션 읽기 한도에 닿는 초당 읽기 횟수는 대략 얼마인가?" }
+  choices:
+    - { id: a, text: { ko: "{{raw:600회}}" } }
+    - { id: b, text: { ko: "{{raw:1,200회}}" } }
+    - { id: c, text: { ko: "{{raw:3,000회}}" } }
+    - { id: d, text: { ko: "{{raw:150회}}" } }
+  answer: a
+  explanation: { ko: "읽기 단위 하나는 {{fact:dynamodb.rcu.item-size}}까지 처리하므로 {{raw:20 KB}} 항목의 강력한 일관된 읽기는 읽기 단위 {{raw:5}}개를 쓴다. 파티션 한도 {{fact:dynamodb.partition.read.max}}를 {{raw:5}}로 나누면 {{raw:600회}}다(a). b는 최종 일관된 읽기일 때의 값이다. c는 항목 크기를 무시한 값이다. d는 크기를 다시 한 번 더 나눈 잘못된 계산이다." }
+  facts: [dynamodb.rcu.item-size, dynamodb.partition.read.max]
+
+- id: dynamodb.q.partitions-calculated-suffix
+  type: quiz
+  chapter: dynamodb/partitions
+  topic: dynamodb/partitions/write-sharding
+  question: { ko: "파티션 키가 날짜인 주문 테이블에 하루 쓰기가 한 키에 몰린다. 쓰기를 나누면서도, 주문 ID만 알면 `GetItem`으로 주문 하나를 바로 읽고 싶다. 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "날짜 뒤에 무작위 번호를 붙인다" } }
+    - { id: b, text: { ko: "날짜 뒤에 주문 ID를 해시해 구한 번호를 붙인다" } }
+    - { id: c, text: { ko: "날짜를 정렬 키로 옮기고 파티션 키는 상태 코드로 바꾼다" } }
+    - { id: d, text: { ko: "적응형 용량이 알아서 나눠 주므로 그대로 둔다" } }
+  answer: b
+  explanation: { ko: "계산된 접미사(b)는 쓰기를 고르게 나누면서, 주문 ID로 키를 다시 계산할 수 있어 `GetItem`이 된다. 무작위 접미사(a)도 쓰기는 나누지만 어느 번호에 썼는지 몰라 모든 접미사를 뒤져야 한다. 상태 코드(c)는 값이 적어 또 핫 키가 된다. 적응형 용량(d)은 키 값 하나에 몰린 요청을 파티션 한도({{fact:dynamodb.partition.write.max}}) 이상으로 받아 주지 못한다." }
+  facts: [dynamodb.partition.write.max]
+
+- id: dynamodb.d.partitions-telemetry
+  type: design
+  chapter: dynamodb/partitions
+  topic: dynamodb/partitions/key-design
+  scenario: { ko: "차량 {{raw:50,000}}대가 각각 {{raw:1초}}마다 작은 위치·상태 기록을 보낸다. 쓰기가 아주 많은 테이블이다. 주요 조회는 \"차량 한 대의 최근 기록을 시간순으로\"다. 운영팀은 하루에 한 번 그날 전체 기록을 모아 보는 배치도 돌린다. 지금 설계안은 파티션 키 = 날짜, 정렬 키 = 차량 ID#시각인데, 시험 운행에서 쓰기가 스로틀되었다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "파티션 키 = 차량 ID, 정렬 키 = 시각으로 바꾼다" } }
+    - { id: b, text: { ko: "하루 단위 배치를 위해, 날짜 뒤에 차량 ID를 해시해 구한 번호를 붙인 값(날짜#N)을 키로 하는 GSI를 두고 배치는 N마다 Query해 합친다" } }
+    - { id: c, text: { ko: "Contributor Insights를 스로틀된 키 모드로 켜서 유난히 많이 보내는 차량이 있는지 지켜본다" } }
+    - { id: d, text: { ko: "날짜 키는 그대로 두고 테이블 WCU만 크게 올린다" } }
+    - { id: e, text: { ko: "파티션 키를 차량 상태(주행 중·정차)로 바꾼다" } }
+    - { id: f, text: { ko: "적응형 용량이 있으므로 날짜 키를 그대로 쓴다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 차량 ID는 값이 많고 차량마다 비슷한 주기로 보내므로 쓰기가 고르게 퍼진다. 차량 한 대의 쓰기는 파티션 한도({{fact:dynamodb.partition.write.max}})보다 훨씬 작다. 시각을 정렬 키로 두면 차량별 최근 기록을 Query 하나로 시간순으로 읽는다."
+      - "b: 그날 전체를 읽는 접근 패턴은 날짜 키가 필요하지만, 날짜 하나에 쓰기를 몰면 GSI도 핫 파티션이 된다. 계산된 접미사로 나누면 쓰기가 퍼지고, 배치는 접미사마다 Query해 합친다. GSI가 막히면 기본 테이블 쓰기도 스로틀될 수 있다는 점도 고려한 설계다."
+      - "c: 장치 ID 키도 한 장치만 유난히 많이 보내면 나빠진다. 스로틀된 키 모드는 스로틀이 날 때만 기록해 상시 감시에 맞다."
+      - "d는 감점: 날짜 키는 그날의 모든 쓰기가 한 키 값에 몰린다. 테이블 용량을 올려도 키 값 하나는 파티션 한도를 넘지 못한다."
+      - "e는 감점: 상태 값은 몇 개뿐인 낮은 카디널리티 키라 핫 파티션이 된다."
+      - "f는 감점: 적응형 용량은 안전망일 뿐 키 값 하나를 파티션 한도 이상으로 받아 주지 않는다. 정렬 키가 시간순으로 계속 늘어나는 접근은 정렬 키로 쪼개 주지도 않는다."
+  facts: [dynamodb.partition.write.max]

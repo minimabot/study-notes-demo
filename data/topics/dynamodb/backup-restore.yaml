@@ -1,0 +1,71 @@
+# 장: 백업과 복원
+chapter:
+  id: dynamodb/backup-restore
+  title:
+    ko: 백업과 복원 (PITR·온디맨드 백업·AWS Backup)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Backup-and-Restore.html
+  topics:
+    - id: dynamodb/backup-restore/pitr
+      title:
+        ko: 특정 시점으로 복구(PITR)
+      exam_tags:
+        - SOA-C03#2.3
+        - SAA-C03#2.2
+        - DOP-C02#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Point-in-time-recovery.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+    - id: dynamodb/backup-restore/on-demand-aws-backup
+      title:
+        ko: 온디맨드 백업과 AWS Backup
+      exam_tags:
+        - SOA-C03#2.3
+        - DOP-C02#3.3
+        - SAP-C03#3.4
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 백업에 태그 기반 접근 제어(ABAC)를 쓰려면 AWS Backup을 쓴다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Backup-and-Restore.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CreateBackup.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/backuprestore_HowItWorksAWS.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/backup-restore-billing.html
+    - id: dynamodb/backup-restore/restore
+      title:
+        ko: 복원은 언제나 새 테이블로
+      exam_tags:
+        - SOA-C03#2.3
+        - DOP-C02#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/pointintimerecovery_restores.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-pitr-recovery-table-restore.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-pitr-recovery-inplace-rollback.html
+    - id: dynamodb/backup-restore/s3-export-import
+      title:
+        ko: S3로 내보내기와 S3에서 가져오기
+      exam_tags:
+        - SOA-C03#2.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 내보내기가 정해진 시간 안에 끝난다고 가정하는 워크플로를 만들지 않는다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataImport.HowItWorks.html
+    - id: dynamodb/backup-restore/dr-strategy
+      title:
+        ko: RPO·RTO로 재해 복구 방식 고르기
+      exam_tags:
+        - SAA-C03#2.2
+        - SOA-C03#2.3
+        - DOP-C02#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamodbDisasterRecoveryStrategy.html

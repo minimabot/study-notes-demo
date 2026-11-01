@@ -1,0 +1,51 @@
+# dynamodb/streams-ttl 장 전용 사실 항목 (2026-11-02 대조). Streams 보관 기간·샤드당 읽기 프로세스 수는 dynamodb-core.yaml, Kinesis 보관 기간은 kinesis.yaml을 재사용한다.
+
+- id: dynamodb.streams.lambda.poll-rate
+  value: 4
+  unit: count/s
+  display: { ko: "초당 4회" }
+  label: { ko: "Lambda가 DynamoDB 스트림에서 새 레코드를 폴링하는 빈도" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Streams.Lambda.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.streams.lambda.parallelization.max
+  value: 10
+  unit: count
+  display: { ko: "10" }
+  label: { ko: "DynamoDB 스트림 이벤트 소스 매핑의 병렬화 계수(ParallelizationFactor) 최댓값 (샤드 하나를 동시에 처리하는 함수 인스턴스 수)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Streams.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.kds.consumers-per-shard
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "Kinesis Data Streams for DynamoDB에서 샤드 하나를 동시에 읽는 소비자 수 (향상된 팬아웃 미사용 시)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/streamsmain.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/streamsmain.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.kds.consumers-per-shard.efo
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "Kinesis Data Streams for DynamoDB에서 향상된 팬아웃(Enhanced fan-out)으로 샤드 하나를 동시에 읽는 소비자 수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/streamsmain.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/streamsmain.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.ttl.past-limit
+  value: 157680000
+  unit: s
+  display: { ko: "5년" }
+  label: { ko: "TTL 삭제 대상이 되려면 TTL 값이 현재보다 과거로 넘을 수 없는 한도" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/time-to-live-ttl-before-you-start.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/time-to-live-ttl-before-you-start.html
+  checked: 2026-11-02
+  volatile: false
