@@ -1,0 +1,73 @@
+# 장: 보조 인덱스
+chapter:
+  id: dynamodb/secondary-indexes
+  title:
+    ko: 보조 인덱스 (GSI·LSI)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html
+  topics:
+    - id: dynamodb/secondary-indexes/basics
+      title:
+        ko: 보조 인덱스는 무엇인가
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.Reading
+    - id: dynamodb/secondary-indexes/gsi-vs-lsi
+      title:
+        ko: GSI와 LSI 고르기
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+        - SAP-C03#1.5
+      recommended:
+        - claim:
+            ko: LSI를 쓰는 테이블은 쓰기 요청에 ReturnItemCollectionMetrics를 써서 항목 컬렉션 크기가 한도에 가까워지는지 감시하고 경보를 건다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-indexes-general.html#bp-indexes-general-expanding-collections
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.Writes
+    - id: dynamodb/secondary-indexes/projections
+      title:
+        ko: 프로젝션과 비용
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+      recommended:
+        - claim:
+            ko: 자주 조회하지 않는 속성에는 인덱스를 만들지 않고, 인덱스 수를 최소로 유지한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-indexes-general.html#bp-indexes-general-efficiency
+          checked: 2026-11-01
+        - claim:
+            ko: 인덱스는 작게 유지하고 자주 요청하는 속성만 프로젝션한다. ALL은 다른 정렬 키로 항목 전체가 필요할 때만 쓴다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-indexes-general.html#bp-indexes-general-projections
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.Projections
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/LSI.html#LSI.Projections
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-indexes-general.html
+    - id: dynamodb/secondary-indexes/sparse
+      title:
+        ko: 희소 인덱스와 오버로딩
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-indexes-general-sparse-indexes.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-gsi-overloading.html
+    - id: dynamodb/secondary-indexes/gsi-throttling
+      title:
+        ko: GSI가 기본 테이블 쓰기를 막을 때
+      exam_tags:
+        - DVA-C03#1.3
+      recommended:
+        - claim:
+            ko: 프로비저닝 모드에서 GSI의 쓰기 용량은 기본 테이블 쓰기 용량과 같거나 크게 둔다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.ThroughputConsiderations
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/gsi-throttling.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html#GSI.ThroughputConsiderations

@@ -1,0 +1,64 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.capacity-ondemand-peak
+  type: quiz
+  chapter: dynamodb/capacity
+  topic: dynamodb/capacity/on-demand
+  question: { ko: "온디맨드 테이블의 이전 최고치가 초당 읽기 {{raw:50,000}}이다. 다음 주 행사에서 트래픽이 {{raw:10분}} 만에 초당 {{raw:200,000}}으로 오를 예정이다. 스로틀을 피하려면?" }
+  choices:
+    - { id: a, text: { ko: "온디맨드는 한도 없이 즉시 늘어나므로 아무것도 하지 않는다" } }
+    - { id: b, text: { ko: "행사 전에 웜 처리량을 목표 수준으로 미리 올린다(사전 워밍)" } }
+    - { id: c, text: { ko: "온디맨드 최대 처리량을 초당 {{raw:200,000}}으로 설정한다" } }
+    - { id: d, text: { ko: "최종 일관된 읽기를 강력한 일관된 읽기로 바꾼다" } }
+  answer: b
+  explanation: { ko: "온디맨드는 이전 최고치의 {{fact:dynamodb.ondemand.peak-multiplier}}까지만 즉시 받아 준다. 그 이상을 {{fact:dynamodb.ondemand.peak-growth-window}} 안에 넘기면 스로틀될 수 있으므로 사전 워밍이 맞다(a는 틀림). 최대 처리량(c)은 상한일 뿐 용량을 미리 확보하지 않는다. 또 기본 테이블 한도 {{fact:dynamodb.throughput.table-default}}를 넘는 값이므로 한도 증가도 따로 필요하다. 강력한 일관성(d)은 읽기 단위를 더 쓴다." }
+  facts: [dynamodb.ondemand.peak-multiplier, dynamodb.ondemand.peak-growth-window, dynamodb.throughput.table-default]
+
+- id: dynamodb.q.capacity-switch
+  type: quiz
+  chapter: dynamodb/capacity
+  topic: dynamodb/capacity/switching
+  question: { ko: "용량 모드 전환에 대한 설명으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "온디맨드에서 프로비저닝으로는 제한 횟수 안에서만, 프로비저닝에서 온디맨드로는 언제든 바꿀 수 있다" } }
+    - { id: b, text: { ko: "프로비저닝에서 온디맨드로는 {{fact:dynamodb.capacity.switch-to-ondemand.max}}까지, 온디맨드에서 프로비저닝으로는 언제든 바꿀 수 있다" } }
+    - { id: c, text: { ko: "모드를 바꾸려면 테이블을 새로 만들어 데이터를 옮겨야 한다" } }
+    - { id: d, text: { ko: "콘솔로 온디맨드로 바꿔도 Auto Scaling 설정은 항상 남는다" } }
+  answer: b
+  explanation: { ko: "횟수 제한은 프로비저닝 → 온디맨드 방향에만 있다(a는 방향이 반대). 모드는 기존 테이블에서 바로 바꾼다(c는 틀림). 콘솔로 온디맨드로 바꾸면 Auto Scaling 설정이 지워지고, CLI·SDK로 바꿀 때만 남는다(d는 틀림)." }
+  facts: [dynamodb.capacity.switch-to-ondemand.max]
+
+- id: dynamodb.q.capacity-autoscaling-spike
+  type: quiz
+  chapter: dynamodb/capacity
+  topic: dynamodb/capacity/provisioned
+  question: { ko: "프로비저닝된 모드 테이블에 Auto Scaling(목표 사용률 {{fact:dynamodb.autoscaling.target.recommended}})을 켰다. 그런데 몇 분마다 {{raw:20초}}쯤 이어지는 급증 때 스로틀이 난다. 가장 그럴듯한 이유는?" }
+  choices:
+    - { id: a, text: { ko: "Auto Scaling은 소비가 목표를 일정 시간 계속 넘어야 반응하고, 반영에도 몇 분이 걸려 짧은 급증을 따라가지 못한다" } }
+    - { id: b, text: { ko: "목표 사용률이 너무 낮아서 Auto Scaling이 꺼졌다" } }
+    - { id: c, text: { ko: "Auto Scaling은 쓰기 용량에만 적용된다" } }
+    - { id: d, text: { ko: "버스트 용량이 보장된 용량이라 스로틀이 날 수 없으므로 클라이언트 버그다" } }
+  answer: a
+  explanation: { ko: "확장은 소비가 목표를 {{fact:dynamodb.autoscaling.scale-out-breach}} 넘어야 시작되고, UpdateTable 반영에도 몇 분이 걸린다. 짧은 급증은 버스트 용량으로만 받는데, 버스트 용량은 보장되지 않는다(d는 틀림). 목표 사용률은 {{fact:dynamodb.autoscaling.target.min}}~{{fact:dynamodb.autoscaling.target.max}} 범위의 값일 뿐 낮다고 꺼지지 않고(b), 읽기·쓰기 모두 조정한다(c). 이런 패턴이면 온디맨드 모드를 검토한다." }
+  facts: [dynamodb.autoscaling.scale-out-breach, dynamodb.autoscaling.target.min, dynamodb.autoscaling.target.max, dynamodb.burst.retention]
+
+- id: dynamodb.d.capacity-choose-mode
+  type: design
+  chapter: dynamodb/capacity
+  topic: dynamodb/capacity/modes
+  scenario: { ko: "회사에 DynamoDB 테이블이 두 개 있다. (1) 새로 연 티켓 예매 서비스의 테이블은 트래픽을 예측하기 어렵고, 평소에는 거의 비어 있다가 갑자기 몰린다. 다음 달에는 날짜가 정해진 대형 공연 예매가 있어 평소 최고치의 수십 배가 예상된다. (2) 사내 정산 테이블은 하루 내내 거의 일정한 양을 읽고 쓰며, 앞으로 1년간의 증가도 예측할 수 있다. 재무팀은 비용 예측 가능성을 중시한다. 각 테이블의 용량 설정을 고르라." }
+  choices:
+    - { id: a, text: { ko: "(1)은 온디맨드 모드로 둔다" } }
+    - { id: b, text: { ko: "(1)은 공연 예매 전에 웜 처리량을 예상 최고치 수준으로 미리 올린다" } }
+    - { id: c, text: { ko: "(2)는 프로비저닝된 모드에 Auto Scaling(목표 사용률 {{fact:dynamodb.autoscaling.target.recommended}})을 켜 둔다" } }
+    - { id: d, text: { ko: "(1)을 프로비저닝 + Auto Scaling으로 두면 갑작스러운 급증도 즉시 따라간다" } }
+    - { id: e, text: { ko: "(2)는 비용을 맞추려고 하루에도 여러 번 온디맨드와 프로비저닝을 오간다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 예측하기 어렵고 놀고 있는 시간이 긴 트래픽은 요청 수만큼 내는 온디맨드가 맞다. 비어 있을 때는 처리량 요금이 없다."
+      - "b: 온디맨드도 이전 최고치의 {{fact:dynamodb.ondemand.peak-multiplier}}를 넘는 급증은 즉시 받지 못한다. 날짜가 정해진 행사는 사전 워밍으로 즉시 감당할 수 있는 바닥을 미리 올린다."
+      - "c: 꾸준하고 예측 가능한 트래픽은 프로비저닝이 비용 예측에 유리하다. Auto Scaling이 완만한 변화를 따라간다. 늘 깔려 있는 기준량에는 예약 용량도 검토할 수 있다."
+      - "d는 감점: Auto Scaling은 소비가 목표를 {{fact:dynamodb.autoscaling.scale-out-breach}} 넘어야 반응하고 반영에도 몇 분이 걸린다. 갑작스러운 급증에는 늦다."
+      - "e는 감점: 프로비저닝 → 온디맨드 전환은 {{fact:dynamodb.capacity.switch-to-ondemand.max}}로 제한되고, 전환 중에도 이전 설정에 묶인다. 잦은 전환은 설계가 아니다."
+  facts: [dynamodb.ondemand.peak-multiplier, dynamodb.autoscaling.scale-out-breach, dynamodb.capacity.switch-to-ondemand.max, dynamodb.autoscaling.target.recommended]

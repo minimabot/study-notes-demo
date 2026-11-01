@@ -1,0 +1,21 @@
+# DynamoDB 개요 장 전용 사실 (2026-11-01 대조)
+
+- id: dynamodb.resilience.az-count
+  value: 3
+  unit: count
+  display: { ko: "3개" }
+  label: { ko: "기본으로 데이터가 복제되는 가용 영역 수" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Introduction.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.sla.availability.standard
+  value: 99.99
+  unit: percent
+  display: { ko: "99.99%" }
+  label: { ko: "단일 리전 테이블의 가용성 SLA (글로벌 테이블은 따로 정함)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Introduction.html
+  checked: 2026-11-01
+  volatile: true

@@ -144,3 +144,4 @@ pre{overflow-x:auto;max-width:100%;background:#1F1E1B;color:#ECE8DF;padding:10px
 pre code{background:none;padding:0;color:inherit;word-break:normal;white-space:pre}
 input[type=checkbox]{accent-color:var(--accent)}
 main{overflow-wrap:anywhere}.q label span{min-width:0}
+.chlink.todo{font-weight:400;color:var(--muted)}

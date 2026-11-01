@@ -1,0 +1,61 @@
+# DynamoDB 핵심 구성 요소 장 전용 사실 (2026-11-01 대조)
+
+- id: dynamodb.attribute.nesting.max-depth
+  value: 32
+  unit: count
+  display: { ko: "32단계" }
+  label: { ko: "중첩 속성(맵·목록 안의 속성)을 둘 수 있는 최대 깊이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.name.table.min-length
+  value: 3
+  unit: char
+  display: { ko: "3자" }
+  label: { ko: "테이블·인덱스 이름의 최소 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.name.table.max-length
+  value: 255
+  unit: char
+  display: { ko: "255자" }
+  label: { ko: "테이블·인덱스 이름의 최대 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.key.partition.max-length
+  value: 2048
+  unit: byte
+  display: { ko: "2,048바이트" }
+  label: { ko: "파티션 키 값(문자열·이진)의 최대 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.key.sort.max-length
+  value: 1024
+  unit: byte
+  display: { ko: "1,024바이트" }
+  label: { ko: "정렬 키 값(문자열·이진)의 최대 길이" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.number.precision.max
+  value: 38
+  unit: count
+  display: { ko: "38자리" }
+  label: { ko: "숫자(Number) 형식의 최대 정밀도" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+  checked: 2026-11-01
+  volatile: false

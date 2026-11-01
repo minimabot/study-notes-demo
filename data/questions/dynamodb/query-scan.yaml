@@ -1,0 +1,56 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.query-scan-filter-cost
+  type: quiz
+  chapter: dynamodb/query-scan
+  topic: dynamodb/query-scan/filter
+  question: { ko: "고객 한 명의 주문을 Query하면서 status = SHIPPED 필터 표현식을 붙였다. 읽은 주문 중 일부만 SHIPPED다. 소비되는 읽기 용량은?" }
+  choices:
+    - { id: a, text: { ko: "필터를 통과해 돌려받은 항목 크기만큼만 든다" } }
+    - { id: b, text: { ko: "키 조건에 맞아 읽은 항목 전체 크기만큼 든다. 필터가 없을 때와 같다" } }
+    - { id: c, text: { ko: "필터를 쓰면 테이블 전체를 읽으므로 Scan과 같다" } }
+    - { id: d, text: { ko: "ProjectionExpression으로 속성을 줄이면 그만큼 줄어든다" } }
+  answer: b
+  explanation: { ko: "필터는 읽은 뒤, 돌려주기 전에 적용되므로 읽기 용량은 필터와 상관없이 읽은 항목 크기로 계산된다(a는 틀림). Query는 필터가 있어도 키 조건으로 범위를 좁혀 읽으므로 테이블 전체를 읽지 않는다(c). 프로젝션 표현식도 항목 전체 크기로 계산되므로 용량을 줄이지 못한다(d). 자주 쓰는 조건이면 그 조건을 키로 하는 인덱스를 만든다." }
+  facts: []
+
+- id: dynamodb.q.query-scan-empty-page
+  type: quiz
+  chapter: dynamodb/query-scan
+  topic: dynamodb/query-scan/pagination
+  question: { ko: "필터 표현식을 붙인 Scan 응답의 Items가 비어 있고 Count가 0인데, LastEvaluatedKey가 들어 있다. 앱은 어떻게 해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "맞는 항목이 없으므로 여기서 멈춘다" } }
+    - { id: b, text: { ko: "LastEvaluatedKey를 ExclusiveStartKey에 넣어 같은 요청을 계속 보낸다" } }
+    - { id: c, text: { ko: "필터를 지우고 처음부터 다시 Scan한다" } }
+    - { id: d, text: { ko: "ConsistentRead를 true로 바꿔 다시 보낸다" } }
+  answer: b
+  explanation: { ko: "한 번의 호출은 필터 적용 전 기준으로 최대 {{fact:dynamodb.query.page.max}}까지 읽는다. 그 분량에 맞는 항목이 하나도 없으면 빈 결과에 LastEvaluatedKey가 온다. 끝났는지는 LastEvaluatedKey가 없는지로만 판단하므로 a는 결과를 놓친다. c와 d는 이 상황과 관계가 없다." }
+  facts: [dynamodb.query.page.max]
+
+- id: dynamodb.q.query-scan-limit
+  type: quiz
+  chapter: dynamodb/query-scan
+  topic: dynamodb/query-scan/filter
+  question: { ko: "Query에 Limit을 {{raw:20}}으로 주고 필터 표현식을 붙였다. 응답에 항목이 {{raw:7}}개 왔다. 옳은 설명은?" }
+  choices:
+    - { id: a, text: { ko: "조건에 맞는 항목은 모두 합쳐 {{raw:7}}개뿐이다" } }
+    - { id: b, text: { ko: "DynamoDB는 최대 {{raw:20}}개를 읽고 그중 필터에 맞는 것만 돌려줬다. 더 있을 수 있으므로 LastEvaluatedKey를 확인한다" } }
+    - { id: c, text: { ko: "Limit은 필터 뒤의 결과 수이므로 DynamoDB 오류다" } }
+    - { id: d, text: { ko: "Limit을 주면 읽기 용량이 필터와 무관하게 {{raw:20}}개 분량으로 고정된다" } }
+  answer: b
+  explanation: { ko: "Limit은 읽을 항목 수의 상한이고, 필터는 그 뒤에 적용된다. 그래서 결과가 Limit보다 적어도 데이터가 끝났다는 뜻이 아니다(a, c는 틀림). 읽기 용량은 실제로 읽은 항목 크기로 계산되며, 읽을 항목이 Limit보다 적으면 그만큼만 든다(d)." }
+  facts: []
+
+- id: dynamodb.q.query-scan-parallel
+  type: quiz
+  chapter: dynamodb/query-scan
+  topic: dynamodb/query-scan/scan
+  question: { ko: "야간 배치가 큰 테이블 전체를 순차 Scan하는데 너무 오래 걸린다. 테이블의 읽기 용량은 남는다. 낮에는 같은 테이블에 운영 트래픽이 있다. 가장 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "병렬 스캔으로 Segment와 TotalSegments를 나눠 여러 작업자가 읽게 하고, Limit으로 작업자별 읽기량을 조절한다" } }
+    - { id: b, text: { ko: "필터 표현식을 붙여 읽는 양을 줄인다" } }
+    - { id: c, text: { ko: "ConsistentRead를 true로 주어 더 빨리 읽는다" } }
+    - { id: d, text: { ko: "ProjectionExpression으로 속성을 줄여 읽기 용량을 줄인다" } }
+  answer: a
+  explanation: { ko: "순차 Scan은 한 번에 파티션 하나만 읽어서 느리다. 테이블이 크고 용량이 남고 순차 Scan이 느릴 때 AWS는 병렬 스캔을 권한다. 작업자가 많으면 용량을 다 써 버리므로 Limit과 TotalSegments로 조절한다. 필터(b)와 프로젝션(d)은 읽는 양과 용량을 줄이지 않는다. 강력한 일관성 읽기(c)는 빠르지 않고 읽기 용량만 더 쓴다." }
+  facts: []

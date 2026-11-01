@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.overview-fit
+  type: quiz
+  chapter: dynamodb/overview
+  topic: dynamodb/overview/vs-relational
+  question: { ko: "다음 중 DynamoDB보다 관계형 데이터베이스가 더 잘 맞는 업무는 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "사용자 수가 갑자기 크게 늘어나는 모바일 게임의 플레이어 상태 저장" } }
+    - { id: b, text: { ko: "분석가가 매번 다른 조건으로 여러 테이블을 JOIN해 만드는 즉석 보고서" } }
+    - { id: c, text: { ko: "사용자 ID로 장바구니를 읽고 쓰는 쇼핑몰 백엔드" } }
+    - { id: d, text: { ko: "기기 ID별로 상태를 기록하는 IoT 서비스" } }
+  answer: b
+  explanation: { ko: "DynamoDB에는 JOIN이 없고, 접근 패턴을 미리 정해 키를 설계하는 방식이다. 조건이 매번 바뀌는 즉석 쿼리와 여러 테이블 집계는 관계형 DB의 강점이다. a, c, d는 키로 바로 찾는 운영 업무라 DynamoDB가 맞는 예로 문서에 나온다." }
+  facts: []
+
+- id: dynamodb.q.overview-serverless
+  type: quiz
+  chapter: dynamodb/overview
+  topic: dynamodb/overview/what
+  question: { ko: "DynamoDB가 서버리스라는 말의 뜻으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "인스턴스 유형은 고르지만 패치는 AWS가 한다" } }
+    - { id: b, text: { ko: "엔진 버전 업그레이드를 유지 관리 기간에 예약해야 한다" } }
+    - { id: c, text: { ko: "서버를 준비하거나 패치할 일이 없고, 엔진 버전과 유지 관리 기간도 없다" } }
+    - { id: d, text: { ko: "파티션 키를 설계하지 않아도 어떤 부하든 제한 없이 처리한다" } }
+  answer: c
+  explanation: { ko: "DynamoDB는 서버·소프트웨어 관리가 없고 버전과 유지 관리 기간도 없다. a와 b는 인스턴스 기반 관리형 DB의 특징이다. d는 틀렸다. 키 설계가 나쁘면 한 파티션에 요청이 몰려 제한이 생긴다." }
+  facts: []
+
+- id: dynamodb.q.overview-az
+  type: quiz
+  chapter: dynamodb/overview
+  topic: dynamodb/overview/security-resilience
+  question: { ko: "단일 리전 DynamoDB 테이블의 기본 내구성·가용성 설명으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "다중 AZ 옵션을 켜야 다른 가용 영역에 복제된다" } }
+    - { id: b, text: { ko: "기본으로 {{fact:dynamodb.resilience.az-count}}의 가용 영역에 자동 복제된다" } }
+    - { id: c, text: { ko: "읽기 전용 복제본을 직접 만들어야 가용 영역 장애를 견딘다" } }
+    - { id: d, text: { ko: "글로벌 테이블을 만들어야 데이터가 복제된다" } }
+  answer: b
+  explanation: { ko: "DynamoDB는 별도 설정 없이 리전 안 {{fact:dynamodb.resilience.az-count}}의 가용 영역에 복제한다. a와 c는 인스턴스 기반 DB의 방식이다. 글로벌 테이블(d)은 리전 간 복제가 필요할 때 쓰는 기능이다." }
+  facts: [dynamodb.resilience.az-count]

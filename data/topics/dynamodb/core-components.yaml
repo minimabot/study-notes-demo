@@ -1,0 +1,47 @@
+# 장: DynamoDB 핵심 구성 요소
+chapter:
+  id: dynamodb/core-components
+  title:
+    ko: 테이블·항목·속성과 기본 키
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+  topics:
+    - id: dynamodb/core-components/tables-items-attributes
+      title:
+        ko: 테이블, 항목, 속성
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+    - id: dynamodb/core-components/primary-key
+      title:
+        ko: 기본 키 - 파티션 키와 정렬 키
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+    - id: dynamodb/core-components/data-types-naming
+      title:
+        ko: 데이터 형식과 이름 규칙
+      exam_tags:
+        - DVA-C03#1.3
+      recommended:
+        - claim:
+            ko: 속성 이름을 가능한 한 짧게 지어 저장·처리량 사용을 줄인다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html#HowItWorks.NamingRules
+          checked: 2026-11-01
+        - claim:
+            ko: 예약어와 특수 문자(#, :)를 이름으로 쓰지 않는다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html#HowItWorks.NamingRules.Reserved
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html
+    - id: dynamodb/core-components/api
+      title:
+        ko: 컨트롤 플레인과 데이터 플레인 API
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html

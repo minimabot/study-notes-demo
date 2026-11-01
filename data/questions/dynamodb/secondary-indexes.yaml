@@ -1,0 +1,77 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.secondary-indexes-add-later
+  type: quiz
+  chapter: dynamodb/secondary-indexes
+  topic: dynamodb/secondary-indexes/gsi-vs-lsi
+  question: { ko: "운영 중인 Orders 테이블(파티션 키 customerId, 정렬 키 orderId)에 '상태별 주문 목록' 조회가 새로 필요해졌다. 테이블을 다시 만들지 않고 할 수 있는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "status를 정렬 키로 하는 LSI를 추가한다" } }
+    - { id: b, text: { ko: "status를 파티션 키로 하는 GSI를 추가한다" } }
+    - { id: c, text: { ko: "status를 파티션 키로 하는 LSI를 추가한다" } }
+    - { id: d, text: { ko: "인덱스 없이 Query에 status 필터 표현식만 붙인다" } }
+  answer: b
+  explanation: { ko: "GSI는 기존 테이블에 언제든 추가할 수 있고, 파티션 키도 기본 테이블과 달라도 된다. LSI(a, c)는 테이블을 만들 때만 정의할 수 있고, 파티션 키는 기본 테이블과 같아야 하므로 c는 애초에 불가능하다. d는 Query에 customerId 값이 꼭 필요하므로 상태별 전체 목록을 얻을 수 없고, 필터는 읽은 뒤에 거르는 것이라 용량도 줄지 않는다." }
+  facts: []
+
+- id: dynamodb.q.secondary-indexes-consistency
+  type: quiz
+  chapter: dynamodb/secondary-indexes
+  topic: dynamodb/secondary-indexes/gsi-vs-lsi
+  question: { ko: "방금 기본 테이블에 쓴 항목을 다른 정렬 순서로 즉시 다시 읽어야 하고, 오래된 값은 허용되지 않는다. 파티션 키는 기본 테이블과 같다. 어떤 설계가 맞는가?" }
+  choices:
+    - { id: a, text: { ko: "GSI를 만들고 Query에 ConsistentRead를 true로 준다" } }
+    - { id: b, text: { ko: "테이블을 만들 때 LSI를 정의하고, Query에 ConsistentRead를 true로 준다" } }
+    - { id: c, text: { ko: "GSI를 만들고 ALL 프로젝션을 쓴다" } }
+    - { id: d, text: { ko: "GSI의 쓰기 용량을 기본 테이블의 두 배로 준다" } }
+  answer: b
+  explanation: { ko: "강력한 일관성 읽기는 LSI에서만 고를 수 있다. GSI는 기본 테이블과 비동기로 맞춰지며 최종 일관성 읽기만 지원하므로 a는 불가능하다. 프로젝션(c)이나 쓰기 용량(d)은 일관성을 바꾸지 못한다. 단, LSI는 테이블 생성 때만 만들 수 있고 파티션 키 값 하나당 {{fact:dynamodb.lsi.item-collection.max}} 제한이 생긴다." }
+  facts: [dynamodb.lsi.item-collection.max]
+
+- id: dynamodb.q.secondary-indexes-backpressure
+  type: quiz
+  chapter: dynamodb/secondary-indexes
+  topic: dynamodb/secondary-indexes/gsi-throttling
+  question: { ko: "기본 테이블의 쓰기 용량은 넉넉한데 PutItem이 스로틀링된다. 예외의 이유 코드는 IndexWriteKeyRangeThroughputExceeded이고, GSI의 파티션 키는 값이 몇 개뿐인 status다. 가장 알맞은 해석은?" }
+  choices:
+    - { id: a, text: { ko: "기본 테이블의 파티션 키 설계가 잘못되었다" } }
+    - { id: b, text: { ko: "GSI의 특정 파티션에 쓰기가 몰려 기본 테이블 쓰기가 막혔다" } }
+    - { id: c, text: { ko: "GSI 읽기 용량이 모자라 쓰기가 막혔다" } }
+    - { id: d, text: { ko: "LSI의 항목 컬렉션이 한도를 넘었다" } }
+  answer: b
+  explanation: { ko: "GSI 백 프레셔다. GSI는 자기 파티션 키로 데이터를 나누므로, 카디널리티가 낮은 status에 쓰기가 몰리면 GSI 파티션 하나가 한도({{fact:dynamodb.partition.write.max}})에 걸리고 그 결과 기본 테이블 쓰기가 거절된다. 이 이유 코드는 GSI 핫 파티션을 뜻한다. 기본 테이블 쪽 문제(a)가 아니고, 읽기 용량(c)은 쓰기를 막지 않으며, LSI 항목 컬렉션(d)과는 다른 오류다." }
+  facts: [dynamodb.partition.write.max]
+
+- id: dynamodb.q.secondary-indexes-gsi-projection
+  type: quiz
+  chapter: dynamodb/secondary-indexes
+  topic: dynamodb/secondary-indexes/projections
+  question: { ko: "KEYS_ONLY 프로젝션으로 만든 GSI를 Query하면서 ProjectionExpression에 프로젝션되지 않은 속성 total을 요청했다. 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "DynamoDB가 기본 테이블에서 total을 자동으로 가져온다" } }
+    - { id: b, text: { ko: "결과에 total이 없다. 필요하면 기본 테이블을 따로 읽어야 한다" } }
+    - { id: c, text: { ko: "GSI가 자동으로 INCLUDE 프로젝션으로 바뀐다" } }
+    - { id: d, text: { ko: "강력한 일관성 읽기로 바꾸면 가져올 수 있다" } }
+  answer: b
+  explanation: { ko: "GSI는 프로젝션된 속성만 돌려주고 기본 테이블에서 가져오지 않는다. 자동으로 가져오는 페치(a)는 LSI의 동작이다. 프로젝션은 저절로 바뀌지 않으며(c), GSI는 강력한 일관성 읽기를 지원하지 않는다(d). 자주 필요한 속성이면 프로젝션에 넣는다." }
+  facts: []
+
+- id: dynamodb.d.secondary-indexes-orders
+  type: design
+  chapter: dynamodb/secondary-indexes
+  topic: dynamodb/secondary-indexes/gsi-vs-lsi
+  scenario: { ko: "이미 운영 중인 Orders 테이블은 파티션 키 customerId, 정렬 키 orderId(무작위 ID)다. 접근 패턴은 두 가지다. (1) 고객 한 명의 주문을 주문 날짜순으로 최근 것부터 보여 준다. 화면에는 날짜·금액·상태만 나온다. (2) 운영 화면에서 '결제 대기' 같은 상태 하나의 주문을 날짜 범위로 조회한다. 결제 대기 주문은 전체의 일부다. 주문 항목은 배송지·상품 목록 때문에 크다. 쓰기가 읽기보다 훨씬 많다. 알맞은 설계를 모두 골라라." }
+  choices:
+    - { id: a, text: { ko: "패턴 (1): 파티션 키 customerId, 정렬 키 orderDate인 GSI를 추가하고, 프로젝션은 INCLUDE(금액·상태)로 한다" } }
+    - { id: b, text: { ko: "패턴 (1): 정렬 키가 orderDate인 LSI를 지금 테이블에 추가한다" } }
+    - { id: c, text: { ko: "패턴 (2): 파티션 키 status, 정렬 키 orderDate인 GSI를 만들되, 쓰기가 몰릴 수 있음을 감안해 GSI 쓰기 용량과 스로틀링 지표를 따로 관리한다" } }
+    - { id: d, text: { ko: "두 GSI 모두 조회가 편하도록 ALL 프로젝션을 쓴다" } }
+    - { id: e, text: { ko: "패턴 (2): 인덱스 없이 Scan에 status와 날짜 필터 표현식을 붙인다" } }
+  answer_set: [a, c]
+  rubric:
+    ko:
+      - "a와 c를 모두 고르면 정답이다. a는 운영 중인 테이블에 추가할 수 있고, ScanIndexForward를 false로 주면 최근 주문부터 나온다. 화면에 필요한 속성만 INCLUDE로 넣어 저장·쓰기 비용을 줄이면서 기본 테이블 추가 조회도 피한다."
+      - "c는 상태별·날짜 범위 조회를 Query 한 번으로 처리한다. status는 값 종류가 적어 GSI 핫 파티션과 백 프레셔가 생길 수 있으므로 GSI 쓰기 용량과 스로틀링을 따로 지켜봐야 한다. 결제 대기 주문에만 별도 속성을 두는 희소 인덱스로 바꾸는 답도 가산점이다."
+      - "b는 감점: LSI는 테이블을 만들 때만 정의할 수 있어 운영 중인 테이블에 추가할 수 없다."
+      - "d는 감점: 항목이 크고 쓰기가 많아 ALL 프로젝션은 저장·쓰기 비용을 크게 늘린다. 화면에 필요 없는 배송지·상품 목록까지 복사된다."
+      - "e는 감점: Scan은 테이블 전체를 읽고 필터는 읽은 뒤에 거르므로, 테이블이 커질수록 느려지고 읽기 용량을 많이 쓴다."
+  facts: []

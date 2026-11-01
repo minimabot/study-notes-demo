@@ -1,0 +1,74 @@
+# 장: 처리량 용량 모드
+chapter:
+  id: dynamodb/capacity
+  title:
+    ko: 용량 모드 (온디맨드·프로비저닝)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/capacity-mode.html
+  topics:
+    - id: dynamodb/capacity/modes
+      title:
+        ko: 두 가지 처리량 모드
+      exam_tags:
+        - SAA-C03#3.3
+        - SAA-C03#4.3
+        - SAP-C03#3.4
+      recommended:
+        - claim:
+            ko: 대부분의 워크로드에는 온디맨드 모드를 기본으로 쓴다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/capacity-mode.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/capacity-mode.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+    - id: dynamodb/capacity/on-demand
+      title:
+        ko: 온디맨드는 얼마나 빨리 늘어나는가
+      exam_tags:
+        - SAA-C03#3.3
+        - SOA-C03#2.1
+      recommended:
+        - claim:
+            ko: 이전 최고치의 2배를 넘는 증가가 예상되면 테이블을 미리 데우거나 증가를 30분 이상에 걸쳐 나눈다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode-max-throughput.html
+    - id: dynamodb/capacity/provisioned
+      title:
+        ko: 프로비저닝과 Auto Scaling, 예약 용량
+      exam_tags:
+        - SOA-C03#2.1
+        - SAA-C03#4.3
+        - SAP-C03#3.4
+      recommended:
+        - claim:
+            ko: Auto Scaling 목표 사용률을 70%로 둔다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+          checked: 2026-11-01
+        - claim:
+            ko: 테이블에 Auto Scaling을 켜면 GSI에도 같은 설정을 적용한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/reserved-capacity.html
+    - id: dynamodb/capacity/warm-burst
+      title:
+        ko: 웜 처리량, 버스트 용량, 적응형 용량
+      exam_tags:
+        - SAA-C03#3.3
+        - SOA-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/warm-throughput.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html
+    - id: dynamodb/capacity/switching
+      title:
+        ko: 모드 바꾸기
+      exam_tags:
+        - SOA-C03#2.1
+        - SAP-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-switching-capacity-modes.html

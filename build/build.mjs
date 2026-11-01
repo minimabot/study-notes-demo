@@ -111,7 +111,10 @@ const REF_RE = /\{\{(fact|raw|ch):([^}]+)\}\}/g;
 function checkText(text, where) {
   for (const m of text.matchAll(REF_RE)) {
     if (m[1] === 'fact' && !facts.has(m[2])) err(`[참조] ${where}: 없는 사실 ID ${m[2]}`);
-    if (m[1] === 'ch' && !chapters.has(m[2])) err(`[참조] ${where}: 없는 장 ID ${m[2]}`);
+    if (m[1] === 'ch' && !chapters.has(m[2])) {
+      const planned = [...volumes.values()].some((v) => v.order.includes(m[2]));
+      if (planned) warn(`[참조] ${where}: 아직 쓰지 않은 장 ${m[2]} (링크 없이 표시)`); else err(`[참조] ${where}: 없는 장 ID ${m[2]}`);
+    }
   }
   const stripped = text.replace(/```[\s\S]*?```/g, '').replace(/`[^`]*`/g, '').replace(REF_RE, '');
   for (const m of stripped.matchAll(UNIT_RE)) err(`[수치 직접 쓰기] ${where}: "${m[0]}" → 사실 항목으로 옮기고 {{fact:ID}}로 참조하세요 (의도한 예시 값이면 {{raw:..}})`);
@@ -171,6 +174,7 @@ function makeFootnotes() {
   const order = [];
   const sub = (text, lang) => text.replace(REF_RE, (_, kind, id) => {
     if (kind === 'raw') return esc(id);
+    if (kind === 'ch' && (!chapters.has(id) || !pages.some((p) => p.chapterId === id))) return `<span class="chlink todo">${esc(i18n[lang].coming_chapter)}</span>`;
     if (kind === 'ch') { const c = chapters.get(id); return `<a class="chlink" href="../../${esc(id)}/">${esc(c.title[lang])}</a>`; }
     const fct = facts.get(id);
     let n = order.indexOf(id) + 1;

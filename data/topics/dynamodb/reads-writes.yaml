@@ -1,0 +1,40 @@
+# 장: 읽기와 쓰기 (일관성과 용량 단위 소비)
+chapter:
+  id: dynamodb/reads-writes
+  title:
+    ko: 읽기·쓰기와 용량 단위
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ddb-reads-writes.html
+  topics:
+    - id: dynamodb/reads-writes/consistency
+      title:
+        ko: 최종 일관성과 강력한 일관성
+      exam_tags:
+        - SAA-C03#3.3
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html
+    - id: dynamodb/reads-writes/units
+      title:
+        ko: 용량 단위 계산하기
+      exam_tags:
+        - SAA-C03#3.3
+        - SAA-C03#4.3
+        - DVA-C03#1.3
+      recommended:
+        - claim:
+            ko: 속성 이름을 짧게 지어 저장 용량과 RCU·WCU 소비를 줄인다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CapacityUnitCalculations.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CapacityUnitCalculations.html
+    - id: dynamodb/reads-writes/operations
+      title:
+        ko: API마다 다른 크기 계산
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#4.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/read-write-operations.html

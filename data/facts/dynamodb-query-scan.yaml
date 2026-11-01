@@ -1,0 +1,31 @@
+# DynamoDB Query·Scan 장 전용 수치. 페이지 크기(1 MB)와 식 길이는 dynamodb-core.yaml에 있다.
+
+- id: dynamodb.scan.parallel.table-size-hint
+  value: 21474836480
+  unit: byte
+  display: { ko: "20 GB" }
+  label: { ko: "병렬 스캔이 알맞은 조건으로 AWS가 드는 테이블 크기 (이 크기 이상)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-query-scan.html#bp-query-scan-parallel
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-query-scan.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.scan.parallel.gb-per-segment
+  value: 2147483648
+  unit: byte
+  display: { ko: "2 GB" }
+  label: { ko: "TotalSegments 시작값으로 AWS가 권하는 비율: 이 크기마다 세그먼트 하나" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-query-scan.html#bp-query-scan-parallel-total-segments
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-query-scan.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.scan.total-segments.max
+  value: 1000000
+  unit: count
+  display: { ko: "1,000,000개" }
+  label: { ko: "병렬 스캔 TotalSegments에 넣을 수 있는 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-query-scan.html#bp-query-scan-parallel-total-segments
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-query-scan.html
+  checked: 2026-11-01
+  volatile: false

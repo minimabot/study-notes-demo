@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.core-components-range
+  type: quiz
+  chapter: dynamodb/core-components
+  topic: dynamodb/core-components/primary-key
+  question: { ko: "주문 테이블에서 \"특정 고객의 최근 한 달 주문\"을 자주 조회한다. 가장 알맞은 기본 키와 읽기 방식은?" }
+  choices:
+    - { id: a, text: { ko: "파티션 키 OrderId만 두고 Scan에 고객 ID 필터를 건다" } }
+    - { id: b, text: { ko: "파티션 키 CustomerId, 정렬 키 OrderDate로 두고 정렬 키 범위 조건으로 Query한다" } }
+    - { id: c, text: { ko: "파티션 키 OrderDate, 정렬 키 CustomerId로 두고 GetItem을 날짜마다 호출한다" } }
+    - { id: d, text: { ko: "파티션 키 CustomerId만 두고 주문마다 새 테이블을 만든다" } }
+  answer: b
+  explanation: { ko: "같은 파티션 키의 항목은 정렬 키 순서로 모여 있어서, Query 한 번에 정렬 키 범위로 가져올 수 있다. a의 Scan은 테이블 전체를 읽으므로 필터를 걸어도 읽는 양이 줄지 않는다. c는 날짜 하나에 모든 주문이 몰리고, GetItem은 기본 키 전체가 필요하다. d는 단순 키라 고객당 항목이 하나뿐이어서 주문 여러 건을 담지 못한다." }
+  facts: []
+
+- id: dynamodb.q.core-components-key-type
+  type: quiz
+  chapter: dynamodb/core-components
+  topic: dynamodb/core-components/data-types-naming
+  question: { ko: "테이블의 기본 키 속성으로 정의할 수 있는 형식만 모은 것은?" }
+  choices:
+    - { id: a, text: { ko: "문자열, 숫자, 이진" } }
+    - { id: b, text: { ko: "문자열, 숫자, 부울" } }
+    - { id: c, text: { ko: "문자열, 맵, 목록" } }
+    - { id: d, text: { ko: "문자열 집합, 숫자 집합, 날짜" } }
+  answer: a
+  explanation: { ko: "기본 키 속성은 문자열·숫자·이진 중 하나여야 한다. 부울(b), 맵·목록(c), 집합(d)은 일반 속성으로만 쓸 수 있다. DynamoDB에는 날짜 형식 자체가 없어서 문자열이나 에포크 초 숫자로 저장한다." }
+  facts: []
+
+- id: dynamodb.q.core-components-plane
+  type: quiz
+  chapter: dynamodb/core-components
+  topic: dynamodb/core-components/api
+  question: { ko: "다음 중 컨트롤 플레인 작업은 무엇인가?" }
+  choices:
+    - { id: a, text: { ko: "BatchWriteItem" } }
+    - { id: b, text: { ko: "Query" } }
+    - { id: c, text: { ko: "UpdateTable" } }
+    - { id: d, text: { ko: "TransactWriteItems" } }
+  answer: c
+  explanation: { ko: "UpdateTable은 테이블 설정, 인덱스, Streams 설정을 바꾸는 관리 작업이라 컨트롤 플레인이다. BatchWriteItem과 Query는 항목을 읽고 쓰는 데이터 플레인 작업이고, TransactWriteItems는 여러 항목을 원자적으로 쓰는 트랜잭션 작업이다." }
+  facts: []

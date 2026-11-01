@@ -1,0 +1,56 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.reads-writes-eventual-rcu
+  type: quiz
+  chapter: dynamodb/reads-writes
+  topic: dynamodb/reads-writes/units
+  question: { ko: "항목 크기가 {{raw:6.5 KB}}이고, 초당 {{raw:100회}} 최종 일관된 읽기(GetItem)를 한다. 프로비저닝된 모드에서 필요한 RCU는 얼마인가?" }
+  choices:
+    - { id: a, text: { ko: "{{raw:50}} RCU" } }
+    - { id: b, text: { ko: "{{raw:100}} RCU" } }
+    - { id: c, text: { ko: "{{raw:200}} RCU" } }
+    - { id: d, text: { ko: "{{raw:163}} RCU" } }
+  answer: b
+  explanation: { ko: "① {{raw:6.5 KB}}를 {{fact:dynamodb.rcu.item-size}} 단위로 올리면 {{raw:8 KB}}, 즉 {{raw:2}}단위다. ② 최종 일관성은 단위 하나로 {{fact:dynamodb.read.eventual-per-unit}} 읽으므로 요청당 {{raw:1}} RCU다. ③ 초당 {{raw:100회}}를 곱하면 {{raw:100}} RCU다. c는 강력한 일관성으로 계산한 값이다. a는 항목을 {{fact:dynamodb.rcu.item-size}} 이하로 잘못 보고 절반만 한 값이고, d는 크기를 올림하지 않고 나눈 값({{raw:6.5}} ÷ {{raw:4}} × {{raw:100}})에서 나온 오답이다." }
+  facts: [dynamodb.rcu.item-size, dynamodb.read.eventual-per-unit]
+
+- id: dynamodb.q.reads-writes-txn-wcu
+  type: quiz
+  chapter: dynamodb/reads-writes
+  topic: dynamodb/reads-writes/units
+  question: { ko: "항목 크기가 {{raw:2.5 KB}}이고, 초당 {{raw:10회}} TransactWriteItems로 항목 하나씩 쓴다. 필요한 WCU는 얼마인가?" }
+  choices:
+    - { id: a, text: { ko: "{{raw:25}} WCU" } }
+    - { id: b, text: { ko: "{{raw:30}} WCU" } }
+    - { id: c, text: { ko: "{{raw:50}} WCU" } }
+    - { id: d, text: { ko: "{{raw:60}} WCU" } }
+  answer: d
+  explanation: { ko: "① {{raw:2.5 KB}}를 {{fact:dynamodb.wcu.item-size}} 단위로 올리면 {{raw:3}}단위다. ② 트랜잭션 쓰기는 {{fact:dynamodb.txn.unit-multiplier}}이므로 요청당 {{raw:6}} WCU다. ③ 초당 {{raw:10회}}를 곱하면 {{raw:60}} WCU다. b는 트랜잭션 배수를 빠뜨린 값, c는 올림 없이 두 배만 한 값, a는 올림도 배수도 없는 값이다." }
+  facts: [dynamodb.wcu.item-size, dynamodb.txn.unit-multiplier]
+
+- id: dynamodb.q.reads-writes-batchget
+  type: quiz
+  chapter: dynamodb/reads-writes
+  topic: dynamodb/reads-writes/operations
+  question: { ko: "BatchGetItem 한 번으로 {{raw:1.5 KB}} 항목과 {{raw:6.5 KB}} 항목을 강력한 일관성으로 읽는다. 소비되는 읽기 단위는 몇 개인가?" }
+  choices:
+    - { id: a, text: { ko: "{{raw:2}}개 (합계 {{raw:8 KB}}를 기준으로 계산)" } }
+    - { id: b, text: { ko: "{{raw:3}}개 (항목마다 올림한 뒤 합산)" } }
+    - { id: c, text: { ko: "{{raw:1.5}}개 (최종 일관성처럼 절반)" } }
+    - { id: d, text: { ko: "{{raw:4}}개 (배치는 트랜잭션처럼 두 배)" } }
+  answer: b
+  explanation: { ko: "BatchGetItem은 항목마다 GetItem처럼 처리한다. {{raw:1.5 KB}}는 {{raw:4 KB}}, {{raw:6.5 KB}}는 {{raw:8 KB}}로 각각 올려 {{raw:12 KB}}, 즉 {{fact:dynamodb.rcu.item-size}} 단위 {{raw:3}}개다. 합계를 먼저 내고 올림하는 방식(a)은 Query에 해당한다. 강력한 일관성이므로 절반(c)이 아니고, 배치는 트랜잭션이 아니므로 두 배(d)도 아니다." }
+  facts: [dynamodb.rcu.item-size, dynamodb.batch-get.max-items]
+
+- id: dynamodb.q.reads-writes-gsi-strong
+  type: quiz
+  chapter: dynamodb/reads-writes
+  topic: dynamodb/reads-writes/consistency
+  question: { ko: "주문 상태를 GSI로 조회하는데, 방금 바꾼 상태가 가끔 이전 값으로 보인다. 쓰기 직후의 최신 값이 반드시 필요하다. 올바른 대응은?" }
+  choices:
+    - { id: a, text: { ko: "GSI Query에 ConsistentRead=true를 준다" } }
+    - { id: b, text: { ko: "GSI는 최종 일관된 읽기만 지원하므로, 최신 값이 필요한 읽기는 기본 테이블에 ConsistentRead=true로 한다" } }
+    - { id: c, text: { ko: "DynamoDB Streams에서 강력한 일관성으로 읽는다" } }
+    - { id: d, text: { ko: "GSI의 프로비저닝 RCU를 늘리면 지연이 사라진다" } }
+  answer: b
+  explanation: { ko: "강력한 일관된 읽기는 테이블과 LSI에서만 된다. GSI(a)와 Streams(c)는 최종 일관된 읽기만 지원한다. RCU를 늘리는 것(d)은 처리량 문제를 풀 뿐, 인덱스 반영 지연이라는 일관성 문제를 없애지 않는다." }
+  facts: []

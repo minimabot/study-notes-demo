@@ -1,0 +1,70 @@
+# 장: Query와 Scan
+chapter:
+  id: dynamodb/query-scan
+  title:
+    ko: Query와 Scan
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html
+  topics:
+    - id: dynamodb/query-scan/query
+      title:
+        ko: Query는 키로 좁혀 읽는다
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.KeyConditionExpressions.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.Other.html
+    - id: dynamodb/query-scan/filter
+      title:
+        ko: 필터는 읽은 뒤에 거른다
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.FilterExpression.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.Other.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html
+    - id: dynamodb/query-scan/pagination
+      title:
+        ko: 페이지 넘기기
+      exam_tags:
+        - DVA-C03#1.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.Pagination.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html#Scan.Pagination
+    - id: dynamodb/query-scan/scan
+      title:
+        ko: Scan과 병렬 스캔
+      exam_tags:
+        - DVA-C03#1.3
+        - SAA-C03#3.3
+      recommended:
+        - claim:
+            ko: 큰 테이블이나 인덱스에 많은 결과를 버리는 필터로 Scan하지 말고, Query를 쓰도록 테이블과 인덱스를 설계한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-query-scan.html#bp-query-scan-performance
+          checked: 2026-11-01
+        - claim:
+            ko: Scan이 다른 요청에 주는 충격을 줄이려면 Limit으로 페이지 크기를 줄이거나, 중요한 트래픽이 없는 테이블에서 Scan한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-query-scan.html#bp-query-scan-spikes
+          checked: 2026-11-01
+        - claim:
+            ko: 병렬 스캔의 TotalSegments는 데이터 크기에 비례한 단순한 비율(본문 참고)에서 시작해 지표를 보며 조정한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-query-scan.html#bp-query-scan-parallel-total-segments
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Scan.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-query-scan.html
+    - id: dynamodb/query-scan/expressions
+      title:
+        ko: 식(Expression)과 PartiQL
+      exam_tags:
+        - DVA-C03#1.3
+      recommended:
+        - claim:
+            ko: 새 애플리케이션은 레거시 조건 파라미터 대신 식(Expression)을 쓴다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.html
+          checked: 2026-11-01
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ql-reference.select.html

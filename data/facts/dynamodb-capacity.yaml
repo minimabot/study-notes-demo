@@ -1,0 +1,151 @@
+# DynamoDB 용량 모드 장 전용 수치 (2026-11-01 대조). 공용 수치는 dynamodb-core.yaml에 있다.
+
+- id: dynamodb.ondemand.new-table.write
+  value: 4000
+  unit: units/s
+  display: { ko: "초당 쓰기 4,000" }
+  label: { ko: "새 온디맨드 테이블이 바로 감당하는 쓰기 처리량" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.ondemand.new-table.read
+  value: 12000
+  unit: units/s
+  display: { ko: "초당 읽기 12,000" }
+  label: { ko: "새 온디맨드 테이블이 바로 감당하는 읽기 처리량" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.ondemand.peak-multiplier
+  value: 2
+  unit: x
+  display: { ko: "2배" }
+  label: { ko: "온디맨드 테이블이 즉시 받아 주는 트래픽 (이전 최고치 대비)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.ondemand.peak-growth-window
+  value: 1800
+  unit: s
+  display: { ko: "30분" }
+  label: { ko: "온디맨드에서 이전 최고치의 2배를 넘길 때 증가를 나눠야 하는 최소 기간 (이보다 빠르면 스로틀 가능)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/on-demand-capacity-mode.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.throughput.table-default
+  value: 40000
+  unit: units/s
+  display: { ko: "초당 40,000 단위 (읽기·쓰기 각각)" }
+  label: { ko: "테이블 하나의 기본 처리량 한도 (온디맨드·프로비저닝 공통, 증가 요청 가능)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ServiceQuotas.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.capacity.switch-to-ondemand.max
+  value: 4
+  unit: count
+  display: { ko: "24시간(롤링) 동안 4회" }
+  label: { ko: "프로비저닝 모드에서 온디맨드 모드로 바꿀 수 있는 횟수 (반대 방향은 제한 없음)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-switching-capacity-modes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-switching-capacity-modes.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.autoscaling.target.recommended
+  value: 70
+  unit: "%"
+  display: { ko: "70%" }
+  label: { ko: "AWS가 권장하는 Auto Scaling 목표 사용률" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/provisioned-capacity-mode.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.autoscaling.target.min
+  value: 20
+  unit: "%"
+  display: { ko: "20%" }
+  label: { ko: "Auto Scaling 목표 사용률로 정할 수 있는 최솟값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/AutoScaling.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.autoscaling.target.max
+  value: 90
+  unit: "%"
+  display: { ko: "90%" }
+  label: { ko: "Auto Scaling 목표 사용률로 정할 수 있는 최댓값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/AutoScaling.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.autoscaling.scale-out-breach
+  value: 120
+  unit: s
+  display: { ko: "연속 2분" }
+  label: { ko: "소비 용량이 목표 사용률을 이만큼 넘어야 Auto Scaling 확장이 시작됨" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/AutoScaling.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.autoscaling.scale-in-datapoints
+  value: 15
+  unit: count
+  display: { ko: "연속 15개 데이터 포인트" }
+  label: { ko: "소비 용량이 목표보다 이만큼 낮아야 Auto Scaling 축소가 일어남" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/AutoScaling.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.burst.retention
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "버스트 용량으로 모아 두는 미사용 처리량의 최대 분량 (앞으로 바뀔 수 있음)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/burst-adaptive-capacity.html
+  checked: 2026-11-01
+  volatile: true
+
+- id: dynamodb.reserved.allocation
+  value: 100
+  unit: units
+  display: { ko: "100 단위" }
+  label: { ko: "예약 용량 구매 단위 (RCU 또는 WCU)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/reserved-capacity.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/reserved-capacity.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.reserved.term.short
+  value: 31536000
+  unit: s
+  display: { ko: "1년" }
+  label: { ko: "예약 용량 약정 기간 (기본)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/reserved-capacity.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/reserved-capacity.html
+  checked: 2026-11-01
+  volatile: false
+
+- id: dynamodb.reserved.term.long
+  value: 94608000
+  unit: s
+  display: { ko: "3년" }
+  label: { ko: "예약 용량 약정 기간 (일부 리전에서만 제공)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/reserved-capacity.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/reserved-capacity.html
+  checked: 2026-11-01
+  volatile: true
