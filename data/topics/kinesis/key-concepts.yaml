@@ -1,0 +1,60 @@
+# 장: Kinesis Data Streams 용어와 개념
+chapter:
+  id: kinesis/key-concepts
+  title:
+    ko: 용어와 개념 (스트림·샤드·레코드)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+  topics:
+    - id: kinesis/key-concepts/architecture
+      title:
+        ko: 생산자, 소비자, 스트림
+      exam_tags:
+        - DVA-C03#1.1
+        - SAA-C03#3.5
+        - DOP-C02#5.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+    - id: kinesis/key-concepts/stream-shard
+      title:
+        ko: 데이터 스트림과 샤드의 용량
+      exam_tags:
+        - SAA-C03#3.5
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+        - https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+    - id: kinesis/key-concepts/record
+      title:
+        ko: 데이터 레코드와 시퀀스 번호
+      exam_tags:
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+        - https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+    - id: kinesis/key-concepts/partition-key
+      title:
+        ko: 파티션 키, 해시 키 범위, 순서
+      exam_tags:
+        - SAP-C03#1.1
+        - DVA-C03#1.1
+        - SAA-C03#3.5
+      recommended:
+        - claim:
+            ko: 파티션 키를 고르게 분산해 레코드가 스트림 용량 전체에 퍼지게 한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding-split.html
+        - https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-sdk.html
+    - id: kinesis/key-concepts/retention
+      title:
+        ko: 보존 기간
+      exam_tags:
+        - SAA-C03#3.5
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html

@@ -1,0 +1,62 @@
+# 장: 용량 모드
+chapter:
+  id: kinesis/capacity-modes
+  title:
+    ko: 용량 모드 (온디맨드·프로비저닝)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  topics:
+    - id: kinesis/capacity-modes/modes
+      title:
+        ko: 세 가지 용량 모드
+      exam_tags:
+        - SAA-C03#3.5
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+    - id: kinesis/capacity-modes/on-demand
+      title:
+        ko: 온디맨드 표준은 얼마나 빨리 늘어나는가
+      exam_tags:
+        - SAA-C03#3.5
+        - DOP-C02#3.2
+      recommended:
+        - claim:
+            ko: 이전 최고치의 2배를 넘는 급증으로 스로틀된 요청은 모두 재시도한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+          checked: 2026-11-02
+        - claim:
+            ko: 온디맨드 스트림에서 GetRecords 소비자는 하나만 두고, 소비자 애플리케이션이 둘 이상이면 향상된 팬아웃을 쓴다
+          source: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+          checked: 2026-11-02
+        - claim:
+            ko: 파티션 키가 심하게 치우쳤다면 샤드를 세밀하게 나눌 수 있는 프로비저닝 모드를 쓴다
+          source: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+    - id: kinesis/capacity-modes/advantage
+      title:
+        ko: On-demand Advantage와 웜 처리량
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/updating-a-stream.html
+    - id: kinesis/capacity-modes/provisioned
+      title:
+        ko: 프로비저닝 샤드 수 계산
+      exam_tags:
+        - SAA-C03#3.5
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+        - https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html
+    - id: kinesis/capacity-modes/switching
+      title:
+        ko: 모드 바꾸기
+      exam_tags:
+        - SOA-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/updating-a-stream.html

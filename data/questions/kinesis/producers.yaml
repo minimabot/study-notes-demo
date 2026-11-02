@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.producers-partial-failure
+  type: quiz
+  chapter: kinesis/producers
+  topic: kinesis/producers/partial-failures
+  question: { ko: "생산자가 PutRecords로 레코드 {{raw:300건}}을 보냈다. HTTP 응답은 성공(200)이었는데, 소비자 쪽에서 일부 레코드가 보이지 않는다. 생산자 코드에서 가장 먼저 고칠 점은?" }
+  choices:
+    - { id: a, text: { ko: "HTTP 응답이 성공이면 모든 레코드가 들어간 것이므로 소비자 코드를 의심한다" } }
+    - { id: b, text: { ko: "응답의 FailedRecordCount를 확인하고, ErrorCode가 있는 칸의 레코드만 골라 다시 보낸다" } }
+    - { id: c, text: { ko: "실패가 있으면 요청 전체를 같은 내용으로 다시 보낸다" } }
+    - { id: d, text: { ko: "PutRecords 대신 SequenceNumberForOrdering을 넣은 PutRecord로 한 건씩 보낸다" } }
+  answer: b
+  explanation: { ko: "PutRecords는 레코드 일부가 실패해도 나머지를 계속 처리하고 요청 자체는 성공으로 돌려준다(a는 틀림). 응답 Records 배열은 요청과 같은 순서이므로, ErrorCode(ProvisionedThroughputExceededException 또는 InternalFailure)가 있는 칸의 레코드만 다시 보낸다. 전체를 다시 보내면(c) 이미 성공한 레코드가 중복으로 들어간다. SequenceNumberForOrdering은 PutRecord에만 있는 순서용 매개변수로 실패 처리와 관계없다(d)." }
+  facts: [kinesis.putrecords.max-records]
+
+- id: kinesis.q.producers-hot-shard
+  type: quiz
+  chapter: kinesis/producers
+  topic: kinesis/producers/partition-key
+  question: { ko: "샤드 {{raw:10개}}짜리 스트림에 국가 코드를 파티션 키로 써서 주문 이벤트를 쓴다. 주문의 대부분이 한 나라에서 나오고, 그 나라 레코드만 ProvisionedThroughputExceededException을 받는다. 다른 샤드는 한가하다. 고객별 주문 순서는 지켜져야 한다. 가장 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "샤드를 두 배로 늘린다. 키는 그대로 둔다" } }
+    - { id: b, text: { ko: "파티션 키를 고객 ID처럼 값이 훨씬 많은 키로 바꾼다" } }
+    - { id: c, text: { ko: "모든 레코드에 같은 ExplicitHashKey를 넣는다" } }
+    - { id: d, text: { ko: "KPL 속도 제한 임계값을 낮춘다" } }
+  answer: b
+  explanation: { ko: "같은 파티션 키는 늘 같은 샤드로 가므로, 키 하나에 몰리는 양이 샤드 쓰기 용량({{fact:kinesis.shard.write}})을 넘으면 샤드를 늘려도(a) 그 키는 여전히 한 샤드에 몰린다. 고객 ID처럼 값이 많은 키는 부하를 고르게 퍼뜨리고 고객 단위 순서도 지킨다. 모든 레코드에 같은 ExplicitHashKey를 넣으면(c) 오히려 한 샤드로 모은다. 속도 제한을 낮추면(d) 재시도 폭주는 줄지만 처리량은 늘지 않는다." }
+  facts: [kinesis.shard.write]
+
+- id: kinesis.q.producers-kpl-latency
+  type: quiz
+  chapter: kinesis/producers
+  topic: kinesis/producers/kpl
+  question: { ko: "작은 IoT 이벤트를 매우 많이 쓰는 생산자를 KPL로 옮겼다. 처리량은 크게 올랐지만 이벤트가 스트림에 늦게 도착한다는 불만이 생겼다. 원인과 대응으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "KPL은 레코드를 RecordMaxBufferedTime까지 모았다가 보내므로 지연이 생긴다. 값을 줄이거나, 지연을 견딜 수 없으면 SDK로 직접 쓴다" } }
+    - { id: b, text: { ko: "KPL은 재시도 때 지수 백오프를 쓰므로 지연이 생긴다. 백오프를 끈다" } }
+    - { id: c, text: { ko: "집계된 레코드는 서비스가 풀어서 저장하느라 늦어진다. 소비자를 바꿀 필요는 없다" } }
+    - { id: d, text: { ko: "쓰기마다 flushSync()를 불러 즉시 보내게 한다" } }
+  answer: a
+  explanation: { ko: "KPL은 묶음 효율을 위해 최대 RecordMaxBufferedTime만큼 버퍼에 모은다. 값을 줄이면 지연이 줄고 묶음 효율은 떨어진다. KPL 재시도에는 백오프 알고리즘이 없고 토큰 버킷 속도 제한만 있다(b는 틀림). 서비스는 집계된 레코드를 풀지 않는다. 소비자가 KCL이나 디집계 라이브러리로 푼다(c는 틀림). flushSync()는 종료용이며 쓰기마다 부르면 {{fact:kinesis.kpl.flushsync.delay}} 정도가 더해진다(d)." }
+  facts: [kinesis.kpl.flushsync.delay, kinesis.kpl.rate-limit.default]

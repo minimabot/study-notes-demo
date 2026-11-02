@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.overview-choose
+  type: quiz
+  chapter: kinesis/overview
+  topic: kinesis/overview/vs-sqs
+  question: { ko: "웹 클릭스트림을 받아 (1) 실시간 집계 애플리케이션과 (2) S3 보관 애플리케이션이 같은 데이터를 각자 읽어야 한다. 집계 로직에 버그가 생기면 지난 데이터를 다시 처리할 수 있어야 한다. 가장 알맞은 서비스는?" }
+  choices:
+    - { id: a, text: { ko: "SQS 표준 대기열 하나를 두고 두 애플리케이션이 함께 폴링한다" } }
+    - { id: b, text: { ko: "Kinesis Data Streams 스트림 하나를 두고 두 애플리케이션이 각자 읽는다" } }
+    - { id: c, text: { ko: "SQS FIFO 대기열 하나를 두고 메시지 그룹 ID로 두 애플리케이션을 나눈다" } }
+    - { id: d, text: { ko: "SNS 표준 주제에 게시하고 두 애플리케이션을 구독시킨다" } }
+  answer: b
+  explanation: { ko: "KDS는 여러 애플리케이션이 같은 레코드를 독립적으로 읽고, 보존 기간(기본 {{fact:kinesis.retention.default}}) 안이면 다시 읽을 수 있다. SQS(a, c)에서는 메시지 하나를 한 소비자가 처리하고 지우므로 두 애플리케이션이 같은 데이터를 다 받지 못하고, 지운 메시지는 다시 읽을 수 없다. SNS(d)는 두 구독자에게 나눠 주지만 메시지를 쌓아 두지 않아 다시 처리할 수 없다." }
+  facts: [kinesis.retention.default]
+
+- id: kinesis.q.overview-related
+  type: quiz
+  chapter: kinesis/overview
+  topic: kinesis/overview/related
+  question: { ko: "KDS 스트림에 들어온 데이터를 소비자 코드를 직접 짜지 않고 Amazon S3에 버퍼링해 적재하려 한다. 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "Amazon Data Firehose의 원본으로 KDS 스트림을 지정한다" } }
+    - { id: b, text: { ko: "Kinesis Video Streams로 스트림을 옮긴다" } }
+    - { id: c, text: { ko: "보존 기간을 최대 {{fact:kinesis.retention.max}}로 늘리면 S3에 자동 복사된다" } }
+    - { id: d, text: { ko: "생산자가 PutRecords 대신 PutRecord를 쓰게 한다" } }
+  answer: a
+  explanation: { ko: "Firehose는 스트리밍 데이터를 S3 같은 대상에 버퍼링해 전달하는 서비스이고 KDS 스트림을 원본으로 쓸 수 있다. Kinesis Video Streams(b)는 영상용이다. 보존 기간(c)은 스트림 안에 두는 기간일 뿐 S3로 복사하지 않는다. PutRecord와 PutRecords(d)는 넣는 쪽 API 차이로 적재 대상과 관계없다." }
+  facts: [kinesis.retention.max]
+
+- id: kinesis.q.overview-latency
+  type: quiz
+  chapter: kinesis/overview
+  topic: kinesis/overview/what
+  question: { ko: "Kinesis Data Streams에 대한 설명으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "소비자가 레코드를 읽으면 그 레코드는 스트림에서 지워진다" } }
+    - { id: b, text: { ko: "레코드를 넣은 뒤 읽을 수 있게 되기까지 지연은 {{fact:kinesis.put-to-get.latency}}여서, 넣은 직후 거의 바로 소비할 수 있다" } }
+    - { id: c, text: { ko: "스트림 하나는 애플리케이션 하나만 읽을 수 있다" } }
+    - { id: d, text: { ko: "데이터를 서버에 모아 두었다가 정해진 시각에 한꺼번에 넣는 배치 전용 서비스다" } }
+  answer: b
+  explanation: { ko: "put-to-get 지연은 {{fact:kinesis.put-to-get.latency}}다. 레코드는 읽어도 지워지지 않고 보존 기간이 지나야 사라진다(a는 틀림). 여러 애플리케이션이 같은 스트림을 동시에 읽는다(c는 틀림). 데이터를 생기는 대로 바로 넣는 실시간 수집용이다(d는 틀림)." }
+  facts: [kinesis.put-to-get.latency]

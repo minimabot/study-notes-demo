@@ -1,0 +1,163 @@
+# Kinesis Data Streams 소비자 장(kinesis/consumers) 전용 사실 항목. ID 접두어 kinesis.
+# 공용 수치(샤드 읽기 2 MB/s, 향상된 팬아웃 처리량·소비자 수, GetRecords 한도, 이터레이터 만료)는 kinesis.yaml을 재사용한다.
+# Lambda 배치 기간 최댓값(lambda.sqs.batch.window.max)과 동기 페이로드 한도(lambda.payload.sync.max)는 lambda-sqs-integration.yaml을 재사용한다.
+
+- id: kinesis.getrecords.tps
+  value: 5
+  unit: count/s
+  display: { ko: "샤드당 초당 5회" }
+  label: { ko: "샤드 하나가 받아 주는 GetRecords 읽기 트랜잭션 수 (공유 처리량 소비자 전체 합)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.getrecords.cooldown
+  value: 5
+  unit: s
+  display: { ko: "5초" }
+  label: { ko: "GetRecords가 최대 크기를 돌려준 뒤, 이 시간 안에 다시 부르면 ProvisionedThroughputExceededException" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.poll.recommended
+  value: 1
+  unit: count/s
+  display: { ko: "애플리케이션마다 샤드당 초당 1회" }
+  label: { ko: "권장 폴링 빈도 (KCL 기본값도 이 값)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/kinesis-low-latency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/kinesis-low-latency.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.poll.min-safe-interval
+  value: 200
+  unit: ms
+  display: { ko: "200 ms" }
+  label: { ko: "KCL idleTimeBetweenReadsInMillis를 이보다 낮추면 읽기 한도 초과 예외가 날 수 있는 경계값" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/kinesis-low-latency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/kinesis-low-latency.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.shared.latency.one
+  value: 200
+  unit: ms
+  display: { ko: "평균 약 200 ms" }
+  label: { ko: "공유 처리량 소비자가 하나일 때 메시지 전파 지연 (문서의 대략값)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/enhanced-consumers.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.shared.latency.five
+  value: 1000
+  unit: ms
+  display: { ko: "평균 약 1,000 ms" }
+  label: { ko: "공유 처리량 소비자가 다섯일 때 메시지 전파 지연 (문서의 대략값)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/enhanced-consumers.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.efo.latency
+  value: 70
+  unit: ms
+  display: { ko: "평균 약 70 ms" }
+  label: { ko: "향상된 팬아웃 소비자의 메시지 전파 지연 (소비자가 하나든 다섯이든 비슷함, 문서의 대략값)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/enhanced-consumers.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.subscribetoshard.rate
+  value: 1
+  unit: count/s
+  display: { ko: "등록된 소비자·샤드 조합마다 초당 1회" }
+  label: { ko: "SubscribeToShard 호출 한도" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.kcl.failover.default
+  value: 10
+  unit: s
+  display: { ko: "10초" }
+  label: { ko: "KCL failoverTimeMillis 기본값 (임대 소유자가 실패했다고 보는 시간)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/kcl-configuration.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/kcl-configuration.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.iterator-age.risk
+  value: 50
+  unit: percent
+  display: { ko: "보존 기간의 50%" }
+  label: { ko: "이터레이터 나이가 이 수준을 넘으면 레코드 만료로 데이터를 잃을 위험이 있다고 문서가 경고하는 기준" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/troubleshooting-consumers.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.lambda.poll.base
+  value: 1
+  unit: count/s
+  display: { ko: "샤드마다 초당 1회" }
+  label: { ko: "Lambda 표준 이터레이터의 기본 폴링 빈도 (밀린 레코드가 있으면 따라잡을 때까지 계속 처리)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-kinesis.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.lambda.batch.default
+  value: 100
+  unit: count
+  display: { ko: "100건" }
+  label: { ko: "Kinesis 이벤트 소스 매핑 BatchSize 기본값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-kinesis-parameters.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-kinesis-parameters.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.lambda.batch.max
+  value: 10000
+  unit: count
+  display: { ko: "10,000건" }
+  label: { ko: "Kinesis 이벤트 소스 매핑 BatchSize 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-kinesis-parameters.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-kinesis-parameters.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.lambda.parallelization.max
+  value: 10
+  unit: count
+  display: { ko: "10 (기본값 1)" }
+  label: { ko: "Kinesis 이벤트 소스 매핑 ParallelizationFactor 범위의 최댓값 (샤드 하나에서 동시에 처리하는 배치 수)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-kinesis-parameters.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-kinesis-parameters.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.lambda.record-age.max
+  value: 604800
+  unit: s
+  display: { ko: "604,800초(1주)" }
+  label: { ko: "MaximumRecordAgeInSeconds 최댓값 (기본값 -1은 무한, 레코드가 스트림에서 만료될 때까지)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-kinesis-parameters.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-kinesis-parameters.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.lambda.retry.max
+  value: 10000
+  unit: count
+  display: { ko: "10,000회" }
+  label: { ko: "MaximumRetryAttempts 최댓값 (기본값 -1은 레코드가 만료될 때까지 무한 재시도)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-kinesis-parameters.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-kinesis-parameters.html
+  checked: 2026-11-02
+  volatile: false

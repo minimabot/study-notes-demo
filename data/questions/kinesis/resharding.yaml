@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.resharding-parent-first
+  type: quiz
+  chapter: kinesis/resharding
+  topic: kinesis/resharding/consumers
+  question: { ko: "SDK로 직접 만든 소비자가 리샤딩 직후 하위 샤드부터 읽기 시작했다. 같은 파티션 키의 레코드가 순서가 뒤바뀌어 처리되었다. 원인과 대책으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "리샤딩 때 상위 샤드의 레코드가 하위 샤드로 복사되며 순서가 섞인다. 리샤딩을 하지 않는다" } }
+    - { id: b, text: { ko: "상위 샤드에 아직 읽지 않은 레코드가 남아 있었다. 상위 샤드를 다음 샤드 이터레이터가 null이 될 때까지 읽은 뒤 하위 샤드를 읽는다" } }
+    - { id: c, text: { ko: "상위 샤드는 리샤딩 즉시 삭제되므로 데이터가 사라진 것이다. 보존 기간을 늘린다" } }
+    - { id: d, text: { ko: "하위 샤드는 시퀀스 번호를 쓰지 않는다. 레코드에 타임스탬프를 넣어 정렬한다" } }
+  answer: b
+  explanation: { ko: "리샤딩 전에 들어온 레코드는 상위 샤드에 그대로 남고(a는 틀림), 상위 샤드는 CLOSED 상태로 보존 기간(기본 {{fact:kinesis.retention.default}}) 동안 읽을 수 있다(c는 틀림). 순서를 지키려면 상위 샤드를 끝까지 읽은 뒤 하위 샤드로 넘어간다. KCL은 이 순서를 알아서 지킨다. d는 문서에 근거가 없다." }
+  facts: [kinesis.retention.default]
+
+- id: kinesis.q.resharding-usc-limit
+  type: quiz
+  chapter: kinesis/resharding
+  topic: kinesis/resharding/update-shard-count
+  question: { ko: "프로비저닝 모드 스트림의 샤드가 {{raw:4개}}다. 다음 주 행사 대비로 {{raw:20개}}가 필요하다. 기본 한도에서 UpdateShardCount를 어떻게 써야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "TargetShardCount를 {{raw:20}}으로 한 번 호출한다" } }
+    - { id: b, text: { ko: "한 번에 {{fact:kinesis.usc.scale-up-max}}까지만 늘릴 수 있으므로, 여러 번에 나눠 단계적으로 늘린다" } }
+    - { id: c, text: { ko: "UpdateShardCount는 온디맨드 모드에서만 쓸 수 있으므로 먼저 모드를 바꾼다" } }
+    - { id: d, text: { ko: "UpdateShardCount가 진행되는 동안 스트림 읽기·쓰기가 멈추므로 행사 직전에 한 번에 한다" } }
+  answer: b
+  explanation: { ko: "기본 한도로는 한 번에 {{fact:kinesis.usc.scale-up-max}}를 넘게 늘릴 수 없다(a는 틀림). {{raw:4개}} → {{raw:8개}} → {{raw:16개}} → {{raw:20개}}처럼 나눠 올리며, 조정 횟수 한도({{fact:kinesis.usc.daily-max}})도 지킨다. UpdateShardCount는 프로비저닝 모드 전용이고(c), 진행 중에도 읽고 쓸 수 있다(d). 행사 직전이 아니라 미리 한다." }
+  facts: [kinesis.usc.scale-up-max, kinesis.usc.daily-max]
+
+- id: kinesis.q.resharding-merge-adjacent
+  type: quiz
+  chapter: kinesis/resharding
+  topic: kinesis/resharding/split-merge
+  question: { ko: "샤드 병합(MergeShards)에 대한 설명으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "해시 키 범위가 빈틈없이 이어지는 인접한 두 샤드만 합칠 수 있다" } }
+    - { id: b, text: { ko: "한 번에 차가운 샤드를 원하는 만큼 골라 하나로 합칠 수 있다" } }
+    - { id: c, text: { ko: "CLOSED 상태의 샤드도 병합 후보가 된다" } }
+    - { id: d, text: { ko: "병합하면 스트림 용량은 줄지만 비용은 그대로다" } }
+  answer: a
+  explanation: { ko: "리샤딩은 쌍 단위라 한 번에 {{fact:kinesis.reshard.pairwise}}만 다루고(b는 틀림), 두 샤드의 해시 키 범위가 이어져야 한다. 후보를 찾을 때는 CLOSED 샤드를 뺀다(c는 틀림). 프로비저닝 모드는 샤드 단위로 요금을 내므로 병합하면 비용도 준다(d는 틀림)." }
+  facts: [kinesis.reshard.pairwise]

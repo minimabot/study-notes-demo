@@ -1,0 +1,49 @@
+# 장: 리샤딩
+chapter:
+  id: kinesis/resharding
+  title:
+    ko: 리샤딩 (샤드 분할·병합)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding.html
+  topics:
+    - id: kinesis/resharding/split-merge
+      title:
+        ko: 분할과 병합, 상위·하위 샤드
+      exam_tags:
+        - SAA-C03#3.5
+        - SOA-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding-split.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding-merge.html
+    - id: kinesis/resharding/strategy
+      title:
+        ko: 뜨거운 샤드와 차가운 샤드
+      exam_tags:
+        - SAA-C03#3.2
+        - DOP-C02#3.2
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding-strategies.html
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+    - id: kinesis/resharding/update-shard-count
+      title:
+        ko: UpdateShardCount와 그 한도
+      exam_tags:
+        - SOA-C03#2.1
+        - DOP-C02#3.2
+      recommended:
+        - claim:
+            ko: UpdateShardCount의 목표 샤드 수는 현재 샤드 수의 25% 배수로 잡는다
+          source: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+    - id: kinesis/resharding/consumers
+      title:
+        ko: 리샤딩 뒤의 샤드 상태와 소비자
+      exam_tags:
+        - SAA-C03#3.5
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-after-resharding.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-record-processor-scaling.html

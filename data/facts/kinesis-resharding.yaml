@@ -1,0 +1,82 @@
+# Kinesis Data Streams 리샤딩 장(kinesis/resharding) 전용 사실 항목. ID 접두어 kinesis.
+# 출처: Reshard a stream, UpdateShardCount API 참조, Quotas and limits. 2026-11-02 대조.
+
+- id: kinesis.reshard.pairwise
+  value: 2
+  unit: count
+  display: { ko: "2개" }
+  label: { ko: "분할·병합 작업 한 번이 다루는 샤드 수 (분할은 하나를 둘로, 병합은 둘을 하나로)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/kinesis-using-sdk-java-resharding.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.splitmerge.tps
+  value: 5
+  unit: TPS
+  display: { ko: "스트림당 초당 5회" }
+  label: { ko: "SplitShard·MergeShards API 호출 한도 (각각, 프로비저닝 모드 전용)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.usc.daily-max
+  value: 10
+  unit: count
+  display: { ko: "롤링 24시간에 10회" }
+  label: { ko: "UpdateShardCount로 스트림 하나를 조정할 수 있는 횟수 (기본 한도)" }
+  source_en: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/kinesis/latest/APIReference/API_UpdateShardCount.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.usc.scale-up-max
+  value: 2
+  unit: x
+  display: { ko: "현재 샤드 수의 2배" }
+  label: { ko: "UpdateShardCount 한 번으로 늘릴 수 있는 최대 목표 (기본 한도)" }
+  source_en: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/kinesis/latest/APIReference/API_UpdateShardCount.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.usc.scale-down-min
+  value: 0.5
+  unit: x
+  display: { ko: "현재 샤드 수의 절반" }
+  label: { ko: "UpdateShardCount 한 번으로 줄일 수 있는 최소 목표 (기본 한도)" }
+  source_en: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/kinesis/latest/APIReference/API_UpdateShardCount.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.usc.stream-max
+  value: 10000
+  unit: count
+  display: { ko: "10,000개" }
+  label: { ko: "UpdateShardCount로 늘릴 수 있는 스트림 하나의 샤드 수 (기본 한도)" }
+  source_en: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/kinesis/latest/APIReference/API_UpdateShardCount.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.usc.tps
+  value: 10
+  unit: TPS
+  display: { ko: "초당 10회" }
+  label: { ko: "UpdateShardCount 호출 빈도 한도 (넘으면 LimitExceededException)" }
+  source_en: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/kinesis/latest/APIReference/API_UpdateShardCount.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.usc.step
+  value: 25
+  unit: "%"
+  display: { ko: "25%의 배수(25%, 50%, 75%, 100%)" }
+  label: { ko: "UpdateShardCount 목표 샤드 수로 권장하는 값 (현재 샤드 수 대비). 아니면 조정이 더 오래 걸릴 수 있음" }
+  source_en: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/kinesis/latest/APIReference/API_UpdateShardCount.html
+  checked: 2026-11-02
+  volatile: false

@@ -1,0 +1,85 @@
+# 장: 생산자 — 스트림에 데이터 쓰기
+chapter:
+  id: kinesis/producers
+  title:
+    ko: 생산자 (PutRecords·KPL·파티션 키)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/building-producers.html
+  topics:
+    - id: kinesis/producers/put-apis
+      title:
+        ko: PutRecord와 PutRecords
+      exam_tags:
+        - DVA-C03#1.1
+        - SAA-C03#3.5
+      recommended:
+        - claim:
+            ko: 대부분의 애플리케이션에서는 PutRecord보다 PutRecords를 쓴다
+          source: https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-sdk.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-sdk.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+    - id: kinesis/producers/partial-failures
+      title:
+        ko: PutRecords의 부분 실패 처리
+      exam_tags:
+        - DVA-C03#1.1
+      recommended: []
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-sdk.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-record-processor-duplicates.html
+    - id: kinesis/producers/partition-key
+      title:
+        ko: 파티션 키 고르기와 ExplicitHashKey
+      exam_tags:
+        - SAP-C03#1.1
+        - DVA-C03#1.1
+        - SAA-C03#3.5
+      recommended:
+        - claim:
+            ko: 파티션 키 수를 샤드 수보다 훨씬 많게 두어 데이터가 샤드에 고르게 퍼지게 한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/building-producers.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/building-producers.html
+        - https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-sdk.html
+        - https://docs.aws.amazon.com/kinesis/latest/APIReference/API_PutRecord.html
+    - id: kinesis/producers/kpl
+      title:
+        ko: KPL — 집계, 수집, 재시도
+      exam_tags:
+        - DVA-C03#1.1
+        - SAA-C03#3.5
+      recommended:
+        - claim:
+            ko: 대부분의 경우 SDK로 직접 쓰기보다 KPL을 쓴다
+          source: https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-sdk.html
+          checked: 2026-11-02
+        - claim:
+            ko: KPL은 특별한 이유가 없으면 비동기 인터페이스를 쓴다
+          source: https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-kpl.html
+          checked: 2026-11-02
+        - claim:
+            ko: 생산자는 적극적으로 재시도하고, 과도한 스로틀은 스트림 용량 확장과 파티션 키 전략으로 해결한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/kinesis-producer-adv-retries-rate-limiting.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/developing-producers-with-kpl.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-kpl-concepts.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-producer-adv-retries-rate-limiting.html
+    - id: kinesis/producers/agents-troubleshooting
+      title:
+        ko: Kinesis 에이전트·다른 서비스, 그리고 느린 생산자 진단
+      exam_tags:
+        - DOP-C02#4.1
+        - DVA-C03#1.1
+      recommended:
+        - claim:
+            ko: KPL의 flushSync()는 애플리케이션 종료 때만 호출한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/writing-with-agents.html
+        - https://docs.aws.amazon.com/streams/latest/dev/using-other-services.html
+        - https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html

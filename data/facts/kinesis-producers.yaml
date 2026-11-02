@@ -1,0 +1,52 @@
+# Kinesis Data Streams 생산자 장(kinesis/producers) 전용 사실 항목. ID 접두어 kinesis.
+# 공용 수치(샤드 쓰기 용량, PutRecords 500건, 레코드 최대 크기)는 kinesis.yaml을 재사용한다.
+
+- id: kinesis.partition-key.max-length
+  value: 256
+  unit: char
+  display: { ko: "256자" }
+  label: { ko: "파티션 키(유니코드 문자열) 하나의 최대 길이" }
+  source_en: https://docs.aws.amazon.com/kinesis/latest/APIReference/API_PutRecord.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/kinesis/latest/APIReference/API_PutRecord.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.putrecords.request-max-size
+  value: 10485760
+  unit: byte
+  display: { ko: "10 MiB" }
+  label: { ko: "PutRecords 요청 하나의 전체 크기 한도 (파티션 키 포함). 할당량 페이지 기준이며, SDK 생산자 안내 페이지에는 이전 값(5 MB)이 남아 있음" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.api.control-plane.tps
+  value: 5
+  unit: count/s
+  display: { ko: "초당 5회" }
+  label: { ko: "CreateStream·DeleteStream·ListStreams·GetShardIterator·MergeShards 호출 한도" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/troubleshooting-producers.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.kpl.rate-limit.default
+  value: 150
+  unit: percent
+  display: { ko: "샤드 한도보다 50% 높은 값" }
+  label: { ko: "KPL 속도 제한(토큰 버킷)의 기본 임계값. 생산자 하나가 샤드를 포화시킬 수 있게 둔 값" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/kinesis-producer-adv-retries-rate-limiting.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/kinesis-producer-adv-retries-rate-limiting.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.kpl.flushsync.delay
+  value: 500
+  unit: ms
+  display: { ko: "쓰기마다 약 500 ms" }
+  label: { ko: "KPL flushSync()를 쓰기마다 호출할 때 더해지는 지연 (문서의 대략값)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/troubleshooting-producers.html
+  checked: 2026-11-02
+  volatile: true

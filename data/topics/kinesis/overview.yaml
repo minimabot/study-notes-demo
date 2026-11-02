@@ -1,0 +1,45 @@
+# 장: Kinesis Data Streams 개요
+chapter:
+  id: kinesis/overview
+  title:
+    ko: Kinesis Data Streams란
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+  topics:
+    - id: kinesis/overview/what
+      title:
+        ko: 무엇을 하는 서비스인가
+      exam_tags:
+        - SAA-C03#3.5
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+    - id: kinesis/overview/use-cases
+      title:
+        ko: 실시간 처리의 대표 쓰임
+      exam_tags:
+        - SAA-C03#3.5
+        - SAP-C03#1.1
+        - DOP-C02#4.2
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+    - id: kinesis/overview/related
+      title:
+        ko: Firehose, Managed Service for Apache Flink와의 관계
+      exam_tags:
+        - SAA-C03#3.5
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+        - https://docs.aws.amazon.com/firehose/latest/dev/what-is-this-service.html
+        - https://docs.aws.amazon.com/managed-flink/latest/java/what-is.html
+    - id: kinesis/overview/vs-sqs
+      title:
+        ko: SQS를 고를 때와 KDS를 고를 때
+      exam_tags:
+        - SAA-C03#3.5
+        - SAP-C03#1.1
+        - DOP-C02#5.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+        - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html

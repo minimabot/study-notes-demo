@@ -60,3 +60,95 @@
   source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
   checked: 2026-11-01
   volatile: true
+
+# ── Kinesis 권 공용 한도 (출처: Quotas and limits, 2026-11-02 대조) ──
+
+- id: kinesis.record.max-size
+  value: 10485760
+  unit: byte
+  display: { ko: "10 MiB" }
+  label: { ko: "레코드 하나의 데이터 페이로드 최대 크기 (base64 인코딩 전). 1~10 MiB 레코드는 간헐적 처리를 전제로 함" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.getrecords.max-records
+  value: 10000
+  unit: count
+  display: { ko: "10,000건" }
+  label: { ko: "GetRecords 호출 한 번이 돌려주는 레코드 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.getrecords.max-size
+  value: 10485760
+  unit: byte
+  display: { ko: "10 MB" }
+  label: { ko: "GetRecords 호출 한 번이 돌려주는 데이터 최대 크기 (샤드 하나 기준)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.putrecords.max-records
+  value: 500
+  unit: count
+  display: { ko: "500건" }
+  label: { ko: "PutRecords 요청 하나에 담을 수 있는 레코드 수" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.iterator.expiry
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "샤드 이터레이터가 발급 후 만료되는 시간" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.ondemand.default-write
+  value: 4194304
+  unit: byte/s
+  display: { ko: "초당 4 MB" }
+  label: { ko: "온디맨드 모드로 새로 만든 스트림의 기본 쓰기 처리량" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.ondemand.default-read
+  value: 8388608
+  unit: byte/s
+  display: { ko: "초당 8 MB" }
+  label: { ko: "온디맨드 모드로 새로 만든 스트림의 기본 읽기 처리량" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.mode-switch.max
+  value: 2
+  unit: count
+  display: { ko: "24시간에 2회" }
+  label: { ko: "스트림 하나의 온디맨드↔프로비저닝 모드 전환 횟수" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.ondemand.streams.default
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "온디맨드 모드 스트림 수 기본 한도 (계정당, 늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true

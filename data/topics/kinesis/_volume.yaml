@@ -1,0 +1,20 @@
+# 권 정의와 장 순서. 장 구성의 근거: Kinesis Data Streams 개발자 안내서 목차 (2026-11-02 확인)
+volume:
+  id: kinesis
+  title: { ko: "Amazon Kinesis Data Streams" }
+  structure_source: https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+order:
+  - kinesis/overview
+  - kinesis/key-concepts
+  - kinesis/capacity-modes
+  - kinesis/resharding
+  - kinesis/producers
+  - kinesis/consumers
+  - kinesis/retention-large-records
+  - kinesis/monitoring
+  - kinesis/security
+  - kinesis/troubleshooting
+  - kinesis/service-managed-distribution
+  - kinesis/data-delivery
+  - kinesis/cost
+  - kinesis/labs

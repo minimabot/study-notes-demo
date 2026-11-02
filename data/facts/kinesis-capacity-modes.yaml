@@ -1,0 +1,133 @@
+# Kinesis Data Streams 용량 모드 장(kinesis/capacity-modes) 전용 사실 항목. ID 접두어 kinesis.
+# 공용 수치(샤드 쓰기·읽기 용량, 온디맨드 기본 처리량, 모드 전환 횟수 등)는 kinesis.yaml을 재사용한다.
+# 출처: Choose the right mode to stream in, Quotas and limits. 2026-11-02 대조.
+
+- id: kinesis.shard.write-records
+  value: 1000
+  unit: count
+  display: { ko: "초당 1,000건" }
+  label: { ko: "샤드 하나가 받는 초당 쓰기 레코드 수 한도 (데이터 양 한도와 별도로 적용)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.ondemand.peak-multiplier
+  value: 2
+  unit: x
+  display: { ko: "2배" }
+  label: { ko: "온디맨드 표준 스트림이 바로 받아 주는 쓰기 처리량 (최근 최고 쓰기 처리량 대비 배수)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.ondemand.peak-lookback
+  value: 2592000
+  unit: s
+  display: { ko: "30일" }
+  label: { ko: "온디맨드 모드가 최고 쓰기 처리량을 볼 때 돌아보는 기간" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.ondemand.throttle-window
+  value: 900
+  unit: s
+  display: { ko: "15분" }
+  label: { ko: "트래픽이 이전 최고치의 2배를 넘어 이 시간 안에 늘면 쓰기 스로틀이 날 수 있음 (예외가 이어지는 시간도 약 이만큼)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.ondemand.split-threshold
+  value: 512000
+  unit: byte/s
+  display: { ko: "샤드당 초당 500 KB" }
+  label: { ko: "온디맨드 모드가 샤드 분할을 시작하는 샤드 하나의 유입 트래픽" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.ondemand.split-delay
+  value: 900
+  unit: s
+  display: { ko: "15분" }
+  label: { ko: "온디맨드 모드가 분할 기준을 넘은 샤드를 나누기까지 걸리는 시간 (이내)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.ondemand.read-multiplier
+  value: 2
+  unit: x
+  display: { ko: "쓰기 처리량의 2배 이상" }
+  label: { ko: "온디맨드 스트림에서 GetRecords로 읽을 수 있는 처리량 (쓰기 처리량 대비)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.ondemand.max.major-regions
+  value: 10
+  unit: GB/s
+  display: { ko: "쓰기 초당 10 GB, 읽기 초당 20 GB" }
+  label: { ko: "온디맨드 스트림 하나의 최대 처리량 — 미국 동부(버지니아 북부), 미국 서부(오레곤), 유럽(아일랜드) 리전" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.ondemand.max.other-regions
+  value: 200
+  unit: MB/s
+  display: { ko: "쓰기 초당 200 MB, 읽기 초당 400 MB" }
+  label: { ko: "온디맨드 스트림 하나의 최대 처리량 — 기타 리전(서울 포함). 지원 요청으로 쓰기 10 GB/s·읽기 20 GB/s까지 늘릴 수 있음" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.advantage.commit
+  value: 25
+  unit: MiB/s
+  display: { ko: "수집·조회 각각 초당 25 MiB" }
+  label: { ko: "On-demand Advantage를 켜면 약정하는 리전 내 전체 온디맨드 스트림의 최소 사용량 (모자라면 차액 청구)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.advantage.min-period
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "On-demand Advantage를 켠 뒤 끌 수 있을 때까지의 최소 기간" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.advantage.discount
+  value: 60
+  unit: "%"
+  display: { ko: "60% 이상" }
+  label: { ko: "On-demand Advantage의 수집·조회·연장 보존 단가 인하 폭 (온디맨드 표준 대비, 요금은 리전마다 다름)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.advantage.efo-consumers
+  value: 50
+  unit: count
+  display: { ko: "스트림당 50개" }
+  label: { ko: "On-demand Advantage 모드에서 등록할 수 있는 향상된 팬아웃 소비자 수" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/how-do-i-size-a-stream.html
+  checked: 2026-11-02
+  volatile: true

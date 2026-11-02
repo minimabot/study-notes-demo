@@ -1,0 +1,22 @@
+# Kinesis Data Streams 용어와 개념 장 전용 사실. ID 접두어 kinesis.
+# 출처: Terminology and concepts, Handle large records (2026-11-02 대조)
+
+- id: kinesis.hash-key.bits
+  value: 128
+  unit: bit
+  display: { ko: "128비트" }
+  label: { ko: "파티션 키를 MD5로 해시해 얻는 해시 키 값의 크기 (샤드 배정에 쓰는 정수)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/key-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/key-concepts.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.record.default-max-size
+  value: 1048576
+  unit: byte
+  display: { ko: "1 MiB" }
+  label: { ko: "스트림의 최대 레코드 크기 기본값 (기존·신규 스트림). UpdateMaxRecordSize로 kinesis.record.max-size까지 올릴 수 있음" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/large-records.html
+  checked: 2026-11-02
+  volatile: true
