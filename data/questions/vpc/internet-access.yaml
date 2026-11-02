@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.internet-access-private-public-ip
+  type: quiz
+  chapter: vpc/internet-access
+  topic: vpc/internet-access/igw
+  question: { ko: "직접 만든 VPC에 인터넷 게이트웨이를 연결했다. 서브넷 A의 인스턴스에 탄력적 IP 주소를 붙이고, 보안 그룹과 네트워크 ACL도 HTTPS를 허용했다. 그런데 인터넷에서 접속이 되지 않는다. 가장 먼저 확인할 것은?" }
+  choices:
+    - { id: a, text: { ko: "서브넷 A에 연결된 라우팅 테이블에 0.0.0.0/0 → 인터넷 게이트웨이 경로가 있는지" } }
+    - { id: b, text: { ko: "인터넷 게이트웨이의 대역폭 설정이 충분한지" } }
+    - { id: c, text: { ko: "인터넷 게이트웨이에 보안 그룹을 연결했는지" } }
+    - { id: d, text: { ko: "탄력적 IP 주소를 IPv6 주소로 바꿨는지" } }
+  answer: a
+  explanation: { ko: "서브넷이 퍼블릭인지는 연결된 라우팅 테이블에 인터넷 게이트웨이로 가는 경로가 있는지로 정해진다. 경로가 없으면 퍼블릭 주소가 있어도 인터넷과 통신하지 못한다. 인터넷 게이트웨이는 AWS가 수평 확장하는 구성 요소라 대역폭 설정이 없고(b), 보안 그룹을 붙이는 대상이 아니다(c). 탄력적 IP는 IPv4 전용이다(d)." }
+  facts: []
+
+- id: vpc.q.internet-access-ipv6-egress
+  type: quiz
+  chapter: vpc/internet-access
+  topic: vpc/internet-access/egress-only
+  question: { ko: "IPv6 주소만 쓰는 프라이빗 워크로드가 인터넷의 IPv6 패키지 저장소에서 업데이트를 받아야 한다. 인터넷에서 이 인스턴스로 먼저 연결을 거는 것은 막아야 한다. 알맞은 구성은?" }
+  choices:
+    - { id: a, text: { ko: "0.0.0.0/0 → 인터넷 게이트웨이 경로를 넣는다" } }
+    - { id: b, text: { ko: "::/0 → 송신 전용 인터넷 게이트웨이 경로를 넣는다" } }
+    - { id: c, text: { ko: "IPv6 탄력적 IP 주소를 할당해 NAT 게이트웨이에 붙인다" } }
+    - { id: d, text: { ko: "송신 전용 인터넷 게이트웨이에 보안 그룹을 붙여 인바운드를 막는다" } }
+  answer: b
+  explanation: { ko: "송신 전용 인터넷 게이트웨이는 IPv6 전용이고 상태를 저장한다. 안에서 나간 요청의 응답만 돌려보내고 밖에서 먼저 거는 연결은 막는다. a는 IPv4 경로라 IPv6 트래픽에 쓰이지 않고, 인터넷 게이트웨이는 밖에서 먼저 거는 연결도 받는다. IPv6 탄력적 IP는 없다(c). 송신 전용 인터넷 게이트웨이에는 보안 그룹을 붙일 수 없고 네트워크 ACL로 서브넷을 거른다(d)." }
+  facts: []
+
+- id: vpc.q.internet-access-bpa-ingress-only
+  type: quiz
+  chapter: vpc/internet-access
+  topic: vpc/internet-access/bpa
+  question: { ko: "계정의 한 리전에 VPC 퍼블릭 액세스 차단을 수신 전용(Ingress-only) 모드로 켰다. 제외는 없다. 그 뒤의 동작으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "프라이빗 서브넷 인스턴스는 NAT 게이트웨이를 통해 인터넷으로 나갈 수 있지만, 인터넷에서 들어오는 연결은 막힌다" } }
+    - { id: b, text: { ko: "보안 그룹이 0.0.0.0/0에서 443을 허용하면 인터넷에서 들어오는 연결도 된다" } }
+    - { id: c, text: { ko: "Site-to-Site VPN 트래픽도 모두 막힌다" } }
+    - { id: d, text: { ko: "NAT 게이트웨이를 포함해 인터넷으로 나가는 모든 트래픽이 막힌다" } }
+  answer: a
+  explanation: { ko: "수신 전용 모드는 인터넷에서 들어오는 트래픽을 막고, 바깥 방향으로만 연결을 여는 NAT 게이트웨이와 송신 전용 인터넷 게이트웨이를 통한 트래픽은 허용한다. BPA는 보안 그룹보다 우선하므로 b는 틀리다. VPN 같은 사설 연결은 영향을 받지 않는다(c). 나가는 트래픽까지 모두 막는 것은 양방향 모드다(d)." }
+  facts: []

@@ -1,0 +1,122 @@
+# 전송 게이트웨이 장(vpc/transit-gateway) 전용 사실 항목. 공용 수치는 vpc-core.yaml을 재사용한다.
+# 출처: Amazon VPC Transit Gateways 안내서 Quotas. 2026-11-02 대조.
+
+- id: vpc.tgw.per-account
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "계정(리전)당 전송 게이트웨이 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.tgw.route-tables
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "전송 게이트웨이 하나의 라우팅 테이블 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.tgw.total-routes
+  value: 10000
+  unit: count
+  display: { ko: "10,000개" }
+  label: { ko: "전송 게이트웨이 하나의 모든 라우팅 테이블에 걸친 경로(정적+동적) 합계 한도" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.tgw.attachments
+  value: 5000
+  unit: count
+  display: { ko: "5,000개" }
+  label: { ko: "전송 게이트웨이 하나의 연결(attachment) 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.tgw.per-vpc
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "VPC 하나에 연결할 수 있는 전송 게이트웨이 수 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.tgw.peering-attachments
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "전송 게이트웨이 하나의 피어링 연결(attachment) 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.tgw.bw.vpc-attachment
+  value: 100
+  unit: Gbps
+  display: { ko: "가용 영역마다 방향별 최대 100 Gbps" }
+  label: { ko: "VPC 연결(attachment) 하나의 가용 영역당 대역폭 (들어오는 방향·나가는 방향 각각)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.tgw.pps.vpc-attachment
+  value: 7500000
+  unit: count/s
+  display: { ko: "가용 영역마다 초당 최대 750만 패킷" }
+  label: { ko: "VPC 연결(attachment) 하나의 가용 영역당 초당 패킷 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.tgw.bw.connect-peer
+  value: 5
+  unit: Gbps
+  display: { ko: "최대 5 Gbps" }
+  label: { ko: "Connect 피어(GRE 터널) 하나의 최대 대역폭 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.tgw.connect-peers
+  value: 4
+  unit: count
+  display: { ko: "4개" }
+  label: { ko: "Connect 연결(attachment) 하나에 만들 수 있는 Connect 피어(GRE 터널) 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.tgw.mtu
+  value: 8500
+  unit: byte
+  display: { ko: "8500바이트" }
+  label: { ko: "전송 게이트웨이의 MTU — VPC·Direct Connect·Connect·피어링 연결 사이 트래픽" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.tgw.mtu.vpn
+  value: 1500
+  unit: byte
+  display: { ko: "1500바이트" }
+  label: { ko: "전송 게이트웨이의 VPN 연결 트래픽 MTU" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/tgw/transit-gateway-quotas.html
+  checked: 2026-11-02
+  volatile: false

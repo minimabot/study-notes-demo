@@ -1,0 +1,41 @@
+# 장 vpc/overview 전용 수치. 2026-11-02 공식 문서와 대조.
+
+- id: vpc.default-vpc.cidr
+  value: "172.31.0.0/16"
+  unit: cidr
+  display: { ko: "172.31.0.0/16 (/16)" }
+  label: { ko: "기본 VPC에 AWS가 붙이는 IPv4 CIDR 블록" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc-components.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/default-vpc-components.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.default-vpc.subnet-prefix
+  value: 20
+  unit: prefix
+  display: { ko: "/20 (4,096개)" }
+  label: { ko: "기본 VPC의 가용 영역마다 만드는 기본 서브넷 크기" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc-components.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/default-vpc-components.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.default-vpc.since
+  value: "2013-12-04"
+  unit: date
+  display: { ko: "2013년 12월 4일" }
+  label: { ko: "이 날 이후 만든 계정은 리전마다 기본 VPC를 받는다" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/how-it-works.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.plan.prod-min-azs
+  value: 2
+  unit: count
+  display: { ko: "2개 이상" }
+  label: { ko: "운영 환경에 AWS가 권장하는 가용 영역 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-getting-started.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-getting-started.html
+  checked: 2026-11-02
+  volatile: false

@@ -1,0 +1,70 @@
+# 장: 서브넷과 라우팅
+chapter:
+  id: vpc/subnets-routing
+  title:
+    ko: 서브넷과 라우팅 테이블
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html
+  topics:
+    - id: vpc/subnets-routing/subnet-types
+      title:
+        ko: 서브넷 만들기와 서브넷 유형
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#3.4
+        - SOA-C03#5.1
+        - SAP-C03#1.4
+      recommended:
+        - claim:
+            ko: 리소스를 보호하려면 프라이빗 서브넷을 쓰고, 인터넷 접근은 배스천 호스트나 NAT 장치로 제공한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html#subnet-security
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/create-subnets.html
+    - id: vpc/subnets-routing/public-ip
+      title:
+        ko: 퍼블릭 IP 자동 할당 속성
+      exam_tags:
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/subnet-public-ip.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-ip-addressing.html
+    - id: vpc/subnets-routing/route-tables
+      title:
+        ko: 기본 라우팅 테이블과 사용자 지정 라우팅 테이블
+      exam_tags:
+        - SAA-C03#2.2
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+      recommended:
+        - claim:
+            ko: 기본 라우팅 테이블은 처음 상태로 두고, 새 서브넷마다 사용자 지정 라우팅 테이블을 명시적으로 연결한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html#custom-route-tables
+          checked: 2026-11-02
+        - claim:
+            ko: 기본 라우팅 테이블을 바꾸기 전에 사용자 지정 라우팅 테이블로 먼저 시험한 뒤 교체한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html#route-table-assocation
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/RouteTables.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+    - id: vpc/subnets-routing/priority
+      title:
+        ko: 경로 고르기 (가장 긴 접두사 일치와 우선순위)
+      exam_tags:
+        - SAA-C03#2.2
+        - SOA-C03#5.1
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/route-tables-priority.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html
+    - id: vpc/subnets-routing/gateway-route-tables
+      title:
+        ko: 게이트웨이 라우팅 테이블과 엣지 연결
+      exam_tags:
+        - SAP-C03#1.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/gateway-route-tables.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/RouteTables.html

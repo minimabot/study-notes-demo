@@ -1,0 +1,66 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.transit-gateway-segment
+  type: quiz
+  chapter: vpc/transit-gateway
+  topic: vpc/transit-gateway/routing
+  question: { ko: "개발 VPC와 운영 VPC가 모두 전송 게이트웨이의 기본 라우팅 테이블에 연결(association)·전파(propagation)되어 있어 서로 통신된다. 두 환경 모두 온프레미스 VPN에는 닿아야 하지만 서로는 막아야 한다. 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "개발용·운영용·VPN용 라우팅 테이블을 따로 만든다. 개발·운영 VPC는 각자 표에 연결하고 VPN 경로만 전파받는다. VPN 연결은 VPN용 표에 연결하고 개발·운영 VPC 경로를 모두 전파받는다" } }
+    - { id: b, text: { ko: "기본 라우팅 테이블은 그대로 두고 각 VPC의 보안 그룹에서 상대 환경 CIDR을 거부한다" } }
+    - { id: c, text: { ko: "VPC 연결 하나를 라우팅 테이블 두 개에 동시에 연결(association)한다" } }
+    - { id: d, text: { ko: "운영 VPC에 어플라이언스 모드를 켠다" } }
+  answer: a
+  explanation: { ko: "연결(attachment)은 라우팅 테이블 하나에만 association되고, 경로는 여러 표에 propagation할 수 있다. 표를 나누고 상대 환경 경로를 전파하지 않으면 전송 게이트웨이에서 패킷이 버려진다. 보안 그룹에는 거부 규칙이 없다(b). 연결 하나를 두 표에 association할 수 없다(c). 어플라이언스 모드는 상태 저장 장비의 가용 영역 대칭을 위한 것이다(d)." }
+  facts: []
+
+- id: vpc.q.transit-gateway-appliance
+  type: quiz
+  chapter: vpc/transit-gateway
+  topic: vpc/transit-gateway/appliance-mode
+  question: { ko: "VPC A와 VPC B 사이 트래픽을 전송 게이트웨이로 검사 VPC의 상태 저장 방화벽(가용 영역마다 한 대)에 돌렸다. 같은 가용 영역 안 통신은 되는데, 가용 영역이 다른 인스턴스 사이에서는 응답이 자주 끊긴다. 가장 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "검사 VPC의 VPC 연결에 어플라이언스 모드를 켠다" } }
+    - { id: b, text: { ko: "VPC A와 VPC B의 연결에 어플라이언스 모드를 켠다" } }
+    - { id: c, text: { ko: "방화벽을 한 가용 영역에만 두고 연결도 그 가용 영역만 켠다" } }
+    - { id: d, text: { ko: "전송 게이트웨이를 하나 더 만들어 응답 트래픽을 따로 보낸다" } }
+  answer: a
+  explanation: { ko: "어플라이언스 모드가 없으면 전송 게이트웨이는 트래픽을 출발 가용 영역에 두려 하므로, 응답이 요청을 보지 못한 다른 가용 영역의 방화벽으로 가서 버려진다. 장비가 있는 VPC의 연결에 켜야 흐름 동안 같은 가용 영역을 쓴다(b는 위치가 틀림). c는 단일 장애 지점을 만들고, d는 대칭을 보장하지 못한다." }
+  facts: []
+
+- id: vpc.q.transit-gateway-peering-route
+  type: quiz
+  chapter: vpc/transit-gateway
+  topic: vpc/transit-gateway/routing
+  question: { ko: "서울 리전과 도쿄 리전의 전송 게이트웨이를 피어링 연결로 이었다. 연결 상태는 정상인데 서울 VPC에서 도쿄 VPC로 패킷이 가지 않는다. 빠뜨린 것은?" }
+  choices:
+    - { id: a, text: { ko: "피어링 연결에서 경로 전파를 켜는 것" } }
+    - { id: b, text: { ko: "서울 쪽 전송 게이트웨이 라우팅 테이블에 도쿄 VPC CIDR을 피어링 연결로 보내는 정적 경로(도쿄 쪽도 반대 방향 경로)" } }
+    - { id: c, text: { ko: "두 전송 게이트웨이에 같은 ASN을 주는 것" } }
+    - { id: d, text: { ko: "피어링 연결을 하나 더 만들어 ECMP로 묶는 것" } }
+  answer: b
+  explanation: { ko: "전송 게이트웨이 피어링 연결은 정적 경로만 지원한다. 전파할 동적 경로가 없으므로 a는 안 된다. 여러 전송 게이트웨이에는 고유한 ASN을 쓰라는 것이 권장이다(c). 두 전송 게이트웨이 사이 피어링 연결은 하나만 둘 수 있고, 피어링은 ECMP를 지원하지 않는다(d)." }
+  facts: []
+
+- id: vpc.d.transit-gateway-multi-account
+  type: design
+  chapter: vpc/transit-gateway
+  topic: vpc/transit-gateway/routing
+  scenario: { ko: "한 리전에 VPC가 {{raw:30개}} 있다. 네트워크 계정(공용 서비스 VPC {{raw:2개}}), 개발 계정(VPC {{raw:12개}}), 운영 계정(VPC {{raw:16개}})에 나뉘어 있고, 세 계정은 같은 AWS Organizations 조직에 속한다. 온프레미스 데이터 센터와는 Direct Connect(주)와 Site-to-Site VPN(예비)으로 연결해야 한다. 요구 사항: (1) 개발과 운영은 서로 통신하면 안 된다. (2) 두 환경 모두 공용 서비스 VPC와 온프레미스에는 닿아야 한다. (3) VPC가 계속 늘어나므로 새 VPC를 붙이는 작업이 단순해야 한다. (4) 라우팅 정책은 네트워크팀이 한곳에서 관리한다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "네트워크 계정에 전송 게이트웨이를 하나 만들고 AWS RAM으로 조직과 공유한다. 각 계정은 자기 VPC를 가용 영역마다 작은 전용 서브넷 하나씩 골라 붙인다" } }
+    - { id: b, text: { ko: "개발용·운영용·공용(온프레미스 포함)용 라우팅 테이블을 둔다. 개발 VPC는 개발용 표에, 운영 VPC는 운영용 표에 연결(association)한다. 개발·운영 표에는 공용 서비스 VPC와 온프레미스 경로만 전파하고, 공용 표에는 모든 VPC 경로를 전파한다. Direct Connect 게이트웨이 연결과 BGP VPN 연결은 공용 표에 연결하고 경로 전파를 켠다" } }
+    - { id: c, text: { ko: "각 VPC 서브넷 라우팅 테이블에 온프레미스 대역과 공용 서비스 대역을 전송 게이트웨이로 보내는 경로를 넣는다" } }
+    - { id: d, text: { ko: "전송 게이트웨이 없이 {{raw:30개}} VPC를 완전 메시로 피어링하고, 온프레미스 연결은 공용 서비스 VPC의 VPN과 Direct Connect를 함께 쓴다" } }
+    - { id: e, text: { ko: "모든 연결을 기본 라우팅 테이블에 연결·전파하고, 개발과 운영의 분리는 보안 그룹과 네트워크 ACL로 한다" } }
+    - { id: f, text: { ko: "계정마다 전송 게이트웨이를 만들어 서로 피어링하고, 피어링 연결의 경로 전파로 경로를 자동으로 주고받는다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 전송 게이트웨이 하나를 RAM으로 공유하면 각 계정이 VPC만 붙이면 되고(요구 3), 라우팅 테이블은 전송 게이트웨이 쪽에 있으므로 네트워크 계정에서 한곳에서 관리하는 구성이 된다(요구 4). 조직 내 공유가 켜져 있으면 초대 수락도 필요 없다. 가용 영역마다 서브넷을 하나씩 고르지 않으면 그 가용 영역의 리소스는 전송 게이트웨이에 닿지 못한다."
+      - "b: association은 '어느 표를 보는가', propagation은 '어느 표에 길을 적는가'다. 개발 표에 운영 경로가 없으므로 개발→운영 패킷은 버려진다(요구 1). 공용 표에 모든 VPC 경로가 있으므로 공용 서비스와 온프레미스는 양쪽과 통신한다(요구 2). 같은 대역이 Direct Connect와 VPN으로 함께 전파되면 Direct Connect 경로가 앞서므로 VPN은 예비가 된다."
+      - "c: VPC 라우팅 테이블에는 전송 게이트웨이로 가는 경로가 자동으로 생기지 않는다. 각 VPC에 정적 경로를 넣어야 한다. 사내 대역을 요약 경로로 넣으면 관리가 쉽다."
+      - "d는 감점: 완전 메시는 연결 {{raw:435개}}와 VPC마다 경로 관리가 필요하다. 그리고 피어링은 에지 간 라우팅을 지원하지 않으므로 공용 서비스 VPC의 VPN·Direct Connect를 다른 VPC가 쓸 수 없다."
+      - "e는 감점: 같은 표에 모든 경로가 있으면 라우팅 수준에서 분리되지 않는다. 보안 그룹에는 거부 규칙이 없고, 규칙 실수 한 번으로 환경이 섞인다."
+      - "f는 감점: 전송 게이트웨이 피어링 연결은 정적 경로만 지원하므로 경로 전파가 되지 않는다. 한 리전에서 고가용성을 위해 전송 게이트웨이를 늘릴 필요도 없고, 연결 요금과 관리 지점만 늘어난다."
+  facts: []

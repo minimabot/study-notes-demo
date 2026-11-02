@@ -1,0 +1,161 @@
+# VPC 권 공용 수치. 다른 장은 이 파일을 고치지 않는다. 2026-11-02 공식 문서와 대조.
+
+- id: vpc.cidr.ipv4.largest
+  value: 16
+  unit: prefix
+  display: { ko: "/16 (65,536개)" }
+  label: { ko: "VPC·서브넷 IPv4 CIDR 블록의 가장 큰 크기" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-cidr-blocks.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.cidr.ipv4.smallest
+  value: 28
+  unit: prefix
+  display: { ko: "/28 (16개)" }
+  label: { ko: "VPC·서브넷 IPv4 CIDR 블록의 가장 작은 크기" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-cidr-blocks.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.subnet.reserved-ips
+  value: 5
+  unit: count
+  display: { ko: "5개 (앞 4개와 마지막 1개)" }
+  label: { ko: "서브넷마다 AWS가 예약해 쓸 수 없는 IP 주소 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/subnet-sizing.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.quota.vpcs-per-region
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "리전당 VPC 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.subnets-per-vpc
+  value: 200
+  unit: count
+  display: { ko: "200개" }
+  label: { ko: "VPC당 서브넷 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.ipv4-cidrs-per-vpc
+  value: 5
+  unit: count
+  display: { ko: "5개 (최대 50개까지 상향)" }
+  label: { ko: "VPC당 IPv4 CIDR 블록 수 기본 할당량 (기본 CIDR 포함)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.eip-per-region
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "리전당 탄력적 IP 주소 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.igw-per-vpc
+  value: 1
+  unit: count
+  display: { ko: "1개" }
+  label: { ko: "VPC 하나에 연결할 수 있는 인터넷 게이트웨이 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.quota.natgw-per-az
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "가용 영역당 NAT 게이트웨이 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.nacl-rules
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "네트워크 ACL 하나의 규칙 수 기본 할당량 (인바운드·아웃바운드 각각)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.sg-rules
+  value: 60
+  unit: count
+  display: { ko: "60개" }
+  label: { ko: "보안 그룹 하나의 규칙 수 기본 할당량 (인바운드·아웃바운드 각각)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.sg-per-eni
+  value: 5
+  unit: count
+  display: { ko: "5개 (최대 16개까지 상향)" }
+  label: { ko: "네트워크 인터페이스 하나에 붙일 수 있는 보안 그룹 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.routes-per-table
+  value: 500
+  unit: count
+  display: { ko: "500개 (최대 1,000개까지 상향)" }
+  label: { ko: "라우팅 테이블 하나의 정적 경로 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.quota.propagated-routes
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "라우팅 테이블 하나의 전파 경로 수 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.dns.pps-per-eni
+  value: 1024
+  unit: count/s
+  display: { ko: "초당 1,024패킷" }
+  label: { ko: "네트워크 인터페이스 하나가 Route 53 Resolver(.2 주소)로 보낼 수 있는 패킷 수 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.quota.shared-participants
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "서브넷을 공유받을 수 있는 VPC당 참여자 계정 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true

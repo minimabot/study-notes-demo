@@ -1,0 +1,77 @@
+# 장: VPC 엔드포인트와 PrivateLink
+chapter:
+  id: vpc/endpoints-privatelink
+  title:
+    ko: VPC 엔드포인트와 AWS PrivateLink
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html
+  topics:
+    - id: vpc/endpoints-privatelink/overview
+      title:
+        ko: PrivateLink와 엔드포인트 유형
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#3.4
+        - SAP-C03#1.4
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html
+    - id: vpc/endpoints-privatelink/gateway
+      title:
+        ko: 게이트웨이 엔드포인트 (S3·DynamoDB)
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#4.4
+        - SAP-C03#3.2
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-ddb.html
+    - id: vpc/endpoints-privatelink/interface
+      title:
+        ko: 인터페이스 엔드포인트와 프라이빗 DNS
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#3.4
+        - SAP-C03#3.2
+        - SOA-C03#5.1
+      recommended:
+        - claim:
+            ko: AWS 서비스용 VPC 엔드포인트에는 프라이빗 DNS 이름을 켠다
+          source: https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-aws-services.html
+          checked: 2026-11-02
+        - claim:
+            ko: VPC 엔드포인트마다 가용 영역을 둘 이상 켜고, 서비스를 부르는 리소스도 그 가용 영역에 둔다
+          source: https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-aws-services.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/create-interface-endpoint.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-aws-services.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+    - id: vpc/endpoints-privatelink/policies
+      title:
+        ko: 엔드포인트 정책
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-access.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html
+    - id: vpc/endpoints-privatelink/endpoint-services
+      title:
+        ko: 엔드포인트 서비스와 Gateway Load Balancer 엔드포인트
+      exam_tags:
+        - SAP-C03#1.4
+        - SAA-C03#3.4
+      recommended:
+        - claim:
+            ko: 엔드포인트 서비스의 Network Load Balancer는 가용 영역 둘 이상에 켜고 각 가용 영역에 대상을 등록한다
+          source: https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/concepts.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-load-balancer-endpoints.html

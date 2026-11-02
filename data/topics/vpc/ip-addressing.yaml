@@ -1,0 +1,71 @@
+# 장: IP 주소 지정
+chapter:
+  id: vpc/ip-addressing
+  title:
+    ko: IP 주소와 CIDR 설계
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-ip-addressing.html
+  topics:
+    - id: vpc/ip-addressing/cidr-basics
+      title:
+        ko: CIDR 표기 읽기
+      exam_tags:
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-ip-addressing.html
+    - id: vpc/ip-addressing/vpc-cidr
+      title:
+        ko: VPC CIDR 블록과 보조 CIDR
+      exam_tags:
+        - SAA-C03#3.4
+        - SOA-C03#5.1
+        - SAP-C03#1.4
+      recommended:
+        - claim:
+            ko: VPC CIDR 블록은 RFC 1918 사설 IPv4 주소 범위에서 고른다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html#vpc-sizing-ipv4
+          checked: 2026-11-02
+        - claim:
+            ko: 일부 AWS 서비스와의 주소 충돌을 피하려면 172.17.0.0/16 범위로 VPC를 만들지 않는다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html#vpc-sizing-ipv4
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/add-ipv4-cidr.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+    - id: vpc/ip-addressing/subnet-sizing
+      title:
+        ko: 서브넷 크기와 예약 주소 다섯 개
+      exam_tags:
+        - SOA-C03#3.1
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html
+    - id: vpc/ip-addressing/ipv6
+      title:
+        ko: IPv6와 듀얼 스택
+      exam_tags:
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/ipv4-ipv6-comparison.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-migrate-ipv6.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-ip-addressing.html
+    - id: vpc/ip-addressing/planning
+      title:
+        ko: 커질 것과 이어질 것을 생각한 주소 계획
+      exam_tags:
+        - SAA-C03#3.4
+        - SAP-C03#1.4
+      recommended:
+        - claim:
+            ko: 여러 VPC를 연결할 계획이면 VPC끼리 IP 주소가 겹치지 않게 한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-getting-started.html#plan-ip-addresses
+          checked: 2026-11-02
+        - claim:
+            ko: VPC의 NAU 사용량은 CloudWatch 경보로 지켜보고, 할당량에 닿기 전에 증가를 요청한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/network-address-usage.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-getting-started.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/managed-prefix-lists.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/network-address-usage.html

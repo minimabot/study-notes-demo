@@ -1,0 +1,71 @@
+# 장 vpc/ip-addressing 전용 수치. 2026-11-02 공식 문서와 대조.
+
+- id: vpc.cidr.ipv6.vpc-sizes
+  value: "/44-/60"
+  unit: prefix-range
+  display: { ko: "/44~/60 (/4 단위)" }
+  label: { ko: "VPC에 붙일 수 있는 IPv6 CIDR 블록 크기" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cidr-blocks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-cidr-blocks.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.cidr.ipv6.subnet-sizes
+  value: "/44-/64"
+  unit: prefix-range
+  display: { ko: "/44~/64 (/4 단위)" }
+  label: { ko: "서브넷에 붙일 수 있는 IPv6 CIDR 블록 크기" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/subnet-sizing.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.quota.ipv6-cidrs-per-vpc
+  value: 5
+  unit: count
+  display: { ko: "5개 (최대 50개까지 상향)" }
+  label: { ko: "VPC당 IPv6 CIDR 블록 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.nau.quota.per-vpc
+  value: 64000
+  unit: NAU
+  display: { ko: "64,000 단위 (최대 256,000까지 상향)" }
+  label: { ko: "VPC 하나의 네트워크 주소 사용량(NAU) 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/network-address-usage.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/network-address-usage.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.nau.quota.peered
+  value: 128000
+  unit: NAU
+  display: { ko: "128,000 단위 (최대 512,000까지 상향)" }
+  label: { ko: "같은 리전에서 피어링된 VPC를 합친 NAU 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/network-address-usage.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/network-address-usage.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.nau.units.ip
+  value: 1
+  unit: NAU
+  display: { ko: "1 단위" }
+  label: { ko: "EC2 네트워크 인터페이스에 할당된 IP 주소 하나(IPv4·IPv6 각각)가 차지하는 NAU" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/network-address-usage.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/network-address-usage.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.nau.units.service
+  value: 6
+  unit: NAU
+  display: { ko: "6 단위" }
+  label: { ko: "NAT 게이트웨이, Lambda 함수, Transit Gateway 연결, AZ당 NLB·GWLB·VPC 엔드포인트 하나가 차지하는 NAU" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/network-address-usage.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/network-address-usage.html
+  checked: 2026-11-02
+  volatile: false

@@ -1,0 +1,41 @@
+# VPC 보안 그룹·네트워크 ACL 장(vpc/security-groups-nacl) 전용 사실 항목. 규칙 수 할당량은 vpc-core.yaml을 재사용한다. 2026-11-02 대조.
+
+- id: vpc.nacl.rule-number.max
+  value: 32766
+  unit: count
+  display: { ko: "32766" }
+  label: { ko: "네트워크 ACL 규칙 번호로 쓸 수 있는 가장 큰 값 (1부터)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-network-acls.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.ephemeral.aws-services
+  value: "1024-65535"
+  unit: port-range
+  display: { ko: "1024-65535" }
+  label: { ko: "NAT 게이트웨이·Elastic Load Balancing·Lambda가 요청을 보낼 때 쓰는 임시 포트 범위" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/custom-network-acl.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.ephemeral.linux
+  value: "32768-61000"
+  unit: port-range
+  display: { ko: "32768-61000" }
+  label: { ko: "많은 Linux 커널(Amazon Linux 포함)이 쓰는 임시 포트 범위" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/custom-network-acl.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.ephemeral.windows
+  value: "49152-65535"
+  unit: port-range
+  display: { ko: "49152-65535" }
+  label: { ko: "Windows Server 2008 이후 버전이 쓰는 임시 포트 범위" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/custom-network-acl.html
+  checked: 2026-11-02
+  volatile: false

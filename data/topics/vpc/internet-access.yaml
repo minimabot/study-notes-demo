@@ -1,0 +1,42 @@
+# 장: 인터넷 연결
+chapter:
+  id: vpc/internet-access
+  title:
+    ko: 인터넷 연결 (인터넷 게이트웨이·탄력적 IP)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html
+  topics:
+    - id: vpc/internet-access/igw
+      title:
+        ko: 인터넷 게이트웨이와 퍼블릭 서브넷
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#3.4
+        - SOA-C03#5.1
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/subnet-public-ip.html
+    - id: vpc/internet-access/egress-only
+      title:
+        ko: IPv6 송신 전용 인터넷 게이트웨이
+      exam_tags:
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/egress-only-internet-gateway.html
+    - id: vpc/internet-access/eip
+      title:
+        ko: 탄력적 IP 주소와 퍼블릭 IPv4 요금
+      exam_tags:
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-eips.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-eip-overview.html
+    - id: vpc/internet-access/bpa
+      title:
+        ko: VPC 퍼블릭 액세스 차단 (BPA)
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa-basics.html

@@ -1,0 +1,48 @@
+# 장: VPC 피어링
+chapter:
+  id: vpc/peering
+  title:
+    ko: VPC 피어링
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+  topics:
+    - id: vpc/peering/basics
+      title:
+        ko: 피어링 연결의 동작과 만드는 순서
+      exam_tags:
+        - SAA-C03#3.4
+        - SAP-C03#1.4
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+        - https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html
+    - id: vpc/peering/limits
+      title:
+        ko: 지원하지 않는 구성 (전이·CIDR 겹침·에지 간 라우팅)
+      exam_tags:
+        - SAA-C03#3.4
+        - SAP-C03#1.4
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html
+        - https://docs.aws.amazon.com/vpc/latest/peering/peering-configurations-full-access.html
+    - id: vpc/peering/cross
+      title:
+        ko: 계정 간·리전 간 피어링과 보안 그룹 참조
+      exam_tags:
+        - SAA-C03#1.2
+        - SAP-C03#1.4
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-security-groups.html
+        - https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html
+        - https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+    - id: vpc/peering/cost-quotas
+      title:
+        ko: 요금, 할당량, 언제 피어링을 고르나
+      exam_tags:
+        - SAA-C03#4.4
+        - SAP-C03#3.2
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+        - https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-connection-quotas.html

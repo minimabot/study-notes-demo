@@ -1,0 +1,77 @@
+# 장: 보안 그룹과 네트워크 ACL
+chapter:
+  id: vpc/security-groups-nacl
+  title:
+    ko: 보안 그룹과 네트워크 ACL
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+  topics:
+    - id: vpc/security-groups-nacl/security-groups
+      title:
+        ko: 보안 그룹
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+        - DOP-C02#6.2
+      recommended:
+        - claim:
+            ko: 기본 보안 그룹 대신 리소스나 리소스 묶음별 보안 그룹을 만들어 쓴다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/default-security-group.html
+          checked: 2026-11-02
+        - claim:
+            ko: 보안 그룹은 필요한 최소 개수로 만들고, 기능과 보안 요구가 비슷한 리소스끼리 묶는다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/default-security-group.html
+    - id: vpc/security-groups-nacl/nacl
+      title:
+        ko: 네트워크 ACL
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+        - DOP-C02#6.2
+      recommended:
+        - claim:
+            ko: 네트워크 ACL 규칙 번호는 10이나 100 간격으로 매겨 나중에 규칙을 끼워 넣을 수 있게 한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nacl-rules.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/default-network-acl.html
+    - id: vpc/security-groups-nacl/ephemeral
+      title:
+        ko: 임시 포트와 응답 트래픽
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/custom-network-acl.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nacl-examples.html
+    - id: vpc/security-groups-nacl/compare
+      title:
+        ko: 둘의 비교와 함께 쓰기
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#5.3
+        - DOP-C02#6.2
+      recommended:
+        - claim:
+            ko: 보안 그룹과 비슷한 규칙의 네트워크 ACL을 만들어 VPC에 보안 계층을 하나 더한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+          checked: 2026-11-02
+        - claim:
+            ko: SSH(22)·RDP(3389) 인바운드는 특정 IP 주소 대역에만 허용하고, 넓은 포트 범위를 열지 않는다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+          checked: 2026-11-02
+        - claim:
+            ko: 보안 그룹을 만들고 수정하는 권한은 특정 IAM 주체에게만 준다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nacl-examples.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nacl-rules.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html

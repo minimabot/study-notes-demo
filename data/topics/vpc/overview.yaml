@@ -1,0 +1,60 @@
+# 장: VPC 개요
+chapter:
+  id: vpc/overview
+  title:
+    ko: VPC 개요 (구성 요소와 기본 VPC)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html
+  topics:
+    - id: vpc/overview/what-is
+      title:
+        ko: VPC란 무엇이고 어디에 걸쳐 있는가
+      exam_tags:
+        - SAA-C03#2.2
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-subnet-basics.html
+    - id: vpc/overview/building-blocks
+      title:
+        ko: 구성 요소 한눈에 보기
+      exam_tags:
+        - SOA-C03#5.1
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-subnet-basics.html
+    - id: vpc/overview/default-vpc
+      title:
+        ko: 기본 VPC에 들어 있는 것
+      exam_tags:
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc-components.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html
+    - id: vpc/overview/planning
+      title:
+        ko: VPC 계획의 순서
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#2.2
+        - SAA-C03#3.4
+      recommended:
+        - claim:
+            ko: 운영 환경은 가용 영역을 둘 이상 고르고 각 가용 영역에 리소스를 고르게 배치한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-getting-started.html#select-azs
+          checked: 2026-11-02
+        - claim:
+            ko: VPC의 IP 주소 범위는 내 네트워크, 그리고 연결할 다른 VPC의 범위와 겹치지 않게 정한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-getting-started.html#plan-ip-addresses
+          checked: 2026-11-02
+        - claim:
+            ko: 리소스를 보호하려면 프라이빗 서브넷을 쓴다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html#subnet-security
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-getting-started.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html

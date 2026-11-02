@@ -1,0 +1,28 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.overview-default-vpc
+  type: quiz
+  chapter: vpc/overview
+  topic: vpc/overview/default-vpc
+  question: { ko: "새 계정의 기본 VPC에 AWS가 미리 만들어 두지 않는 것은?" }
+  choices:
+    - { id: a, text: { ko: "VPC에 연결된 인터넷 게이트웨이" } }
+    - { id: b, text: { ko: "가용 영역마다 하나씩 있는 기본 서브넷" } }
+    - { id: c, text: { ko: "프라이빗 서브넷용 NAT 게이트웨이" } }
+    - { id: d, text: { ko: "기본 라우팅 테이블의 0.0.0.0/0 → 인터넷 게이트웨이 경로" } }
+  answer: c
+  explanation: { ko: "기본 VPC에는 {{fact:vpc.default-vpc.cidr}} CIDR, 가용 영역마다 {{fact:vpc.default-vpc.subnet-prefix}} 기본 서브넷, 인터넷 게이트웨이, 모든 트래픽을 인터넷 게이트웨이로 보내는 기본 라우팅 테이블 경로, 기본 보안 그룹·네트워크 ACL이 들어 있다(a, b, d). 기본 서브넷은 모두 퍼블릭 서브넷이라 프라이빗 서브넷도, NAT 게이트웨이도 없다. NAT 게이트웨이는 요금이 붙는 구성 요소로 직접 만들어야 한다." }
+  facts: [vpc.default-vpc.cidr, vpc.default-vpc.subnet-prefix]
+
+- id: vpc.q.overview-scope
+  type: quiz
+  chapter: vpc/overview
+  topic: vpc/overview/what-is
+  question: { ko: "한 리전에 웹 애플리케이션을 두고, 가용 영역 하나가 장애를 겪어도 서비스가 계속되게 하려 한다. VPC와 서브넷 배치로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "VPC는 가용 영역 하나에만 있으므로 가용 영역마다 VPC를 하나씩 만든다" } }
+    - { id: b, text: { ko: "VPC 하나를 만들고, 서로 다른 가용 영역에 서브넷을 두어 리소스를 나눠 둔다" } }
+    - { id: c, text: { ko: "서브넷 하나를 여러 가용 영역에 걸쳐 만든다" } }
+    - { id: d, text: { ko: "VPC는 여러 리전에 걸치므로 서브넷을 다른 리전에 하나 더 만든다" } }
+  answer: b
+  explanation: { ko: "VPC는 한 리전의 모든 가용 영역에 걸치고, 서브넷은 가용 영역 하나에만 속한다. 그래서 한 VPC 안에서 가용 영역별 서브넷에 리소스를 나누는 것이 기본 구조다. a는 VPC 범위를 잘못 알았고, c는 서브넷이 가용 영역을 넘을 수 없어서 틀린다. d는 VPC가 리전을 넘지 않으므로 틀린다. AWS는 운영 환경에 {{fact:vpc.plan.prod-min-azs}}의 가용 영역을 권장한다." }
+  facts: [vpc.plan.prod-min-azs]

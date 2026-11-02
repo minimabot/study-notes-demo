@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.peering-transitive
+  type: quiz
+  chapter: vpc/peering
+  topic: vpc/peering/limits
+  question: { ko: "VPC A는 VPC B, VPC C와 각각 피어링되어 있다. B와 C는 서로 피어링되어 있지 않다. B의 인스턴스가 C의 인스턴스와 프라이빗 IP로 통신해야 한다. 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "B의 라우팅 테이블에 C의 CIDR을 대상으로, A와의 피어링 연결을 타깃으로 하는 경로를 넣는다" } }
+    - { id: b, text: { ko: "A에서 IP 전달을 켜면 A가 B와 C 사이를 중계한다" } }
+    - { id: c, text: { ko: "B와 C 사이에 피어링 연결을 따로 만들고 양쪽 라우팅 테이블에 경로를 넣는다" } }
+    - { id: d, text: { ko: "A–B, A–C 피어링 연결에서 DNS 확인을 켠다" } }
+  answer: c
+  explanation: { ko: "VPC 피어링은 전이적 관계를 지원하지 않는다. A를 거쳐 B에서 C로 가는 경로는 만들 수 없으므로(a, b는 틀림) B와 C를 직접 피어링하고 양쪽 소유자가 경로를 넣어야 한다. 이런 연결이 많아지면 전송 게이트웨이가 대안이다. DNS 확인은 호스트 이름을 프라이빗 IP로 풀어 줄 뿐 경로를 만들지 않는다(d)." }
+  facts: []
+
+- id: vpc.q.peering-edge-nat
+  type: quiz
+  chapter: vpc/peering
+  topic: vpc/peering/limits
+  question: { ko: "공용 서비스 VPC A에 NAT 게이트웨이와 회사망으로 가는 Site-to-Site VPN이 있다. 새 VPC B를 A와 피어링하고, B의 프라이빗 서브넷 라우팅 테이블에서 0.0.0.0/0과 회사망 CIDR을 피어링 연결로 보냈다. 결과는?" }
+  choices:
+    - { id: a, text: { ko: "B는 A의 NAT 게이트웨이로 인터넷에 나가고, A의 VPN으로 회사망에 닿는다" } }
+    - { id: b, text: { ko: "B는 A의 NAT 게이트웨이와 VPN 연결을 모두 쓸 수 없다" } }
+    - { id: c, text: { ko: "인터넷은 안 되지만 회사망은 A의 VPN으로 닿는다" } }
+    - { id: d, text: { ko: "A에서 피어링 연결의 DNS 확인을 켜면 둘 다 된다" } }
+  answer: b
+  explanation: { ko: "피어링은 에지 간 라우팅을 지원하지 않는다. 상대 VPC의 인터넷 게이트웨이, NAT 장치, VPN 연결, Direct Connect 연결, S3 게이트웨이 엔드포인트는 피어링 너머에서 쓸 수 없다. 그래서 a, c는 틀리고 DNS 설정(d)과도 무관하다. B에 NAT 게이트웨이와 VPN을 따로 두거나, 전송 게이트웨이로 VPC와 VPN을 함께 잇는 구성을 쓴다." }
+  facts: []
+
+- id: vpc.q.peering-sg-region
+  type: quiz
+  chapter: vpc/peering
+  topic: vpc/peering/cross
+  question: { ko: "서울 리전의 VPC와 도쿄 리전의 VPC를 피어링했다. 서울 쪽 DB 보안 그룹에서 도쿄 쪽 앱 서버만 허용하려 한다. 인바운드 규칙의 소스로 쓸 수 있는 것은?" }
+  choices:
+    - { id: a, text: { ko: "도쿄 쪽 앱 서버 보안 그룹 ID" } }
+    - { id: b, text: { ko: "`계정ID/보안그룹ID` 형식의 도쿄 쪽 보안 그룹" } }
+    - { id: c, text: { ko: "도쿄 쪽 VPC(또는 앱 서브넷)의 CIDR 블록" } }
+    - { id: d, text: { ko: "피어링 연결 ID(pcx-...)" } }
+  answer: c
+  explanation: { ko: "상대 VPC 보안 그룹을 참조하는 기능은 같은 리전의 피어링에서만 된다. 다른 리전이면 a와 b는 쓸 수 없고, 상대 VPC의 CIDR 블록을 소스로 쓴다. 피어링 연결 ID는 라우팅 테이블의 타깃이지 보안 그룹 규칙의 소스가 아니다(d). 참고로 리전 간 피어링의 MTU는 {{fact:vpc.peering.mtu.inter-region}}로 같은 리전보다 작다." }
+  facts: [vpc.peering.mtu.inter-region]

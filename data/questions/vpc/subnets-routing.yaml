@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.subnets-routing-lpm
+  type: quiz
+  chapter: vpc/subnets-routing
+  topic: vpc/subnets-routing/priority
+  question: { ko: "VPC CIDR이 10.0.0.0/16인 서브넷의 라우팅 테이블이 다음과 같다. 10.0.0.0/16 → local, 10.1.0.0/16 → 피어링 연결, 10.0.0.0/8 → Transit Gateway, 0.0.0.0/0 → NAT 게이트웨이. 인스턴스가 10.1.7.20으로 보낸 패킷은 어디로 가는가?" }
+  choices:
+    - { id: a, text: { ko: "피어링 연결" } }
+    - { id: b, text: { ko: "Transit Gateway" } }
+    - { id: c, text: { ko: "NAT 게이트웨이" } }
+    - { id: d, text: { ko: "로컬 경로" } }
+  answer: a
+  explanation: { ko: "10.1.7.20은 10.1.0.0/16, 10.0.0.0/8, 0.0.0.0/0 세 경로와 맞는다. 10.0.0.0/16(로컬)과는 맞지 않는다(d는 틀림). 맞는 것 중 접두사가 가장 긴 /16이 이기므로 피어링 연결로 간다. Transit Gateway(/8)와 NAT 게이트웨이(/0)는 덜 구체적이라 고르지 않는다(b, c는 틀림). 테이블에 적힌 순서는 상관없다." }
+  facts: []
+
+- id: vpc.q.subnets-routing-main-table
+  type: quiz
+  chapter: vpc/subnets-routing
+  topic: vpc/subnets-routing/route-tables
+  question: { ko: "운영자가 기본 라우팅 테이블(Main route table)에 0.0.0.0/0 → 인터넷 게이트웨이 경로를 넣었다. 이후 다른 팀이 데이터베이스용 서브넷을 만들고 라우팅 테이블 연결은 따로 하지 않았다. 무엇이 문제이고 AWS가 권장하는 방식은?" }
+  choices:
+    - { id: a, text: { ko: "문제없다. 새 서브넷은 어느 라우팅 테이블에도 연결되지 않아 VPC 밖으로 나갈 수 없다" } }
+    - { id: b, text: { ko: "새 서브넷은 기본 라우팅 테이블에 암시적으로 연결되어 퍼블릭 서브넷이 된다. 기본 라우팅 테이블은 로컬 경로만 둔 상태로 두고, 서브넷마다 사용자 지정 라우팅 테이블을 명시적으로 연결한다" } }
+    - { id: c, text: { ko: "기본 라우팅 테이블을 지우고 다시 만든다" } }
+    - { id: d, text: { ko: "서브넷의 퍼블릭 IPv4 자동 할당 속성이 꺼져 있으면 이 서브넷은 프라이빗 서브넷으로 분류된다" } }
+  answer: b
+  explanation: { ko: "명시적 연결이 없는 서브넷은 기본 라우팅 테이블을 쓴다(a는 틀림). 서브넷 유형은 라우팅 테이블의 경로로 정해지므로, 인터넷 게이트웨이 경로가 있으면 퍼블릭 서브넷이다. 퍼블릭 IP 속성은 유형을 바꾸지 않는다(d는 틀림). 기본 라우팅 테이블은 지울 수 없다(c는 틀림). AWS는 기본 라우팅 테이블을 처음 상태로 두고 새 서브넷마다 사용자 지정 테이블을 명시적으로 연결하라고 권장한다." }
+  facts: []
+
+- id: vpc.q.subnets-routing-static-vs-propagated
+  type: quiz
+  chapter: vpc/subnets-routing
+  topic: vpc/subnets-routing/priority
+  question: { ko: "서브넷 라우팅 테이블에 172.16.0.0/16이 두 번 있다. 하나는 가상 프라이빗 게이트웨이에서 전파된 경로이고, 하나는 Transit Gateway를 가리키는 정적 경로다. 172.16.8.1로 가는 트래픽은 어디로 가는가?" }
+  choices:
+    - { id: a, text: { ko: "가상 프라이빗 게이트웨이. BGP로 받은 동적 경로가 늘 우선한다" } }
+    - { id: b, text: { ko: "Transit Gateway. 접두사 길이가 같으면 정적 경로가 전파된 경로보다 우선한다" } }
+    - { id: c, text: { ko: "두 경로에 번갈아 나눠 보낸다" } }
+    - { id: d, text: { ko: "충돌하므로 패킷을 버린다" } }
+  answer: b
+  explanation: { ko: "먼저 가장 긴 접두사를 보는데 둘 다 /16이다. 길이가 같으면 정적 경로 → 접두사 목록 경로 → 전파된 경로 순서로 우선한다. 그래서 정적 경로인 Transit Gateway가 이긴다(a는 틀림). VPC 라우팅 테이블은 같은 목적지를 여러 곳에 나누어 보내지 않고(c), 우선순위 규칙이 있으므로 버리지도 않는다(d). 단, 더 구체적인 전파 경로(예: /24)가 있었다면 그것이 정적 /16보다 우선한다." }
+  facts: []

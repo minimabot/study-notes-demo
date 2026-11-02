@@ -1,0 +1,73 @@
+# 장: NAT
+chapter:
+  id: vpc/nat
+  title:
+    ko: NAT 게이트웨이와 NAT 인스턴스
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
+  topics:
+    - id: vpc/nat/overview
+      title:
+        ko: NAT 장치와 퍼블릭·프라이빗 NAT 게이트웨이
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+      recommended:
+        - claim:
+            ko: NAT 인스턴스보다 NAT 게이트웨이를 쓴다 (가용성·대역폭이 낫고 관리 부담이 적다)
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+    - id: vpc/nat/ha-cost
+      title:
+        ko: 가용 영역별 배치와 요금
+      exam_tags:
+        - SAA-C03#2.2
+        - SAA-C03#4.4
+      recommended:
+        - claim:
+            ko: 가용 영역마다 NAT 게이트웨이를 만들고, 리소스가 같은 영역의 NAT 게이트웨이를 쓰도록 라우팅한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-pricing.html
+    - id: vpc/nat/limits-monitoring
+      title:
+        ko: 처리량·연결 한도와 CloudWatch 지표
+      exam_tags:
+        - SAA-C03#3.4
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/metrics-dimensions-nat-gateway.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-troubleshooting.html
+    - id: vpc/nat/regional
+      title:
+        ko: 리전 NAT 게이트웨이
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 리전 NAT 게이트웨이는 AWS가 IP 주소와 영역 확장을 관리하는 자동 모드로 쓴다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateways-regional.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateways-regional.html
+    - id: vpc/nat/nat-instance
+      title:
+        ko: NAT 인스턴스와 NAT 게이트웨이 비교
+      exam_tags:
+        - SAA-C03#4.4
+      recommended:
+        - claim:
+            ko: 기존 NAT 인스턴스는 NAT 게이트웨이로 옮긴다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/VPC_NAT_Instance.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/work-with-nat-instances.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html

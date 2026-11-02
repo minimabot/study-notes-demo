@@ -1,0 +1,68 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.endpoints-privatelink-onprem-s3
+  type: quiz
+  chapter: vpc/endpoints-privatelink
+  topic: vpc/endpoints-privatelink/gateway
+  question: { ko: "VPC에 S3 게이트웨이 엔드포인트가 있다. 온프레미스 서버가 Direct Connect로 이 VPC에 닿는다. 온프레미스 서버도 인터넷을 거치지 않고 S3에 접근하게 하려면?" }
+  choices:
+    - { id: a, text: { ko: "온프레미스 라우터에 S3 접두사 목록 대역을 Direct Connect로 보내는 경로를 넣는다. 게이트웨이 엔드포인트가 받아 준다" } }
+    - { id: b, text: { ko: "VPC에 S3 인터페이스 엔드포인트를 만들고, 온프레미스에서는 그 엔드포인트의 프라이빗 IP(DNS 이름)로 접근하게 한다" } }
+    - { id: c, text: { ko: "게이트웨이 엔드포인트 정책에 온프레미스 IP 대역을 허용한다" } }
+    - { id: d, text: { ko: "게이트웨이 엔드포인트를 다른 리전에 하나 더 만든다" } }
+  answer: b
+  explanation: { ko: "게이트웨이 엔드포인트는 VPC 밖으로 넓힐 수 없다. VPN, 피어링, 전송 게이트웨이, Direct Connect 너머의 리소스는 쓰지 못하므로 a와 c는 안 된다. 게이트웨이 엔드포인트는 같은 리전 전용이라 d도 무관하다. 온프레미스에서는 서브넷에 프라이빗 IP를 가진 인터페이스 엔드포인트를 쓴다. VPC 안 트래픽은 '인바운드 엔드포인트에만 프라이빗 DNS 사용'으로 무료인 게이트웨이 엔드포인트에 남겨 비용을 줄일 수 있다." }
+  facts: []
+
+- id: vpc.q.endpoints-privatelink-private-dns
+  type: quiz
+  chapter: vpc/endpoints-privatelink
+  topic: vpc/endpoints-privatelink/interface
+  question: { ko: "NAT 게이트웨이가 없는 프라이빗 서브넷에 SQS 인터페이스 엔드포인트를 만들었다. 애플리케이션은 SDK 기본 엔드포인트(`sqs.<리전>.amazonaws.com`)를 쓰는데 여전히 퍼블릭 IP로 접속하려다 시간 초과가 난다. 가장 먼저 확인할 것은?" }
+  choices:
+    - { id: a, text: { ko: "엔드포인트의 프라이빗 DNS가 켜져 있는지, VPC의 DNS 호스트 이름과 DNS 확인이 모두 켜져 있는지" } }
+    - { id: b, text: { ko: "서브넷 라우팅 테이블에 SQS 접두사 목록 경로가 있는지" } }
+    - { id: c, text: { ko: "엔드포인트 정책이 기본 정책인지" } }
+    - { id: d, text: { ko: "같은 가용 영역에 서브넷을 하나 더 골랐는지" } }
+  answer: a
+  explanation: { ko: "기본 서비스 이름이 엔드포인트의 프라이빗 IP로 풀리려면 프라이빗 DNS가 켜져 있어야 하고, 그 조건으로 VPC의 enableDnsHostnames와 enableDnsSupport가 모두 켜져 있어야 한다. 접두사 목록 경로는 게이트웨이 엔드포인트(S3·DynamoDB) 방식이다(b). 정책 문제라면 접속은 되고 거부 응답이 온다(c). 인터페이스 엔드포인트는 가용 영역마다 서브넷을 하나만 고를 수 있다(d). DNS가 맞다면 다음으로 엔드포인트 보안 그룹이 인바운드 HTTPS를 허용하는지 본다." }
+  facts: []
+
+- id: vpc.q.endpoints-privatelink-provider
+  type: quiz
+  chapter: vpc/endpoints-privatelink
+  topic: vpc/endpoints-privatelink/endpoint-services
+  question: { ko: "SaaS 회사가 자기 VPC의 API 서비스를 고객 계정 수백 곳에 사설로 제공하려 한다. 고객 VPC와 CIDR이 겹칠 수 있고, 고객이 회사 VPC의 다른 리소스에는 닿으면 안 된다. 알맞은 구성은?" }
+  choices:
+    - { id: a, text: { ko: "고객 VPC마다 VPC 피어링을 만든다" } }
+    - { id: b, text: { ko: "전송 게이트웨이를 RAM으로 고객 계정과 공유한다" } }
+    - { id: c, text: { ko: "서비스 앞에 Network Load Balancer를 두고 엔드포인트 서비스를 만든 뒤, 고객 계정을 권한에 넣는다. 고객은 인터페이스 엔드포인트로 접속한다" } }
+    - { id: d, text: { ko: "서비스를 게이트웨이 엔드포인트로 공개한다" } }
+  answer: c
+  explanation: { ko: "PrivateLink 엔드포인트 서비스는 Network Load Balancer 뒤의 서비스 하나만 소비자에게 내보이고, 연결은 소비자 쪽에서 시작된다. 피어링은 CIDR이 겹치면 만들 수 없고 VPC 네트워크 전체를 잇는다(a). 전송 게이트웨이도 네트워크를 잇는 방식이라 라우팅으로 따로 막아야 한다(b). 게이트웨이 엔드포인트는 S3와 DynamoDB 전용이다(d)." }
+  facts: []
+
+- id: vpc.d.endpoints-privatelink-s3-sqs
+  type: design
+  chapter: vpc/endpoints-privatelink
+  topic: vpc/endpoints-privatelink/interface
+  scenario: { ko: "가용 영역 {{raw:2곳}}의 프라이빗 서브넷에서 EC2 작업자가 돈다. 작업자는 같은 리전의 S3 버킷에서 대용량 파일을 읽고 쓰며, SQS 큐에서 작업 메시지를 받는다. 보안팀 요구: (1) VPC에 인터넷 게이트웨이와 NAT 게이트웨이를 두지 않는다. (2) 큐는 이 VPC를 거친 요청만 메시지 작업을 받아야 한다. (3) S3 전송량이 많으므로 비용을 줄인다. (4) 가용 영역 하나가 손상돼도 다른 가용 영역의 작업자는 계속 일해야 한다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "S3 게이트웨이 엔드포인트를 만들어 두 프라이빗 서브넷의 라우팅 테이블에 연결하고, 엔드포인트 정책은 회사 버킷만 허용하도록 좁힌다" } }
+    - { id: b, text: { ko: "SQS 인터페이스 엔드포인트를 두 가용 영역의 프라이빗 서브넷에 만들고 프라이빗 DNS를 켠다. VPC의 DNS 호스트 이름·DNS 확인을 켜고, 엔드포인트 보안 그룹은 작업자 보안 그룹에서 오는 TCP 443을 허용한다" } }
+    - { id: c, text: { ko: "큐 정책에 `aws:sourceVpce`가 이 SQS 엔드포인트가 아닌 메시지 작업 요청을 거부하는 문을 넣는다" } }
+    - { id: d, text: { ko: "SQS도 게이트웨이 엔드포인트로 만들어 라우팅 테이블에 연결한다" } }
+    - { id: e, text: { ko: "S3도 인터페이스 엔드포인트로 만들고 프라이빗 DNS를 켜 VPC 안 모든 S3 트래픽이 인터페이스 엔드포인트를 지나게 한다" } }
+    - { id: f, text: { ko: "비용을 줄이려고 SQS 인터페이스 엔드포인트는 가용 영역 한 곳에만 만든다" } }
+    - { id: g, text: { ko: "퍼블릭 서브넷에 NAT 게이트웨이를 두고 SQS 트래픽만 NAT로 보낸다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 같은 리전 S3에는 게이트웨이 엔드포인트가 맞다. 추가 요금이 없고 라우팅 테이블에 접두사 목록 경로가 자동으로 들어간다(요구 1, 3). 게이트웨이 엔드포인트 정책에서는 Principal을 `*`로 두고 Resource로 버킷을 좁힌다."
+      - "b: SQS는 게이트웨이 엔드포인트가 없으므로 인터페이스 엔드포인트를 쓴다. 프라이빗 DNS를 켜야 SDK 기본 엔드포인트가 프라이빗 IP로 풀린다. 두 가용 영역에 두어야 한쪽이 손상돼도 다른 쪽이 계속 쓴다(요구 4)."
+      - "c: 엔드포인트 정책은 이 문을 지나는 요청만 제한한다. 다른 경로의 요청을 막으려면 큐 정책에 조건을 넣는다(요구 2). 큐 관리 작업까지 묶으면 정책을 못 고칠 수 있으니 메시지 작업만 묶는다({{ch:sqs/security}})."
+      - "d는 감점: 게이트웨이 엔드포인트는 S3와 DynamoDB만 지원한다."
+      - "e는 감점: 동작은 하지만 가용 영역별 시간당 요금과 데이터 처리 요금이 붙는다. VPC 안 S3 트래픽은 무료인 게이트웨이 엔드포인트가 맞다(요구 3). 인터페이스 엔드포인트는 온프레미스처럼 게이트웨이 엔드포인트를 쓸 수 없는 경우에 쓴다."
+      - "f는 감점: 엔드포인트가 있는 가용 영역이 손상되면 다른 가용 영역의 작업자도 SQS에 닿지 못한다(요구 4). AWS는 가용 영역을 둘 이상 켜라고 권장한다."
+      - "g는 감점: 요구 1을 어긴다. NAT 게이트웨이 시간당·처리 요금도 든다."
+  facts: []

@@ -1,0 +1,11 @@
+# 장 vpc/subnets-routing 전용 수치. 2026-11-02 공식 문서와 대조.
+
+- id: vpc.quota.route-tables-per-vpc
+  value: 200
+  unit: count
+  display: { ko: "200개" }
+  label: { ko: "VPC당 라우팅 테이블 수 기본 할당량 (기본 라우팅 테이블 포함, 늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-02
+  volatile: true

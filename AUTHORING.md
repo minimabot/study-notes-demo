@@ -79,3 +79,4 @@ chapter:
 - 문항 ID: `dynamodb.q.<장>-<이름>`, `dynamodb.d.<장>-<이름>`.
 - 다른 권의 장으로 링크할 때도 `{{ch:sqs/integrations}}`처럼 쓴다.
 - Kinesis Data Streams 권 ID는 `kinesis`. 공용 수치는 `data/facts/kinesis.yaml`(고치지 않는다), 문서 사본은 `../sources/kinesis/*.md`, URL은 `https://docs.aws.amazon.com/streams/latest/dev/<page>.html`. 새 사실은 `data/facts/kinesis-<장>.yaml`.
+- VPC 권 ID는 `vpc`. 문서 사본: `../sources/vpc/*.md`(사용 설명서, URL `https://docs.aws.amazon.com/vpc/latest/userguide/<page>.html`), `../sources/vpc/{privatelink,peering,tgw}/*.md`(URL `https://docs.aws.amazon.com/vpc/latest/<guide>/<page>.html`), `../sources/vpc/s2svpn/*.md`(URL `https://docs.aws.amazon.com/vpn/latest/s2svpn/<page>.html`). 공용 수치는 `data/facts/vpc-core.yaml`(고치지 않는다). 새 사실은 `data/facts/vpc-<장>.yaml`.

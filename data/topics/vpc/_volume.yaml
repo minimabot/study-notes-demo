@@ -1,0 +1,24 @@
+# 권 정의와 장 순서. 장 구성의 근거: Amazon VPC 사용 설명서 목차 + PrivateLink·Transit Gateway·피어링·Site-to-Site VPN 안내서 (2026-11-02 확인)
+volume:
+  id: vpc
+  title: { ko: "Amazon VPC" }
+  structure_source: https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html
+order:
+  - vpc/overview
+  - vpc/ip-addressing
+  - vpc/subnets-routing
+  - vpc/internet-access
+  - vpc/nat
+  - vpc/security-groups-nacl
+  - vpc/dns-dhcp
+  - vpc/flow-logs-monitoring
+  - vpc/peering
+  - vpc/transit-gateway
+  - vpc/endpoints-privatelink
+  - vpc/hybrid-vpn
+  - vpc/network-protection
+  - vpc/sharing-multi-account
+  - vpc/limits
+  - vpc/network-cost
+  - vpc/design-patterns
+  - vpc/labs

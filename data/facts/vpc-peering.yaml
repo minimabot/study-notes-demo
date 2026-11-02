@@ -1,0 +1,62 @@
+# VPC 피어링 장(vpc/peering) 전용 사실 항목. 공용 수치는 vpc-core.yaml을 재사용한다.
+# 출처: VPC Peering 안내서 (How VPC peering connections work, quotas). 2026-11-02 대조.
+
+- id: vpc.peering.active-per-vpc
+  value: 50
+  unit: count
+  display: { ko: "50개 (최대 125개까지 상향)" }
+  label: { ko: "VPC 하나의 활성 VPC 피어링 연결 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-connection-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/peering/vpc-peering-connection-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.peering.pending-requests
+  value: 25
+  unit: count
+  display: { ko: "25개" }
+  label: { ko: "수락되지 않고 대기 중인 VPC 피어링 연결 요청 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-connection-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/peering/vpc-peering-connection-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.peering.request-expiry
+  value: 604800
+  unit: s
+  display: { ko: "1주(168시간)" }
+  label: { ko: "수락하지 않은 VPC 피어링 연결 요청이 만료되기까지의 시간 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-connection-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/peering/vpc-peering-connection-quotas.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.peering.mtu.intra-region
+  value: 9001
+  unit: byte
+  display: { ko: "9001바이트" }
+  label: { ko: "같은 리전 VPC 피어링 연결의 최대 전송 단위(MTU, 점보 프레임)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/peering/vpc-peering-basics.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.peering.mtu.inter-region
+  value: 8500
+  unit: byte
+  display: { ko: "8500바이트" }
+  label: { ko: "리전 간 VPC 피어링 연결의 최대 전송 단위(MTU)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/peering/vpc-peering-basics.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.peering.per-vpc-pair
+  value: 1
+  unit: count
+  display: { ko: "1개" }
+  label: { ko: "두 VPC 사이에 동시에 둘 수 있는 VPC 피어링 연결 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/peering/vpc-peering-basics.html
+  checked: 2026-11-02
+  volatile: false

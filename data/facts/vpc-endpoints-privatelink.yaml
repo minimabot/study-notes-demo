@@ -1,0 +1,72 @@
+# VPC 엔드포인트·PrivateLink 장(vpc/endpoints-privatelink) 전용 사실 항목. 공용 수치는 vpc-core.yaml을 재사용한다.
+# 출처: AWS PrivateLink 안내서 quotas. 2026-11-02 대조.
+
+- id: vpc.endpoint.interface-per-vpc
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "VPC당 인터페이스 엔드포인트와 Gateway Load Balancer 엔드포인트 합계 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/privatelink/vpc-limits-endpoints.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.endpoint.gateway-per-region
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "리전당 게이트웨이 엔드포인트 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/privatelink/vpc-limits-endpoints.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.endpoint.gateway-per-vpc
+  value: 255
+  unit: count
+  display: { ko: "255개" }
+  label: { ko: "VPC 하나에 만들 수 있는 게이트웨이 엔드포인트 수 한도" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/privatelink/vpc-limits-endpoints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.endpoint.policy-chars
+  value: 20480
+  unit: count
+  display: { ko: "20,480자" }
+  label: { ko: "VPC 엔드포인트 정책 하나의 최대 길이 (공백 포함, 조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/privatelink/vpc-limits-endpoints.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.endpoint.bw.default
+  value: 10
+  unit: Gbps
+  display: { ko: "가용 영역마다 10 Gbps" }
+  label: { ko: "VPC 엔드포인트 하나가 가용 영역당 기본으로 받는 대역폭" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/privatelink/vpc-limits-endpoints.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.endpoint.bw.max
+  value: 100
+  unit: Gbps
+  display: { ko: "가용 영역마다 100 Gbps까지 자동 확장" }
+  label: { ko: "VPC 엔드포인트 하나의 가용 영역당 자동 확장 상한 (전체 상한은 가용 영역 수 × 이 값)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/privatelink/vpc-limits-endpoints.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.endpoint.mtu
+  value: 8500
+  unit: byte
+  display: { ko: "8500바이트" }
+  label: { ko: "VPC 엔드포인트의 MTU (이보다 큰 패킷은 버림, 경로 MTU 검색 미지원)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/privatelink/vpc-limits-endpoints.html
+  checked: 2026-11-02
+  volatile: false

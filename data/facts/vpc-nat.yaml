@@ -1,0 +1,111 @@
+# VPC NAT 장(vpc/nat) 전용 사실 항목. 가용 영역당 NAT 게이트웨이 수 할당량은 vpc-core.yaml, 임시 포트 범위는 vpc-security-groups-nacl.yaml을 재사용한다. 2026-11-02 대조.
+
+- id: vpc.natgw.bandwidth.base
+  value: 5
+  unit: Gbps
+  display: { ko: "5 Gbps" }
+  label: { ko: "NAT 게이트웨이 하나가 기본으로 지원하는 대역폭" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-basics.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.natgw.bandwidth.max
+  value: 100
+  unit: Gbps
+  display: { ko: "100 Gbps" }
+  label: { ko: "NAT 게이트웨이 하나가 자동으로 늘어날 수 있는 최대 대역폭" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-basics.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.natgw.pps.base
+  value: 1000000
+  unit: count/s
+  display: { ko: "초당 100만 패킷" }
+  label: { ko: "NAT 게이트웨이 하나가 기본으로 처리하는 패킷 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-basics.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.natgw.pps.max
+  value: 10000000
+  unit: count/s
+  display: { ko: "초당 1,000만 패킷" }
+  label: { ko: "NAT 게이트웨이 하나가 자동으로 늘어날 수 있는 최대 패킷 처리량 (넘으면 패킷을 버림)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-basics.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.natgw.conn-per-ip
+  value: 55000
+  unit: count
+  display: { ko: "55,000개" }
+  label: { ko: "NAT 게이트웨이 IPv4 주소 하나가 고유 목적지(목적지 IP·포트·프로토콜 조합) 하나에 동시에 맺을 수 있는 연결 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-basics.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.natgw.ips.max
+  value: 8
+  unit: count
+  display: { ko: "8개 (기본 1개 + 보조 7개)" }
+  label: { ko: "영역 NAT 게이트웨이 하나에 연결할 수 있는 IPv4 주소 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-basics.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.natgw.eip.default
+  value: 2
+  unit: count
+  display: { ko: "2개" }
+  label: { ko: "퍼블릭 NAT 게이트웨이 하나에 연결할 수 있는 탄력적 IP 주소 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-basics.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.natgw.idle-timeout
+  value: 350
+  unit: s
+  display: { ko: "350초" }
+  label: { ko: "NAT 게이트웨이에서 아무 트래픽이 없으면 연결이 시간 초과되는 유휴 시간" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-troubleshooting.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateway-troubleshooting.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.natgw.metric-interval
+  value: 60
+  unit: s
+  display: { ko: "1분" }
+  label: { ko: "CloudWatch가 NAT 게이트웨이 지표를 보내는 간격" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway-cloudwatch.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-nat-gateway-cloudwatch.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: vpc.natgw.regional.expand-time
+  value: 3600
+  unit: s
+  display: { ko: "최대 60분" }
+  label: { ko: "리전 NAT 게이트웨이가 새 가용 영역에 생긴 리소스를 보고 그 영역으로 확장하기까지 걸리는 시간" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateways-regional.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateways-regional.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: vpc.natgw.regional.ips-per-az
+  value: 32
+  unit: count
+  display: { ko: "가용 영역당 32개" }
+  label: { ko: "리전 NAT 게이트웨이가 가용 영역마다 쓸 수 있는 IP 주소 수" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateways-regional.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/nat-gateways-regional.html
+  checked: 2026-11-02
+  volatile: true
