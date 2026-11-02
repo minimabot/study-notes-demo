@@ -1,0 +1,69 @@
+# 장: SDK로 DynamoDB 다루기
+chapter:
+  id: dynamodb/sdk
+  title:
+    ko: SDK와 CLI로 DynamoDB 다루기
+  track: practice
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.html
+  topics:
+    - id: dynamodb/sdk/overview
+      title:
+        ko: SDK가 하는 일과 인터페이스 층
+      exam_tags:
+        - DVA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 계정 기반 엔드포인트를 쓰는 SDK 클라이언트 인스턴스 하나가 상대하는 계정 수를 줄인다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKOverview.html#Programming.SDKs.endpoints
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKOverview.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.SDKs.Interfaces.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/sdk-general-information-section.html
+    - id: dynamodb/sdk/java-clients
+      title:
+        ko: Java SDK 2.x의 클라이언트 종류
+      exam_tags:
+        - DVA-C03#1.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+    - id: dynamodb/sdk/errors-retries
+      title:
+        ko: 예외 처리와 재시도 설정
+      exam_tags:
+        - DVA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: Java SDK 2.x에서는 대부분의 경우 StandardRetryStrategy를 쓴다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html#RetryPolicies
+          checked: 2026-11-02
+        - claim:
+            ko: 지연을 예측할 수 있어야 하는 경우 adaptive 재시도 모드를 쓰지 않는다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html#RetryMode
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+    - id: dynamodb/sdk/cli
+      title:
+        ko: AWS CLI로 쓰고 읽고 쿼리하기
+      exam_tags:
+        - DVA-C03#1.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/cli/latest/reference/dynamodb/index.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-5.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.LowLevelAPI.html
+    - id: dynamodb/sdk/java-enhanced
+      title:
+        ko: Java 향상된 클라이언트 예제
+      exam_tags:
+        - DVA-C03#1.1
+        - DVA-C03#1.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+        - https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/dynamodb-enhanced-client.html

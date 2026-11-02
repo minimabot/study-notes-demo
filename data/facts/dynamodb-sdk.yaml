@@ -1,0 +1,31 @@
+# DynamoDB SDK 장 전용 수치 (2026-11-02 대조). AWS SDK for Java 2.x의 DynamoDB 클라이언트 기본값이다. SDK 버전에 따라 바뀔 수 있다.
+
+- id: dynamodb.sdk.java.max-attempts.default
+  value: 9
+  unit: count
+  display: { ko: "9회" }
+  label: { ko: "Java SDK 2.x DynamoDB 클라이언트의 기본 최대 시도 횟수 (첫 시도 포함, 재시도 전략 공통)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.sdk.java.backoff.base
+  value: 25
+  unit: ms
+  display: { ko: "25밀리초" }
+  label: { ko: "Java SDK 2.x DynamoDB 클라이언트의 기본 지수 백오프 기준 지연" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.sdk.java.backoff.max
+  value: 20
+  unit: s
+  display: { ko: "20초" }
+  label: { ko: "Java SDK 2.x DynamoDB 클라이언트의 기본 지수 백오프 최대 지연" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/ProgrammingWithJava.html
+  checked: 2026-11-02
+  volatile: true

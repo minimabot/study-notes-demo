@@ -1,0 +1,65 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.cost-table-class
+  type: quiz
+  chapter: dynamodb/cost
+  topic: dynamodb/cost/table-class
+  question: { ko: "다음 Standard 테이블 중 Standard-IA로 바꿨을 때 총비용이 줄 가능성이 가장 큰 것은?" }
+  choices:
+    - { id: a, text: { ko: "데이터는 작지만 초당 수만 건을 읽고 쓰는 세션 테이블" } }
+    - { id: b, text: { ko: "몇 년 치 주문 이력이 쌓여 있고, 저장 비용이 처리량 비용보다 큰 테이블" } }
+    - { id: c, text: { ko: "예약 용량을 사서 쓰고 있고, 저장 비용이 처리량 비용의 일부인 테이블" } }
+    - { id: d, text: { ko: "프리 티어 저장량({{fact:dynamodb.price.free-tier.storage}}) 안에 들어가는 작은 설정 테이블" } }
+  answer: b
+  explanation: { ko: "IA는 저장 단가가 낮은 대신 읽기·쓰기 단가가 높다. 저장 비용이 처리량 비용의 {{fact:dynamodb.tableclass.ia-breakeven}}를 넘는 테이블(b)이 대상이다. 처리량이 비용의 주인인 테이블(a)은 IA에서 더 비싸다. 예약 용량(c)은 IA에 적용되지 않아 할인이 사라진다. 작은 테이블(d)은 Standard의 저장 프리 티어로 저장 요금이 없는데, IA에는 무료 구간이 없다." }
+  facts: [dynamodb.tableclass.ia-breakeven, dynamodb.price.free-tier.storage, dynamodb.price.storage.std.apne2, dynamodb.price.storage.ia.apne2]
+
+- id: dynamodb.q.cost-reserved
+  type: quiz
+  chapter: dynamodb/cost
+  topic: dynamodb/cost/reserved
+  question: { ko: "DynamoDB 예약 용량에 대한 설명으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "온디맨드 테이블의 읽기·쓰기 요청 단위에도 할인이 적용된다" } }
+    - { id: b, text: { ko: "글로벌 테이블의 복제된 쓰기 용량 단위(rWCU)에 적용해 리전 간 복제 비용을 줄인다" } }
+    - { id: c, text: { ko: "Standard 클래스의 프로비저닝 RCU·WCU에 적용되고, 약정한 용량은 쓰지 않아도 낸다" } }
+    - { id: d, text: { ko: "필요 없어지면 남은 기간을 다른 리전으로 옮길 수 있다" } }
+  answer: c
+  explanation: { ko: "예약 용량은 Standard 클래스 테이블의 단일 리전 프로비저닝 RCU·WCU에만 적용되고, 약정한 용량 전체를 사용과 관계없이 낸다(c). 온디맨드(a)와 rWCU(b)에는 살 수 없다. 산 리전에만 적용되며 옮기거나 팔거나 취소할 수 없다(d)." }
+  facts: [dynamodb.reserved.allocation, dynamodb.reserved.term.short, dynamodb.reserved.discount.short]
+
+- id: dynamodb.q.cost-ttl
+  type: quiz
+  chapter: dynamodb/cost
+  topic: dynamodb/cost/checklist
+  question: { ko: "세션 항목을 매일 밤 배치 작업이 Scan으로 찾아 `DeleteItem`으로 지운다. 이 작업의 읽기·쓰기 요금이 크다. 기능 요구를 바꾸지 않고 비용을 가장 많이 줄이는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "항목에 만료 시각 속성을 넣고 TTL을 켠 뒤 배치 작업을 없앤다" } }
+    - { id: b, text: { ko: "배치 작업을 `BatchWriteItem`으로 바꿔 삭제를 묶는다" } }
+    - { id: c, text: { ko: "Scan을 강력한 일관된 읽기로 바꾼다" } }
+    - { id: d, text: { ko: "테이블을 Standard-IA로 바꾼다" } }
+  answer: a
+  explanation: { ko: "TTL 삭제는 쓰기 용량을 쓰지 않고, 지울 항목을 찾는 Scan도 필요 없어진다(a). `BatchWriteItem`(b)은 호출 수만 묶을 뿐 삭제마다 쓰기 단위를 그대로 쓴다. 강력한 일관된 읽기(c)는 읽기 단위를 {{fact:dynamodb.read.eventual-per-unit}} 더 쓴다. IA(d)는 읽기·쓰기 단가가 더 높아 이 작업은 오히려 비싸진다." }
+  facts: [dynamodb.read.eventual-per-unit, dynamodb.wcu.item-size]
+
+- id: dynamodb.d.cost-cold-table
+  type: design
+  chapter: dynamodb/cost
+  topic: dynamodb/cost/table-class
+  scenario: { ko: "서울 리전의 주문 테이블이 {{raw:20 TB}}로 커졌다. Standard 클래스, 프로비저닝 모드이고 기본 읽기·쓰기 용량의 일부를 예약 용량으로 덮고 있다. 읽기·쓰기의 대부분은 최근 {{raw:3개월}} 주문에 몰리고, 그보다 오래된 주문은 고객 문의 때 가끔 조회한다. 법적으로 {{raw:5년}} 보관하면 되고, 그 뒤에는 지워도 된다. GSI 하나가 모든 속성을 투영(`ALL`)하는데, 화면은 주문 ID·상태·날짜만 쓴다. 매일 밤 매출 보고서를 Scan으로 만든다. 현재 비용의 대부분이 저장이다. 비용을 줄이는 변경을 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "오래된 주문을 별도의 Standard-IA 테이블로 옮기고, 최근 주문 테이블은 Standard와 예약 용량을 유지한다" } }
+    - { id: b, text: { ko: "주문에 만료 시각 속성을 넣고 TTL로 보존 기한이 지난 항목을 지운다. 필요하면 스트림과 Lambda로 S3에 보관한다" } }
+    - { id: c, text: { ko: "GSI 프로젝션을 화면에 필요한 속성만 `INCLUDE`로 다시 만든다" } }
+    - { id: d, text: { ko: "야간 보고서는 S3로 내보내기 후 Athena로 만든다" } }
+    - { id: e, text: { ko: "테이블 전체를 Standard-IA로 바꾸고, 예약 용량을 IA 테이블에 적용한다" } }
+    - { id: f, text: { ko: "다른 리전에 글로벌 테이블 리플리카를 추가해 읽기를 나눈다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a, b, c, d를 모두 고르면 정답이다. a는 차가운 데이터를 IA 저장 단가({{fact:dynamodb.price.storage.ia.apne2}}, 서울)로 옮기면서, 처리량이 몰리는 최근 데이터는 처리량 단가가 낮은 Standard와 예약 용량 할인을 그대로 쓴다."
+      - "b는 보존 기한이 지난 데이터의 저장 요금을 없앤다. TTL 삭제는 쓰기 용량을 쓰지 않는다. 보관이 필요하면 스트림으로 받아 S3에 둔다."
+      - "c는 GSI에 따로 저장되는 속성과 GSI 쓰기 크기를 줄인다. 저장이 비용의 주인이므로 효과가 크다."
+      - "d는 매일 테이블 전체를 읽는 Scan의 읽기 단위를 없앤다. 내보내기는 테이블 용량을 쓰지 않는다."
+      - "e는 감점: 예약 용량은 Standard-IA에 적용되지 않는다. 또 최근 주문의 많은 읽기·쓰기가 IA의 높은 단가로 계산된다."
+      - "f는 감점: 리플리카마다 저장과 복제된 쓰기 요금이 붙어 비용이 늘어난다. 요구에 다중 리전이 없다."
+  facts: [dynamodb.price.storage.ia.apne2, dynamodb.price.storage.std.apne2, dynamodb.tableclass.ia-breakeven]

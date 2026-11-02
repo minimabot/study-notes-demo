@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: dynamodb.q.sdk-conditional-retry
+  type: quiz
+  chapter: dynamodb/sdk
+  topic: dynamodb/sdk/errors-retries
+  question: { ko: "attribute_not_exists 조건을 건 PutItem이 ConditionalCheckFailedException을 받았다. 알맞은 처리는?" }
+  choices:
+    - { id: a, text: { ko: "지수 백오프를 두고 같은 요청을 다시 보낸다" } }
+    - { id: b, text: { ko: "재시도하지 않는다. 같은 키의 항목이 이미 있다는 뜻으로 보고 업무 로직으로 처리한다" } }
+    - { id: c, text: { ko: "테이블 쓰기 용량을 늘린 뒤 다시 보낸다" } }
+    - { id: d, text: { ko: "SDK의 최대 시도 횟수를 늘린다" } }
+  answer: b
+  explanation: { ko: "ConditionalCheckFailedException은 조건식이 거짓이었다는 뜻이고 재시도 대상이 아니다. 같은 요청을 다시 보내면(a, d) 조건이 그대로라 또 실패한다. 용량 부족(c)이 원인이라면 스로틀 예외가 온다. 이 예외는 중복 생성 방지처럼 의도한 결과일 때가 많다." }
+  facts: []
+
+- id: dynamodb.q.sdk-api-timeout
+  type: quiz
+  chapter: dynamodb/sdk
+  topic: dynamodb/sdk/errors-retries
+  question: { ko: "Java SDK 2.x를 쓰는 API 서버가 스로틀이 몰릴 때 DynamoDB 호출 하나에 아주 오래 붙잡힌다. 재시도는 유지하되, 재시도를 모두 합친 호출 시간에 상한을 두려면 무엇을 설정하는가?" }
+  choices:
+    - { id: a, text: { ko: "apiCallAttemptTimeout" } }
+    - { id: b, text: { ko: "apiCallTimeout" } }
+    - { id: c, text: { ko: "maxAttempts를 1로 줄인다" } }
+    - { id: d, text: { ko: "adaptive 재시도 모드" } }
+  answer: b
+  explanation: { ko: "apiCallTimeout은 재시도를 포함한 호출 전체의 시간 제한이다. apiCallAttemptTimeout(a)은 시도 한 번만 제한하므로 재시도가 이어지면 전체 시간은 계속 늘 수 있다. maxAttempts를 1로 하면(c) 재시도 자체가 없어져 조건에 맞지 않는다. adaptive 모드(d)는 클라이언트 쪽에서 요청 속도를 늦추는 것이라 지연이 더 늘 수 있고, 지연이 중요하면 AWS가 권장하지 않는다." }
+  facts: []
+
+- id: dynamodb.q.sdk-enhanced-vs-lowlevel
+  type: quiz
+  chapter: dynamodb/sdk
+  topic: dynamodb/sdk/java-clients
+  question: { ko: "AWS SDK for Java 2.x에 대한 설명으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "향상된 클라이언트(DynamoDbEnhancedClient)는 저수준 API보다 기능이 많아서 모든 새 기능이 먼저 들어간다" } }
+    - { id: b, text: { ko: "Java 1.x의 com.amazonaws.dynamodbv2 패키지가 Java 2.x용이다" } }
+    - { id: c, text: { ko: "저수준 클라이언트(DynamoDbClient)는 API와 일대일로 대응해 모든 작업을 쓸 수 있고, 향상된 클라이언트는 자바 클래스와 테이블을 대응시킨다" } }
+    - { id: d, text: { ko: "향상된 클라이언트를 쓰려면 저수준 클라이언트와 다른 별도 엔드포인트를 설정해야 한다" } }
+  answer: c
+  explanation: { ko: "저수준 클라이언트는 모든 DynamoDB API를 그대로 노출한다. 향상된 클라이언트는 그 위에서 클래스와 항목을 대응시키는 층이다. 그래서 a는 거꾸로다. dynamodbv2의 v2(b)는 DynamoDB 저수준 API 버전을 뜻하고 Java 2.x와 관계없다. 향상된 클라이언트(d)는 DynamoDbClient를 받아 같은 엔드포인트로 요청한다." }
+  facts: []

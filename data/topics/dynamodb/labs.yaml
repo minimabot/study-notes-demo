@@ -1,0 +1,56 @@
+# 장: 실습
+chapter:
+  id: dynamodb/labs
+  title:
+    ko: 실습 (AWS CLI로 테이블·인덱스·TTL·PITR·스트림)
+  track: practice
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html
+  topics:
+    - id: dynamodb/labs/setup
+      title:
+        ko: 준비와 정리 원칙
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html
+    - id: dynamodb/labs/table-items
+      title:
+        ko: "실습 1: 복합 키 테이블과 항목 쓰기·읽기·고치기·쿼리"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-1.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-2.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-4.html
+    - id: dynamodb/labs/gsi
+      title:
+        ko: "실습 2: GSI 추가와 인덱스 쿼리"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-5.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html
+    - id: dynamodb/labs/ttl-pitr
+      title:
+        ko: "실습 3: TTL과 PITR 켜기"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/time-to-live-ttl-how-to.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-1.html
+    - id: dynamodb/labs/streams
+      title:
+        ko: "실습 4: 스트림 켜고 레코드 읽기"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html
+        - https://docs.aws.amazon.com/amazondynamodbstreams/latest/APIReference/API_GetRecords.html
+    - id: dynamodb/labs/cleanup
+      title:
+        ko: 정리
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-6.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html

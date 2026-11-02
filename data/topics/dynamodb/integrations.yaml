@@ -1,0 +1,75 @@
+# 장: 다른 서비스와의 통합
+chapter:
+  id: dynamodb/integrations
+  title:
+    ko: 다른 AWS 서비스와 통합하기
+  track: practice
+  doc_source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/OtherServices.html
+  topics:
+    - id: dynamodb/integrations/overview
+      title:
+        ko: 통합의 두 갈래와 권장 사항
+      exam_tags: []
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 처음 복제할 스냅샷은 S3 내보내기로 만든다. 비용이 낮고 애플리케이션과 처리량을 다투지 않는다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-integration.html#bp-integration-snapshot
+          checked: 2026-11-02
+        - claim:
+            ko: 내보낼 때 StartTime을 정해 CDC를 이어 받을 시점을 분명히 한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-integration.html#bp-integration-snapshot
+          checked: 2026-11-02
+        - claim:
+            ko: 변경 감지에 스캔을 쓰지 않는다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-integration.html#bp-integration-change-data-capture
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/OtherServices.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-integration.html
+    - id: dynamodb/integrations/s3
+      title:
+        ko: S3 내보내기·가져오기를 통합에 쓰기
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3forDynamoDB.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataImport.HowItWorks.html
+    - id: dynamodb/integrations/analytics
+      title:
+        ko: 분석·검색 서비스로 보내기 (Redshift, OpenSearch)
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: Redshift COPY의 READRATIO는 평소 남는 프로비저닝 읽기 용량보다 낮게 잡는다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/RedshiftforDynamoDB-copy-data.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/RedshiftforDynamoDB-copy-data.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/RedshiftforDynamoDB-zero-etl.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/OpenSearchIngestionForDynamoDB.html
+    - id: dynamodb/integrations/events
+      title:
+        ko: 변경 이벤트로 연결하기 (Lambda, EventBridge Pipes)
+      exam_tags:
+        - DVA-C03#1.1
+        - DVA-C03#1.2
+        - DOP-C02#5.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/eventbridge-for-dynamodb.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html
+    - id: dynamodb/integrations/cognito
+      title:
+        ko: Cognito로 앱 자격 증명 받기
+      exam_tags: []
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 웹·모바일 앱의 AWS 자격 증명은 Amazon Cognito로 받아 코드에 키를 넣지 않는다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Cognito.Credentials.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Cognito.Credentials.html

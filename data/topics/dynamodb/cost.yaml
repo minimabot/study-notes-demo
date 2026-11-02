@@ -1,0 +1,65 @@
+# 장: 요금과 비용 줄이기. 요금 수치는 AWS Price List API 가격표(data/facts/dynamodb-cost.yaml 머리 주석)에서 확인했다.
+chapter:
+  id: dynamodb/cost
+  title:
+    ko: 요금과 비용 줄이기
+  track: practice
+  doc_source: https://aws.amazon.com/dynamodb/pricing/
+  topics:
+    - id: dynamodb/cost/throughput
+      title:
+        ko: 읽기·쓰기 요금 - 온디맨드와 프로비저닝
+      exam_tags:
+        - SAA-C03#4.3
+        - SAP-C03#3.4
+      sources:
+        - https://aws.amazon.com/dynamodb/pricing/
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-understanding-billing.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableCapacityMode.html
+    - id: dynamodb/cost/table-class
+      title:
+        ko: 저장 요금과 테이블 클래스 (Standard, Standard-IA)
+      exam_tags:
+        - SAA-C03#4.3
+        - SAP-C03#3.4
+      recommended:
+        - claim:
+            ko: 대부분의 워크로드에는 기본값인 DynamoDB Standard 테이블 클래스를 쓴다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.TableClasses.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.TableClasses.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.tableclasses.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableClass.html
+    - id: dynamodb/cost/reserved
+      title:
+        ko: 예약 용량
+      exam_tags:
+        - SAP-C03#3.4
+        - SAA-C03#4.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/reserved-capacity.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-understanding-billing.html
+    - id: dynamodb/cost/other-charges
+      title:
+        ko: 백업, 글로벌 테이블, 스트림, DAX, 데이터 전송
+      exam_tags:
+        - SAA-C03#4.3
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/backup-restore-billing.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/global-tables-billing.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-understanding-billing.html
+    - id: dynamodb/cost/checklist
+      title:
+        ko: 비용 줄이기 점검표
+      exam_tags:
+        - SAA-C03#4.3
+      recommended:
+        - claim:
+            ko: 속성 이름을 짧게 지어 항목 크기를 다음 읽기·쓰기 단위 경계 아래로 유지한다
+          source: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableUsagePatterns.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableUsagePatterns.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_StreamsUsage.html

@@ -1,0 +1,371 @@
+# dynamodb/cost 장 전용 사실 항목.
+# 요금 숫자는 요금 페이지(JS로 그려짐) 대신 AWS Price List API 가격표에서 읽었다.
+#   https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonDynamoDB/20260911124422/{ap-northeast-2,us-east-1}/index.json
+#   (region_index.json의 currentVersionUrl, 2026-11-02 확인)
+# 재사용: RCU 4 KB(dynamodb.rcu.item-size), WCU 1 KB(dynamodb.wcu.item-size), 최종적 일관성 2회(dynamodb.read.eventual-per-unit),
+#   트랜잭션 2배(dynamodb.txn.unit-multiplier), 예약 용량 단위·기간(dynamodb.reserved.*), Auto Scaling 목표 70%(dynamodb.autoscaling.target.recommended),
+#   us-east-1 PITR·백업·복원 단가(dynamodb.price.*.us-east-1, dynamodb-backup-restore.yaml).
+
+- id: dynamodb.price.offer-version
+  value: "2026-09-11"
+  unit: date
+  display: { ko: "2026-09-11 게시 가격표 (2026-11-02 확인)" }
+  label: { ko: "이 장의 DynamoDB 요금 수치를 읽은 가격표. AWS Price List API AmazonDynamoDB 오퍼 파일 버전 20260911124422" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# 온디맨드 요청 단가 (100만 요청 단위당 USD)
+- id: dynamodb.price.od.read.std.apne2
+  value: 0.1355
+  unit: usd/1M-RRU
+  display: { ko: "100만 RRU당 0.1355 USD" }
+  label: { ko: "온디맨드 읽기 요청 단위(RRU) 단가, Standard 테이블 클래스, 서울(ap-northeast-2) (Price List API: APN2-ReadRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.od.write.std.apne2
+  value: 0.68
+  unit: usd/1M-WRU
+  display: { ko: "100만 WRU당 0.68 USD" }
+  label: { ko: "온디맨드 쓰기 요청 단위(WRU) 단가, Standard 테이블 클래스, 서울(ap-northeast-2). 글로벌 테이블의 복제된 쓰기 요청 단위(rWRU)도 같은 값 (Price List API: APN2-WriteRequestUnits, APN2-ReplWriteRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.od.read.ia.apne2
+  value: 0.1695
+  unit: usd/1M-RRU
+  display: { ko: "100만 RRU당 0.1695 USD" }
+  label: { ko: "온디맨드 읽기 요청 단위 단가, Standard-IA 테이블 클래스, 서울(ap-northeast-2) (Price List API: APN2-IA-ReadRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.od.write.ia.apne2
+  value: 0.845
+  unit: usd/1M-WRU
+  display: { ko: "100만 WRU당 0.845 USD" }
+  label: { ko: "온디맨드 쓰기 요청 단위 단가, Standard-IA 테이블 클래스, 서울(ap-northeast-2). IA rWRU도 같은 값 (Price List API: APN2-IA-WriteRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.od.read.std.use1
+  value: 0.125
+  unit: usd/1M-RRU
+  display: { ko: "100만 RRU당 0.125 USD" }
+  label: { ko: "온디맨드 읽기 요청 단위 단가, Standard, 미국 동부 버지니아 북부(us-east-1) (Price List API: ReadRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.od.write.std.use1
+  value: 0.625
+  unit: usd/1M-WRU
+  display: { ko: "100만 WRU당 0.625 USD" }
+  label: { ko: "온디맨드 쓰기 요청 단위 단가, Standard, 미국 동부 버지니아 북부(us-east-1). rWRU도 같은 값 (Price List API: WriteRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.od.read.ia.use1
+  value: 0.155
+  unit: usd/1M-RRU
+  display: { ko: "100만 RRU당 0.155 USD" }
+  label: { ko: "온디맨드 읽기 요청 단위 단가, Standard-IA, 미국 동부 버지니아 북부(us-east-1) (Price List API: IA-ReadRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.od.write.ia.use1
+  value: 0.78
+  unit: usd/1M-WRU
+  display: { ko: "100만 WRU당 0.78 USD" }
+  label: { ko: "온디맨드 쓰기 요청 단위 단가, Standard-IA, 미국 동부 버지니아 북부(us-east-1) (Price List API: IA-WriteRequestUnits)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# 프로비저닝 용량 단가 (용량 단위 1개의 시간당 USD)
+- id: dynamodb.price.prov.rcu.std.apne2
+  value: 0.00014098
+  unit: usd/RCU-hour
+  display: { ko: "RCU 1개 시간당 0.00014098 USD" }
+  label: { ko: "프로비저닝 읽기 용량 단위(RCU) 시간당 단가, Standard, 서울(ap-northeast-2), 프리 티어 초과분 (Price List API: APN2-ReadCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.prov.wcu.std.apne2
+  value: 0.0007049
+  unit: usd/WCU-hour
+  display: { ko: "WCU 1개 시간당 0.0007049 USD" }
+  label: { ko: "프로비저닝 쓰기 용량 단위(WCU) 시간당 단가, Standard, 서울(ap-northeast-2), 프리 티어 초과분. 복제된 쓰기 용량 단위(rWCU)도 같은 값 (Price List API: APN2-WriteCapacityUnit-Hrs, APN2-ReplWriteCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.prov.rcu.ia.apne2
+  value: 0.0001762
+  unit: usd/RCU-hour
+  display: { ko: "RCU 1개 시간당 0.0001762 USD" }
+  label: { ko: "프로비저닝 RCU 시간당 단가, Standard-IA, 서울(ap-northeast-2). 프리 티어 구간 없음 (Price List API: APN2-IA-ReadCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.prov.wcu.ia.apne2
+  value: 0.0008811
+  unit: usd/WCU-hour
+  display: { ko: "WCU 1개 시간당 0.0008811 USD" }
+  label: { ko: "프로비저닝 WCU 시간당 단가, Standard-IA, 서울(ap-northeast-2). IA rWCU도 같은 값, 프리 티어 구간 없음 (Price List API: APN2-IA-WriteCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.prov.rcu.std.use1
+  value: 0.00013
+  unit: usd/RCU-hour
+  display: { ko: "RCU 1개 시간당 0.00013 USD" }
+  label: { ko: "프로비저닝 RCU 시간당 단가, Standard, 미국 동부 버지니아 북부(us-east-1), 프리 티어 초과분 (Price List API: ReadCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.prov.wcu.std.use1
+  value: 0.00065
+  unit: usd/WCU-hour
+  display: { ko: "WCU 1개 시간당 0.00065 USD" }
+  label: { ko: "프로비저닝 WCU 시간당 단가, Standard, 미국 동부 버지니아 북부(us-east-1), 프리 티어 초과분. rWCU도 같은 값 (Price List API: WriteCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.prov.rcu.ia.use1
+  value: 0.00016
+  unit: usd/RCU-hour
+  display: { ko: "RCU 1개 시간당 0.00016 USD" }
+  label: { ko: "프로비저닝 RCU 시간당 단가, Standard-IA, 미국 동부 버지니아 북부(us-east-1) (Price List API: IA-ReadCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.prov.wcu.ia.use1
+  value: 0.00081
+  unit: usd/WCU-hour
+  display: { ko: "WCU 1개 시간당 0.00081 USD" }
+  label: { ko: "프로비저닝 WCU 시간당 단가, Standard-IA, 미국 동부 버지니아 북부(us-east-1) (Price List API: IA-WriteCapacityUnit-Hrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# 저장 단가 (GB-월당 USD)
+- id: dynamodb.price.storage.std.apne2
+  value: 0.27075
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.27075 USD" }
+  label: { ko: "테이블·인덱스 저장 단가, Standard, 서울(ap-northeast-2), 프리 티어 초과분 (Price List API: APN2-TimedStorage-ByteHrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.storage.ia.apne2
+  value: 0.1083
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.1083 USD" }
+  label: { ko: "테이블·인덱스 저장 단가, Standard-IA, 서울(ap-northeast-2). 프리 티어 구간 없음 (Price List API: APN2-IA-TimedStorage-ByteHrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.storage.std.use1
+  value: 0.25
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.25 USD" }
+  label: { ko: "테이블·인덱스 저장 단가, Standard, 미국 동부 버지니아 북부(us-east-1), 프리 티어 초과분 (Price List API: TimedStorage-ByteHrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.storage.ia.use1
+  value: 0.10
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.10 USD" }
+  label: { ko: "테이블·인덱스 저장 단가, Standard-IA, 미국 동부 버지니아 북부(us-east-1) (Price List API: IA-TimedStorage-ByteHrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.free-tier.storage
+  value: 25
+  unit: GB-month
+  display: { ko: "매월 25 GB" }
+  label: { ko: "Standard 테이블 클래스 저장 프리 티어. Price List API에 리전별 가격표의 0~25 GB-월 무료 구간으로 표시된다. Standard-IA에는 무료 구간이 없다" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.free-tier.capacity
+  value: 25
+  unit: units
+  display: { ko: "RCU 25개, WCU 25개" }
+  label: { ko: "프로비저닝(Standard) 용량 프리 티어. Price List API에 '한 달 동안 25 단위'(0~18,600 단위-시간) 무료 구간으로 RCU·WCU·rWCU 각각 표시된다. Standard-IA에는 무료 구간이 없다" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# 백업·복원 (서울). us-east-1 값은 dynamodb-backup-restore.yaml의 dynamodb.price.*.us-east-1을 쓴다.
+- id: dynamodb.price.pitr.apne2
+  value: 0.2166
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.2166 USD" }
+  label: { ko: "PITR(특정 시점으로 복구) 요금, 서울(ap-northeast-2). 테이블과 LSI 크기 기준 (Price List API: APN2-TimedPITRStorage-ByteHrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.backup.apne2
+  value: 0.1083
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.1083 USD" }
+  label: { ko: "DynamoDB 온디맨드 백업 보관 요금, 서울(ap-northeast-2) (Price List API: APN2-TimedBackupStorage-ByteHrs)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.restore.apne2
+  value: 0.16245
+  unit: usd/GB
+  display: { ko: "GB당 0.16245 USD" }
+  label: { ko: "백업·PITR에서 복원할 때(글로벌 테이블에 리플리카를 추가할 때 포함) 복원된 데이터 크기에 붙는 요금, 서울(ap-northeast-2) (Price List API: APN2-RestoreDataSize-Bytes)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# 스트림
+- id: dynamodb.price.streams.free-tier
+  value: 2500000
+  unit: requests/month
+  display: { ko: "매월 250만 스트림 읽기 요청" }
+  label: { ko: "DynamoDB Streams 읽기 요청(GetRecords) 무료분. 계정·리전마다 Lambda가 아닌 소비자의 요청에 적용. Lambda 트리거와 글로벌 테이블 복제의 읽기는 처음부터 요금이 없다" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_StreamsUsage.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.price.streams.read.apne2
+  value: 0.217
+  unit: usd/1M-requests
+  display: { ko: "100만 요청당 약 0.217 USD" }
+  label: { ko: "DynamoDB Streams 읽기 요청 단가(무료분 초과), 서울(ap-northeast-2) (Price List API: APN2-Streams-Requests. 단가 0.000000217, 설명문에는 0.0000002166로 적혀 있음)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# 테이블 클래스
+- id: dynamodb.tableclass.update.max
+  value: 2
+  unit: count
+  display: { ko: "최근 30일 동안 2회" }
+  label: { ko: "한 테이블의 테이블 클래스를 바꿀 수 있는 횟수 (지난 30일 기준)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.tableclasses.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/WorkingWithTables.tableclasses.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.tableclass.ia-breakeven
+  value: 50
+  unit: "%"
+  display: { ko: "50%" }
+  label: { ko: "Standard 기준 저장 비용이 처리량(읽기·쓰기) 비용의 이 비율을 넘으면 Standard-IA가 테이블 총비용을 줄일 수 있다는 기준. 비용 최적화 페이지는 '전체 월 비용의 약 50%'로 표현한다" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.tableclasses.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/WorkingWithTables.tableclasses.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.tableclass.ia.storage-saving
+  value: 60
+  unit: "%"
+  display: { ko: "약 60%" }
+  label: { ko: "Standard-IA 저장 단가가 Standard보다 낮은 정도 (문서의 근사치)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableClass.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.tableclass.ia.throughput-premium
+  value: 25
+  unit: "%"
+  display: { ko: "약 25%" }
+  label: { ko: "Standard-IA 읽기·쓰기 단가가 Standard보다 높은 정도 (문서의 근사치)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableClass.html
+  checked: 2026-11-02
+  volatile: true
+
+# 예약 용량 할인
+- id: dynamodb.reserved.discount.short
+  value: 54
+  unit: "%"
+  display: { ko: "최대 54%" }
+  label: { ko: "1년 예약 용량의 표준 요금 대비 최대 절감률" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/reserved-capacity.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/reserved-capacity.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.reserved.discount.long
+  value: 77
+  unit: "%"
+  display: { ko: "최대 77%" }
+  label: { ko: "3년 예약 용량의 표준 요금 대비 최대 절감률 (3년 약정은 일부 리전에서만 제공)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/reserved-capacity.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/reserved-capacity.html
+  checked: 2026-11-02
+  volatile: true
+
+# 저장 크기
+- id: dynamodb.storage.item-overhead
+  value: 100
+  unit: byte
+  display: { ko: "항목당 100바이트" }
+  label: { ko: "저장 요금 계산 때 모든 항목에 더해지는 저장 오버헤드 (글로벌 테이블, 트랜잭션, Kinesis 변경 데이터 캡처를 쓰면 더 붙는다)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CapacityUnitCalculations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/CapacityUnitCalculations.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: dynamodb.cost.ondemand.low-ratio
+  value: 30
+  unit: "%"
+  display: { ko: "최고치의 30%" }
+  label: { ko: "한 시간 안에 트래픽이 0이나 최고치의 이 비율 아래로 떨어지면 온디맨드가 비용상 유리한 신호로 본다 (비용 최적화 안내)" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableCapacityMode.html
+  checked: 2026-11-02
+  volatile: true

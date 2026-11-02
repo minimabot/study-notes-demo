@@ -1,0 +1,32 @@
+# DynamoDB 다른 서비스와의 통합 장 전용 수치 (2026-11-02 대조).
+# 스트림 보관 기간·소비자 수(dynamodb.streams.*), 증분 내보내기 기간(dynamodb.export.incremental.*)은 다른 파일에 있다.
+
+- id: dynamodb.integrations.redshift-zero-etl.interval-min
+  value: 900
+  unit: s
+  display: { ko: "15분" }
+  label: { ko: "Redshift 제로 ETL 통합이 변경분을 복제하는 간격의 하한" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/RedshiftforDynamoDB-zero-etl.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/RedshiftforDynamoDB-zero-etl.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.integrations.redshift-zero-etl.interval-max
+  value: 1800
+  unit: s
+  display: { ko: "30분" }
+  label: { ko: "Redshift 제로 ETL 통합이 변경분을 복제하는 간격의 상한" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/RedshiftforDynamoDB-zero-etl.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/RedshiftforDynamoDB-zero-etl.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: dynamodb.integrations.export-lifecycle.typical
+  value: 604800
+  unit: s
+  display: { ko: "7일" }
+  label: { ko: "통합용 S3 내보내기 버킷에 거는 수명 주기 만료 기간으로 AWS가 대체로 안전하다고 든 값" }
+  source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-integration.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/bp-integration.html
+  checked: 2026-11-02
+  volatile: false
