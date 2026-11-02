@@ -1,0 +1,29 @@
+# iam/federation 장 전용 수치. 2026-11-03 OIDC federation 페이지 대조.
+
+- id: iam.oidc.jwt-clock-skew
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "OIDC JWT의 exp 만료 시각을 지나도 IAM이 시계 오차로 받아 주는 여유 시간" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_roles_providers_oidc.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.outbound-token.default
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "GetWebIdentityToken(아웃바운드 페더레이션) JWT의 기본 수명" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_outbound_getting_started.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.outbound-token.max
+  value: 3600
+  unit: s
+  display: { ko: "1시간" }
+  label: { ko: "GetWebIdentityToken(아웃바운드 페더레이션) JWT의 최대 수명" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_outbound_getting_started.html
+  checked: 2026-11-03
+  volatile: true

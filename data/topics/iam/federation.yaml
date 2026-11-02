@@ -1,0 +1,87 @@
+# 장: 자격 증명 페더레이션
+chapter:
+  id: iam/federation
+  title:
+    ko: 자격 증명 페더레이션 (SAML, OIDC, Identity Center)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html
+  topics:
+    - id: iam/federation/choose
+      title:
+        ko: 페더레이션 방식 고르기
+      exam_tags:
+        - SAA-C03#1.1
+        - SAP-C03#2.1
+        - SOA-C03#4.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 사람 사용자는 IAM 사용자를 만들지 않고 IdP 페더레이션으로 AWS에 접근하게 한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html
+          checked: 2026-11-03
+        - claim:
+            ko: 사람 사용자의 접근을 한곳에서 관리할 때는 IAM Identity Center를 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html
+    - id: iam/federation/saml
+      title:
+        ko: SAML 2.0 페더레이션
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - SAP-C03#2.1
+      recommended:
+        - claim:
+            ko: 페더레이션 복원력을 위해 여러 SAML 로그인 엔드포인트를 쓰도록 IdP와 AWS를 구성한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml.html
+    - id: iam/federation/oidc
+      title:
+        ko: OIDC 페더레이션과 Amazon Cognito
+      exam_tags:
+        - DVA-C03#2.1
+        - SAP-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: AWS 밖의 앱에 장기 자격 증명을 저장하지 말고 OIDC 페더레이션으로 임시 자격 증명을 받는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html
+          checked: 2026-11-03
+        - claim:
+            ko: GitHub OIDC 역할은 token.actions.githubusercontent.com:sub 조건으로 수임 주체를 특정 조직·리포지토리로 좁힌다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html
+          checked: 2026-11-03
+        - claim:
+            ko: 모바일 앱에는 Amazon Cognito를 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html
+    - id: iam/federation/roles-anywhere
+      title:
+        ko: AWS 밖 워크로드와 IAM Roles Anywhere
+      exam_tags:
+        - SAP-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers.html
+    - id: iam/federation/outbound
+      title:
+        ko: 아웃바운드 자격 증명 페더레이션
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 아웃바운드 페더레이션 토큰 수명은 짧게 둔다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_outbound_getting_started.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_outbound.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_outbound_getting_started.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_outbound_policies.html

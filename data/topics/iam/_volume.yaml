@@ -1,0 +1,20 @@
+# 권 정의와 장 순서. 장 구성의 근거: IAM 사용 설명서 목차 (2026-11-03 확인)
+volume:
+  id: iam
+  title: { ko: "AWS IAM" }
+  structure_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+order:
+  - iam/overview
+  - iam/identities
+  - iam/roles
+  - iam/temporary-credentials
+  - iam/federation
+  - iam/policies
+  - iam/policy-evaluation
+  - iam/conditions-abac
+  - iam/cross-account
+  - iam/best-practices
+  - iam/access-analysis
+  - iam/limits
+  - iam/with-services
+  - iam/labs

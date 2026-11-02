@@ -1,0 +1,83 @@
+# IAM 자격 증명 장(iam/identities) 전용 사실 항목. 할당량·세션 공용 수치는 iam-core.yaml을 재사용한다. 2026-11-03 대조.
+
+- id: iam.access-keys.per-user
+  value: 2
+  unit: count
+  display: { ko: "2개" }
+  label: { ko: "IAM 사용자 하나가 가질 수 있는 액세스 키 최대 수" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_access-keys.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.mfa.devices.max
+  value: 8
+  unit: count
+  display: { ko: "8개" }
+  label: { ko: "루트 사용자·IAM 사용자 하나에 등록할 수 있는 MFA 디바이스 최대 수 (유형 무관)" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_mfa.html
+  checked: 2026-11-03
+  volatile: false
+  history:
+    - { date: 2022-11-16, note: "사용자당 여러 MFA 디바이스 등록 지원 시작 (문서 기록)" }
+
+- id: iam.password.default.min-length
+  value: 8
+  unit: char
+  display: { ko: "8자" }
+  label: { ko: "기본 암호 정책의 IAM 사용자 암호 최소 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.password.max-length
+  value: 128
+  unit: char
+  display: { ko: "128자" }
+  label: { ko: "IAM 사용자 암호 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.password.custom.min-length-floor
+  value: 6
+  unit: char
+  display: { ko: "6자" }
+  label: { ko: "사용자 지정 암호 정책에서 '최소 길이'로 지정할 수 있는 가장 작은 값" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.password.max-age.max
+  value: 1095
+  unit: day
+  display: { ko: "1,095일" }
+  label: { ko: "사용자 지정 암호 정책의 암호 만료 기간 최댓값" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.password.reuse.max
+  value: 24
+  unit: count
+  display: { ko: "24개" }
+  label: { ko: "암호 재사용 방지에서 지정할 수 있는 이전 암호 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.console.user-session
+  value: 43200
+  unit: s
+  display: { ko: "12시간" }
+  label: { ko: "IAM 사용자의 AWS Management Console 세션 기본 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_update-role-settings.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_roles_update-role-settings.html
+  checked: 2026-11-03
+  volatile: false

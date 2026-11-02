@@ -1,0 +1,75 @@
+# 장: IAM 개요
+chapter:
+  id: iam/overview
+  title:
+    ko: IAM 개요와 동작 방식
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+  topics:
+    - id: iam/overview/what-is-iam
+      title:
+        ko: IAM이 하는 일과 서비스 성질
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+      recommended:
+        - claim:
+            ko: IAM 변경을 애플리케이션의 핵심 고가용성 코드 경로에 넣지 않고, 별도의 초기화·설정 단계에서 한 뒤 전파를 확인한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/when-to-use-iam.html
+    - id: iam/overview/request-flow
+      title:
+        ko: 요청·인증·권한 부여의 흐름
+      exam_tags:
+        - DVA-C03#2.1
+        - SAA-C03#1.1
+      recommended:
+        - claim:
+            ko: 모든 사용자에게 다중 인증(MFA)을 사용한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html
+    - id: iam/overview/identities-and-access
+      title:
+        ko: 리소스·엔터티·자격 증명·위탁자와 정책 기본
+      exam_tags:
+        - SAA-C03#1.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 사람과 워크로드가 임시 자격 증명으로 AWS 리소스에 접근하게 한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_identity-management.html
+          checked: 2026-11-03
+        - claim:
+            ko: 정책을 처음 쓸 때는 AWS 관리형 정책으로 시작한다. 인라인 정책은 대부분의 경우 권하지 않는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_identity-management.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html
+    - id: iam/overview/identity-center-organizations
+      title:
+        ko: IAM Identity Center, AWS Organizations와의 관계
+      exam_tags:
+        - SAA-C03#1.1
+        - SOA-C03#4.1
+        - SAP-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 여러 계정의 접근과 권한은 IAM Identity Center로 중앙에서 관리한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_identity-management.html
+          checked: 2026-11-03
+        - claim:
+            ko: 계정을 여럿 가졌다면 AWS Organizations로 권한을 관리한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_identity-management.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/when-to-use-iam.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html

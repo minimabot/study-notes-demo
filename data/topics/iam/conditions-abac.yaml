@@ -1,0 +1,70 @@
+# 장: 조건과 속성 기반 액세스 제어
+chapter:
+  id: iam/conditions-abac
+  title:
+    ko: 조건 요소와 ABAC
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html
+  topics:
+    - id: iam/conditions-abac/condition-block
+      title:
+        ko: Condition 요소와 조건 연산자
+      exam_tags:
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+        - DOP-C02#6.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-logic-multiple-context-keys-or-values.html
+    - id: iam/conditions-abac/multivalued
+      title:
+        ko: 다중 값 키, IfExists, Null
+      exam_tags:
+        - SOA-C03#4.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: Allow 문에 ForAllValues를 쓸 때는 Null 연산자(false)로 키가 있는지 함께 확인한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-single-vs-multi-valued-context-keys.html
+          checked: 2026-11-03
+        - claim:
+            ko: 단일 값 컨텍스트 키에는 ForAllValues·ForAnyValue 집합 연산자를 쓰지 않는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-single-vs-multi-valued-context-keys.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-single-vs-multi-valued-context-keys.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html
+    - id: iam/conditions-abac/global-keys
+      title:
+        ko: 자주 쓰는 전역 조건 키
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+        - SAP-C03#2.1
+      recommended:
+        - claim:
+            ko: aws:MultiFactorAuthPresent를 검사할 때는 ...IfExists 연산자(BoolIfExists)를 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html
+    - id: iam/conditions-abac/abac
+      title:
+        ko: 속성 기반 액세스 제어(ABAC)
+      exam_tags:
+        - SAP-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 태그 키 이름 규칙을 계정 구성원이 일관되게 지키게 한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html
+          checked: 2026-11-03
+        - claim:
+            ko: 태그로 접근을 제어할 때는 aws:TagKeys로 허용할 태그 키를 정한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_attribute-based-access-control.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_attribute-based-access-control.html

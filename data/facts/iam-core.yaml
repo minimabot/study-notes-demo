@@ -1,0 +1,131 @@
+# IAM 권 공용 수치. 다른 장은 이 파일을 고치지 않는다. 2026-11-03 IAM and AWS STS quotas 대조.
+
+- id: iam.quota.roles
+  value: 1000
+  unit: count
+  display: { ko: "1,000개 (최대 10,000개)" }
+  label: { ko: "계정당 역할 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.quota.groups
+  value: 300
+  unit: count
+  display: { ko: "300개 (최대 500개)" }
+  label: { ko: "계정당 그룹 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.quota.customer-managed-policies
+  value: 1500
+  unit: count
+  display: { ko: "1,500개 (최대 10,000개)" }
+  label: { ko: "계정당 고객 관리형 정책 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.quota.managed-per-role
+  value: 20
+  unit: count
+  display: { ko: "20개 (최대 25개)" }
+  label: { ko: "역할 하나에 연결할 수 있는 관리형 정책 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.quota.managed-per-user
+  value: 10
+  unit: count
+  display: { ko: "10개 (최대 20개)" }
+  label: { ko: "사용자 하나에 연결할 수 있는 관리형 정책 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.quota.managed-per-group
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "그룹 하나에 연결할 수 있는 관리형 정책 수 (상향 불가)" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.quota.trust-policy-length
+  value: 2048
+  unit: char
+  display: { ko: "2,048자 (최대 8,192자)" }
+  label: { ko: "역할 신뢰 정책 길이 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.managed-policy.max-size
+  value: 6144
+  unit: char
+  display: { ko: "6,144자 (공백 제외)" }
+  label: { ko: "고객 관리형 정책 하나의 최대 크기" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.role.session.max
+  value: 43200
+  unit: s
+  display: { ko: "12시간" }
+  label: { ko: "역할 세션 최대 기간 설정값의 상한" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.session-policy.max-size
+  value: 2048
+  unit: char
+  display: { ko: "2,048자" }
+  label: { ko: "역할 세션 정책(전달 JSON + 관리형 정책 ARN)의 합계 크기 한도" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.session-tags.max
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "역할 세션에 전달할 수 있는 세션 태그 수" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.name.role.max
+  value: 64
+  unit: char
+  display: { ko: "64자" }
+  label: { ko: "역할 이름 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.sts.rps
+  value: 600
+  unit: count/s
+  display: { ko: "초당 600건" }
+  label: { ko: "AWS 자격 증명으로 호출하는 STS 요청 기본 할당량 (계정·리전당, 공유)" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true

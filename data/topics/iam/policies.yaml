@@ -1,0 +1,74 @@
+# 장: IAM 정책의 종류와 구조
+chapter:
+  id: iam/policies
+  title:
+    ko: 정책의 종류와 JSON 구조
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
+  topics:
+    - id: iam/policies/types
+      title:
+        ko: 정책 종류
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+        - SAP-C03#2.1
+        - SAP-C03#2.3
+        - DOP-C02#6.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html
+    - id: iam/policies/managed-inline
+      title:
+        ko: 관리형 정책과 인라인 정책
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 대부분의 경우 인라인 정책보다 관리형 정책을 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-choosing-managed-or-inline.html
+          checked: 2026-11-03
+        - claim:
+            ko: 최소 권한은 팀에 필요한 권한만 담은 고객 관리형 정책으로 준다. AWS 관리형 정책으로 시작했다면 사용 권한을 확인해 좁힌다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-choosing-managed-or-inline.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-choosing-managed-or-inline.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+    - id: iam/policies/json-elements
+      title:
+        ko: JSON 정책 요소
+      exam_tags:
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 정책은 리소스 종류별로 나눠 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
+          checked: 2026-11-03
+        - claim:
+            ko: 모든 정책에 Version 요소를 넣고 값은 2012-10-17로 둔다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_version.html
+          checked: 2026-11-03
+        - claim:
+            ko: 기존 정책을 포함해 모든 정책을 IAM Access Analyzer 정책 검사로 검토한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_notaction.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_principal.html
+    - id: iam/policies/variables-versions
+      title:
+        ko: 정책 변수와 관리형 정책 버전
+      exam_tags:
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_variables.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-versioning.html

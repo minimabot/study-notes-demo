@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.federation-workforce
+  type: quiz
+  chapter: iam/federation
+  topic: iam/federation/choose
+  question: { ko: "AWS Organizations로 묶은 계정이 수십 개다. 직원들은 회사의 SAML 2.0 IdP로 로그인한다. 직원마다 여러 계정의 접근을 한곳에서 배정·회수하고 싶다. AWS 문서가 권하는 방식은?" }
+  choices:
+    - { id: a, text: { ko: "계정마다 IAM 사용자를 만들고 비밀번호 정책과 MFA를 건다" } }
+    - { id: b, text: { ko: "IAM Identity Center에 회사 IdP를 연결하고 사용자·그룹에 계정 접근을 배정한다" } }
+    - { id: c, text: { ko: "Amazon Cognito 자격 증명 풀을 만들어 직원 로그인을 받는다" } }
+    - { id: d, text: { ko: "계정마다 IAM SAML 공급자와 역할을 따로 만들고 IdP 매핑을 계정별로 관리한다" } }
+  answer: b
+  explanation: { ko: "여러 계정의 사람 사용자 접근을 한곳에서 관리하는 용도로 AWS는 IAM Identity Center를 권한다. IAM 사용자(a)는 장기 자격 증명이 생기고 사람 사용자에게 권하지 않는다. Cognito 자격 증명 풀(c)은 앱 최종 사용자용이다. 계정별 IAM SAML 페더레이션(d)도 동작은 하지만 단일 독립 계정이나 작은 규모에 맞는 방식이고, 계정이 많으면 관리가 흩어진다." }
+  facts: []
+
+- id: iam.q.federation-github-sub
+  type: quiz
+  chapter: iam/federation
+  topic: iam/federation/oidc
+  question: { ko: "GitHub Actions 워크플로가 AWS에 배포하도록 GitHub OIDC 공급자와 역할을 만들었다. 신뢰 정책에서 꼭 좁혀야 하는 것은?" }
+  choices:
+    - { id: a, text: { ko: "token.actions.githubusercontent.com:sub 조건으로 자기 조직·리포지토리(필요하면 브랜치)만 허용한다" } }
+    - { id: b, text: { ko: "aws:SourceIp 조건으로 GitHub의 IP 대역만 허용한다" } }
+    - { id: c, text: { ko: "sts:ExternalId 조건에 GitHub 조직 이름을 넣는다" } }
+    - { id: d, text: { ko: "Principal을 \"*\"로 두고 권한 정책에서만 범위를 줄인다" } }
+  answer: a
+  explanation: { ko: "GitHub OIDC 공급자는 모든 GitHub 사용자가 같은 발급자를 쓴다. sub 조건으로 조직·리포지토리를 좁히지 않으면 남의 워크플로도 이 역할을 수임할 수 있다. IAM은 이 키가 없거나 와일드카드뿐인 신뢰 정책을 거부한다. IP 조건(b)은 주체를 구분하지 못한다. 외부 ID(c)는 AssumeRole로 제3자 계정이 수임할 때 쓰는 키다. Principal을 \"*\"로 두면(d) 누구에게나 신뢰를 여는 것이다." }
+  facts: []
+
+- id: iam.q.federation-mobile
+  type: quiz
+  chapter: iam/federation
+  topic: iam/federation/oidc
+  question: { ko: "모바일 앱 사용자가 소셜 로그인 후 자기 S3 폴더에 사진을 올린다. 로그인하지 않은 사용자도 일부 공개 자료는 읽어야 한다. 앱에 AWS 장기 자격 증명을 넣지 않으려면 무엇을 쓰는가?" }
+  choices:
+    - { id: a, text: { ko: "앱에 IAM 사용자 액세스 키를 넣고 키를 자주 교체한다" } }
+    - { id: b, text: { ko: "Amazon Cognito 자격 증명 풀로 인증·비인증 사용자에게 각각 역할의 임시 자격 증명을 준다" } }
+    - { id: c, text: { ko: "앱이 GetFederationToken을 직접 부른다" } }
+    - { id: d, text: { ko: "IAM SAML 공급자를 만들고 앱이 AssumeRoleWithSAML을 부른다" } }
+  answer: b
+  explanation: { ko: "AWS는 모바일 앱에 Amazon Cognito를 권한다. 자격 증명 풀이 AssumeRoleWithWebIdentity로 사용자별 임시 자격 증명을 받고, 비인증(게스트) 접근도 지원한다. 액세스 키를 앱에 넣는 것(a)은 피해야 할 일이다. GetFederationToken(c)은 IAM 사용자 자격 증명으로 부르는 API라 결국 앱에 장기 자격 증명이 필요하다. 소셜 로그인은 SAML이 아니고(d) 게스트 접근도 해결하지 못한다." }
+  facts: []

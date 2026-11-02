@@ -1,0 +1,41 @@
+# IAM 정책 장(iam/policies) 전용 사실 항목. 관리형 정책 크기·개수, 세션 정책 한도는 iam-core.yaml·iam-temporary-credentials.yaml을 재사용한다. 2026-11-03 대조.
+
+- id: iam.policy.versions.max
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "관리형 정책 하나에 저장되는 최대 버전 수" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-versioning.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/access_policies_managed-versioning.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.inline.user-size.max
+  value: 2048
+  unit: char
+  display: { ko: "2,048자 (공백 제외)" }
+  label: { ko: "IAM 사용자 하나에 넣은 인라인 정책 전체 크기 합계 한도" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.inline.group-size.max
+  value: 5120
+  unit: char
+  display: { ko: "5,120자 (공백 제외)" }
+  label: { ko: "IAM 그룹 하나에 넣은 인라인 정책 전체 크기 합계 한도" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.inline.role-size.max
+  value: 10240
+  unit: char
+  display: { ko: "10,240자 (공백 제외)" }
+  label: { ko: "IAM 역할 하나에 넣은 인라인 정책 전체 크기 합계 한도" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false

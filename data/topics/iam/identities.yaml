@@ -1,0 +1,113 @@
+# 장: IAM 자격 증명 (루트 사용자, IAM 사용자, 그룹, 식별자)
+chapter:
+  id: iam/identities
+  title:
+    ko: 루트 사용자·IAM 사용자·그룹과 식별자
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html
+  topics:
+    - id: iam/identities/root-user
+      title:
+        ko: 루트 사용자와 루트 전용 작업
+      exam_tags:
+        - SAA-C03#1.1
+        - SOA-C03#4.1
+      recommended:
+        - claim:
+            ko: 일상 작업에는(관리 작업도) 루트 사용자를 쓰지 않고, 루트만 할 수 있는 작업에만 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
+          checked: 2026-11-03
+        - claim:
+            ko: 루트 사용자의 액세스 키를 만들지 않는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 루트 사용자 로그인을 MFA로 보호하고, 루트 이메일에는 그룹 메일 주소를 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: Organizations 멤버 계정의 루트 자격 증명은 중앙 루트 액세스 관리로 지우고, 루트가 필요한 작업을 마치면 다시 지운다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user-privileged-task.html
+    - id: iam/identities/users-credentials
+      title:
+        ko: IAM 사용자와 자격 증명 (암호, 액세스 키, MFA)
+      exam_tags:
+        - SAA-C03#1.1
+        - SOA-C03#4.1
+        - DVA-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 액세스 키를 만들기 전에 IAM 역할 같은 임시 자격 증명을 먼저 검토한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+          checked: 2026-11-03
+        - claim:
+            ko: 액세스 키를 애플리케이션 코드에 직접 넣지 않는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html
+          checked: 2026-11-03
+        - claim:
+            ko: 계정의 모든 IAM 사용자에게 MFA를 요구한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html
+          checked: 2026-11-03
+        - claim:
+            ko: 가능하면 패스키·보안 키 같은 피싱 방지 MFA를 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
+          checked: 2026-11-03
+        - claim:
+            ko: 더 이상 필요 없는 암호와 액세스 키는 지운다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+    - id: iam/identities/groups
+      title:
+        ko: IAM 사용자 그룹
+      exam_tags:
+        - SAA-C03#1.1
+        - DOP-C02#6.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html
+    - id: iam/identities/users-vs-roles
+      title:
+        ko: IAM 사용자를 쓸 때와 역할·Identity Center를 쓸 때
+      exam_tags:
+        - SAA-C03#1.1
+        - DOP-C02#6.1
+        - SOA-C03#4.1
+      recommended:
+        - claim:
+            ko: 사람은 IdP 페더레이션으로 임시 자격 증명을 받아 접근하게 하고, IAM 사용자는 페더레이션이 지원하지 않는 경우에만 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html
+          checked: 2026-11-03
+        - claim:
+            ko: 비상 접근용 IAM 사용자의 자격 증명은 엄격히 관리하고 MFA로 보호한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+          checked: 2026-11-03
+        - claim:
+            ko: 인터넷 ID 공급자 페더레이션에는 Amazon Cognito를 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_identity-management.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_identity-management.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+    - id: iam/identities/identifiers
+      title:
+        ko: IAM 식별자 (표시 이름, ARN, 고유 ID)
+      exam_tags:
+        - DVA-C03#2.1
+      recommended:
+        - claim:
+            ko: 정책에서는 일반적으로 고유 ID보다 리소스의 ARN을 지정한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html

@@ -1,0 +1,70 @@
+# 장: IAM 정책 평가 논리
+chapter:
+  id: iam/policy-evaluation
+  title:
+    ko: 정책 평가 논리
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html
+  topics:
+    - id: iam/policy-evaluation/basics
+      title:
+        ko: 명시적 거부와 묵시적 거부
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 명시적 거부는 그 작업을 허용해야 할 상황이 전혀 없을 때만 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_attribute-based-access-control.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic_AccessPolicyLanguage_Interplay.html
+    - id: iam/policy-evaluation/order
+      title:
+        ko: 평가 순서 (SCP·RCP·경계·세션 정책)
+      exam_tags:
+        - SOA-C03#4.1
+        - SAP-C03#2.1
+        - SAP-C03#2.3
+        - DOP-C02#6.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic_policy-eval-denyallow.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html
+    - id: iam/policy-evaluation/resource-based
+      title:
+        ko: 같은 계정의 리소스 기반 정책
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic_policy-eval-denyallow.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic_policy-eval-basics.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html
+    - id: iam/policy-evaluation/cross-account
+      title:
+        ko: 교차 계정 평가
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - SAP-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
+    - id: iam/policy-evaluation/boundaries-delegation
+      title:
+        ko: 권한 경계로 권한 관리 위임하기
+      exam_tags:
+        - SAP-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 권한 경계가 붙은 보안 주체가 있으면 리소스 기반 정책에서 Deny와 NotPrincipal 조합 대신 ArnNotEquals와 aws:PrincipalArn을 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_iam-condition-keys.html

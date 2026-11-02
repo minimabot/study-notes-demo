@@ -1,0 +1,68 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.roles-chaining
+  type: quiz
+  chapter: iam/roles
+  topic: iam/roles/sessions
+  question: { ko: "RoleA와 RoleB의 최대 세션 기간을 모두 가장 긴 값으로 설정했다. 배치 작업이 RoleA를 수임한 뒤, RoleA의 자격 증명으로 RoleB를 수임하면서 DurationSeconds에 그 최댓값을 넣었다. 결과는?" }
+  choices:
+    - { id: a, text: { ko: "RoleB 세션이 요청한 길이로 발급된다" } }
+    - { id: b, text: { ko: "세션 길이가 자동으로 역할 체인 상한까지 줄어 발급된다" } }
+    - { id: c, text: { ko: "역할 체인 상한을 넘는 값이므로 AssumeRole 호출이 실패한다" } }
+    - { id: d, text: { ko: "RoleA의 남은 세션 시간만큼 발급된다" } }
+  answer: c
+  explanation: { ko: "역할의 임시 자격 증명으로 다른 역할을 수임하는 것이 역할 체인이다. 역할 체인 세션은 역할의 최대 세션 기간 설정과 관계없이 {{fact:iam.role.chaining.max-session}}으로 제한되고, 이보다 긴 DurationSeconds를 주면 호출이 실패한다. 줄여 주지 않으므로 b는 틀렸다. a는 체인 제한을 무시했다. 남은 시간 중 짧은 쪽을 주는 규칙(d)은 IAM 사용자가 콘솔에서 역할을 전환할 때의 규칙이다." }
+  facts: [iam.role.chaining.max-session]
+
+- id: iam.q.roles-passrole
+  type: quiz
+  chapter: iam/roles
+  topic: iam/roles/service-roles-passrole
+  question: { ko: "개발자 Alice에게 S3 권한은 주지 않았다. 그런데 Alice가 EC2 인스턴스를 띄우며 S3 전체 권한을 가진 역할을 붙여, 인스턴스에서 S3를 쓸 수 있었다. 이 경로를 막는 가장 직접적인 방법은?" }
+  choices:
+    - { id: a, text: { ko: "Alice의 iam:PassRole 권한을 승인된 역할 ARN으로만 좁히고, iam:PassedToService 조건을 둔다" } }
+    - { id: b, text: { ko: "S3 전체 권한 역할의 신뢰 정책에서 ec2.amazonaws.com을 지운다" } }
+    - { id: c, text: { ko: "Alice에게 MFA를 요구한다" } }
+    - { id: d, text: { ko: "역할에 태그를 달고 iam:PassRole 정책에 ResourceTag 조건을 건다" } }
+  answer: a
+  explanation: { ko: "서비스에 역할을 넘기려면 넘기는 사람에게 iam:PassRole이 있어야 한다. Resource를 승인된 역할로 좁히면 Alice는 자기에게 주려는 것보다 큰 권한의 역할을 넘길 수 없다. b는 그 역할을 정당하게 쓰는 다른 EC2 워크로드까지 깨뜨린다. MFA(c)는 인증 강도를 높일 뿐 권한 범위를 바꾸지 않는다. 문서는 태그와 ResourceTag 조건으로 PassRole을 통제하면 결과가 일정하지 않다고 경고한다(d)." }
+  facts: []
+
+- id: iam.q.roles-revoke
+  type: quiz
+  chapter: iam/roles
+  topic: iam/roles/sessions
+  question: { ko: "운영 역할의 임시 자격 증명이 로그에 노출된 것을 발견했다. 정당한 사용자도 같은 역할을 쓴다. 노출된 자격 증명을 곧바로 무력화하는 방법으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "역할의 최대 세션 기간을 가장 짧게 줄인다" } }
+    - { id: b, text: { ko: "역할에서 활성 세션 취소를 실행한다. 정당한 사용자는 역할을 다시 수임한다" } }
+    - { id: c, text: { ko: "STS에서 해당 액세스 키 ID를 삭제한다" } }
+    - { id: d, text: { ko: "역할을 지우고 같은 이름으로 다시 만든다. 기존 신뢰 관계와 권한은 그대로 유지된다" } }
+  answer: b
+  explanation: { ko: "활성 세션 취소는 그 시점 이전에 발급된 이 역할의 자격 증명을 aws:TokenIssueTime 조건으로 모두 거부하는 AWSRevokeOlderSessions 정책을 붙인다. 이후 수임한 세션은 영향이 없으므로 정당한 사용자는 다시 수임하면 된다. 최대 세션 기간 변경(a)은 다음 수임부터 적용되어 이미 나간 자격 증명을 막지 못한다. 임시 자격 증명을 하나씩 지우는 기능은 없다(c). 같은 이름으로 다시 만든 역할은 고유 ID가 달라지므로 기존 권한·신뢰 관계가 그대로 이어진다는 d의 설명은 맞지 않다." }
+  facts: []
+
+- id: iam.d.roles-ec2-lambda-no-keys
+  type: design
+  chapter: iam/roles
+  topic: iam/roles/ec2-lambda
+  scenario: { ko: "주문 시스템에 두 구성 요소가 있다. (1) EC2 인스턴스의 웹 애플리케이션이 S3 버킷 orders-archive에서 객체를 읽는다. (2) Lambda 함수가 DynamoDB 테이블 Orders에 항목을 쓴다. 지금은 IAM 사용자 하나의 액세스 키를 애플리케이션 설정 파일과 Lambda 환경 변수에 넣어 둘 다 쓰고 있다. 보안 감사가 요구하는 것은 (가) 장기 액세스 키를 없앨 것, (나) 각 구성 요소에 필요한 권한만 줄 것, (다) 배포 담당자가 아무 역할이나 붙여 권한을 키우지 못하게 할 것이다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "ec2.amazonaws.com을 신뢰하고 orders-archive 읽기 권한만 가진 역할을 만들어 인스턴스 프로파일로 인스턴스에 붙인다. 애플리케이션은 SDK 기본 자격 증명 체인으로 인스턴스 메타데이터의 임시 자격 증명을 쓴다" } }
+    - { id: b, text: { ko: "lambda.amazonaws.com을 신뢰하고 Orders 테이블 쓰기 권한(예: dynamodb:PutItem)만 가진 실행 역할을 만들어 함수에 지정한다" } }
+    - { id: c, text: { ko: "배포 담당자에게 iam:PassRole을 주되 Resource를 위 두 역할의 ARN으로 좁히고, iam:PassedToService로 각각 EC2·Lambda만 허용한다. 그 뒤 기존 IAM 사용자의 액세스 키를 비활성화하고 지운다" } }
+    - { id: d, text: { ko: "S3 읽기와 DynamoDB 쓰기를 모두 가진 역할 하나를 만들어 EC2와 Lambda가 함께 쓰게 한다" } }
+    - { id: e, text: { ko: "액세스 키를 Lambda 환경 변수에서 빼서 함수 코드에 넣고, 키를 정기적으로 교체한다" } }
+    - { id: f, text: { ko: "Lambda 함수 코드에서 sts:AssumeRole로 실행 역할을 직접 수임해 DynamoDB 자격 증명을 얻는다" } }
+    - { id: g, text: { ko: "배포 담당자에게 Resource가 \"*\"인 iam:PassRole을 준다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: EC2 애플리케이션은 인스턴스 프로파일에 담긴 역할의 임시 자격 증명을 메타데이터에서 받는다. 자격 증명은 만료 전에 자동으로 바뀌므로 키를 배포·교체할 일이 없다. 권한은 한 버킷 읽기로 좁혀 요구 (나)를 지킨다."
+      - "b: Lambda는 실행 역할을 스스로 수임한다. 신뢰 정책에 lambda.amazonaws.com, 권한 정책에 필요한 테이블 쓰기만 둔다."
+      - "c: 역할을 서비스에 붙이는 행위 자체에 iam:PassRole이 필요하다. Resource를 두 역할로, 대상 서비스를 iam:PassedToService로 좁혀야 요구 (다)를 지킨다. 역할로 옮긴 뒤 옛 키를 비활성화하고 지워야 요구 (가)가 끝난다."
+      - "d는 감점: 역할 하나에 두 권한을 모으면 EC2가 DynamoDB에 쓰고 Lambda가 S3를 읽을 수 있게 되어 요구 (나)를 어긴다."
+      - "e는 감점: 키를 코드에 넣는 것은 문서가 명시적으로 금지한다. 교체해도 장기 키가 남아 요구 (가)를 어긴다."
+      - "f는 감점: Lambda 문서는 함수 코드에서 실행 역할을 직접 수임하지 말라고 한다. Lambda가 이미 실행 역할로 자격 증명을 준다."
+      - "g는 감점: 담당자가 계정의 어떤 역할이든 서비스에 넘겨 권한을 키울 수 있어 요구 (다)를 어긴다."
+  facts: []

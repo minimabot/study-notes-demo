@@ -1,0 +1,67 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.cross-account-both-allow
+  type: quiz
+  chapter: iam/cross-account
+  topic: iam/cross-account/two-ways
+  question: { ko: "계정 B의 버킷 정책이 계정 A의 역할 Demo에 s3:PutObject를 허용한다. 그런데 Demo 역할로 그 버킷에 업로드하면 거부된다. Demo의 자격 증명 기반 정책에는 S3 허용이 계정 A의 다른 버킷에만 있다. 원인은?" }
+  choices:
+    - { id: a, text: { ko: "계정 간 요청은 버킷 정책만 보므로 버킷 정책의 Principal 형식이 틀렸다" } }
+    - { id: b, text: { ko: "계정 간 요청은 양쪽 계정에서 모두 허용돼야 하는데, 계정 A의 Demo 정책이 이 버킷을 허용하지 않는다" } }
+    - { id: c, text: { ko: "리소스 기반 정책은 다른 계정의 역할을 보안 주체로 지정할 수 없다" } }
+    - { id: d, text: { ko: "Demo가 계정 B의 역할을 먼저 수임해야만 버킷 정책이 적용된다" } }
+  answer: b
+  explanation: { ko: "다른 계정으로 가는 요청은 신뢰받는 계정(A)에서 자격 증명 기반 정책을, 신뢰하는 계정(B)에서 리소스 기반 정책을 평가하고 둘 다 허용일 때만 통과한다. 버킷 정책 허용만으로는 부족하다(a). 리소스 기반 정책은 다른 계정의 역할을 보안 주체로 지정할 수 있다(c). 리소스 기반 정책을 쓰면 역할을 수임하지 않고 자기 계정에서 일하는 채로 접근한다(d)." }
+  facts: []
+
+- id: iam.q.cross-account-copy
+  type: quiz
+  chapter: iam/cross-account
+  topic: iam/cross-account/two-ways
+  question: { ko: "계정 A의 데이터 처리 역할이 계정 B 버킷의 객체를 읽어 계정 A 버킷에 바로 써야 한다. 계정 A 버킷의 버킷 정책은 바꾸지 않고, 한 세션으로 양쪽 버킷을 다루려면 어떤 구성이 맞는가?" }
+  choices:
+    - { id: a, text: { ko: "계정 B 버킷 정책에서 계정 A의 그 역할에 읽기를 허용하고, 역할 정책에도 그 버킷 읽기를 허용한다" } }
+    - { id: b, text: { ko: "계정 B에 역할을 만들고, 계정 A 역할이 그 역할을 수임해 두 버킷을 모두 다룬다" } }
+    - { id: c, text: { ko: "계정 B의 IAM 사용자 액세스 키를 계정 A 앱에 넣는다" } }
+    - { id: d, text: { ko: "계정 A 버킷 정책에 계정 B를 보안 주체로 넣는다" } }
+  answer: a
+  explanation: { ko: "리소스 기반 정책으로 접근하면 보안 주체는 자기 계정 권한을 그대로 가진 채 상대 리소스에도 접근한다. 그래서 읽고 쓰는 일을 한 세션에서 한다. 역할을 수임하면(b) 원래 권한을 내려놓는다. 그 세션은 계정 B의 역할이므로 계정 A 버킷에 쓰려면 A 버킷 정책을 고쳐야 해 조건을 어긴다. 장기 액세스 키(c)는 피한다. d는 방향이 반대다." }
+  facts: []
+
+- id: iam.q.cross-account-cloudtrail
+  type: quiz
+  chapter: iam/cross-account
+  topic: iam/cross-account/service-org
+  question: { ko: "중앙 로그 계정의 S3 버킷 정책이 Principal cloudtrail.amazonaws.com에 s3:PutObject를 조건 없이 허용한다. 우리 조직이 아닌 계정도 이 버킷으로 추적 로그를 보낼 수 있다는 지적을 받았다. 문서가 권하는 대책은?" }
+  choices:
+    - { id: a, text: { ko: "버킷 정책에 aws:SourceAccount(또는 aws:SourceArn, aws:SourceOrgID) 조건을 넣는다" } }
+    - { id: b, text: { ko: "버킷 정책에 sts:ExternalId 조건을 넣는다" } }
+    - { id: c, text: { ko: "버킷 이름을 추측하기 어렵게 바꾼다" } }
+    - { id: d, text: { ko: "SCP로 다른 조직 계정의 CloudTrail 사용을 막는다" } }
+  answer: a
+  explanation: { ko: "서비스 보안 주체만 허용한 리소스 정책은 어떤 계정을 대신해 온 요청인지 따지지 않는다(서비스 간 혼동된 대리자). AWS 서비스 보안 주체의 요청에는 aws:SourceArn, aws:SourceAccount, aws:SourceOrgID 같은 키가 들어오므로 이것으로 좁힌다. sts:ExternalId(b)는 역할 수임에 쓰는 키다. 이름을 숨기는 것(c)은 통제가 아니다. SCP(d)는 내 조직 구성원 계정에만 걸리고 다른 조직 계정에는 영향이 없다." }
+  facts: []
+
+- id: iam.d.cross-account-monitoring-saas
+  type: design
+  chapter: iam/cross-account
+  topic: iam/cross-account/third-party
+  scenario: { ko: "외부 모니터링 SaaS 회사가 우리 계정의 EC2·RDS·CloudWatch 상태를 읽어 대시보드를 만들어 준다. 이 회사는 많은 고객 계정을 같은 방식으로 모니터링한다. 회사는 자기 AWS 계정 ID와, 우리 고객 번호에서 만든 고유 식별자를 알려 왔다. 요구는 (1) 장기 자격 증명을 건네지 않을 것, (2) 다른 고객이 우리 역할 ARN을 알아도 우리 계정에 들어오지 못할 것, (3) 읽기만 하고 필요한 서비스로만 한정할 것이다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "우리 계정에 역할을 만들고, 신뢰 정책 Principal에 SaaS 회사의 AWS 계정을 적고 sts:ExternalId 조건에 회사가 준 고유 식별자를 넣는다" } }
+    - { id: b, text: { ko: "역할 권한 정책에는 모니터링에 필요한 EC2·RDS·CloudWatch 읽기 작업만 허용한다" } }
+    - { id: c, text: { ko: "읽기 전용 정책을 붙인 IAM 사용자를 만들어 액세스 키를 SaaS 회사에 전달한다" } }
+    - { id: d, text: { ko: "외부 ID는 우리가 직접 정한다. 기억하기 쉽게 우리 회사 이름을 쓴다" } }
+    - { id: e, text: { ko: "SaaS 회사 계정을 적는 대신 Principal을 \"*\"로 두고 sts:ExternalId 조건만 건다" } }
+    - { id: f, text: { ko: "외부 ID 대신 신뢰 정책에 aws:SourceAccount 조건으로 SaaS 회사 계정 ID를 확인한다" } }
+  answer_set: [a, b]
+  rubric:
+    ko:
+      - "a, b를 모두 고르면 정답이다."
+      - "a: 제3자에게는 역할과 임시 자격 증명을 쓰게 한다. 여러 고객을 상대하는 제3자에게는 외부 ID 조건이 혼동된 대리자 문제를 막는다. 다른 고객이 우리 ARN을 등록해도 SaaS 회사는 그 고객의 외부 ID로 수임을 시도하므로 실패한다. 요구 (1), (2)를 충족한다."
+      - "b: 제3자가 쓰는 리소스 비용은 우리 계정에 청구되고, 받은 권한 안의 모든 리소스에 접근할 수 있다. 필요한 서비스의 읽기 작업만 주는 것이 최소 권한이다. 요구 (3)을 충족한다."
+      - "c는 감점: 장기 자격 증명을 건네므로 요구 (1)을 어긴다. 문서는 제3자에게 IAM 사용자 대신 역할을 쓰라고 한다."
+      - "d는 감점: 외부 ID는 제3자가 고객마다 고유하게 발급해야 한다. 고객이 정하면 고유성이 보장되지 않고, 회사 이름처럼 추측 가능한 값도 피하라고 문서가 말한다."
+      - "e는 감점: Principal을 모든 보안 주체로 열면 신뢰 대상이 SaaS 회사로 한정되지 않는다. 외부 ID는 비밀이 아니므로 이것만으로 막을 수 없다."
+      - "f는 감점: aws:SourceAccount는 AWS 서비스 보안 주체가 보내는 요청에 들어오는 키로, 서비스 간 혼동된 대리자 대책이다. 다른 회사 계정의 역할이 수임하는 경우의 대책은 외부 ID다."
+      - "참고: IAM Access Analyzer로 우리 역할을 외부에서 수임할 수 있는지 점검하는 것은 좋은 보완책이다. 고르지 않아도 감점하지 않는다. 외부 ID를 요구하는 역할은 콘솔 역할 전환이 안 되므로 SaaS 회사는 API로 수임한다."
+  facts: []

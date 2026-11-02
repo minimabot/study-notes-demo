@@ -1,0 +1,56 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.conditions-abac-mfa-deny
+  type: quiz
+  chapter: iam/conditions-abac
+  topic: iam/conditions-abac/global-keys
+  question: { ko: "MFA로 인증하지 않은 요청은 콘솔이든 액세스 키로 부른 CLI든 모두 거부하려 한다. Deny 문에 넣을 조건으로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "\"Bool\": { \"aws:MultiFactorAuthPresent\": \"false\" }" } }
+    - { id: b, text: { ko: "\"BoolIfExists\": { \"aws:MultiFactorAuthPresent\": \"false\" }" } }
+    - { id: c, text: { ko: "\"Null\": { \"aws:MultiFactorAuthPresent\": \"true\" }" } }
+    - { id: d, text: { ko: "\"BoolIfExists\": { \"aws:MultiFactorAuthPresent\": \"true\" }" } }
+  answer: b
+  explanation: { ko: "aws:MultiFactorAuthPresent는 임시 자격 증명 요청에만 들어 있고, 장기 액세스 키 요청에는 아예 없다. Bool은 키가 없으면 거짓이 되어 액세스 키 요청을 거부하지 못한다(a). BoolIfExists는 키가 없으면 참이므로, MFA 없는 임시 자격 증명과 액세스 키 요청을 모두 거부한다. 문서는 Deny + Null + true 조합도 a와 같은 식으로 작동한다며 쓰지 말라고 한다(c). d는 Deny 조건으로 쓰면 오히려 MFA 요청과 액세스 키 요청을 거부한다." }
+  facts: []
+
+- id: iam.q.conditions-abac-forallvalues
+  type: quiz
+  chapter: iam/conditions-abac
+  topic: iam/conditions-abac/multivalued
+  question: { ko: "리소스를 만들 때 붙일 수 있는 태그 키를 project와 cost-center로 제한하려고 Allow 문에 \"ForAllValues:StringEquals\": { \"aws:TagKeys\": [\"project\", \"cost-center\"] }만 넣었다. 이 조건의 문제는?" }
+  choices:
+    - { id: a, text: { ko: "aws:TagKeys는 단일 값 키라 집합 연산자를 쓸 수 없다" } }
+    - { id: b, text: { ko: "태그를 하나도 넣지 않은 요청도 조건이 참이 되어 허용된다" } }
+    - { id: c, text: { ko: "project와 cost-center를 둘 다 넣어야만 허용된다" } }
+    - { id: d, text: { ko: "다른 태그 키 하나라도 섞이면 나머지 태그만 붙고 요청은 허용된다" } }
+  answer: b
+  explanation: { ko: "ForAllValues는 요청의 모든 값이 정책 값과 맞으면 참이고, 요청에 키가 없거나 값이 비어도 참이다. 그래서 태그 없는 요청도 통과한다. 문서는 Null 연산자로 \"aws:TagKeys\": \"false\"를 함께 걸어 키가 있는지 확인하라고 권한다. aws:TagKeys는 다중 값 키라 집합 연산자가 필요하다(a). 둘 중 하나만 넣어도 참이다(c). 목록 밖 키가 하나라도 있으면 조건이 거짓이 되어 요청 전체가 이 문으로 허용되지 않는다(d)." }
+  facts: []
+
+- id: iam.q.conditions-abac-sourceip-vpce
+  type: quiz
+  chapter: iam/conditions-abac
+  topic: iam/conditions-abac/global-keys
+  question: { ko: "버킷 정책에 \"회사 공인 IP 대역(aws:SourceIp)이 아니면 거부\" 문이 있다. 사내 VPC의 EC2 인스턴스가 S3 게이트웨이 VPC 엔드포인트로 접근하자 모두 거부됐다. 원인과 대처로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "VPC 엔드포인트를 거친 요청에는 aws:SourceIp가 없다. 엔드포인트 경로는 aws:SourceVpce로 구분해 허용한다" } }
+    - { id: b, text: { ko: "aws:SourceIp는 IPv6만 지원한다. 대역을 IPv6로 바꾼다" } }
+    - { id: c, text: { ko: "VPC 엔드포인트는 버킷 정책을 무시한다. 엔드포인트 정책만 고친다" } }
+    - { id: d, text: { ko: "인스턴스의 프라이빗 IP 대역을 aws:SourceIp에 추가한다" } }
+  answer: a
+  explanation: { ko: "aws:SourceIp는 공인 IP 대역에만 쓰고, 요청이 VPC 엔드포인트를 거치면 요청 컨텍스트에 들어 있지 않다. 그래서 \"이 대역이 아니면 거부\" 조건에 걸린다. 엔드포인트로 들어온 요청은 aws:SourceVpce(또는 aws:SourceVpc)로 판단한다. aws:SourceIp는 IPv4와 IPv6를 모두 지원한다(b). 엔드포인트 정책은 대상 서비스의 리소스 기반 정책을 대신하지 않는 추가 경계다(c). 프라이빗 IP를 넣어도 키 자체가 없으니 소용없다(d)." }
+  facts: []
+
+- id: iam.q.conditions-abac-new-project
+  type: quiz
+  chapter: iam/conditions-abac
+  topic: iam/conditions-abac/abac
+  question: { ko: "프로젝트별 역할에 같은 ABAC 정책 하나를 붙여 쓰고 있다. 정책은 aws:ResourceTag/access-project가 ${aws:PrincipalTag/access-project}와 같을 때 허용한다. 새 프로젝트 Lightning을 시작할 때 관리자가 할 일로 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "기존 ABAC 정책에 Lightning 리소스 ARN을 추가한다" } }
+    - { id: b, text: { ko: "access-project=Lightning 태그를 단 역할을 만들어 같은 정책을 붙인다. 정책은 고치지 않는다" } }
+    - { id: c, text: { ko: "Lightning 전용 고객 관리형 정책을 새로 만들어 리소스를 나열한다" } }
+    - { id: d, text: { ko: "모든 프로젝트 역할의 권한 경계를 Lightning에 맞춰 고친다" } }
+  answer: b
+  explanation: { ko: "ABAC는 보안 주체 태그와 리소스 태그가 같은지로 판단하므로, 새 프로젝트에는 새 태그 값을 가진 역할만 있으면 된다. 그 역할로 만든 리소스에 같은 태그가 붙으면 바로 접근된다. a, c는 리소스를 나열하는 RBAC 방식이라 리소스가 늘 때마다 정책을 고쳐야 한다. 권한 경계를 바꿀 이유는 없다(d)." }
+  facts: []

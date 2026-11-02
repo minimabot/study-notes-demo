@@ -1,0 +1,79 @@
+# 장: IAM 역할
+chapter:
+  id: iam/roles
+  title:
+    ko: IAM 역할
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+  topics:
+    - id: iam/roles/basics
+      title:
+        ko: 역할, 신뢰 정책과 권한 정책
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - SAP-C03#2.1
+        - DOP-C02#6.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/when-to-use-iam.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html
+    - id: iam/roles/service-roles-passrole
+      title:
+        ko: 서비스 역할, 서비스 연결 역할, PassRole
+      exam_tags:
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 서비스가 자동으로 만든 서비스 연결 역할은 직접 지우지 않는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+          checked: 2026-11-03
+        - claim:
+            ko: 사용자가 넘길 수 있는 역할을 iam:PassRole의 Resource로 승인된 역할만으로 좁히고, 사용자에게 주려는 것보다 큰 권한의 역할을 넘기지 못하게 한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
+          checked: 2026-11-03
+        - claim:
+            ko: 역할 태그와 ResourceTag 조건으로 PassRole을 통제하지 않는다 (결과가 일정하지 않다)
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create-service-linked-role.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+    - id: iam/roles/ec2-lambda
+      title:
+        ko: EC2 인스턴스 프로파일과 Lambda 실행 역할
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: EC2에서 도는 애플리케이션의 자격 증명은 인스턴스에 장기 키를 두지 말고 IAM 역할로 관리한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html
+          checked: 2026-11-03
+        - claim:
+            ko: 인스턴스 권한을 바꿀 때는 인스턴스 프로파일에서 역할을 빼지 말고 프로파일을 교체한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html
+          checked: 2026-11-03
+        - claim:
+            ko: Lambda 함수 코드에서 실행 역할을 sts:AssumeRole로 직접 수임하지 않는다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+    - id: iam/roles/sessions
+      title:
+        ko: 최대 세션 기간, 역할 체인, 세션 취소
+      exam_tags:
+        - DVA-C03#2.1
+        - SAP-C03#2.1
+        - SOA-C03#4.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_update-role-settings.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_revoke-sessions.html

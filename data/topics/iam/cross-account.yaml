@@ -1,0 +1,60 @@
+# 장: 계정 간 접근
+chapter:
+  id: iam/cross-account
+  title:
+    ko: 계정 간 접근과 혼동된 대리자
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-cross-account-resource-access.html
+  topics:
+    - id: iam/cross-account/two-ways
+      title:
+        ko: 리소스 기반 정책과 역할 수임
+      exam_tags:
+        - SAA-C03#1.1
+        - SOA-C03#4.1
+        - SAP-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-cross-account-resource-access.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html
+    - id: iam/cross-account/role-setup
+      title:
+        ko: 계정 간 역할 만들기와 전환
+      exam_tags:
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html
+    - id: iam/cross-account/third-party
+      title:
+        ko: 제3자 접근과 외부 ID
+      exam_tags:
+        - SAA-C03#1.1
+        - SAP-C03#2.1
+      recommended:
+        - claim:
+            ko: 여러 고객을 상대하는 제3자에게 역할을 줄 때는 외부 ID 조건을 신뢰 정책에 넣는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-cross-account-resource-access.html
+          checked: 2026-11-03
+        - claim:
+            ko: 제3자에게 IAM 사용자의 장기 자격 증명을 주지 말고 IAM 역할의 임시 자격 증명을 쓰게 한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_third-party.html
+    - id: iam/cross-account/service-org
+      title:
+        ko: 서비스 간 혼동된 대리자와 SCP·RCP
+      exam_tags:
+        - SAP-C03#2.1
+        - SAP-C03#2.3
+        - SAA-C03#1.1
+      recommended:
+        - claim:
+            ko: AWS 서비스 보안 주체에 리소스 권한을 줄 때는 aws:SourceArn, aws:SourceAccount, aws:SourceOrgID, aws:SourceOrgPaths 조건을 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html
