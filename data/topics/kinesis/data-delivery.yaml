@@ -1,0 +1,55 @@
+# 장: 다른 서비스로 데이터 보내기
+chapter:
+  id: kinesis/data-delivery
+  title:
+    ko: "다른 서비스로 데이터 보내기 (Firehose, 스트리밍 테이블·S3 전송, Flink, Pipes)"
+  track: practice
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/data-delivery.html
+  topics:
+    - id: kinesis/data-delivery/options
+      title:
+        ko: "전송 방법 한눈에 보기"
+      exam_tags:
+        - SAA-C03#3.5
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/using-other-services-read.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kdf-consumer.html
+        - https://docs.aws.amazon.com/streams/latest/dev/using-other-services-redshift.html
+    - id: kinesis/data-delivery/firehose
+      title:
+        ko: "Amazon Data Firehose로 적재"
+      exam_tags:
+        - SAA-C03#3.5
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kdf-consumer.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kpl-with-firehose.html
+    - id: kinesis/data-delivery/managed-delivery
+      title:
+        ko: "스트리밍 테이블과 S3 전송"
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: "전송 역할의 신뢰 정책에 aws:SourceArn과 aws:SourceAccount 조건을 넣고, 리소스 ARN을 와일드카드 없이 좁힌다"
+          source: https://docs.aws.amazon.com/streams/latest/dev/data-delivery-best-practices.html
+          checked: 2026-11-02
+        - claim:
+            ko: "DLQ를 늘 설정하고, DataFreshness와 실패 레코드 수 지표에 CloudWatch 경보를 건다"
+          source: https://docs.aws.amazon.com/streams/latest/dev/data-delivery-best-practices.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/data-delivery.html
+        - https://docs.aws.amazon.com/streams/latest/dev/data-delivery-quotas.html
+        - https://docs.aws.amazon.com/streams/latest/dev/data-delivery-security.html
+    - id: kinesis/data-delivery/other-integrations
+      title:
+        ko: "Flink, EventBridge Pipes, Lambda, Redshift"
+      exam_tags:
+        - SAA-C03#3.5
+        - SAP-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kda-consumer.html
+        - https://docs.aws.amazon.com/streams/latest/dev/using-other-services-ev-pipes.html
+        - https://docs.aws.amazon.com/streams/latest/dev/lambda-consumer.html

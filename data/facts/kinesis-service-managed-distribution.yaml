@@ -1,0 +1,11 @@
+# Kinesis Data Streams 서비스 관리형 레코드 분배 장 전용 사실. ID 접두어 kinesis.
+# 출처: Service-managed record distribution 하위 페이지 (2026-11-02 대조, 문서 추가일 2026-09-23)
+
+- id: kinesis.smd.propagation
+  value: 1
+  unit: s
+  display: { ko: "약 1초" }
+  label: { ko: "레코드 분배 전략 변경이 서비스 인프라 전체에 반영되는 시간 (점진 배포·알림 없음)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-configure-migration-considerations.html
+  checked: 2026-11-02
+  volatile: true

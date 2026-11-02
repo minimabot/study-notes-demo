@@ -1,0 +1,23 @@
+# Kinesis Data Streams 문제 해결 장(kinesis/troubleshooting) 전용 사실 항목.
+# CreateStream·ListStreams·GetShardIterator 등의 한도(kinesis.api.control-plane.tps), flushSync 지연은 kinesis-producers.yaml을,
+# GetRecords 한도·KCL 장애 조치 시간·이터레이터 나이 위험 기준은 kinesis-consumers.yaml을, 이터레이터 만료는 kinesis.yaml을 재사용한다.
+
+- id: kinesis.api.describestream.tps
+  value: 10
+  unit: count/s
+  display: { ko: "초당 10회" }
+  label: { ko: "DescribeStream 호출 한도 (스트림 단위)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/troubleshooting-producers.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.api.describestreamsummary.tps
+  value: 20
+  unit: count/s
+  display: { ko: "초당 20회" }
+  label: { ko: "DescribeStreamSummary 호출 한도 (스트림 단위)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/troubleshooting-producers.html
+  checked: 2026-11-02
+  volatile: false

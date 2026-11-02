@@ -1,0 +1,49 @@
+# 장: 실습
+chapter:
+  id: kinesis/labs
+  title:
+    ko: 실습 (AWS CLI로 스트림 만들기·쓰기·읽기·샤드 조정·Lambda·모드 전환)
+  track: practice
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/fundamental-stream.html
+  topics:
+    - id: kinesis/labs/setup
+      title:
+        ko: 준비와 요금 주의
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/fundamental-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-tutorial-cli-installation.html
+    - id: kinesis/labs/basics
+      title:
+        ko: "실습 1: 프로비저닝 스트림 만들고 쓰기·읽기"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/fundamental-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-create-a-stream.html
+    - id: kinesis/labs/resize-encrypt
+      title:
+        ko: "실습 2: 샤드 수 바꾸기와 서버 측 암호화"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/updating-a-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/getting-started-with-sse.html
+        - https://docs.aws.amazon.com/kinesis/latest/APIReference/API_UpdateShardCount.html
+    - id: kinesis/labs/lambda
+      title:
+        ko: "실습 3: Lambda 소비자 붙이기"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/lambda-consumer.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis-example.html
+    - id: kinesis/labs/mode-cleanup
+      title:
+        ko: "실습 4: 온디맨드로 전환하고 정리하기"
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/updating-a-stream.html
+        - https://docs.aws.amazon.com/streams/latest/dev/fundamental-stream.html

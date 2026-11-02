@@ -1,0 +1,22 @@
+# Kinesis Data Streams 모니터링 장(kinesis/monitoring) 전용 사실 항목.
+# 이터레이터 나이 위험 기준(kinesis.iterator-age.risk)은 kinesis-consumers.yaml을 재사용한다.
+
+- id: kinesis.metrics.interval
+  value: 60
+  unit: s
+  display: { ko: "1분" }
+  label: { ko: "스트림 수준 지표와 (켰을 때) 샤드 수준 지표를 CloudWatch로 보내는 주기" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/monitoring-with-cloudwatch.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.efo.subscription.lifetime
+  value: 300
+  unit: s
+  display: { ko: "최대 5분" }
+  label: { ko: "SubscribeToShard 구독 하나가 유지되는 시간 (끝나면 다시 구독한다). SubscribeToShard.Success 지표가 적어도 이 주기로 한 번 나오는 이유" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/monitoring-with-cloudwatch.html
+  checked: 2026-11-02
+  volatile: false

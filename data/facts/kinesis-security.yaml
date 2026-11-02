@@ -1,0 +1,32 @@
+# Kinesis Data Streams 보안 장 전용 사실. ID 접두어 kinesis.
+# 출처: Data protection(서버 측 암호화) 하위 페이지, Quotas and limits (2026-11-02 대조)
+
+- id: kinesis.sse.latency-overhead
+  value: 100
+  unit: us
+  display: { ko: "100μs 미만" }
+  label: { ko: "서버 측 암호화를 켰을 때 PutRecord·PutRecords·GetRecords의 일반 지연 시간 증가분" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/costs-performance.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/costs-performance.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.sse.datakey-rotation
+  value: 300
+  unit: s
+  display: { ko: "약 5분마다" }
+  label: { ko: "Kinesis Data Streams가 데이터 키를 교체하며 AWS KMS를 호출하는 주기 (자격 증명마다 호출이 따로 생김)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/costs-performance.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/costs-performance.html
+  checked: 2026-11-02
+  volatile: false
+
+- id: kinesis.resource-policy.api-tps
+  value: 5
+  unit: count/s
+  display: { ko: "계정당 초당 5회" }
+  label: { ko: "PutResourcePolicy·GetResourcePolicy·DeleteResourcePolicy API 호출 한도 (지원 요청으로 상향 가능)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-02
+  volatile: true

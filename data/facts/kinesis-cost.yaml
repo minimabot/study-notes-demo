@@ -1,0 +1,281 @@
+# kinesis/cost 장 전용 사실 항목. ID 접두어 kinesis.
+# 요금 숫자는 요금 페이지(JS로 그려짐) 대신 AWS Price List API 가격표에서 읽었다.
+#   https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonKinesis/20260911124443/{ap-northeast-2,us-east-1}/index.json
+#   (region_index.json의 currentVersionUrl, 2026-11-02 확인). 괄호 안은 가격표의 usagetype / operation.
+# 요금 항목의 정의(25 KB PUT 단위, 1 KB 올림, 연장 보존 샤드 시간 추가 요금, 장기 보존 조회 등)는 요금 페이지 본문에서 확인했다.
+# 재사용: 샤드 쓰기·읽기 용량(kinesis.shard.write, kinesis.shard.read, kinesis.shard.write-records),
+#   보존 기간 기본·최대(kinesis.retention.default, kinesis.retention.max), 향상된 팬아웃(kinesis.efo.*),
+#   온디맨드 읽기 배수(kinesis.ondemand.read-multiplier), On-demand Advantage(kinesis.advantage.*).
+
+- id: kinesis.price.offer-version
+  value: "2026-09-11"
+  unit: date
+  display: { ko: "2026-09-11 게시 가격표 (2026-11-02 확인)" }
+  label: { ko: "이 장의 Kinesis Data Streams 요금 수치를 읽은 가격표. AWS Price List API AmazonKinesis 오퍼 파일 버전 20260911124443" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# ── 프로비저닝 모드 ──
+- id: kinesis.price.shard-hour.apne2
+  value: 0.0185
+  unit: usd/shard-hour
+  display: { ko: "샤드 시간당 0.0185 USD" }
+  label: { ko: "프로비저닝 샤드 시간 단가, 서울(ap-northeast-2) (Price List API: APN2-Storage-ShardHour / shardHourStorage)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.shard-hour.use1
+  value: 0.015
+  unit: usd/shard-hour
+  display: { ko: "샤드 시간당 0.015 USD" }
+  label: { ko: "프로비저닝 샤드 시간 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: Storage-ShardHour)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.put-unit.size
+  value: 25
+  unit: KB
+  display: { ko: "25 KB" }
+  label: { ko: "프로비저닝 모드의 PUT 페이로드 단위 크기. 레코드 하나를 이 크기 조각으로 나눠 올림한 수만큼 단위를 센다 (5 KB 레코드는 1단위, 45 KB 레코드는 2단위)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.put-unit.apne2
+  value: 0.0204
+  unit: usd/1M-units
+  display: { ko: "PUT 페이로드 단위 100만 개당 0.0204 USD" }
+  label: { ko: "프로비저닝 PUT 페이로드 단위 단가, 서울(ap-northeast-2) (Price List API: APN2-PutRequestPayloadUnits, 단위당 0.0000000204)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.put-unit.use1
+  value: 0.014
+  unit: usd/1M-units
+  display: { ko: "PUT 페이로드 단위 100만 개당 0.014 USD" }
+  label: { ko: "프로비저닝 PUT 페이로드 단위 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: PutRequestPayloadUnits)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.extended-shard-hour.apne2
+  value: 0.0247
+  unit: usd/shard-hour
+  display: { ko: "샤드 시간당 0.0247 USD 추가" }
+  label: { ko: "프로비저닝 연장 보존(24시간 초과 ~ 7일) 요금, 서울(ap-northeast-2). 보존 기간이 기본값보다 길면 모든 샤드 시간에 기본 샤드 시간 요금과 별도로 붙는다 (Price List API: APN2-Extended-ShardHour)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.extended-shard-hour.use1
+  value: 0.020
+  unit: usd/shard-hour
+  display: { ko: "샤드 시간당 0.020 USD 추가" }
+  label: { ko: "프로비저닝 연장 보존 요금, 미국 동부 버지니아 북부(us-east-1). 기본 샤드 시간 요금과 별도 (Price List API: Extended-ShardHour)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.efo-shard-hour.apne2
+  value: 0.0185
+  unit: usd/consumer-shard-hour
+  display: { ko: "소비자-샤드 시간당 0.0185 USD" }
+  label: { ko: "프로비저닝 모드 향상된 팬아웃 소비자-샤드 시간 단가, 서울(ap-northeast-2). 등록한 소비자 하나 × 샤드 하나 × 1시간 (Price List API: APN2-EnhancedFanoutHour)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.efo-shard-hour.use1
+  value: 0.015
+  unit: usd/consumer-shard-hour
+  display: { ko: "소비자-샤드 시간당 0.015 USD" }
+  label: { ko: "프로비저닝 모드 향상된 팬아웃 소비자-샤드 시간 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: EnhancedFanoutHour)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.efo-retrieval.apne2
+  value: 0.016
+  unit: usd/GB
+  display: { ko: "GB당 0.016 USD" }
+  label: { ko: "프로비저닝 모드 향상된 팬아웃 데이터 조회 단가, 서울(ap-northeast-2) (Price List API: APN2-ReadBytes / EnhancedFanoutDataRetrieval)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.efo-retrieval.use1
+  value: 0.013
+  unit: usd/GB
+  display: { ko: "GB당 0.013 USD" }
+  label: { ko: "프로비저닝 모드 향상된 팬아웃 데이터 조회 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: ReadBytes / EnhancedFanoutDataRetrieval)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.longterm-retrieval.apne2
+  value: 0.0258
+  unit: usd/GB
+  display: { ko: "GB당 0.0258 USD" }
+  label: { ko: "장기 보존 데이터(7일보다 오래된 데이터)를 GetRecords로 읽을 때의 조회 단가, 서울(ap-northeast-2). 프로비저닝 요금표 항목이며, 향상된 팬아웃으로 읽으면 붙지 않는다 (Price List API: APN2-LongTermRetention-ReadBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.longterm-retrieval.use1
+  value: 0.021
+  unit: usd/GB
+  display: { ko: "GB당 0.021 USD" }
+  label: { ko: "장기 보존 데이터를 GetRecords로 읽을 때의 조회 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: LongTermRetention-ReadBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# ── 두 모드 공통: 장기 보존 저장 ──
+- id: kinesis.price.longterm-storage.apne2
+  value: 0.025
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.025 USD" }
+  label: { ko: "장기 보존(7일 초과) 저장 단가, 서울(ap-northeast-2). 프로비저닝(APN2-LongTermRetention-ByteHrs)과 온디맨드 표준(APN2-OnDemand-LongTermRetention-ByteHrs) 모두 같은 값" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.longterm-storage.use1
+  value: 0.023
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.023 USD" }
+  label: { ko: "장기 보존(7일 초과) 저장 단가, 미국 동부 버지니아 북부(us-east-1). 프로비저닝과 온디맨드 표준 같은 값 (Price List API: LongTermRetention-ByteHrs, OnDemand-LongTermRetention-ByteHrs)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+# ── 온디맨드 표준 모드 ──
+- id: kinesis.price.od.stream-hour.apne2
+  value: 0.049
+  unit: usd/stream-hour
+  display: { ko: "스트림 시간당 0.049 USD" }
+  label: { ko: "온디맨드 표준 스트림 하나의 시간당 고정 요금, 서울(ap-northeast-2) (Price List API: APN2-OnDemand-StreamHour)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.stream-hour.use1
+  value: 0.04
+  unit: usd/stream-hour
+  display: { ko: "스트림 시간당 0.04 USD" }
+  label: { ko: "온디맨드 표준 스트림 하나의 시간당 고정 요금, 미국 동부 버지니아 북부(us-east-1) (Price List API: OnDemand-StreamHour)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.ingest.apne2
+  value: 0.099
+  unit: usd/GB
+  display: { ko: "GB당 0.099 USD" }
+  label: { ko: "온디맨드 표준 데이터 수집 단가(기본 24시간 보존 포함), 서울(ap-northeast-2) (Price List API: APN2-OnDemand-BilledIncomingBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.ingest.use1
+  value: 0.08
+  unit: usd/GB
+  display: { ko: "GB당 0.08 USD" }
+  label: { ko: "온디맨드 표준 데이터 수집 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: OnDemand-BilledIncomingBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.ingest-rounding
+  value: 1024
+  unit: byte
+  display: { ko: "레코드마다 1 KB(1,024바이트) 단위로 올림" }
+  label: { ko: "온디맨드 수집량을 셀 때 레코드 하나의 크기를 올림하는 단위 (4.5 KB 레코드는 5 KB로 센다). 조회량은 올림하지 않는다" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.retrieval.apne2
+  value: 0.049
+  unit: usd/GB
+  display: { ko: "GB당 0.049 USD" }
+  label: { ko: "온디맨드 표준 데이터 조회 단가(GetRecords 공유 처리량 소비자), 서울(ap-northeast-2) (Price List API: APN2-OnDemand-BilledOutgoingBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.retrieval.use1
+  value: 0.04
+  unit: usd/GB
+  display: { ko: "GB당 0.04 USD" }
+  label: { ko: "온디맨드 표준 데이터 조회 단가(GetRecords), 미국 동부 버지니아 북부(us-east-1) (Price List API: OnDemand-BilledOutgoingBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.efo-retrieval.apne2
+  value: 0.062
+  unit: usd/GB
+  display: { ko: "GB당 0.062 USD" }
+  label: { ko: "온디맨드 표준 향상된 팬아웃 데이터 조회 단가, 서울(ap-northeast-2). 온디맨드에는 소비자-샤드 시간 요금 항목이 없다 (Price List API: APN2-OnDemand-BilledOutgoingEFOBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.efo-retrieval.use1
+  value: 0.05
+  unit: usd/GB
+  display: { ko: "GB당 0.05 USD" }
+  label: { ko: "온디맨드 표준 향상된 팬아웃 데이터 조회 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: OnDemand-BilledOutgoingEFOBytes)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.extended-retention.apne2
+  value: 0.114
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.114 USD" }
+  label: { ko: "온디맨드 표준 연장 보존(24시간 초과 ~ 7일) 저장 단가, 서울(ap-northeast-2) (Price List API: APN2-OnDemand-ExtendedRetention-ByteHrs)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.price.od.extended-retention.use1
+  value: 0.10
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.10 USD" }
+  label: { ko: "온디맨드 표준 연장 보존 저장 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: OnDemand-ExtendedRetention-ByteHrs)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  source_ko: https://aws.amazon.com/ko/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true

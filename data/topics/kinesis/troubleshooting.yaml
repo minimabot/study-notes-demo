@@ -1,0 +1,69 @@
+# 장: 문제 해결
+chapter:
+  id: kinesis/troubleshooting
+  title:
+    ko: 문제 해결 (스로틀·지연·중복)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+  topics:
+    - id: kinesis/troubleshooting/triage
+      title:
+        ko: 증상에서 지표로
+      exam_tags:
+        - SOA-C03#1.2
+        - DOP-C02#5.3
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
+        - https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+        - https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html
+    - id: kinesis/troubleshooting/throttling
+      title:
+        ko: 쓰기·읽기 스로틀
+      exam_tags:
+        - SOA-C03#1.2
+        - DVA-C03#4.3
+        - DOP-C02#5.3
+      recommended:
+        - claim:
+            ko: GetRecords 한 번에 읽는 최대 레코드 수(KCL의 maxRecords)는 보통 기본값을 쓴다
+          source: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
+        - https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+    - id: kinesis/troubleshooting/iterator
+      title:
+        ko: 이터레이터 만료와 레코드 만료
+      exam_tags:
+        - DVA-C03#1.1
+        - DOP-C02#5.3
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-fis-expired-iterator.html
+    - id: kinesis/troubleshooting/duplicates-skips
+      title:
+        ko: 중복과 누락
+      exam_tags:
+        - DVA-C03#1.1
+        - DVA-C03#1.2
+        - DOP-C02#5.3
+      recommended:
+        - claim:
+            ko: processRecords 안에서 모든 예외를 처리해 레코드를 건너뛰지 않게 한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+          checked: 2026-11-02
+        - claim:
+            ko: 최종 대상이 중복을 잘 다룰 수 있으면 멱등 처리를 최종 대상에 맡긴다
+          source: https://docs.aws.amazon.com/streams/latest/dev/kinesis-record-processor-duplicates.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-record-processor-duplicates.html
+        - https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-consumers.html
+    - id: kinesis/troubleshooting/fis
+      title:
+        ko: AWS FIS로 오류 대응 미리 시험하기
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-fis.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-fis-expired-iterator.html

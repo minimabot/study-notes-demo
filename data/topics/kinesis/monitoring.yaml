@@ -1,0 +1,60 @@
+# 장: 모니터링
+chapter:
+  id: kinesis/monitoring
+  title:
+    ko: 모니터링 (CloudWatch·CloudTrail·KCL/KPL 지표)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/monitoring.html
+  topics:
+    - id: kinesis/monitoring/tools
+      title:
+        ko: 모니터링 도구
+      exam_tags:
+        - SOA-C03#1.1
+        - DOP-C02#4.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/monitoring.html
+        - https://docs.aws.amazon.com/streams/latest/dev/agent-health.html
+    - id: kinesis/monitoring/stream-vs-shard
+      title:
+        ko: 스트림 수준 지표와 샤드 수준(향상된) 지표
+      exam_tags:
+        - SOA-C03#1.1
+        - DOP-C02#4.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html
+    - id: kinesis/monitoring/key-metrics
+      title:
+        ko: 꼭 볼 지표와 경보
+      exam_tags:
+        - SOA-C03#1.1
+        - DOP-C02#4.2
+        - DVA-C03#4.3
+      recommended:
+        - claim:
+            ko: GetRecords.IteratorAgeMilliseconds에는 Maximum 통계로 CloudWatch 경보를 걸어 데이터 손실 위험 전에 알린다
+          source: https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html
+          checked: 2026-11-02
+        - claim:
+            ko: PutRecord.Success·PutRecords.Success와 GetRecords.Success에는 Average 통계로 경보를 걸어 쓰기·읽기 실패를 알린다. KPL을 쓰면 PutRecords.Success를 본다
+          source: https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html
+    - id: kinesis/monitoring/kcl-kpl
+      title:
+        ko: KCL·KPL 애플리케이션 지표
+      exam_tags:
+        - DOP-C02#4.1
+        - DVA-C03#4.3
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-kcl.html
+        - https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-kpl.html
+    - id: kinesis/monitoring/cloudtrail
+      title:
+        ko: CloudTrail로 API 호출 기록
+      exam_tags:
+        - SOA-C03#1.1
+        - DOP-C02#4.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/logging-using-cloudtrail.html

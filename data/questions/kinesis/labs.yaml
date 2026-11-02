@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.labs-base64
+  type: quiz
+  chapter: kinesis/labs
+  topic: kinesis/labs/basics
+  question: { ko: "실습에서 put-record로 JSON 문자열을 넣고 get-records로 읽었더니 Data 칸에 알아볼 수 없는 문자열이 나왔다. 옳은 설명은?" }
+  choices:
+    - { id: a, text: { ko: "서버 측 암호화가 켜져 있어 암호문이 그대로 나온다" } }
+    - { id: b, text: { ko: "API 응답의 Data는 base64로 인코딩되어 나오므로, 풀어야 원래 값이 보인다" } }
+    - { id: c, text: { ko: "다른 샤드의 레코드를 읽었다" } }
+    - { id: d, text: { ko: "샤드 이터레이터가 만료되어 쓰레기 값이 나왔다" } }
+  answer: b
+  explanation: { ko: "Kinesis API는 Data를 바이너리 값으로 다루고 CLI는 이를 base64 문자열로 보여 준다. base64 --decode로 풀면 넣은 JSON이 나온다(b). 서버 측 암호화(a)는 저장 시 암호화라 권한이 있는 소비자에게는 평문으로 돌아온다. 다른 샤드(c)라도 Data 형식은 같다. 만료된 이터레이터(d)는 ExpiredIteratorException 오류를 낸다." }
+  facts: []
+
+- id: kinesis.q.labs-usc-limit
+  type: quiz
+  chapter: kinesis/labs
+  topic: kinesis/labs/resize-encrypt
+  question: { ko: "샤드 {{raw:2개}}인 실습 스트림에 update-shard-count --target-shard-count {{raw:6}}을 실행했더니 오류가 났다. 가장 그럴듯한 이유는?" }
+  choices:
+    - { id: a, text: { ko: "UNIFORM_SCALING은 샤드를 줄일 때만 쓸 수 있다" } }
+    - { id: b, text: { ko: "한 번에 늘릴 수 있는 목표가 {{fact:kinesis.usc.scale-up-max}}까지라서 {{raw:4개}}를 넘을 수 없다" } }
+    - { id: c, text: { ko: "서버 측 암호화가 켜진 스트림은 샤드 수를 바꿀 수 없다" } }
+    - { id: d, text: { ko: "온디맨드 스트림에서만 샤드 수를 바꿀 수 있다" } }
+  answer: b
+  explanation: { ko: "UpdateShardCount는 한 번에 {{fact:kinesis.usc.scale-up-max}}까지만 늘린다. {{raw:2개}}에서는 {{raw:4개}}가 최대이므로 {{raw:4개}}로 늘린 뒤 다시 {{raw:6개}}로 늘린다(b). UNIFORM_SCALING(a)은 늘릴 때도 줄일 때도 쓴다. 암호화(c)는 샤드 수 변경과 관계없다. UpdateShardCount는 프로비저닝 스트림 전용이고 온디맨드(d)는 샤드를 Kinesis가 관리한다." }
+  facts: [kinesis.usc.scale-up-max, kinesis.usc.scale-down-min, kinesis.usc.daily-max]
+
+- id: kinesis.q.labs-cleanup
+  type: quiz
+  chapter: kinesis/labs
+  topic: kinesis/labs/mode-cleanup
+  question: { ko: "실습이 끝난 뒤 데이터를 더 넣지 않고 스트림을 그대로 두었다. 다음 중 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "데이터를 넣지 않으면 어느 모드든 요금이 없다" } }
+    - { id: b, text: { ko: "프로비저닝이면 열린 샤드마다 샤드 시간, 온디맨드 표준이면 스트림 시간 요금이 계속 붙는다" } }
+    - { id: c, text: { ko: "보존 기간({{fact:kinesis.retention.default}})이 지나면 스트림이 자동으로 지워진다" } }
+    - { id: d, text: { ko: "Lambda 이벤트 소스 매핑을 지우면 스트림 요금도 멈춘다" } }
+  answer: b
+  explanation: { ko: "프로비저닝 샤드 시간({{fact:kinesis.price.shard-hour.apne2}}, 서울)과 온디맨드 표준 스트림 시간({{fact:kinesis.price.od.stream-hour.apne2}}, 서울)은 데이터가 없어도 붙는다(b). 그래서 a는 틀리다. 보존 기간이 지나면 레코드만 사라지고 스트림은 남는다(c). 이벤트 소스 매핑(d)은 소비자일 뿐이라 지워도 스트림 요금은 그대로다. delete-stream으로 지워야 한다." }
+  facts: [kinesis.price.shard-hour.apne2, kinesis.price.od.stream-hour.apne2, kinesis.retention.default]

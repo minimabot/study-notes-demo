@@ -1,0 +1,70 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.monitoring-hot-shard
+  type: quiz
+  chapter: kinesis/monitoring
+  topic: kinesis/monitoring/stream-vs-shard
+  question: { ko: "샤드 {{raw:20개}}짜리 스트림의 스트림 수준 IncomingBytes는 전체 용량의 절반에도 못 미친다. 그런데 WriteProvisionedThroughputExceeded가 가끔 0보다 크다. 원인 샤드를 찾으려면?" }
+  choices:
+    - { id: a, text: { ko: "EnableEnhancedMonitoring으로 샤드 수준 IncomingBytes·WriteProvisionedThroughputExceeded를 켜고 샤드별로 비교한다" } }
+    - { id: b, text: { ko: "스트림 수준 지표의 기간을 늘려 평균을 다시 본다" } }
+    - { id: c, text: { ko: "CloudTrail에서 PutRecords 이벤트 수를 센다" } }
+    - { id: d, text: { ko: "샤드 수준 지표는 기본으로 켜져 있으니 대시보드에 ShardId 차원만 더한다" } }
+  answer: a
+  explanation: { ko: "스트림 수준 지표는 모든 샤드의 합이라 샤드 하나만 막히는 핫 샤드를 가린다. 샤드 수준(향상된) 지표는 기본으로 꺼져 있고(d는 틀림), EnableEnhancedMonitoring으로 켠다. 켜면 {{fact:kinesis.metrics.interval}}마다 샤드별 값이 오며, 샤드·지표마다 요금이 붙는다. 기간을 늘리면 평균이 더 뭉개진다(b). CloudTrail은 호출 기록이지 샤드별 처리량 지표가 아니다(c)." }
+  facts: [kinesis.metrics.interval]
+
+- id: kinesis.q.monitoring-alarm-stat
+  type: quiz
+  chapter: kinesis/monitoring
+  topic: kinesis/monitoring/key-metrics
+  question: { ko: "소비자가 뒤처져 레코드를 잃기 전에 알림을 받고 싶다. 소비자 애플리케이션이 여럿이고, 그중 하나만 느려질 수도 있다. 가장 알맞은 경보는?" }
+  choices:
+    - { id: a, text: { ko: "GetRecords.IteratorAgeMilliseconds의 Average 통계에 경보를 건다" } }
+    - { id: b, text: { ko: "GetRecords.IteratorAgeMilliseconds의 Maximum 통계에, 보존 기간의 절반보다 낮은 임계값으로 경보를 건다" } }
+    - { id: c, text: { ko: "IncomingRecords의 Sum 통계가 줄어들면 울리는 경보를 건다" } }
+    - { id: d, text: { ko: "PutRecords.Success의 Average 통계에 경보를 건다" } }
+  answer: b
+  explanation: { ko: "이터레이터 나이가 {{fact:kinesis.iterator-age.risk}}를 넘으면 레코드 만료로 데이터를 잃을 위험이 있다. AWS는 그 전에 알 수 있게 Maximum 통계로 경보를 걸라고 권한다. Average는 느린 소비자 하나를 다른 소비자들과 섞어 가린다(a). IncomingRecords는 쓰기 양이다(c). PutRecords.Success는 쓰기 실패를 보는 지표다(d)." }
+  facts: [kinesis.iterator-age.risk]
+
+- id: kinesis.q.monitoring-cloudtrail
+  type: quiz
+  chapter: kinesis/monitoring
+  topic: kinesis/monitoring/cloudtrail
+  question: { ko: "어제 오후부터 한 스트림에서 오래된 레코드를 읽을 수 없게 됐다. 누군가 보존 기간을 줄였는지, 줄였다면 누가 어떤 자격 증명으로 했는지 알고 싶다. 추적(Trail)은 따로 만들지 않았다." }
+  choices:
+    - { id: a, text: { ko: "추적이 없으므로 확인할 방법이 없다" } }
+    - { id: b, text: { ko: "CloudTrail 이벤트 기록에서 DecreaseStreamRetentionPeriod 이벤트를 찾고 userIdentity를 본다" } }
+    - { id: c, text: { ko: "CloudWatch의 GetRecords.IteratorAgeMilliseconds 지표에서 호출한 사용자를 찾는다" } }
+    - { id: d, text: { ko: "샤드 수준 지표를 켜면 보존 기간 변경 이력이 나온다" } }
+  answer: b
+  explanation: { ko: "CloudTrail은 계정을 만들 때부터 켜져 있고, 추적이 없어도 최근 이벤트를 이벤트 기록에서 보고 검색할 수 있다(a는 틀림). DecreaseStreamRetentionPeriod는 기록되는 작업이고, userIdentity로 IAM 사용자인지 역할의 임시 자격 증명인지 등을 가른다. CloudWatch 지표(c, d)는 무슨 일이 일어나는지를 보여 줄 뿐 누가 바꿨는지는 담지 않는다. 오래 보관하려면 추적을 만들어 S3로 보낸다." }
+  facts: []
+
+- id: kinesis.d.monitoring-iterator-age
+  type: design
+  chapter: kinesis/monitoring
+  topic: kinesis/monitoring/key-metrics
+  scenario: { ko: "주문 이벤트 스트림(프로비저닝 모드, 샤드 {{raw:4개}}, 보존 기간은 기본값)을 KCL 애플리케이션이 EC2 인스턴스 {{raw:6대}}에서 읽는다. 레코드마다 외부 결제 확인 API를 동기로 부르고 응답을 기다린다. 지난 며칠 동안 주문이 꾸준히 늘었고, 그에 맞춰 GetRecords.IteratorAgeMilliseconds의 Maximum이 오르내림 없이 계속 올라 보존 기간의 {{raw:3분의 1}}쯤에 와 있다. ReadProvisionedThroughputExceeded는 거의 0이다. KCL의 RecordProcessor.processRecords.Time도 처리량과 함께 늘었다. 레코드를 잃지 않으면서 원인을 고치는 조치를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "우선 보존 기간을 늘려, 원인을 고치는 동안 레코드가 만료되지 않게 한다" } }
+    - { id: b, text: { ko: "KCL의 샤드별 MillisBehindLatest(또는 샤드 수준 IteratorAgeMilliseconds)로 모든 샤드가 밀리는지 특정 샤드만 밀리는지 가른다" } }
+    - { id: c, text: { ko: "레코드마다 부르는 동기 외부 API 호출을 처리의 중요 경로에서 빼거나 묶어서 부르도록 처리 로직을 고친다" } }
+    - { id: d, text: { ko: "샤드 수를 늘려 병렬성을 높인다" } }
+    - { id: e, text: { ko: "IteratorAgeMilliseconds의 Maximum 통계에 보존 기간의 절반보다 낮은 임계값으로 경보를 걸어 SNS로 알린다" } }
+    - { id: f, text: { ko: "샤드 수는 그대로 두고 KCL 작업자 인스턴스를 {{raw:12대}}로 늘린다" } }
+    - { id: g, text: { ko: "공유 처리량 대신 향상된 팬아웃 소비자로 바꿔 읽기 처리량을 늘린다" } }
+    - { id: h, text: { ko: "IteratorAgeMilliseconds의 Average 통계에 경보를 건다" } }
+  answer_set: [a, b, c, d, e]
+  rubric:
+    ko:
+      - "a, b, c, d, e를 모두 고르면 정답이다."
+      - "a: 이터레이터 나이가 {{fact:kinesis.iterator-age.risk}}를 넘으면 처리 전에 레코드가 만료될 위험이 있다. 보존 기간 기본값은 {{fact:kinesis.retention.default}}이고 최대 {{fact:kinesis.retention.max}}까지 늘릴 수 있다. 늘리는 것은 몇 분 안에 반영되는 응급 조치다."
+      - "b: 모든 샤드가 고르게 밀리면 처리 속도 문제, 한 샤드만 밀리면 핫 샤드나 그 샤드의 특정 레코드 문제다. 스트림 수준 지표만으로는 가를 수 없다."
+      - "c: 오르내림 없이 꾸준히 오르고 처리 시간이 처리량과 함께 늘었다면 처리 로직이 확장되지 않는 것이다. 중요 경로의 블로킹 호출이 흔한 원인이다."
+      - "d: 샤드를 늘리면 레코드 프로세서 수가 늘어 병렬성이 오른다. 작업자는 이미 샤드보다 많으므로 남는 작업자가 새 샤드를 맡는다."
+      - "e: AWS는 이터레이터 나이에 Maximum 통계로 경보를 걸어 손실 위험 전에 알리라고 권장한다."
+      - "f는 감점: KCL은 샤드마다 레코드 프로세서 하나를 둔다. 작업자가 이미 샤드 수보다 많으므로 더 늘려도 남는 작업자는 놀 뿐이다."
+      - "g는 감점: ReadProvisionedThroughputExceeded가 거의 0이므로 읽기 한도가 병목이 아니다. 향상된 팬아웃은 비용만 더하고 처리 로직의 병목은 그대로다."
+      - "h는 감점: Average는 느린 샤드나 소비자를 다른 값과 섞어 가린다."
+  facts: [kinesis.iterator-age.risk, kinesis.retention.default, kinesis.retention.max]

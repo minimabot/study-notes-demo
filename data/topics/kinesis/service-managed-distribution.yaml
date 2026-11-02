@@ -1,0 +1,66 @@
+# 장: 서비스 관리형 레코드 분배
+chapter:
+  id: kinesis/service-managed-distribution
+  title:
+    ko: "서비스 관리형 레코드 분배"
+  track: practice
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/service-managed-record-distribution.html
+  topics:
+    - id: kinesis/service-managed-distribution/what
+      title:
+        ko: "두 가지 레코드 분배 전략"
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-record-distribution.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-overview.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-considerations.html
+    - id: kinesis/service-managed-distribution/when
+      title:
+        ko: "언제 쓰는가"
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-when-to-use.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-comparison.html
+    - id: kinesis/service-managed-distribution/configure
+      title:
+        ko: "켜기와 전환"
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: "분배 전략 전환은 운영 전에 비운영 환경에서 실제와 비슷한 트래픽으로 먼저 시험한다"
+          source: https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-configure-migration-considerations.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-configure-create.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-configure-migration-considerations.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-transition.html
+    - id: kinesis/service-managed-distribution/producers-consumers
+      title:
+        ko: "생산자·소비자 쪽 준비"
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: "서비스 관리형 스트림에서는 SequenceNumberForOrdering과 ExplicitHashKey를 생산자 코드에서 뺀다"
+          source: https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-producing-best-practices.html
+          checked: 2026-11-02
+        - claim:
+            ko: "WriteProvisionedThroughputExceeded 지표로 뜨거운 샤드가 없는지 확인한다"
+          source: https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-producing-best-practices.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-producing-behavior.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-kpl-summary.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-consuming-considerations.html
+    - id: kinesis/service-managed-distribution/integrations
+      title:
+        ko: "다른 AWS 서비스와 함께 쓸 때"
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-integrations.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-integrations-firehose.html
+        - https://docs.aws.amazon.com/streams/latest/dev/service-managed-pk-integrations-flink.html

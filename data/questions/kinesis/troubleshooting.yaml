@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.troubleshooting-describe-loop
+  type: quiz
+  chapter: kinesis/troubleshooting
+  topic: kinesis/troubleshooting/throttling
+  question: { ko: "생산자 서비스가 레코드를 쓰기 전마다 스트림 상태를 확인하려고 DescribeStream을 부른다. 인스턴스를 늘리자 데이터 양은 샤드 용량의 일부인데도 생산자가 한도 초과 예외를 받기 시작했다. 샤드 수준 WriteProvisionedThroughputExceeded는 모든 샤드에서 0이다. 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "샤드 수를 두 배로 늘린다" } }
+    - { id: b, text: { ko: "DescribeStream을 쓰기 경로에서 빼고, 필요하면 결과를 캐시하거나 DescribeStreamSummary를 드물게 부른다" } }
+    - { id: c, text: { ko: "향상된 팬아웃 소비자를 등록한다" } }
+    - { id: d, text: { ko: "파티션 키를 무작위 값으로 바꾼다" } }
+  answer: b
+  explanation: { ko: "샤드 쓰기 스로틀이 0이므로 샤드 한도가 아니라 스트림 단위 API 한도에 걸린 것이다. DescribeStream은 {{fact:kinesis.api.describestream.tps}}로 제한되고, 인스턴스가 늘수록 레코드마다 부르는 호출이 이 한도를 넘는다. 쓰기 경로에서 빼는 것이 답이다(DescribeStreamSummary도 {{fact:kinesis.api.describestreamsummary.tps}} 한도가 있으니 드물게 부른다). 샤드를 늘리거나(a) 키를 바꿔도(d) API 호출 수는 그대로다. 향상된 팬아웃(c)은 읽기 쪽 기능이다." }
+  facts: [kinesis.api.describestream.tps, kinesis.api.describestreamsummary.tps]
+
+- id: kinesis.q.troubleshooting-skipped
+  type: quiz
+  chapter: kinesis/troubleshooting
+  topic: kinesis/troubleshooting/duplicates-skips
+  question: { ko: "KCL 소비자가 가끔 하류 데이터베이스 시간 초과로 processRecords 안에서 예외를 던진다. 그 뒤 일부 레코드가 처리되지 않은 채 다음 레코드로 넘어간 것이 발견됐다. 원인과 대책은?" }
+  choices:
+    - { id: a, text: { ko: "KCL은 processRecords에서 나온 예외를 삼키고 그 배치를 다시 보내지 않는다. 예외를 processRecords 안에서 처리하고 필요한 재시도를 직접 한다" } }
+    - { id: b, text: { ko: "샤드 이터레이터가 만료되어 레코드가 지워졌다. 보존 기간을 늘린다" } }
+    - { id: c, text: { ko: "KCL은 예외가 나면 레코드 프로세서를 재시작해 체크포인트부터 다시 읽으므로, 레코드가 빠질 수 없다. 생산자를 의심한다" } }
+    - { id: d, text: { ko: "장애 조치 시간을 줄이면 다른 작업자가 그 배치를 다시 처리한다" } }
+  answer: a
+  explanation: { ko: "레코드를 건너뛰는 가장 흔한 원인은 processRecords의 처리하지 않은 예외다. KCL은 같은 실패가 끝없이 반복되지 않도록 그 배치를 다시 보내지 않고, 레코드 프로세서를 재시작하지도 않은 채 다음 배치를 넘긴다(c는 틀림). 이터레이터 만료는 새 이터레이터를 받으면 되는 일이고 레코드를 지우지 않는다(b). 장애 조치 시간({{fact:kinesis.kcl.failover.default}} 기본)은 작업자가 죽었을 때의 임대 이전에 관한 설정이다(d)." }
+  facts: [kinesis.kcl.failover.default]
+
+- id: kinesis.q.troubleshooting-producer-dup
+  type: quiz
+  chapter: kinesis/troubleshooting
+  topic: kinesis/troubleshooting/duplicates-skips
+  question: { ko: "결제 이벤트를 쓰는 생산자가 네트워크 시간 초과 뒤 같은 이벤트를 다시 보낸다. 소비자는 결제를 정확히 한 번만 반영해야 한다. 알맞은 설계는?" }
+  choices:
+    - { id: a, text: { ko: "소비자가 시퀀스 번호를 기준으로 이미 처리한 레코드를 건너뛴다" } }
+    - { id: b, text: { ko: "생산자가 이벤트마다 고유 ID를 레코드 안에 넣고, 소비자나 최종 저장소가 그 ID로 중복을 걸러 낸다" } }
+    - { id: c, text: { ko: "PutRecord 대신 PutRecords를 쓰면 중복이 생기지 않는다" } }
+    - { id: d, text: { ko: "SequenceNumberForOrdering을 쓰면 서비스가 중복을 거부한다" } }
+  answer: b
+  explanation: { ko: "응답 전에 시간 초과가 나서 다시 보낸 두 요청이 모두 성공하면, 데이터는 같고 시퀀스 번호는 다른 레코드 두 개가 생긴다. 그래서 시퀀스 번호로는 중복을 가를 수 없다(a는 틀림). 문서는 엄격한 보장이 필요하면 레코드 안에 기본 키를 넣어 처리할 때 걸러 내라고 한다. PutRecords도 재시도하면 같은 일이 생긴다(c). SequenceNumberForOrdering은 순서를 위한 매개변수이지 중복 제거 기능이 아니다(d). 소비자 쪽 재시도로도 중복이 생기므로 처리는 멱등해야 한다." }
+  facts: []

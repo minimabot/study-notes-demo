@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.retention-large-records-decrease
+  type: quiz
+  chapter: kinesis/retention-large-records
+  topic: kinesis/retention-large-records/retention
+  question: { ko: "보존 기간을 {{raw:7일}}로 둔 스트림이 있다. 비용을 줄이려고 기본값으로 낮추려 한다. 이 스트림을 읽는 배치 소비자 하나는 하루에 한 번만 돌고, 지금 약 {{raw:30시간}} 밀려 있다. 보존 기간을 바로 줄이면 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "줄여도 몇 분 동안은 옛 기준이 유지되므로, 그 사이에 소비자가 따라잡으면 된다" } }
+    - { id: b, text: { ko: "새 기준보다 오래된 레코드는 거의 즉시 읽을 수 없게 되어, 소비자가 아직 읽지 않은 레코드 일부를 잃는다" } }
+    - { id: c, text: { ko: "이미 들어온 레코드에는 옛 보존 기간이 적용되고, 새 레코드부터 짧은 기간이 적용된다" } }
+    - { id: d, text: { ko: "읽지 않은 레코드가 있으면 DecreaseStreamRetentionPeriod 호출이 거부된다" } }
+  answer: b
+  explanation: { ko: "보존 기간을 줄이면 새 기준보다 오래된 레코드를 거의 즉시 읽을 수 없게 한다. 기본값은 {{fact:kinesis.retention.default}}이므로 밀려 있는 레코드 중 그보다 오래된 것은 사라진다. 몇 분 걸리는 것은 늘릴 때의 동작이다(a는 틀림). 줄인 기준은 이미 들어온 레코드에도 적용되고(c는 틀림), 서비스는 읽지 않은 레코드가 있는지 따져 호출을 막지 않는다(d는 틀림). 줄이기 전에 소비자가 따라잡았는지 확인한다." }
+  facts: [kinesis.retention.default]
+
+- id: kinesis.q.retention-large-records-replay
+  type: quiz
+  chapter: kinesis/retention-large-records
+  topic: kinesis/retention-large-records/replay
+  question: { ko: "KCL 소비자 애플리케이션에 잘못된 변환 로직을 배포했다가 {{raw:6시간}} 뒤 되돌렸다. 보존 기간 안이고, 배포 시각부터 모든 레코드를 다시 처리해야 한다. 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "기존 애플리케이션의 시작 위치 설정을 AT_TIMESTAMP로 바꾸고 작업자를 재시작한다" } }
+    - { id: b, text: { ko: "새 애플리케이션 이름(새 임대 테이블)으로 시작 위치를 AT_TIMESTAMP와 배포 시각으로 주고 띄운다" } }
+    - { id: c, text: { ko: "시작 위치를 LATEST로 주고 새 애플리케이션을 띄운다" } }
+    - { id: d, text: { ko: "보존 기간을 늘리면 지난 레코드가 다시 전달된다" } }
+  answer: b
+  explanation: { ko: "KCL의 시작 위치 설정은 임대를 처음 만들 때만 쓰인다. 기존 임대 테이블에 체크포인트가 있으면 설정을 바꿔도 체크포인트부터 읽는다(a는 틀림). 새 애플리케이션 이름은 새 임대 테이블을 뜻하므로 AT_TIMESTAMP가 적용된다. LATEST는 앞으로 들어올 레코드만 읽는다(c). 보존 기간은 레코드를 남겨 두는 시간일 뿐 다시 전달하지 않는다(d)." }
+  facts: []
+
+- id: kinesis.q.retention-large-records-sustained
+  type: quiz
+  chapter: kinesis/retention-large-records
+  topic: kinesis/retention-large-records/large-records
+  question: { ko: "영상 분석 파이프라인이 거의 모든 레코드를 {{raw:4 MiB}} 안팎으로 만들어 쉬지 않고 스트림에 쓰려 한다. 최대 레코드 크기를 {{fact:kinesis.record.max-size}}로 올렸더니 쓰기 스로틀이 계속 난다. 문서가 권하는 방향은?" }
+  choices:
+    - { id: a, text: { ko: "큰 레코드를 지원하므로 샤드 쓰기 한도도 늘어난다. 잠시 기다리면 풀린다" } }
+    - { id: b, text: { ko: "페이로드는 S3에 두고, 스트림에는 객체 위치 같은 메타데이터만 보낸다" } }
+    - { id: c, text: { ko: "파티션 키를 하나로 고정해 큰 레코드를 한 샤드로 모은다" } }
+    - { id: d, text: { ko: "재시도를 끄고 실패한 레코드는 버린다" } }
+  answer: b
+  explanation: { ko: "큰 레코드를 받아도 샤드 처리량 한도({{fact:kinesis.shard.write}})는 바뀌지 않는다(a는 틀림). 큰 레코드는 버스트 용량을 잠깐 빌려 쓰는 방식이라 이따금 섞이는 경우를 위한 것이고, 문서는 {{fact:kinesis.large-record.share-max}}로 유지하라고 한다. 큰 레코드가 계속 이어지면 본문은 S3에 두고 위치만 보내는 방법을 권한다. 키를 하나로 모으면 한 샤드만 더 막힌다(c). 문서는 오히려 지수 백오프 재시도와 무작위 파티션 키를 권한다(d는 틀림)." }
+  facts: [kinesis.record.max-size, kinesis.shard.write, kinesis.large-record.share-max]

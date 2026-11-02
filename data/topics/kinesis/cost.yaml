@@ -1,0 +1,47 @@
+# 장: 요금과 비용 줄이기. 요금 수치는 AWS Price List API 가격표(data/facts/kinesis-cost.yaml 머리 주석)에서 확인했다.
+chapter:
+  id: kinesis/cost
+  title:
+    ko: 요금과 비용 줄이기
+  track: practice
+  doc_source: https://aws.amazon.com/kinesis/data-streams/pricing/
+  topics:
+    - id: kinesis/cost/provisioned
+      title:
+        ko: 프로비저닝 요금 - 샤드 시간과 PUT 페이로드 단위
+      exam_tags:
+        - SAP-C03#3.4
+      sources:
+        - https://aws.amazon.com/kinesis/data-streams/pricing/
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+    - id: kinesis/cost/on-demand
+      title:
+        ko: 온디맨드 요금과 모드 선택
+      exam_tags:
+        - SAP-C03#3.4
+      sources:
+        - https://aws.amazon.com/kinesis/data-streams/pricing/
+        - https://docs.aws.amazon.com/streams/latest/dev/how-do-i-size-a-stream.html
+    - id: kinesis/cost/fanout-retention
+      title:
+        ko: 향상된 팬아웃과 보존 기간 요금
+      exam_tags:
+        - SAP-C03#3.4
+      recommended:
+        - claim:
+            ko: 처리 로직 오류나 하위 시스템 장애가 길어져도 소비자가 데이터가 만료되기 전에 읽을 수 있도록 보존 기간을 정한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+          checked: 2026-11-02
+      sources:
+        - https://aws.amazon.com/kinesis/data-streams/pricing/
+        - https://docs.aws.amazon.com/streams/latest/dev/enhanced-consumers.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+    - id: kinesis/cost/checklist
+      title:
+        ko: 비용 줄이기 점검표
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-kpl-concepts.html
+        - https://docs.aws.amazon.com/streams/latest/dev/costs-performance.html
+        - https://aws.amazon.com/kinesis/data-streams/pricing/

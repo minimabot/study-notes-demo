@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.service-managed-distribution-provisioned
+  type: quiz
+  chapter: kinesis/service-managed-distribution
+  topic: kinesis/service-managed-distribution/what
+  question: { ko: "프로비저닝 모드 스트림에 UpdateStreamRecordDistributionStrategy로 AUTO를 켜려 했더니 InvalidArgumentException이 났다. 무엇을 해야 켤 수 있는가?" }
+  choices:
+    - { id: a, text: { ko: "샤드 수를 늘린 뒤 다시 시도한다" } }
+    - { id: b, text: { ko: "스트림을 온디맨드 모드(표준 또는 Advantage)로 바꾼 뒤 켠다" } }
+    - { id: c, text: { ko: "kinesis:DescribeStreamSummary 권한을 추가한다" } }
+    - { id: d, text: { ko: "잠시 기다렸다 같은 요청을 재시도한다" } }
+  answer: b
+  explanation: { ko: "서비스 관리형 레코드 분배는 온디맨드 스트림에서만 지원되며, 프로비저닝 스트림에 켜면 InvalidArgumentException을 돌려준다. 샤드 수와는 무관하다(a). 권한 문제라면 접근 거부 오류가 난다(c). 기다렸다 재시도하는 것은 동시 변경이 많을 때 나는 LimitExceededException의 대응이다(d)." }
+  facts: []
+
+- id: kinesis.q.service-managed-distribution-workload
+  type: quiz
+  chapter: kinesis/service-managed-distribution
+  topic: kinesis/service-managed-distribution/when
+  question: { ko: "온디맨드 스트림 네 개가 있다. 서비스 관리형 레코드 분배(AUTO)로 바꾸기에 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "주문 데이터베이스의 변경 데이터 캡처(CDC) 스트림. 같은 행의 변경을 차례로 반영해야 한다" } }
+    - { id: b, text: { ko: "계좌별 입출금 순서대로 잔액을 계산하는 거래 스트림" } }
+    - { id: c, text: { ko: "웹 서버 액세스 로그를 모아 S3에 보관하는 스트림. 몇몇 서버 이름 키로 트래픽이 몰려 뜨거운 샤드가 생긴다" } }
+    - { id: d, text: { ko: "한 사용자 세션의 이벤트를 모아 함께 처리하는 세션 분석 스트림" } }
+  answer: c
+  explanation: { ko: "AUTO는 순서 보장이 없는 대신 레코드를 고르게 퍼뜨려 뜨거운 샤드를 없앤다. 순서가 필요 없는 로그 집계가 그 예다. CDC(a), 계좌 단위 거래(b), 세션 분석(d)은 문서가 사용자 관리형 파티션 키를 유지하라고 드는 대표 사례다." }
+  facts: []
+
+- id: kinesis.q.service-managed-distribution-kpl
+  type: quiz
+  chapter: kinesis/service-managed-distribution
+  topic: kinesis/service-managed-distribution/producers-consumers
+  question: { ko: "최신 KPL로 올린 생산자가 AUTO 스트림에 쓰고 있다. 생산자 역할에는 PutRecords 권한만 있다. KCL 소비자 쪽에서 일부 데이터가 보이지 않는다. 가장 그럴듯한 원인과 대응은?" }
+  choices:
+    - { id: a, text: { ko: "KPL이 DescribeStreamSummary를 못 불러 집계로 되돌아갔고, 집계 레코드가 KCL 집계 해제 과정에서 버려졌다. 생산자 역할에 kinesis:DescribeStreamSummary를 주거나 집계를 끈다" } }
+    - { id: b, text: { ko: "AUTO 스트림은 KCL을 지원하지 않으므로 소비자를 SDK로 다시 쓴다" } }
+    - { id: c, text: { ko: "파티션 키가 무시되어 레코드가 사라졌으므로 ExplicitHashKey를 넣는다" } }
+    - { id: d, text: { ko: "변경이 아직 반영되지 않았으므로 스트림을 USER_PARTITION_KEY로 되돌렸다가 다시 켠다" } }
+  answer: a
+  explanation: { ko: "최신 KPL은 DescribeStreamSummary로 서비스 관리형 스트림인지 알아보고 집계를 끈다. 권한이 없으면 집계로 되돌아가고, 집계는 어느 KPL 버전에서도 지원되지 않아 KCL 집계 해제 중 조용히 버려질 수 있다. KCL은 바꿀 것 없이 동작한다(b). 파티션 키가 무시되는 것은 데이터 손실과 무관하고, ExplicitHashKey도 무시된다(c). 변경은 {{fact:kinesis.smd.propagation}} 안에 반영되므로 반영 지연이 원인이 아니다(d)." }
+  facts: [kinesis.smd.propagation]

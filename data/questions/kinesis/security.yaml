@@ -1,0 +1,68 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: kinesis.q.security-producer-kms
+  type: quiz
+  chapter: kinesis/security
+  topic: kinesis/security/kms-permissions
+  question: { ko: "스트림 암호화 키를 aws/kinesis에서 고객 관리형 키로 바꾼 직후부터 생산자의 PutRecords가 실패하기 시작했다. 소비자는 아직 이상이 없다. 생산자 역할에 가장 먼저 추가할 권한은?" }
+  choices:
+    - { id: a, text: { ko: "kms:Decrypt" } }
+    - { id: b, text: { ko: "kms:GenerateDataKey" } }
+    - { id: c, text: { ko: "kinesis:StartStreamEncryption" } }
+    - { id: d, text: { ko: "kms:CreateKey" } }
+  answer: b
+  explanation: { ko: "고객 관리형 키를 쓰는 스트림에 쓰려면 생산자에게 그 키에 대한 kms:GenerateDataKey가 필요하다. kms:Decrypt는 소비자에게 필요한 권한이다(a). StartStreamEncryption은 관리자가 암호화를 켤 때 쓰는 작업이라 쓰기 실패와 무관하다(c). 키는 이미 있으므로 CreateKey는 필요 없다(d). aws/kinesis 키는 별도 권한이 필요 없었기 때문에 키를 바꾼 시점에 문제가 드러난 것이다." }
+  facts: []
+
+- id: kinesis.q.security-share-managed-key
+  type: quiz
+  chapter: kinesis/security
+  topic: kinesis/security/iam-rbp
+  question: { ko: "계정 A의 스트림은 aws/kinesis 키로 암호화돼 있다. 계정 B의 분석팀 역할이 이 스트림을 읽도록 리소스 기반 정책으로 공유하려 한다. 필요한 조치는?" }
+  choices:
+    - { id: a, text: { ko: "스트림 리소스 정책에 계정 B 역할만 추가하면 된다. aws/kinesis는 별도 권한이 필요 없다" } }
+    - { id: b, text: { ko: "aws/kinesis 키의 키 정책을 고쳐 계정 B에 kms:Decrypt를 허용한다" } }
+    - { id: c, text: { ko: "스트림을 고객 관리형 키로 바꾸고, 키 정책과 계정 B의 IAM 정책 양쪽에서 키 사용을 허용한 뒤, 스트림 리소스 정책과 계정 B의 IAM 정책에 읽기 작업을 허용한다" } }
+    - { id: d, text: { ko: "암호화를 끄고 리소스 정책만 붙인다" } }
+  answer: c
+  explanation: { ko: "aws/kinesis로 암호화한 스트림은 리소스 정책으로 공유할 수 없다. 문서는 고객 관리형 키로 바꾸고, KMS 교차 계정 공유로 상대에게 키 사용을 허용하고, 상대 계정 IAM 정책도 고치라고 한다(a는 틀림). AWS 관리형 키의 정책은 고객이 바꿀 수 없다(b). 교차 계정에서는 리소스 정책만으로는 절반이고 상대 계정의 자격 증명 기반 정책도 필요하다. 암호화를 끄는 것은 보안 요구를 버리는 일이다(d)." }
+  facts: []
+
+- id: kinesis.q.security-efo-share
+  type: quiz
+  chapter: kinesis/security
+  topic: kinesis/security/iam-rbp
+  question: { ko: "다른 계정의 애플리케이션이 이 스트림에 등록된 향상된 팬아웃 소비자로 SubscribeToShard를 호출하게 하려 한다. 리소스 기반 정책을 어디에 붙여야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "스트림 ARN에만 붙인다" } }
+    - { id: b, text: { ko: "소비자 ARN에만 붙인다" } }
+    - { id: c, text: { ko: "스트림 ARN과 소비자 ARN 양쪽에 붙인다" } }
+    - { id: d, text: { ko: "리소스 정책은 필요 없고 상대 계정 IAM 정책만 있으면 된다" } }
+  answer: c
+  explanation: { ko: "등록된 소비자 공유는 필요한 작업이 두 수준에 걸쳐 있다. DescribeStreamSummary·ListShards 같은 작업은 스트림 수준이고, SubscribeToShard·DescribeStreamConsumer는 소비자 수준이다. 그래서 스트림 ARN과 소비자 ARN 양쪽에 정책이 필요하다(a, b는 틀림). 교차 계정에서는 리소스 정책과 상대 계정의 자격 증명 기반 정책이 함께 있어야 한다(d는 틀림)." }
+  facts: []
+
+- id: kinesis.d.security-cross-account-private
+  type: design
+  chapter: kinesis/security
+  topic: kinesis/security/iam-rbp
+  scenario: { ko: "계정 A(데이터 소유)에 결제 이벤트 스트림이 있고 지금은 aws/kinesis 키로 암호화돼 있다. 계정 B(분석)의 KCL 2.x 애플리케이션이 EC2 인스턴스에서 이 스트림을 공유 처리량 방식으로 읽어야 한다. 인스턴스는 인터넷 게이트웨이와 NAT가 없는 프라이빗 서브넷에 있다. 보안팀 요구는 세 가지다. (1) 키 사용 주체를 회사가 키 정책으로 직접 통제한다. (2) 트래픽이 Amazon 네트워크를 벗어나지 않는다. (3) 최소 권한과 임시 자격 증명을 쓴다. 알맞은 조치를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "계정 A에서 스트림 암호화를 고객 관리형 키로 바꾸고, 키 정책에서 계정 B의 KCL 역할에 kms:Decrypt를 허용한다. 계정 B의 역할 IAM 정책에도 그 키 ARN에 대한 kms:Decrypt를 넣는다" } }
+    - { id: b, text: { ko: "계정 A의 스트림에 리소스 기반 정책을 붙여 계정 B의 KCL 역할에 GetRecords, GetShardIterator, ListShards, DescribeStreamSummary만 허용하고, 계정 B 역할의 IAM 정책에도 같은 스트림 ARN에 대한 작업을 허용한다. KCL 설정에는 스트림 ARN을 넣는다" } }
+    - { id: c, text: { ko: "계정 B의 VPC에 Kinesis Data Streams 인터페이스 VPC 엔드포인트를 만들고, KCL이 쓰는 DynamoDB와 CloudWatch에도 VPC 엔드포인트를 둔다. Kinesis 엔드포인트 정책은 이 스트림 ARN으로 제한한다" } }
+    - { id: d, text: { ko: "aws/kinesis 키를 그대로 두고 스트림 리소스 정책에만 계정 B를 추가한다" } }
+    - { id: e, text: { ko: "계정 A에 IAM 사용자를 만들고 액세스 키를 계정 B 애플리케이션 설정 파일에 넣어 스트림을 읽는다" } }
+    - { id: f, text: { ko: "프라이빗 서브넷에 NAT 게이트웨이를 추가해 Kinesis 퍼블릭 엔드포인트로 접속한다" } }
+    - { id: g, text: { ko: "리소스 기반 정책에 kinesis:* 를 계정 B 전체(루트)에 허용해 설정 실수를 줄인다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: aws/kinesis로 암호화한 스트림은 리소스 정책으로 공유할 수 없으므로 고객 관리형 키로 바꿔야 한다. 소비자에게는 kms:Decrypt가 필요하고, 교차 계정이므로 키 정책과 계정 B의 IAM 정책 양쪽에서 허용한다. 요구 (1)도 충족한다."
+      - "b: 교차 계정 접근은 리소스 기반 정책과 상대 계정의 자격 증명 기반 정책이 함께 있어야 성립한다. 교차 계정 호출은 스트림 ARN으로 하며, KCL 2.x는 2.5.3 이상에서 스트림 ARN 설정을 지원한다. 읽기에 필요한 작업만 준 것이 최소 권한이다."
+      - "c: 인터페이스 VPC 엔드포인트는 인터넷 게이트웨이나 NAT 없이 PrivateLink로 접속한다. KCL은 임대 테이블에 DynamoDB를, 지표에 CloudWatch를 쓰므로 그 엔드포인트도 없으면 프라이빗 서브넷에서 동작하지 않는다. 엔드포인트 정책으로 특정 스트림만 허용하면 접근이 더 좁아진다."
+      - "d는 감점: AWS 관리형 키로 암호화한 스트림은 리소스 정책 공유가 안 된다. 키 정책도 고객이 통제할 수 없어 요구 (1)을 어긴다."
+      - "e는 감점: 장기 자격 증명을 애플리케이션에 저장하지 말고 IAM 역할의 임시 자격 증명을 쓰라는 모범 사례를 어긴다."
+      - "f는 감점: NAT를 거치면 퍼블릭 엔드포인트로 나가며, 요구 (2)를 인터페이스 엔드포인트보다 약하게 만족한다. 이미 엔드포인트로 해결되는 문제에 비용만 더한다."
+      - "g는 감점: 쓰기·관리 작업까지 계정 전체에 여는 것은 최소 권한에 어긋난다."
+  facts: []

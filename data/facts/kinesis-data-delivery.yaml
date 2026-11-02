@@ -1,0 +1,38 @@
+# Kinesis Data Streams 데이터 전송(스트리밍 테이블·S3 전송) 장 전용 사실. ID 접두어 kinesis.
+# 출처: Streaming tables and Amazon S3 delivery 하위 페이지 (2026-11-02 대조, 문서 추가일 2026-08-31)
+
+- id: kinesis.delivery.freshness.range
+  value: 900
+  unit: s
+  display: { ko: "300~900초(5~15분)" }
+  label: { ko: "스트리밍 테이블·S3 전송의 데이터 최신성(DataFreshnessInSeconds) 설정 범위 (value는 최댓값, 최솟값 300초)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/data-delivery-concepts.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.delivery.freshness.default
+  value: 300
+  unit: s
+  display: { ko: "300초(5분)" }
+  label: { ko: "스트리밍 테이블·S3 전송의 데이터 최신성 기본값" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/data-delivery-concepts.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.delivery.per-stream
+  value: 2
+  unit: count
+  display: { ko: "스트림당 2개(스트리밍 테이블 1개 + 범용 S3 버킷 1개)" }
+  label: { ko: "스트림 하나에 만들 수 있는 전송(채널) 수. 조정 불가" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/data-delivery-quotas.html
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.delivery.api-tps
+  value: 5
+  unit: count/s
+  display: { ko: "계정·리전당 초당 5회" }
+  label: { ko: "전송(채널) 제어 플레인 API 호출 한도" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/data-delivery-quotas.html
+  checked: 2026-11-02
+  volatile: true

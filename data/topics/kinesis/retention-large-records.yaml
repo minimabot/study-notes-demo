@@ -1,0 +1,57 @@
+# 장: 보존 기간과 큰 레코드
+chapter:
+  id: kinesis/retention-large-records
+  title:
+    ko: 보존 기간과 큰 레코드
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+  topics:
+    - id: kinesis/retention-large-records/retention
+      title:
+        ko: 보존 기간 바꾸기
+      exam_tags:
+        - SAA-C03#3.5
+      recommended:
+        - claim:
+            ko: 처리 로직 오류나 하류 의존 서비스의 긴 장애까지 고려해, 소비자가 회복할 시간을 벌 수 있게 보존 기간을 정한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+    - id: kinesis/retention-large-records/retention-cost
+      title:
+        ko: 보존 기간과 요금
+      exam_tags: []
+      sources:
+        - https://aws.amazon.com/kinesis/data-streams/pricing/
+        - https://docs.aws.amazon.com/streams/latest/dev/kinesis-extended-retention.html
+    - id: kinesis/retention-large-records/replay
+      title:
+        ko: 원하는 지점부터 다시 읽기
+      exam_tags:
+        - SAA-C03#3.5
+        - DVA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/developing-consumers-with-sdk.html
+        - https://docs.aws.amazon.com/streams/latest/dev/kcl-configuration.html
+        - https://docs.aws.amazon.com/streams/latest/dev/lambda-consumer.html
+    - id: kinesis/retention-large-records/large-records
+      title:
+        ko: 큰 레코드
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 큰 레코드는 이따금 섞이는 경우에 쓰고, 전체 트래픽에서 아주 작은 비중으로 유지한다
+          source: https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+          checked: 2026-11-02
+        - claim:
+            ko: 큰 레코드는 고르게 퍼지는 파티션 키로 스트림 용량 전체에 나눈다
+          source: https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+          checked: 2026-11-02
+        - claim:
+            ko: Lambda 이벤트 소스 매핑에는 레코드 크기와 상관없이 실패 시 대상을 만들어 둔다
+          source: https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+          checked: 2026-11-02
+      sources:
+        - https://docs.aws.amazon.com/streams/latest/dev/large-records.html

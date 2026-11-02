@@ -1,0 +1,22 @@
+# Kinesis Data Streams 보존 기간·큰 레코드 장(kinesis/retention-large-records) 전용 사실 항목.
+# 보존 기간 기본값·최댓값(kinesis.retention.*), 레코드 크기(kinesis.record.max-size, kinesis.record.default-max-size)는 공용 파일을 재사용한다.
+# Lambda 페이로드 한도는 lambda.payload.sync.max를 재사용한다.
+
+- id: kinesis.retention.extended-tier
+  value: 604800
+  unit: s
+  display: { ko: "7일" }
+  label: { ko: "연장 데이터 보존(Extended data retention) 요금 구간의 끝. 기본 24시간을 넘고 이 값까지는 연장 보존 요금, 이 값을 넘는 데이터는 장기 데이터 보존(Long-term data retention) 요금 (요금 페이지 기준)" }
+  source_en: https://aws.amazon.com/kinesis/data-streams/pricing/
+  checked: 2026-11-02
+  volatile: true
+
+- id: kinesis.large-record.share-max
+  value: 2
+  unit: percent
+  display: { ko: "전체 트래픽의 2% 미만" }
+  label: { ko: "AWS가 권장하는 큰 레코드(기본 최대 크기 초과)의 비중" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/large-records.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/large-records.html
+  checked: 2026-11-02
+  volatile: false
