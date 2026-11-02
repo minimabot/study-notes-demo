@@ -1,0 +1,78 @@
+# 장: 서비스와 함께 쓰는 IAM. 근거: IAM 사용 설명서(EC2 역할, OIDC 공급자·역할), EC2 IMDS, SDK 참조 안내서, Lambda·S3·KMS 개발자 안내서.
+chapter:
+  id: iam/with-services
+  title:
+    ko: 서비스와 함께 쓰는 IAM
+  track: practice
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html
+  topics:
+    - id: iam/with-services/ec2-imds
+      title:
+        ko: EC2 인스턴스 프로파일과 IMDSv2
+      exam_tags:
+        - SAA-C03#1.2
+        - DVA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 인스턴스 메타데이터는 IMDSv2만 쓰도록 요구한다(HttpTokens=required)
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-new-instances.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-new-instances.html
+    - id: iam/with-services/credential-chain
+      title:
+        ko: SDK 자격 증명 공급자 체인
+      exam_tags:
+        - DVA-C03#2.1
+        - SAA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/sdkref/latest/guide/standardized-credentials.html
+        - https://docs.aws.amazon.com/sdkref/latest/guide/feature-imds-credentials.html
+        - https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html
+    - id: iam/with-services/lambda-invoke
+      title:
+        ko: Lambda 실행 역할과 호출 권한, 서비스 연결 역할
+      exam_tags:
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create-service-linked-role.html
+    - id: iam/with-services/resource-policies
+      title:
+        ko: S3 버킷 정책과 IAM 정책, KMS 키 정책
+      exam_tags:
+        - SAA-C03#1.1
+        - SOA-C03#4.1
+        - DVA-C03#2.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-walkthroughs-managing-access-example2.html
+        - https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic-cross-account.html
+    - id: iam/with-services/ci-oidc
+      title:
+        ko: CI/CD는 액세스 키 대신 OIDC 역할로
+      exam_tags:
+        - DVA-C03#2.1
+        - SAA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: GitHub OIDC 역할의 신뢰 정책은 token.actions.githubusercontent.com:sub 조건으로 특정 리포지토리·브랜치만 수임하게 좁힌다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html
+          checked: 2026-11-03
+        - claim:
+            ko: GitHub 환경을 쓰면 보호 규칙으로 배포할 수 있는 브랜치·태그를 제한한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc_secure-by-default.html

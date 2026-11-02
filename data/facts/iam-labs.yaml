@@ -1,0 +1,11 @@
+# iam/labs 장 전용 수치. 2026-11-03 자격 증명 보고서 페이지 대조.
+
+- id: iam.credential-report.min-interval
+  value: 14400
+  unit: s
+  display: { ko: "4시간" }
+  label: { ko: "자격 증명 보고서를 새로 만들 수 있는 최소 간격. 이보다 최근 보고서가 있으면 그것을 내려받는다" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/id_credentials_getting-report.html
+  checked: 2026-11-03
+  volatile: false

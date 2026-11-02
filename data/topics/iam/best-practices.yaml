@@ -1,0 +1,113 @@
+# 장: IAM 보안 모범 사례
+chapter:
+  id: iam/best-practices
+  title:
+    ko: IAM 보안 모범 사례
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+  topics:
+    - id: iam/best-practices/overview
+      title:
+        ko: 모범 사례 한눈에 보기
+      exam_tags:
+        - SAA-C03#1.1
+        - SAP-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 사람은 IdP 페더레이션으로 역할을 수임해 임시 자격 증명을 쓰고, 워크로드는 IAM 역할의 임시 자격 증명을 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 여러 계정의 모든 보안 주체와 리소스에 SCP·RCP로 권한 가드레일을 둔다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 계정 안에서 권한 관리를 위임할 때 권한 경계로 위임할 최대 권한을 정한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+    - id: iam/best-practices/root-user
+      title:
+        ko: 루트 사용자 보호 절차
+      exam_tags:
+        - SAA-C03#1.1
+        - SOA-C03#4.1
+        - SAP-C03#2.1
+      recommended:
+        - claim:
+            ko: 루트 사용자는 루트 자격 증명이 필요한 작업에만 쓰고, 일상 작업에는 관리 사용자를 따로 만든다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 루트 사용자에 MFA 디바이스를 여러 개 등록한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 루트 사용자의 액세스 키를 만들지 않는다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 한 사람이 루트 암호와 MFA를 모두 갖지 않도록 다중 승인을 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 루트 이메일은 회사가 관리하는 그룹 메일 주소를 쓰고, 복구용 이메일과 전화번호는 서로 다른 그룹이 관리한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: Organizations 멤버 계정에서는 루트 자격 증명을 중앙에서 지운다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
+    - id: iam/best-practices/credentials
+      title:
+        ko: MFA 선택, 암호 정책, 액세스 키 교체
+      exam_tags:
+        - SAA-C03#1.1
+        - SOA-C03#4.1
+        - DVA-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 가능한 곳에서는 패스키·보안 키 같은 피싱에 강한 MFA를 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 장기 액세스 키가 필요한 경우 직원 퇴사 때처럼 필요할 때 키를 교체하고, 마지막 사용 정보로 안전하게 교체·삭제한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 옛 액세스 키는 마지막 사용 기록이 없어도 바로 지우지 말고 먼저 비활성화한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/id-credentials-access-keys-update.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id-credentials-access-keys-update.html
+    - id: iam/best-practices/least-privilege
+      title:
+        ko: 최소 권한으로 줄여 가는 흐름
+      exam_tags:
+        - SAA-C03#1.1
+        - SAP-C03#2.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: AWS 관리형 정책으로 시작하고, 사용 사례에 맞는 고객 관리형 정책으로 권한을 더 줄인다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 쓰지 않는 사용자·역할·권한·정책·자격 증명을 마지막 액세스 정보로 찾아 정기적으로 지운다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 일상 작업에는 관리자보다 권한이 작은 사용자를 따로 만들어 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started-reduce-permissions.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started-reduce-permissions.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html

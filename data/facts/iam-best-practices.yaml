@@ -1,0 +1,11 @@
+# iam/best-practices 장 전용 사실 항목. 암호·MFA·액세스 키 수치는 iam-identities.yaml을 재사용한다. 2026-11-03 대조.
+
+- id: iam.root.mfa.grace-period
+  value: 14
+  unit: day
+  display: { ko: "14일" }
+  label: { ko: "루트 사용자에 MFA가 없을 때 첫 콘솔 로그인 시도부터 MFA 등록을 마쳐야 하는 유예 기간 (모든 계정 유형)" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/root-user-best-practices.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/root-user-best-practices.html
+  checked: 2026-11-03
+  volatile: false

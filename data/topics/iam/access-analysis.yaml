@@ -1,0 +1,91 @@
+# 장: 접근 분석과 감사 도구
+chapter:
+  id: iam/access-analysis
+  title:
+    ko: 접근 분석과 감사 (Access Analyzer, 마지막 액세스, 시뮬레이터, CloudTrail)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html
+  topics:
+    - id: iam/access-analysis/analyzer
+      title:
+        ko: IAM Access Analyzer 분석기와 결과
+      exam_tags:
+        - SAP-C03#2.1
+        - SOA-C03#4.1
+        - DOP-C02#6.3
+      recommended:
+        - claim:
+            ko: 퍼블릭·교차 계정 접근을 주기 전에 그 접근이 필요한지 확인하고, IAM Access Analyzer 결과로 검토한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-findings.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-create-unused.html
+    - id: iam/access-analysis/validate-generate-preview
+      title:
+        ko: 정책 검사, 정책 생성, 액세스 미리 보기
+      exam_tags:
+        - SAP-C03#2.1
+        - SOA-C03#4.1
+        - DOP-C02#6.1
+      recommended:
+        - claim:
+            ko: 새로 쓰거나 고치는 정책과 기존 정책 모두를 IAM Access Analyzer 정책 검사로 검토한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: CloudTrail 활동을 바탕으로 IAM Access Analyzer가 생성한 정책을 시험한 뒤 운영 환경에 배포한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 감사에는 정책 생성이 아니라 CloudTrail을 쓴다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-generation.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-validation.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-generation.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-access-preview.html
+    - id: iam/access-analysis/last-accessed-report
+      title:
+        ko: 마지막 액세스 정보와 자격 증명 보고서
+      exam_tags:
+        - SOA-C03#4.1
+        - DOP-C02#6.3
+        - SAA-C03#1.1
+      recommended:
+        - claim:
+            ko: 마지막 액세스 정보로 쓰지 않는 사용자·역할·권한·정책·자격 증명을 찾아 지운다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_last-accessed.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html
+    - id: iam/access-analysis/simulator-troubleshoot
+      title:
+        ko: 정책 시뮬레이터와 액세스 거부 문제 해결
+      exam_tags:
+        - SOA-C03#4.1
+        - DVA-C03#2.1
+      recommended:
+        - claim:
+            ko: 정책 시뮬레이터로 시험한 뒤 실제 환경에서도 결과를 확인한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/troubleshoot_access-denied.html
+        - https://docs.aws.amazon.com/STS/latest/APIReference/API_DecodeAuthorizationMessage.html
+    - id: iam/access-analysis/cloudtrail
+      title:
+        ko: CloudTrail로 IAM·STS 활동 기록하기
+      exam_tags:
+        - DOP-C02#6.3
+        - SOA-C03#4.1
+      recommended:
+        - claim:
+            ko: 역할을 같은 역할이 스스로 수임하는 동작은 없애거나, 필요하면 신뢰 정책에서 명시적으로 허용한다
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/cloudtrail-integration.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/cloudtrail-integration.html

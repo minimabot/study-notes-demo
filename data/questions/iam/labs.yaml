@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.labs-boolifexists
+  type: quiz
+  chapter: iam/labs
+  topic: iam/labs/mfa-group
+  question: { ko: "MFA 없는 요청을 막으려고 그룹 정책에 Deny + Bool {aws:MultiFactorAuthPresent: false} 문을 넣었다. 콘솔(MFA 없이) 요청은 거부되는데, 같은 사용자의 액세스 키로 CLI를 쓰면 여전히 허용된다. 이유와 고칠 방법은?" }
+  choices:
+    - { id: a, text: { ko: "CLI 요청은 IAM 정책 평가를 거치지 않는다. 키를 지우는 수밖에 없다" } }
+    - { id: b, text: { ko: "장기 액세스 키 요청에는 aws:MultiFactorAuthPresent 키가 없어 Bool 조건이 맞지 않는다. BoolIfExists로 바꾼다" } }
+    - { id: c, text: { ko: "그룹 정책은 CLI 요청에 적용되지 않는다. 사용자에게 직접 붙인다" } }
+    - { id: d, text: { ko: "Deny 문은 Allow 문보다 늦게 평가된다. 문 순서를 바꾼다" } }
+  answer: b
+  explanation: { ko: "aws:MultiFactorAuthPresent는 임시 자격 증명 요청에만 들어 있다. 액세스 키 요청에는 키가 없으므로 Bool 조건은 거짓이 되어 Deny가 걸리지 않는다. BoolIfExists는 키가 없을 때도 조건을 참으로 보므로 키 요청도 거부한다(b). 시뮬레이터에서 컨텍스트 키를 주지 않은 결과가 바로 이 경우다. CLI 요청도 똑같이 평가되고(a), 그룹 정책도 그룹 사용자의 모든 요청에 적용된다(c). 정책 안의 문 순서는 결과와 관계없고 명시적 거부는 언제나 이긴다(d)." }
+  facts: []
+
+- id: iam.q.labs-boundary-sim
+  type: quiz
+  chapter: iam/labs
+  topic: iam/labs/role-boundary
+  question: { ko: "역할에 IAMReadOnlyAccess를 붙이고, iam:ListUsers와 iam:GetUser만 허용하는 권한 경계를 붙였다. simulate-principal-policy로 iam:ListRoles를 시험하면 어떤 결과가 나오는가?" }
+  choices:
+    - { id: a, text: { ko: "allowed. 권한 정책이 허용하면 경계와 관계없이 허용된다" } }
+    - { id: b, text: { ko: "explicitDeny. 경계에 없는 작업은 명시적으로 거부된다" } }
+    - { id: c, text: { ko: "implicitDeny. 권한 정책은 허용하지만 경계가 허용하지 않아 거부된다" } }
+    - { id: d, text: { ko: "시뮬레이터는 권한 경계를 평가하지 않으므로 allowed로 나오고, 실제 호출만 거부된다" } }
+  answer: c
+  explanation: { ko: "실제 권한은 자격 증명 기반 정책과 권한 경계가 모두 허용하는 교집합이다. ListRoles는 IAMReadOnlyAccess가 허용하지만 경계에 없으므로 거부된다(a는 틀림). 경계에 Deny 문이 있는 것이 아니라 허용이 없을 뿐이라 결과는 implicitDeny다(b는 틀림). 시뮬레이터는 보안 주체에 붙은 권한 경계를 함께 평가하고 경계 판정도 보여 준다(d는 틀림)." }
+  facts: []
+
+- id: iam.q.labs-credential-report
+  type: quiz
+  chapter: iam/labs
+  topic: iam/labs/analyzer-report
+  question: { ko: "자격 증명 보고서를 받은 직후 실습 사용자를 하나 더 만들고 generate-credential-report와 get-credential-report를 다시 실행했다. 새 사용자가 보고서에 없다. 이유는?" }
+  choices:
+    - { id: a, text: { ko: "보고서는 콘솔 암호가 있는 사용자만 보여 준다" } }
+    - { id: b, text: { ko: "보고서를 새로 만드는 간격 제한 안이라 이전 보고서가 다시 내려왔다" } }
+    - { id: c, text: { ko: "IAM 사용자는 리전마다 따로 생기므로 다른 리전의 보고서를 받아야 한다" } }
+    - { id: d, text: { ko: "MFA가 없는 사용자는 보고서에서 빠진다" } }
+  answer: b
+  explanation: { ko: "자격 증명 보고서는 {{fact:iam.credential-report.min-interval}}에 한 번만 새로 만들어진다. 그보다 최근 보고서가 있으면 IAM은 그 보고서를 돌려주므로 새 사용자가 빠질 수 있다(b). 보고서는 계정의 모든 사용자를 보여 주고 암호·MFA 여부는 열로 표시한다(a, d). IAM은 전역 서비스라 사용자가 리전마다 생기지 않는다(c)." }
+  facts: [iam.credential-report.min-interval]

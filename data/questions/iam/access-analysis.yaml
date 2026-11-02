@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.access-analysis-external-region
+  type: quiz
+  chapter: iam/access-analysis
+  topic: iam/access-analysis/analyzer
+  question: { ko: "조직 전체를 신뢰 영역으로 하는 외부 액세스 분석기를 서울 리전에만 만들었다. 버지니아 북부 리전의 SQS 큐 정책이 조직 밖 계정에 SendMessage를 허용하고 있다. 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "분석기가 조직 전체를 보므로 서울 분석기에 결과가 나온다" } }
+    - { id: b, text: { ko: "외부 액세스 분석은 분석기를 만든 리전의 리소스만 보므로 결과가 나오지 않는다. 버지니아 북부에도 분석기를 만들어야 한다" } }
+    - { id: c, text: { ko: "조직 밖 계정은 신뢰 영역 안으로 보므로 결과가 나오지 않는다" } }
+    - { id: d, text: { ko: "SQS 큐는 외부 액세스 분석 대상이 아니므로 결과가 나오지 않는다" } }
+  answer: b
+  explanation: { ko: "외부 액세스 분석기는 자기가 만들어진 리전의 리소스 정책만 분석한다. 리소스를 쓰는 리전마다 분석기를 만들어야 한다. 신뢰 영역이 조직이라도 리전 범위는 바뀌지 않는다(a). 조직 밖 계정은 신뢰 영역 밖이므로 그 리전에 분석기가 있었다면 결과가 나왔을 것이다(c). SQS 큐는 지원 리소스다(d). 리전을 가리지 않는 것은 미사용 액세스 분석기다." }
+  facts: []
+
+- id: iam.q.access-analysis-generation
+  type: quiz
+  chapter: iam/access-analysis
+  topic: iam/access-analysis/validate-generate-preview
+  question: { ko: "배포 역할에 AdministratorAccess가 붙어 있다. IAM Access Analyzer 정책 생성으로 최소 권한 정책을 만들려 한다. 이 기능에 대한 설명으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "CloudTrail 이벤트 기록만 있으면 되고, 추적(trail)은 없어도 된다" } }
+    - { id: b, text: { ko: "생성된 정책에는 역할이 서비스에 넘긴 iam:PassRole과 S3 객체 읽기 같은 데이터 이벤트 작업까지 모두 들어간다" } }
+    - { id: c, text: { ko: "추적을 지정해 최대 {{fact:iam.access-analyzer.policy-generation.range.max}}의 활동을 분석하고, 생성된 템플릿을 검토해 리소스와 조건을 채운 뒤 저장한다" } }
+    - { id: d, text: { ko: "생성된 정책은 감사 증적으로 그대로 쓸 수 있으므로 CloudTrail을 따로 보관할 필요가 없다" } }
+  answer: c
+  explanation: { ko: "정책 생성은 계정의 CloudTrail 추적이 있어야 하고(a는 틀림), 분석 기간은 최대 {{fact:iam.access-analyzer.policy-generation.range.max}}다. 결과는 템플릿이므로 리소스와 조건을 검토해 채운다. iam:PassRole은 CloudTrail이 추적하지 않고, 데이터 이벤트의 작업은 찾지 않으므로 b는 틀렸다. 문서는 정책 생성을 감사에 쓰지 말고 CloudTrail을 쓰라고 한다(d)." }
+  facts: [iam.access-analyzer.policy-generation.range.max]
+
+- id: iam.q.access-analysis-decode
+  type: quiz
+  chapter: iam/access-analysis
+  topic: iam/access-analysis/simulator-troubleshoot
+  question: { ko: "운영자가 API를 호출했더니 UnauthorizedOperation 오류와 함께 긴 인코딩된 메시지가 돌아왔다. 어떤 정책 문장과 조건 값 때문에 거부됐는지 알고 싶다. 가장 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "sts:DecodeAuthorizationMessage 권한을 가진 사람이 STS DecodeAuthorizationMessage로 메시지를 풀어 거부 종류, 요청한 작업·리소스, 조건 키 값을 본다" } }
+    - { id: b, text: { ko: "메시지를 base64로 디코딩하면 누구나 내용을 볼 수 있다" } }
+    - { id: c, text: { ko: "IAM 자격 증명 보고서를 내려받아 거부 원인을 찾는다" } }
+    - { id: d, text: { ko: "정책 시뮬레이터에 메시지를 붙여 넣으면 실제 요청과 똑같이 재현된다" } }
+  answer: a
+  explanation: { ko: "인코딩된 권한 부여 메시지는 요청자가 보면 안 되는 정보가 있을 수 있어 인코딩된다. sts:DecodeAuthorizationMessage 권한이 있어야 풀 수 있다(b는 틀림). 풀면 명시적·암묵적 거부 여부, 보안 주체, 작업, 리소스, 조건 키 값이 나온다. 자격 증명 보고서는 사용자의 암호·키·MFA 상태를 보여 줄 뿐이다(c). 시뮬레이터는 메시지를 받지 않으며, 결과가 실제 환경과 다를 수 있다(d)." }
+  facts: []

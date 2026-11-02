@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.limits-increase
+  type: quiz
+  chapter: iam/limits
+  topic: iam/limits/increase
+  question: { ko: "서울 리전에서 일하는 팀이 계정의 IAM 역할 수 할당량을 올리려 한다. 맞는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "Service Quotas 콘솔에서 리전을 미국 동부(버지니아 북부)로 바꾸고 IAM의 역할 수 할당량 증가를 요청한다. 최대값까지는 자동 승인된다" } }
+    - { id: b, text: { ko: "서울 리전의 Service Quotas 콘솔에서 요청한다. IAM 할당량은 리전마다 따로다" } }
+    - { id: c, text: { ko: "역할 수는 올릴 수 없으므로 계정을 나눠야 한다" } }
+    - { id: d, text: { ko: "AWS Support 티켓으로만 요청할 수 있다" } }
+  answer: a
+  explanation: { ko: "IAM 할당량 증가는 Service Quotas 콘솔에서 미국 동부(버지니아 북부) 리전을 고른 뒤 IAM을 찾아 요청한다(b는 틀림). 역할 수는 기본 {{fact:iam.quota.roles}}로 올릴 수 있는 항목이고, 최대값까지의 요청은 자동 승인되어 몇 분 안에 처리된다(c는 틀림). Support 티켓으로 올리는 것은 STS 요청 할당량이다(d)." }
+  facts: [iam.quota.roles]
+
+- id: iam.q.limits-group-policies
+  type: quiz
+  chapter: iam/limits
+  topic: iam/limits/object-quotas
+  question: { ko: "개발자 그룹에 관리형 정책을 더 붙이려는데 그룹 한도에 걸렸다. 할 수 있는 조치로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "Service Quotas에서 그룹당 관리형 정책 수를 올린다" } }
+    - { id: b, text: { ko: "그룹을 다른 그룹 안에 중첩해 정책을 나눠 받게 한다" } }
+    - { id: c, text: { ko: "관리형 정책 여러 개를 하나로 합치거나, 사용자를 여러 그룹에 나눠 넣는다" } }
+    - { id: d, text: { ko: "같은 내용을 인라인 정책으로 무제한 붙인다. 인라인 정책에는 어떤 크기 제한도 없다" } }
+  answer: c
+  explanation: { ko: "그룹당 관리형 정책 수는 {{fact:iam.quota.managed-per-group}}로 기본값과 최대값이 같아 올릴 수 없다(a). 그룹은 중첩되지 않는다(b). 정책을 합치거나 사용자를 여러 그룹에 넣으면 된다. 고객 관리형 정책 하나는 {{fact:iam.managed-policy.max-size}}까지 쓸 수 있다. 인라인 정책은 개수 제한은 없지만 그룹 인라인 정책 합계가 {{fact:iam.inline.group-size.max}}를 넘을 수 없다(d)." }
+  facts: [iam.quota.managed-per-group, iam.managed-policy.max-size, iam.inline.group-size.max]
+
+- id: iam.q.limits-sts-rps
+  type: quiz
+  chapter: iam/limits
+  topic: iam/limits/sts-sessions
+  question: { ko: "계정 A의 배치 작업이 같은 리전에서 GetCallerIdentity와 계정 B 역할에 대한 AssumeRole을 대량으로 호출하다 STS 스로틀링을 겪는다. 맞는 설명은?" }
+  choices:
+    - { id: a, text: { ko: "두 API는 할당량을 따로 쓰므로 GetCallerIdentity 호출을 줄여도 AssumeRole에는 영향이 없다" } }
+    - { id: b, text: { ko: "교차 계정 AssumeRole은 계정 B의 할당량을 쓰므로 계정 B에서 증가를 요청해야 한다" } }
+    - { id: c, text: { ko: "두 API는 계정 A의 리전별 STS 요청 할당량 {{fact:iam.sts.rps}}을 함께 쓴다. 호출을 줄이거나 Support 티켓으로 증가를 요청한다" } }
+    - { id: d, text: { ko: "Service Quotas의 미국 동부(버지니아 북부) 리전에서 STS 할당량을 자동 승인으로 올린다" } }
+  answer: c
+  explanation: { ko: "AssumeRole, GetCallerIdentity, GetSessionToken 등은 계정·리전당 STS 요청 할당량을 함께 쓴다(a는 틀림). 교차 계정 AssumeRole은 호출한 계정의 할당량만 쓰고 대상 계정은 쓰지 않는다(b). STS 요청 할당량 증가는 AWS Support 티켓으로 요청한다(d)." }
+  facts: [iam.sts.rps]

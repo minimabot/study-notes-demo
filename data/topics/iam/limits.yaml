@@ -1,0 +1,41 @@
+# 장: IAM과 STS 한도
+chapter:
+  id: iam/limits
+  title:
+    ko: IAM과 STS 한도
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  topics:
+    - id: iam/limits/object-quotas
+      title:
+        ko: 개수 할당량
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+    - id: iam/limits/increase
+      title:
+        ko: 할당량 올리기
+      exam_tags:
+        - SAA-C03#2.2
+        - SAP-C03#5.4
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-quotas.html
+    - id: iam/limits/names-sizes
+      title:
+        ko: 이름과 정책 크기 한도
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+    - id: iam/limits/sts-sessions
+      title:
+        ko: 세션과 STS 요청 한도
+      exam_tags:
+        - DVA-C03#2.1
+      recommended:
+        - claim:
+            ko: 세션 정책은 콘솔보다 AWS CLI나 API로 넘긴다 (콘솔이 세션 토큰 크기를 키울 수 있다)
+          source: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html

@@ -1,0 +1,91 @@
+# iam/access-analysis 장 전용 사실 항목. 자격 증명 보고서 간격은 iam-labs.yaml의 iam.credential-report.min-interval을 재사용한다. 2026-11-03 대조.
+
+- id: iam.access-analyzer.policy-change.scan
+  value: 1800
+  unit: s
+  display: { ko: "약 30분" }
+  label: { ko: "외부 액세스 분석기가 새로 붙거나 바뀐 리소스 정책을 분석하기까지 걸리는 대략의 시간" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/what-is-access-analyzer.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.access-analyzer.periodic-scan
+  value: 86400
+  unit: s
+  display: { ko: "24시간" }
+  label: { ko: "변경 알림을 받지 못한 정책을 IAM Access Analyzer가 다시 분석하는 주기적 검사의 최대 간격" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/what-is-access-analyzer.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.access-analyzer.unused.tracking-period.max
+  value: 365
+  unit: day
+  display: { ko: "1일~365일" }
+  label: { ko: "미사용 액세스 분석기의 추적 기간(tracking period)으로 정할 수 있는 범위" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-create-unused.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/access-analyzer-create-unused.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.access-analyzer.analyzers-per-account
+  value: 1
+  unit: count
+  display: { ko: "1개" }
+  label: { ko: "계정 수준 분석기 수 한도 (분석기 유형별, 계정·리전당, 상향 불가)" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/access-analyzer-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.access-analyzer.policy-checks.min
+  value: 100
+  unit: count
+  display: { ko: "100개 이상" }
+  label: { ko: "IAM Access Analyzer 정책 검사(policy validation)가 제공하는 검사 수" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/best-practices.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.access-analyzer.policy-generation.range.max
+  value: 90
+  unit: day
+  display: { ko: "90일" }
+  label: { ko: "정책 생성(policy generation) 때 분석할 수 있는 CloudTrail 기간의 최대값" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-generation.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/access-analyzer-policy-generation.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.access-analyzer.generated-policy.console-keep
+  value: 7
+  unit: day
+  display: { ko: "7일" }
+  label: { ko: "IAM 콘솔에서 생성된 정책을 다시 볼 수 있는 기간. 지나면 다시 생성한다" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-policy-generation.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/access-analyzer-policy-generation.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.last-accessed.console-delay
+  value: 14400
+  unit: s
+  display: { ko: "4시간" }
+  label: { ko: "최근 활동이 IAM 콘솔의 마지막 액세스 정보에 나타나기까지 걸리는 최대 시간" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_last-accessed.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/access_policies_last-accessed.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.last-accessed.service-tracking.min
+  value: 400
+  unit: day
+  display: { ko: "400일 이상" }
+  label: { ko: "서비스 수준 마지막 액세스 정보의 추적 기간 (서비스마다 추적 시작일이 다르다)" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_last-accessed.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/access_policies_last-accessed.html
+  checked: 2026-11-03
+  volatile: false

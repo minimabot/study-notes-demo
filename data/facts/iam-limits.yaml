@@ -1,0 +1,121 @@
+# iam/limits 장 전용 사실 항목. 역할·그룹·정책 수, 정책 크기, 세션 수치는 iam-core.yaml 등 기존 파일을 재사용한다. 2026-11-03 IAM and AWS STS quotas 대조.
+
+- id: iam.quota.oidc-providers
+  value: 100
+  unit: count
+  display: { ko: "100개 (최대 700개)" }
+  label: { ko: "계정당 OpenID Connect 공급자 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: iam.quota.server-certificates
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "계정당 서버 인증서 수 (기본값과 최대값이 같다)" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.name.user.max
+  value: 64
+  unit: char
+  display: { ko: "64자" }
+  label: { ko: "IAM 사용자 이름 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.name.group.max
+  value: 128
+  unit: char
+  display: { ko: "128자" }
+  label: { ko: "IAM 그룹 이름 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.name.policy.max
+  value: 128
+  unit: char
+  display: { ko: "128자" }
+  label: { ko: "정책 이름 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.name.instance-profile.max
+  value: 128
+  unit: char
+  display: { ko: "128자" }
+  label: { ko: "인스턴스 프로파일 이름 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.path.max
+  value: 512
+  unit: char
+  display: { ko: "512자" }
+  label: { ko: "IAM 경로(path) 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.role-session-name.max
+  value: 64
+  unit: char
+  display: { ko: "64자" }
+  label: { ko: "역할 세션 이름 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.external-id.length
+  value: 1224
+  unit: char
+  display: { ko: "2~1,224자" }
+  label: { ko: "역할 수임 때 쓰는 외부 ID 값의 길이 범위" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.account-alias.length
+  value: 63
+  unit: char
+  display: { ko: "3~63자" }
+  label: { ko: "AWS 계정 ID 별칭 길이 범위" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.saml-response.max
+  value: 100000
+  unit: char
+  display: { ko: "100,000자" }
+  label: { ko: "AssumeRoleWithSAML에 넘기는 base64 인코딩 SAML 인증 응답 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.unique-id.max
+  value: 128
+  unit: char
+  display: { ko: "128자" }
+  label: { ko: "IAM이 만드는 고유 ID 최대 길이" }
+  source_en: https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/IAM/latest/UserGuide/reference_iam-quotas.html
+  checked: 2026-11-03
+  volatile: false

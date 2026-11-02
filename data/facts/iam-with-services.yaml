@@ -1,0 +1,21 @@
+# iam/with-services 장 전용 수치. 2026-11-03 EC2 사용 설명서 IMDS 페이지 대조.
+
+- id: iam.imds.token-ttl.max
+  value: 21600
+  unit: s
+  display: { ko: "6시간(21,600초)" }
+  label: { ko: "IMDSv2 세션 토큰에 지정할 수 있는 최대 유효 시간(TTL)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: iam.imds.token-ttl.min
+  value: 1
+  unit: s
+  display: { ko: "1초" }
+  label: { ko: "IMDSv2 세션 토큰에 지정할 수 있는 최소 유효 시간(TTL)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  checked: 2026-11-03
+  volatile: false

@@ -1,0 +1,57 @@
+# 장: 실습. 근거: IAM 사용 설명서의 MFA 보호 API, 정책 시뮬레이터, 권한 경계, IAM Access Analyzer 시작하기, 자격 증명 보고서, 역할 삭제 페이지.
+chapter:
+  id: iam/labs
+  title:
+    ko: 실습 - CLI로 MFA, 역할, 경계, 분석기 확인하기
+  track: practice
+  doc_source: https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html
+  topics:
+    - id: iam/labs/setup
+      title:
+        ko: 준비와 요금
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html
+    - id: iam/labs/mfa-group
+      title:
+        ko: 그룹·사용자와 MFA 필수 정책
+      exam_tags:
+        - SOA-C03#4.1
+        - SAA-C03#1.1
+        - DVA-C03#2.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_configure-api-require.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage-mfa-only.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/policies_policy-simulator-how-to.html
+    - id: iam/labs/role-boundary
+      title:
+        ko: 역할 수임과 권한 경계, 정책 시뮬레이터
+      exam_tags:
+        - DVA-C03#2.1
+        - SOA-C03#4.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-cli.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/policies_policy-simulator-how-to.html
+    - id: iam/labs/analyzer-report
+      title:
+        ko: IAM Access Analyzer 결과와 자격 증명 보고서
+      exam_tags:
+        - SOA-C03#4.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-getting-started.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/access-analyzer-findings-view.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html
+    - id: iam/labs/cleanup
+      title:
+        ko: 정리 순서
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_manage_delete.html
+        - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_remove.html

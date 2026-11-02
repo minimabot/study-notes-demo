@@ -1,0 +1,65 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: iam.q.with-services-chain
+  type: quiz
+  chapter: iam/with-services
+  topic: iam/with-services/credential-chain
+  question: { ko: "S3 읽기 권한이 있는 역할을 인스턴스 프로파일로 EC2에 붙였다. 그런데 인스턴스의 앱이 S3를 읽을 때 AccessDenied가 난다. aws sts get-caller-identity를 실행하니 ARN이 user/old-deployer로 나온다. 가장 먼저 할 일은?" }
+  choices:
+    - { id: a, text: { ko: "역할의 권한 정책에 s3:* 를 더 넓게 준다" } }
+    - { id: b, text: { ko: "인스턴스에 남은 환경 변수나 ~/.aws/credentials의 예전 액세스 키를 지운다" } }
+    - { id: c, text: { ko: "IMDSv1을 다시 켠다" } }
+    - { id: d, text: { ko: "인스턴스 프로파일에 역할을 하나 더 넣는다" } }
+  answer: b
+  explanation: { ko: "SDK와 CLI는 자격 증명 공급자 체인을 앞에서부터 찾고 처음 찾은 것을 쓴다. 환경 변수와 공유 자격 증명 파일은 인스턴스 메타데이터보다 앞에 있으므로, 남은 키가 역할을 가린다. 호출자가 IAM 사용자로 나오는 것이 그 증거다(b). 역할 권한을 넓혀도 역할이 쓰이지 않으니 소용없다(a). IMDS 버전은 이 문제와 관계없고 IMDSv1을 다시 켜는 것은 보안을 낮춘다(c). 인스턴스 프로파일에는 역할을 {{fact:iam.instance-profile.roles.max}}만 담는다(d)." }
+  facts: [iam.instance-profile.roles.max]
+
+- id: iam.q.with-services-s3-invoke
+  type: quiz
+  chapter: iam/with-services
+  topic: iam/with-services/lambda-invoke
+  question: { ko: "CLI로 Lambda 함수를 만들고 S3 버킷 알림에 그 함수를 대상으로 지정하려 했더니, S3가 함수를 호출할 권한이 없다는 오류가 났다. 실행 역할에는 S3 읽기와 로그 쓰기 권한이 있다. 무엇을 해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "실행 역할의 신뢰 정책에 s3.amazonaws.com을 더한다" } }
+    - { id: b, text: { ko: "실행 역할의 권한 정책에 lambda:InvokeFunction을 더한다" } }
+    - { id: c, text: { ko: "함수의 리소스 기반 정책에 s3.amazonaws.com의 lambda:InvokeFunction을 허용하고, 그 버킷 ARN과 계정으로 좁힌다" } }
+    - { id: d, text: { ko: "버킷 정책에 lambda:InvokeFunction을 허용하는 문을 넣는다" } }
+  answer: c
+  explanation: { ko: "누가 함수를 호출할 수 있는지는 함수의 리소스 기반 정책이 정한다. add-permission으로 S3 서비스 위탁자를 허용하고 --source-arn과 --source-account로 그 버킷만 부를 수 있게 좁힌다(c). 실행 역할은 함수가 무엇을 할 수 있는지를 정할 뿐 호출 권한과 관계없다(a, b). 신뢰 정책에 S3를 넣으면 S3가 역할을 수임할 수 있게 될 뿐이다. 버킷 정책은 버킷에 대한 접근을 정하는 곳이다(d)." }
+  facts: []
+
+- id: iam.q.with-services-kms-cross
+  type: quiz
+  chapter: iam/with-services
+  topic: iam/with-services/resource-policies
+  question: { ko: "A 계정 버킷의 객체를 B 계정 역할이 읽어야 한다. 버킷 정책은 그 역할에 s3:GetObject를 허용하고, 역할의 권한 정책도 같은 버킷의 s3:GetObject를 허용한다. 객체는 A 계정의 고객 관리형 KMS 키로 SSE-KMS 암호화돼 있고, 읽기가 AccessDenied로 실패한다. 무엇이 빠졌는가?" }
+  choices:
+    - { id: a, text: { ko: "없다. 교차 계정 S3 접근은 버킷 정책만 있으면 되므로 역할 정책을 지워야 한다" } }
+    - { id: b, text: { ko: "A 계정 키 정책이 B 계정(또는 그 역할)에 kms:Decrypt를 허용하고, B 역할의 권한 정책도 그 키의 kms:Decrypt를 허용해야 한다" } }
+    - { id: c, text: { ko: "B 역할의 권한 정책에 kms:Decrypt만 더하면 된다. 키 정책은 같은 계정에만 적용된다" } }
+    - { id: d, text: { ko: "객체를 AWS 관리형 키(aws/s3)로 다시 암호화하면 다른 계정에서 바로 읽을 수 있다" } }
+  answer: b
+  explanation: { ko: "SSE-KMS 객체를 읽으려면 S3 권한과 함께 키를 쓸 권한이 필요하다. KMS 키는 키 정책이 허용하지 않으면 IAM 정책만으로 쓸 수 없고, 교차 계정에서는 키 소유 계정의 키 정책과 요청자 계정의 IAM 정책이 모두 허용해야 한다(b, c는 틀림). 교차 계정 S3 접근은 버킷 정책과 요청자 IAM 정책이 모두 필요하므로 a도 틀렸다. AWS 관리형 키는 키 정책을 바꿀 수 없어 다른 계정에 열어 줄 수 없다(d)." }
+  facts: []
+
+- id: iam.d.with-services-pipeline
+  type: design
+  chapter: iam/with-services
+  topic: iam/with-services/ci-oidc
+  scenario: { ko: "GitHub 리포지토리 example-org/orders의 main 브랜치에서 배포한다. 배포 대상은 S3 업로드 버킷에서 이벤트를 받아 DynamoDB에 쓰는 Lambda 함수와, 같은 계정 EC2에서 도는 주문 API(S3 읽기 필요)다. 지금은 CI 비밀 값에 관리자 사용자의 액세스 키를 넣어 두었고, EC2의 앱도 같은 키를 환경 변수로 쓴다. 보안팀 요구: 장기 키를 없애고, 각 구성 요소는 필요한 권한만 갖는다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "GitHub OIDC 공급자를 만들고, 배포 역할 신뢰 정책에서 aud를 sts.amazonaws.com으로, sub를 repo:example-org/orders:ref:refs/heads/main으로 좁힌다" } }
+    - { id: b, text: { ko: "Lambda 실행 역할에는 그 테이블의 DynamoDB 쓰기와 로그 쓰기만 주고, S3 호출 권한은 함수의 리소스 기반 정책에 버킷 ARN과 계정으로 좁혀 넣는다" } }
+    - { id: c, text: { ko: "EC2에는 S3 읽기만 가진 역할을 인스턴스 프로파일로 붙이고, 환경 변수의 키를 지우고, IMDSv2를 필수로 한다" } }
+    - { id: d, text: { ko: "배포 역할이 Lambda 실행 역할과 EC2 역할을 넘길 수 있도록 iam:PassRole을 그 두 역할 ARN으로만 허용한다" } }
+    - { id: e, text: { ko: "OIDC 신뢰 정책의 sub를 repo:example-org/* 로 두어 조직의 모든 리포지토리가 같은 역할을 쓰게 한다" } }
+    - { id: f, text: { ko: "관리자 키는 그대로 두되 CI 비밀 값을 더 자주 교체한다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a, b, c, d를 모두 고르면 정답이다. a: 실행마다 OIDC 토큰을 임시 자격 증명으로 바꾸므로 CI에 저장할 키가 없다. sub로 리포지토리와 브랜치를 좁혀야 다른 리포지토리나 브랜치가 수임하지 못한다."
+      - "b: 함수가 할 일(DynamoDB 쓰기)과 함수를 부를 수 있는 쪽(S3)을 각각 실행 역할과 함수 정책에 나눠 둔다. source-arn·source-account로 다른 버킷이 부르지 못하게 한다."
+      - "c: EC2 앱은 인스턴스 프로파일의 임시 자격 증명을 쓴다. 환경 변수 키가 남아 있으면 자격 증명 공급자 체인이 그 키를 먼저 쓰므로 반드시 지운다. IMDSv2 필수는 메타데이터 탈취 위험을 줄인다."
+      - "d: 배포 과정에서 함수와 인스턴스에 역할을 지정하려면 PassRole이 필요하다. ARN으로 좁혀야 배포 역할이 더 큰 역할을 넘겨 권한을 키우지 못한다."
+      - "e는 감점: 조직의 아무 리포지토리나 운영 배포 역할을 수임할 수 있다. 문서는 특정 리포지토리·브랜치로 좁히라고 권한다."
+      - "f는 감점: 장기 키를 없애라는 요구를 어기고, 관리자 권한이 그대로 남는다."
+  facts: []
