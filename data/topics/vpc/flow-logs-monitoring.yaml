@@ -1,0 +1,47 @@
+# 장: 흐름 로그와 네트워크 모니터링
+chapter:
+  id: vpc/flow-logs-monitoring
+  title:
+    ko: 흐름 로그와 네트워크 모니터링
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html
+  topics:
+    - id: vpc/flow-logs-monitoring/basics
+      title:
+        ko: 흐름 로그의 대상 리소스와 전달 대상
+      exam_tags:
+        - SOA-C03#5.3
+        - DOP-C02#6.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-basics.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-limitations.html
+    - id: vpc/flow-logs-monitoring/records
+      title:
+        ko: 흐름 로그 레코드와 기록되지 않는 트래픽
+      exam_tags:
+        - SOA-C03#5.3
+        - DOP-C02#6.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-log-records.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-limitations.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-troubleshooting.html
+    - id: vpc/flow-logs-monitoring/reading
+      title:
+        ko: 레코드로 보안 그룹과 네트워크 ACL 가려내기
+      exam_tags:
+        - SOA-C03#5.3
+        - SOA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/process-records-cwl.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-athena.html
+    - id: vpc/flow-logs-monitoring/tools
+      title:
+        ko: Reachability Analyzer와 기타 모니터링 도구
+      exam_tags:
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/monitoring.html
+        - https://docs.aws.amazon.com/vpc/latest/reachability/how-reachability-analyzer-works.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-cloudwatch.html

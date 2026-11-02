@@ -1,0 +1,64 @@
+# 장: VPC 설계 패턴. 근거: Amazon VPC 사용 설명서의 VPC 예시 절, Transit Gateway 안내서의 예시 시나리오, PrivateLink 안내서.
+chapter:
+  id: vpc/design-patterns
+  title:
+    ko: VPC 설계 패턴
+  track: practice
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-examples-intro.html
+  topics:
+    - id: vpc/design-patterns/dev-test
+      title:
+        ko: 개발·시험용 VPC
+      exam_tags:
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-dev-test.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/reachability-analyzer.html
+    - id: vpc/design-patterns/web-db
+      title:
+        ko: 웹·DB 2계층을 두 가용 영역에
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#2.2
+        - SAA-C03#3.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-web-database-servers.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html
+    - id: vpc/design-patterns/private-nat
+      title:
+        ko: 서버는 프라이빗 서브넷에, 영역마다 NAT 게이트웨이
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#2.2
+        - SAA-C03#4.4
+      recommended:
+        - claim:
+            ko: 프라이빗 서브넷이 있는 가용 영역마다 NAT 게이트웨이를 두어 단일 장애 지점을 없앤다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-example-private-subnets-nat.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html
+    - id: vpc/design-patterns/hub-spoke
+      title:
+        ko: 허브-스포크, 중앙 집중식 송신과 검사
+      exam_tags:
+        - SAA-C03#3.4
+        - SAA-C03#4.4
+        - SAP-C03#1.4
+        - SAP-C03#3.2
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/tgw/TGW_Scenarios.html
+        - https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-nat-igw.html
+        - https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-appliance-scenario.html
+    - id: vpc/design-patterns/endpoint-centric
+      title:
+        ko: 엔드포인트 중심 사설 접근
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#4.4
+        - SAP-C03#1.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-access-aws-services.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/gateway-endpoints.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-access.html

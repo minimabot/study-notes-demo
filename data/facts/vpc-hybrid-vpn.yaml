@@ -1,0 +1,231 @@
+# VPC 하이브리드 연결 장(vpc/hybrid-vpn) 전용 사실 항목. Site-to-Site VPN과 Direct Connect 수치. 전송 게이트웨이 VPN MTU는 vpc-transit-gateway.yaml을, VPC 전파 경로 한도는 vpc-core.yaml을 재사용한다. 2026-11-03 대조.
+
+- id: vpc.vpn.tunnels-per-connection
+  value: 2
+  unit: count
+  display: { ko: "2개" }
+  label: { ko: "Site-to-Site VPN 연결 하나에 들어 있는 터널 수 (각각 다른 가용 영역에서 끝남)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/VPNTunnels.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/VPNTunnels.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.vpn.tunnel.bw.standard
+  value: 1.25
+  unit: Gbps
+  display: { ko: "최대 1.25 Gbps" }
+  label: { ko: "표준 Site-to-Site VPN 터널 하나의 최대 대역폭 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.tunnel.pps.standard
+  value: 140000
+  unit: count/s
+  display: { ko: "초당 최대 14만 패킷" }
+  label: { ko: "표준 Site-to-Site VPN 터널 하나의 최대 패킷 처리량 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.tunnel.bw.large
+  value: 5
+  unit: Gbps
+  display: { ko: "최대 5 Gbps" }
+  label: { ko: "대역폭 확장 터널(Large Bandwidth Tunnel) 하나의 최대 대역폭. 전송 게이트웨이·Cloud WAN 연결에만 적용" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.concentrator.tunnel-bw
+  value: 100
+  unit: Mbps
+  display: { ko: "최대 100 Mbps" }
+  label: { ko: "Site-to-Site VPN Concentrator의 VPN 터널 하나의 최대 대역폭" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.mtu
+  value: 1446
+  unit: byte
+  display: { ko: "1446바이트" }
+  label: { ko: "Site-to-Site VPN이 지원하는 최대 전송 단위(MTU). 점보 프레임과 경로 MTU 검색은 지원하지 않는다" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.vpn.mss
+  value: 1406
+  unit: byte
+  display: { ko: "1406바이트" }
+  label: { ko: "Site-to-Site VPN의 MTU에 대응하는 최대 세그먼트 크기(MSS)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.vpn.quota.cgw-per-region
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "리전당 고객 게이트웨이 수 기본 할당량 (조정 가능)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.quota.vgw-per-region
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "리전당 가상 프라이빗 게이트웨이 수 기본 할당량 (조정 가능)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.quota.conn-per-region
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "리전당 Site-to-Site VPN 연결 수 기본 할당량 (조정 가능, 가속화된 연결 포함)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.quota.conn-per-vgw
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "가상 프라이빗 게이트웨이 하나당 Site-to-Site VPN 연결 수 기본 할당량 (조정 가능)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.vpn.routes.cgw-to-vgw
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "고객 게이트웨이 장치가 가상 프라이빗 게이트웨이의 VPN 연결로 광고할 수 있는 동적 경로 수 (조정 불가. 정적 경로 한도도 같은 값)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.vpn.routes.cgw-to-tgw
+  value: 1000
+  unit: count
+  display: { ko: "1,000개" }
+  label: { ko: "고객 게이트웨이 장치가 전송 게이트웨이의 VPN 연결로 광고할 수 있는 동적 경로 수 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/vpn-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.vpn.vgw.default-asn
+  value: 64512
+  unit: asn
+  display: { ko: "64512" }
+  label: { ko: "가상 프라이빗 게이트웨이를 만들 때 ASN을 지정하지 않으면 쓰는 Amazon 쪽 기본 ASN (만든 뒤 바꿀 수 없음)" }
+  source_en: https://docs.aws.amazon.com/vpn/latest/s2svpn/how_it_works.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpn/latest/s2svpn/how_it_works.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.dx.dedicated.speeds
+  value: "1,10,100,400"
+  unit: Gbps
+  display: { ko: "1·10·100·400 Gbps" }
+  label: { ko: "Direct Connect 전용 연결(dedicated connection)의 포트 속도 선택지 (만든 뒤 바꿀 수 없음)" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/dedicated_connection.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/dedicated_connection.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.dx.hosted.speeds
+  value: "0.05-25"
+  unit: Gbps
+  display: { ko: "50 Mbps부터 25 Gbps까지" }
+  label: { ko: "Direct Connect 호스팅 연결(hosted connection)의 속도 범위 (파트너가 만들고 바꿈)" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/hosted_connection.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/hosted_connection.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.dx.vif-per-hosted
+  value: 1
+  unit: count
+  display: { ko: "1개" }
+  label: { ko: "Direct Connect 호스팅 연결 하나에 만들 수 있는 가상 인터페이스 수 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.dx.vif-per-dedicated
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "Direct Connect 전용 연결 하나에 만들 수 있는 프라이빗·퍼블릭 가상 인터페이스 수 (조정 불가. 전송 가상 인터페이스는 별도)" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.dx.routes.private-vif
+  value: 100
+  unit: count
+  display: { ko: "IPv4·IPv6 각각 100개" }
+  label: { ko: "프라이빗·전송 가상 인터페이스의 BGP 세션에서 온프레미스가 AWS로 광고할 수 있는 경로 수 기본값. 넘으면 BGP 세션이 내려간다" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.dx.vgw-per-dxgw
+  value: 20
+  unit: count
+  display: { ko: "20개" }
+  label: { ko: "Direct Connect 게이트웨이 하나에 연결할 수 있는 가상 프라이빗 게이트웨이 수 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.dx.tgw-per-dxgw
+  value: 6
+  unit: count
+  display: { ko: "6개" }
+  label: { ko: "Direct Connect 게이트웨이 하나에 연결할 수 있는 전송 게이트웨이 수 (조정 불가)" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.dx.sla.max
+  value: 99.99
+  unit: percent
+  display: { ko: "99.99%" }
+  label: { ko: "Direct Connect 복원력 툴킷의 최대 복원력(Maximum resiliency) 모델로 얻을 수 있는 SLA" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/resiliency_toolkit.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/resiliency_toolkit.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.dx.sla.high
+  value: 99.9
+  unit: percent
+  display: { ko: "99.9%" }
+  label: { ko: "Direct Connect 복원력 툴킷의 높은 복원력(High resiliency) 모델로 얻을 수 있는 SLA" }
+  source_en: https://docs.aws.amazon.com/directconnect/latest/UserGuide/resiliency_toolkit.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/directconnect/latest/UserGuide/resiliency_toolkit.html
+  checked: 2026-11-03
+  volatile: true

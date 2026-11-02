@@ -1,0 +1,46 @@
+# 장: VPC 할당량
+chapter:
+  id: vpc/limits
+  title:
+    ko: VPC 할당량 모아 보기
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  topics:
+    - id: vpc/limits/how-quotas-work
+      title:
+        ko: 할당량 읽는 법과 늘리는 법
+      exam_tags:
+        - SAA-C03#2.2
+        - SAP-C03#5.4
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-limits-endpoints.html
+    - id: vpc/limits/vpc-subnets-addresses
+      title:
+        ko: VPC·서브넷·주소·NAU
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/network-address-usage.html
+    - id: vpc/limits/gateways-connections
+      title:
+        ko: 게이트웨이·탄력적 IP·엔드포인트·피어링·전송 게이트웨이
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+        - https://docs.aws.amazon.com/vpc/latest/peering/vpc-peering-connection-quotas.html
+        - https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-quotas.html
+    - id: vpc/limits/filters-routes
+      title:
+        ko: 보안 그룹·네트워크 ACL·라우팅
+      exam_tags:
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+    - id: vpc/limits/sharing
+      title:
+        ko: VPC 공유 할당량
+      exam_tags: []
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-group-sharing.html

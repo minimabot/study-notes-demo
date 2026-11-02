@@ -1,0 +1,69 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.network-protection-fw-subnet
+  type: quiz
+  chapter: vpc/network-protection
+  topic: vpc/network-protection/network-firewall
+  question: { ko: "Network Firewall을 만들면서 방화벽 엔드포인트를 웹 서버가 있는 퍼블릭 서브넷에 두었다. 서브넷 라우팅 테이블의 0.0.0.0/0도 그 엔드포인트로 바꿨다. 그런데 웹 서버 트래픽이 규칙대로 걸러지지 않는다. 원인과 대응으로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "방화벽 엔드포인트는 자기가 있는 서브넷의 트래픽을 거르지 못한다. 방화벽 전용 서브넷을 따로 만들어 엔드포인트를 옮기고 경로를 맞춘다" } }
+    - { id: b, text: { ko: "상태 저장 엔진은 기본이 거부이므로 허용 규칙을 추가해야 한다" } }
+    - { id: c, text: { ko: "Network Firewall은 퍼블릭 서브넷을 지원하지 않으므로 웹 서버에 WAF를 붙인다" } }
+    - { id: d, text: { ko: "웹 서버의 보안 그룹을 방화벽 정책에 연결해야 규칙이 적용된다" } }
+  answer: a
+  explanation: { ko: "방화벽 엔드포인트는 자기 서브넷을 드나드는 트래픽은 검사하지 못하므로, 가용 영역마다 방화벽 전용 서브넷을 두고 워크로드 서브넷과 인터넷 게이트웨이 사이에 끼워 넣는다. 상태 저장 엔진의 기본 동작은 거부가 아니라 통과다(b). 인터넷 게이트웨이와 함께 쓰는 구조가 기본 예시이고, WAF는 웹 요청을 보는 별개 서비스다(c). 방화벽 정책에 보안 그룹을 연결하는 기능은 없다(d)." }
+  facts: []
+
+- id: vpc.q.network-protection-dns-exfil
+  type: quiz
+  chapter: vpc/network-protection
+  topic: vpc/network-protection/dns-firewall
+  question: { ko: "보안팀이 침해된 인스턴스가 공격자 소유 도메인의 하위 이름을 연달아 조회해 데이터를 빼내는 정황을 찾았다. 인스턴스는 VPC의 Route 53 Resolver를 쓴다. 이 경로를 가장 직접 막는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "네트워크 ACL에서 아웃바운드 UDP 53을 막는다" } }
+    - { id: b, text: { ko: "Route 53 Resolver DNS 방화벽 규칙 그룹을 VPC에 연결하고 해당 도메인 목록을 차단한다" } }
+    - { id: c, text: { ko: "Application Load Balancer에 AWS WAF 웹 ACL을 붙인다" } }
+    - { id: d, text: { ko: "AWS Shield Advanced를 구독한다" } }
+  answer: b
+  explanation: { ko: "DNS를 이용한 데이터 유출은 Resolver로 가는 질의에 실려 나간다. DNS 방화벽은 그 질의를 도메인 이름으로 걸러 차단·경고할 수 있다. 네트워크 ACL은 Route 53 Resolver로 오가는 DNS 요청을 막지 못하고, 도메인을 구분하지도 못한다(a). 문서도 Resolver를 거치는 질의를 거르려면 DNS 방화벽을 쓰라고 안내한다. WAF는 들어오는 웹 요청을 본다(c). Shield는 DDoS 대응이다(d)." }
+  facts: []
+
+- id: vpc.q.network-protection-which-layer
+  type: quiz
+  chapter: vpc/network-protection
+  topic: vpc/network-protection/layers
+  question: { ko: "Application Load Balancer 뒤의 웹 애플리케이션이 로그인 폼을 통한 SQL 삽입 시도를 받고 있다. 이 공격을 요청 내용으로 걸러 낼 알맞은 서비스는?" }
+  choices:
+    - { id: a, text: { ko: "보안 그룹에 거부 규칙을 추가한다" } }
+    - { id: b, text: { ko: "Route 53 Resolver DNS 방화벽" } }
+    - { id: c, text: { ko: "Application Load Balancer에 연결한 AWS WAF 웹 ACL" } }
+    - { id: d, text: { ko: "네트워크 ACL로 공격자 IP 대역을 거부한다" } }
+  answer: c
+  explanation: { ko: "SQL 삽입은 HTTP 요청 내용에 담긴 애플리케이션 계층 공격이다. AWS WAF는 Application Load Balancer, CloudFront, API Gateway 같은 리소스에 붙어 웹 요청을 검사한다. 보안 그룹에는 거부 규칙이 없다(a). DNS 방화벽은 DNS 질의만 본다(b). 네트워크 ACL은 IP·포트만 보므로 요청 내용을 구분하지 못하고, 공격자 주소가 바뀌면 소용없다(d)." }
+  facts: []
+
+- id: vpc.d.network-protection-central-egress
+  type: design
+  chapter: vpc/network-protection
+  topic: vpc/network-protection/network-firewall
+  scenario: { ko: "한 리전에 업무 VPC 여러 개가 전송 게이트웨이에 붙어 있다. 각 VPC에는 세 가용 영역의 프라이빗 서브넷만 있고 인터넷 게이트웨이는 없다. 보안팀 요구는 (1) 모든 업무 VPC에서 인터넷으로 나가는 트래픽을 한곳에서 검사하고 허용한 도메인으로만 내보낼 것, (2) 한 가용 영역이 멈춰도 다른 영역의 송신이 끊기지 않을 것, (3) 장비 운영 부담을 늘리지 않을 것이다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "중앙 송신(검사) VPC를 만든다. 가용 영역마다 전송 게이트웨이 연결 서브넷, 방화벽 전용 서브넷, NAT 게이트웨이가 있는 퍼블릭 서브넷을 둔다. 연결 서브넷 0.0.0.0/0 → 같은 영역 방화벽 엔드포인트, 방화벽 서브넷 0.0.0.0/0 → 같은 영역 NAT 게이트웨이, NAT 게이트웨이 서브넷은 업무 VPC 대역 → 같은 영역 방화벽 엔드포인트로 돌려 응답도 같은 엔드포인트를 지나게 한다" } }
+    - { id: b, text: { ko: "업무 VPC의 프라이빗 서브넷 0.0.0.0/0 → 전송 게이트웨이로 두고, 전송 게이트웨이 라우팅 테이블에서 0.0.0.0/0을 송신 VPC 연결로 보내며, 송신 VPC 연결에 어플라이언스 모드를 켠다" } }
+    - { id: c, text: { ko: "방화벽 정책에 허용할 도메인 목록을 담은 상태 저장 규칙 그룹을 넣고, 나머지는 막도록 동작을 명시한다" } }
+    - { id: d, text: { ko: "검사 VPC와 각 업무 VPC를 VPC 피어링으로 잇고, 업무 VPC 경로를 피어링 연결로 보낸다" } }
+    - { id: e, text: { ko: "각 업무 VPC 서브넷의 네트워크 ACL 아웃바운드 규칙에 허용 도메인 이름을 넣는다" } }
+    - { id: f, text: { ko: "비용을 줄이려고 방화벽 엔드포인트와 NAT 게이트웨이를 한 가용 영역에만 두고 모든 영역이 함께 쓴다" } }
+    - { id: g, text: { ko: "NAT 게이트웨이에 AWS WAF 웹 ACL을 연결해 나가는 요청을 도메인으로 거른다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 방화벽은 경로 위에 있어야 일한다. 연결 서브넷 → 방화벽 엔드포인트 → NAT 게이트웨이 → 인터넷 게이트웨이 순서로 보내고, 돌아오는 길도 같은 영역의 엔드포인트를 지나게 해야 비대칭 라우팅이 생기지 않는다. 방화벽 서브넷을 전용으로 두고, 영역마다 엔드포인트와 NAT 게이트웨이를 두어 요구 (2)를 지킨다."
+      - "b: 업무 VPC의 송신을 전송 게이트웨이로 모아 한곳에서 검사한다(요구 1). 방화벽 엔드포인트는 상태 저장 장치이므로 검사 VPC 연결에 어플라이언스 모드를 켜야 한 흐름이 같은 가용 영역의 엔드포인트를 지난다."
+      - "c: 도메인 기반 허용 목록은 Network Firewall 상태 저장 규칙 그룹이 맡는다. 상태 저장 엔진의 기본은 통과이므로 나머지를 막는 동작을 명시해야 한다."
+      - "d는 감점: VPC 피어링은 전이 라우팅을 지원하지 않아 업무 VPC가 검사 VPC의 NAT 게이트웨이·인터넷 게이트웨이를 거쳐 나갈 수 없고, Network Firewall도 VPC 피어링 구성을 지원하지 않는다."
+      - "e는 감점: 네트워크 ACL은 IP·포트·프로토콜만 보며 도메인 이름 규칙이 없다."
+      - "f는 감점: 그 영역이 멈추면 전체 송신이 끊겨 요구 (2)를 어긴다. 다른 영역에서 오는 트래픽에 영역 간 전송 요금도 붙는다."
+      - "g는 감점: WAF는 CloudFront, Application Load Balancer 같은 웹 리소스에 붙으며 NAT 게이트웨이에는 붙지 않는다."
+      - "참고: 전송 게이트웨이에 Network Firewall을 직접 붙이는 네트워크 기능 연결도 검사 VPC를 대신할 수 있다. 최근 추가된 기능이라 시험 범위인지 확인되지 않았으며, a·b 대신 이를 설명해도 감점하지 않는다. DNS 방화벽을 더해 DNS 유출까지 막는 답도 감점하지 않는다."
+  facts: []

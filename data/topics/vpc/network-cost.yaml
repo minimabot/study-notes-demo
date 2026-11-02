@@ -1,0 +1,58 @@
+# 장: 네트워크 요금과 비용 줄이기. 요금 수치는 AWS Price List API 가격표(data/facts/vpc-network-cost.yaml 머리 주석)에서 확인했다.
+chapter:
+  id: vpc/network-cost
+  title:
+    ko: 네트워크 요금과 비용 줄이기
+  track: practice
+  doc_source: https://aws.amazon.com/vpc/pricing/
+  topics:
+    - id: vpc/network-cost/components
+      title:
+        ko: VPC 구성 요소별 요금
+      exam_tags:
+        - SAA-C03#4.4
+        - SAP-C03#3.2
+      sources:
+        - https://aws.amazon.com/vpc/pricing/
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-pricing.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-billing-usage-reports.html
+    - id: vpc/network-cost/data-transfer
+      title:
+        ko: 데이터 전송 요금 - 영역 간, 리전 간, 인터넷
+      exam_tags:
+        - SAA-C03#4.4
+        - SAP-C03#3.2
+      sources:
+        - https://aws.amazon.com/ec2/pricing/on-demand/
+        - https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+    - id: vpc/network-cost/s3-path
+      title:
+        ko: S3로 가는 세 가지 길의 비용
+      exam_tags:
+        - SAA-C03#4.4
+        - SAP-C03#3.2
+      recommended:
+        - claim:
+            ko: NAT 게이트웨이를 지나는 트래픽 대부분이 게이트웨이·인터페이스 엔드포인트를 지원하는 AWS 서비스로 간다면 해당 엔드포인트를 만든다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-pricing.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-pricing.html
+        - https://aws.amazon.com/vpc/pricing/
+        - https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html
+    - id: vpc/network-cost/checklist
+      title:
+        ko: 네트워크 비용 줄이기 점검표
+      exam_tags:
+        - SAA-C03#4.4
+        - SAP-C03#3.2
+        - SOA-C03#5.1
+      recommended:
+        - claim:
+            ko: 가용 영역을 넘는 트래픽이 많으면 리소스를 NAT 게이트웨이와 같은 영역에 두거나, 리소스가 있는 영역마다 NAT 게이트웨이를 만든다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-pricing.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-pricing.html
+        - https://aws.amazon.com/vpc/pricing/
+        - https://aws.amazon.com/transit-gateway/pricing/

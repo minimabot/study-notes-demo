@@ -1,0 +1,92 @@
+# 장: 하이브리드 연결 — Site-to-Site VPN과 Direct Connect
+chapter:
+  id: vpc/hybrid-vpn
+  title:
+    ko: 하이브리드 연결 — Site-to-Site VPN과 Direct Connect
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html
+  topics:
+    - id: vpc/hybrid-vpn/s2s-components
+      title:
+        ko: Site-to-Site VPN 구성 요소와 한도
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#3.4
+        - SOA-C03#5.1
+      recommended:
+        - claim:
+            ko: VPN 연결의 두 터널을 모두 설정하고 비대칭 라우팅을 허용한다
+          source: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-route-priority.html
+          checked: 2026-11-03
+        - claim:
+            ko: 같은 Site-to-Site VPN 연결을 여러 VPC가 써야 하면 전송 게이트웨이를 쓴다
+          source: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+          checked: 2026-11-03
+        - claim:
+            ko: 공통 온프레미스 네트워크에 잇는 VPC들은 서로 겹치지 않는 CIDR을 쓴다
+          source: https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/how_it_works.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/VPNTunnels.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-limits.html
+    - id: vpc/hybrid-vpn/routing-ha
+      title:
+        ko: VPN 라우팅, 이중화, 가속화
+      exam_tags:
+        - SAA-C03#3.4
+        - SAP-C03#1.3
+      recommended:
+        - claim:
+            ko: 고객 게이트웨이 장치가 지원하면 BGP(동적 라우팅)를 쓴다
+          source: https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-static-dynamic.html
+          checked: 2026-11-03
+        - claim:
+            ko: 경로 선택에 영향을 주려면 더 구체적인 BGP 경로를 광고한다
+          source: https://docs.aws.amazon.com/vpn/latest/s2svpn/VPNRoutingTypes.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-route-priority.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-redundant-connection.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/accelerated-vpn.html
+    - id: vpc/hybrid-vpn/monitoring
+      title:
+        ko: VPN 모니터링과 문제 해결
+      exam_tags:
+        - SOA-C03#5.3
+        - SOA-C03#1.1
+      recommended:
+        - claim:
+            ko: 터널 상태의 짧은 변화는 콘솔 표시 대신 CloudWatch 지표와 로그로 확인한다
+          source: https://docs.aws.amazon.com/vpn/latest/s2svpn/monitoring-overview-vpn.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/monitoring-cloudwatch-vpn.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/monitoring-overview-vpn.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/monitoring-logs.html
+    - id: vpc/hybrid-vpn/direct-connect
+      title:
+        ko: Direct Connect 개요와 VPN 예비 경로
+      exam_tags:
+        - SAA-C03#1.2
+        - SAA-C03#3.4
+        - SAA-C03#4.4
+        - SAP-C03#1.3
+      recommended:
+        - claim:
+            ko: 복원력 목표에 맞는 전용 연결은 Direct Connect 복원력 툴킷의 연결 마법사로 주문한다
+          source: https://docs.aws.amazon.com/directconnect/latest/UserGuide/resiliency_toolkit.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html
+        - https://docs.aws.amazon.com/directconnect/latest/UserGuide/direct-connect-gateways-intro.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/private-ip-dx.html
+    - id: vpc/hybrid-vpn/new-features
+      title:
+        ko: 최근 추가된 VPN 기능
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/VPNTunnels.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-concentrator.html
+        - https://docs.aws.amazon.com/vpn/latest/s2svpn/WhatsNew.html

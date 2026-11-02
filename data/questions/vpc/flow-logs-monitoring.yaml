@@ -1,0 +1,69 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.flow-logs-monitoring-dns-missing
+  type: quiz
+  chapter: vpc/flow-logs-monitoring
+  topic: vpc/flow-logs-monitoring/records
+  question: { ko: "보안팀이 VPC 전체에 ALL 흐름 로그를 켜고, 인스턴스가 어떤 도메인을 조회하는지 알아내려고 UDP 53 레코드를 찾았다. 인스턴스는 기본 DHCP 옵션 세트를 쓴다. 그런데 DNS 레코드가 하나도 없다. 이유는?" }
+  choices:
+    - { id: a, text: { ko: "흐름 로그는 UDP를 기록하지 않는다" } }
+    - { id: b, text: { ko: "Amazon DNS 서버로 가는 트래픽은 흐름 로그가 기록하지 않는다. 흐름 로그는 질의한 도메인 이름도 담지 않는다" } }
+    - { id: c, text: { ko: "집계 간격을 짧은 값으로 바꾸면 DNS 레코드가 나타난다" } }
+    - { id: d, text: { ko: "보안 그룹이 DNS 트래픽을 막아 REJECT로만 기록되는데, ALL이 아니라 REJECT로 만들어야 보인다" } }
+  answer: b
+  explanation: { ko: "인스턴스가 Amazon DNS 서버로 보내는 트래픽은 기록되지 않는 트래픽 목록에 있다. 직접 세운 DNS 서버를 쓰면 그 트래픽은 기록되지만, 흐름 로그는 주소·포트·프로토콜만 담으므로 도메인 이름은 어차피 알 수 없다. UDP도 기록된다(a). 집계 간격은 기록 대상을 바꾸지 않는다(c). Amazon DNS 서버로 가는 트래픽은 보안 그룹이 거르지 않고, ALL은 REJECT를 포함한다(d)." }
+  facts: []
+
+- id: vpc.q.flow-logs-monitoring-nacl-response
+  type: quiz
+  chapter: vpc/flow-logs-monitoring
+  topic: vpc/flow-logs-monitoring/reading
+  question: { ko: "한 인스턴스의 흐름 로그에 같은 연결의 두 줄이 있다. 외부 클라이언트 → 인스턴스 TCP 443 요청은 ACCEPT, 인스턴스 443 → 클라이언트 임시 포트 응답은 REJECT다. 원인으로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "보안 그룹 아웃바운드 규칙이 임시 포트를 허용하지 않는다" } }
+    - { id: b, text: { ko: "보안 그룹 인바운드 규칙이 443을 허용하지 않는다" } }
+    - { id: c, text: { ko: "서브넷 네트워크 ACL의 아웃바운드 규칙이 클라이언트의 임시 포트 범위를 허용하지 않는다" } }
+    - { id: d, text: { ko: "인스턴스의 OS 방화벽이 443을 막는다" } }
+  answer: c
+  explanation: { ko: "보안 그룹은 상태 저장이라 허용된 요청의 응답을 규칙과 관계없이 내보낸다. 그래서 응답이 REJECT라면 a는 원인이 될 수 없다. 요청이 ACCEPT이므로 인바운드 보안 그룹도 443을 허용했다(b). 상태 비저장인 네트워크 ACL만 응답을 따로 막을 수 있다. OS 방화벽이 요청을 막았다면 인스턴스가 응답을 보내지 않으므로 응답 REJECT 줄이 생기지 않는다(d)." }
+  facts: []
+
+- id: vpc.q.flow-logs-monitoring-reachability
+  type: quiz
+  chapter: vpc/flow-logs-monitoring
+  topic: vpc/flow-logs-monitoring/tools
+  question: { ko: "보안 그룹을 바꾸기 전에, 바꾼 뒤에도 인터넷 게이트웨이에서 웹 서버의 TCP 443으로 닿는지 확인하고 싶다. 아직 실제 트래픽은 보내고 싶지 않다. 알맞은 도구는?" }
+  choices:
+    - { id: a, text: { ko: "VPC 흐름 로그" } }
+    - { id: b, text: { ko: "Reachability Analyzer" } }
+    - { id: c, text: { ko: "트래픽 미러링" } }
+    - { id: d, text: { ko: "CloudTrail" } }
+  answer: b
+  explanation: { ko: "Reachability Analyzer는 패킷을 보내지 않고 네트워크 설정만으로 원본에서 대상까지 닿는지 분석한다. 닿지 않으면 막는 구성 요소를 알려 준다. 흐름 로그(a)와 트래픽 미러링(c)은 실제 트래픽이 있어야 볼 것이 생긴다. CloudTrail(d)은 누가 설정을 바꿨는지 기록할 뿐 경로를 분석하지 않는다." }
+  facts: []
+
+- id: vpc.d.flow-logs-monitoring-unreachable
+  type: design
+  chapter: vpc/flow-logs-monitoring
+  topic: vpc/flow-logs-monitoring/reading
+  scenario: { ko: "퍼블릭 서브넷의 EC2 인스턴스에서 사내 도구를 TCP 443으로 제공한다. 어제 누군가 네트워크 설정을 바꾼 뒤로 일부 사용자가 접속하지 못한다고 한다. 인스턴스는 떠 있고 애플리케이션 로그에는 요청이 거의 없다. 요구는 (1) 운영 중인 다른 리소스에 영향 없이 원인 구성 요소를 찾을 것, (2) 실제 트래픽이 어디서 거부되는지 근거를 남길 것, (3) 고친 뒤 같은 문제가 다시 생기면 알림을 받을 것이다. 알맞은 조치를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "Reachability Analyzer로 인터넷 게이트웨이 → 인스턴스, TCP 443 경로를 분석해 막는 구성 요소를 확인한다" } }
+    - { id: b, text: { ko: "인스턴스 네트워크 인터페이스(또는 서브넷)에 ALL 흐름 로그를 만들어 CloudWatch Logs로 보내고, 요청 ACCEPT 뒤 응답 REJECT인지, 요청만 REJECT인지 읽는다" } }
+    - { id: c, text: { ko: "흐름 로그 로그 그룹에 dstport 443·action REJECT 지표 필터를 만들고, 합계 경보를 SNS로 연결한다" } }
+    - { id: d, text: { ko: "흐름 로그에서 사용자들의 DNS 질의 레코드를 찾아 이름 풀이가 되는지 확인한다" } }
+    - { id: e, text: { ko: "원인을 빨리 찾으려고 보안 그룹 인바운드를 모든 포트, 0.0.0.0/0으로 잠시 연다" } }
+    - { id: f, text: { ko: "Reachability Analyzer 결과로 사용자 구간의 지연 시간과 패킷 손실을 측정한다" } }
+    - { id: g, text: { ko: "이미 있는 서브넷 흐름 로그를 편집해 tcp-flags 필드를 추가한다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: Reachability Analyzer는 패킷을 보내지 않는 설정 분석이라 운영 트래픽에 영향이 없다. 닿지 않으면 보안 그룹·네트워크 ACL·라우팅 테이블 중 막는 요소를 알려 준다. 요구 (1)."
+      - "b: 흐름 로그는 트래픽 경로 밖에서 수집해 성능에 영향이 없다. 응답만 REJECT면 상태 비저장인 네트워크 ACL, 요청이 REJECT면 인바운드 단계(보안 그룹 또는 네트워크 ACL)다. 실제 트래픽 근거가 남는다. 요구 (2)."
+      - "c: CloudWatch Logs의 지표 필터와 경보로 거부가 다시 늘면 알림을 받는다. 요구 (3)."
+      - "d는 감점: Amazon DNS 서버로 가는 트래픽은 흐름 로그에 남지 않고, 흐름 로그는 도메인 이름을 담지 않는다."
+      - "e는 감점: 공격 면을 크게 넓히는 조치다. 보안 그룹 문제인지 가리는 데는 a, b로 충분하다."
+      - "f는 감점: Reachability Analyzer는 데이터 플레인을 분석하지 않으므로 지연 시간과 손실을 알 수 없다."
+      - "g는 감점: 흐름 로그는 만든 뒤 형식을 바꿀 수 없다. 필드가 더 필요하면 사용자 지정 형식으로 새로 만든다."
+      - "참고: 흐름 로그는 전달까지 몇 분 걸리는 최선 노력 기록이다. 만든 직후 데이터가 안 보여도 바로 설정 오류로 판단하지 않는다."
+  facts: [vpc.flowlogs.delivery.cwl]

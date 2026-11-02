@@ -1,0 +1,91 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.design-patterns-egress-attachment
+  type: quiz
+  chapter: vpc/design-patterns
+  topic: vpc/design-patterns/hub-spoke
+  question: { ko: "VPC A, B의 인터넷 송신을 전송 게이트웨이를 거쳐 송신 VPC C의 NAT 게이트웨이로 모으려 한다. VPC C의 전송 게이트웨이 연결을 퍼블릭 서브넷에 만들었더니 A, B에서 인터넷이 되지 않는다. 원인과 해결로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "전송 게이트웨이는 NAT 게이트웨이를 지원하지 않는다. VPC마다 NAT 게이트웨이를 둔다" } }
+    - { id: b, text: { ko: "퍼블릭 서브넷의 경로를 따라 트래픽이 NAT를 건너뛰고 인터넷 게이트웨이로 가서 버려진다. 연결을 NAT와 같은 영역의 프라이빗 서브넷에 만들고, 그 서브넷의 기본 경로를 NAT 게이트웨이로 보낸다" } }
+    - { id: c, text: { ko: "VPC A, B에 인터넷 게이트웨이를 붙여야 한다" } }
+    - { id: d, text: { ko: "VPC C 연결에 어플라이언스 모드를 켜면 해결된다" } }
+  answer: b
+  explanation: { ko: "전송 게이트웨이 연결이 퍼블릭 서브넷에 있으면 그 서브넷의 라우팅 테이블을 따르므로 인터넷 게이트웨이로 바로 간다. 출발지 인스턴스에는 퍼블릭 IP가 없어 인터넷 게이트웨이가 버린다(b). 중앙 송신은 문서에 나온 전송 게이트웨이 예시 구성이다(a는 틀림). A, B에 인터넷 게이트웨이를 붙이면 중앙화의 뜻이 없다(c). 어플라이언스 모드(d)는 상태 저장 장비의 대칭 경로를 위한 것이고 이 문제와 관계없다." }
+  facts: []
+
+- id: vpc.q.design-patterns-sg-chain
+  type: quiz
+  chapter: vpc/design-patterns
+  topic: vpc/design-patterns/web-db
+  question: { ko: "웹 서버는 Auto Scaling으로 두 영역에서 수시로 늘고 준다. DB 서버의 보안 그룹이 웹 서버에서 오는 MySQL 연결만 받게 하는 가장 알맞은 규칙은?" }
+  choices:
+    - { id: a, text: { ko: "인바운드 3306, 출발지 = 웹 서버 보안 그룹 ID" } }
+    - { id: b, text: { ko: "인바운드 3306, 출발지 = VPC 전체 CIDR" } }
+    - { id: c, text: { ko: "인바운드 3306, 출발지 = 지금 떠 있는 웹 서버의 프라이빗 IP 목록" } }
+    - { id: d, text: { ko: "DB 서브넷의 네트워크 ACL에서 3306만 허용하고 보안 그룹은 모두 연다" } }
+  answer: a
+  explanation: { ko: "보안 그룹 ID를 출발지로 쓰면 그 보안 그룹이 붙은 인스턴스가 늘고 줄어도 규칙을 고칠 필요가 없다(a). VPC 전체 CIDR(b)은 웹 서버가 아닌 리소스까지 허용한다. IP 목록(c)은 확장될 때마다 바뀐다. 네트워크 ACL(d)은 서브넷 단위의 상태 비저장 필터라 보조 수단이고, 인스턴스 단위로 웹 계층만 골라낼 수 없다." }
+  facts: []
+
+- id: vpc.q.design-patterns-endpoint-only
+  type: quiz
+  chapter: vpc/design-patterns
+  topic: vpc/design-patterns/endpoint-centric
+  question: { ko: "인터넷 게이트웨이와 NAT 게이트웨이가 없는 VPC에서 컨테이너가 ECR에서 이미지를 받고 CloudWatch Logs로 로그를 보내야 한다. 필요한 구성으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "S3 게이트웨이 엔드포인트 하나면 된다" } }
+    - { id: b, text: { ko: "ECR과 CloudWatch Logs의 인터페이스 엔드포인트, 그리고 이미지 계층을 받기 위한 S3 게이트웨이 엔드포인트" } }
+    - { id: c, text: { ko: "VPC 피어링으로 다른 계정의 ECR에 연결한다" } }
+    - { id: d, text: { ko: "인터넷 게이트웨이 없이는 방법이 없다" } }
+  answer: b
+  explanation: { ko: "ECR API와 Logs는 인터페이스 엔드포인트로 닿는다. ECR은 이미지 계층을 S3에 두므로 S3 접근도 필요하고, 같은 VPC 안이라면 무료인 S3 게이트웨이 엔드포인트가 맞다(b). S3 게이트웨이 엔드포인트만으로는 ECR API와 Logs에 닿지 못한다(a). 피어링(c)은 VPC끼리 잇는 것이고 AWS 서비스 접근 경로가 아니다. 엔드포인트로 인터넷 없이 AWS 서비스에 닿을 수 있으므로 d는 틀렸다." }
+  facts: []
+
+- id: vpc.d.design-patterns-prod-web
+  type: design
+  chapter: vpc/design-patterns
+  topic: vpc/design-patterns/private-nat
+  scenario: { ko: "서울 리전에 새 운영 웹 서비스를 올린다. 요구 사항: 가용 영역 하나가 멈춰도 서비스와 서버의 인터넷 송신(외부 결제 API 호출)이 계속돼야 한다. 서버는 인터넷에서 직접 닿으면 안 된다. 서버는 S3에 업로드 파일을 많이 저장한다. 운영자는 서버에 SSH 포트를 열지 않고 접속하길 원한다. 알맞은 설계 요소를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "두 영역에 퍼블릭·프라이빗 서브넷을 하나씩 두고, 서버는 프라이빗 서브넷에 Auto Scaling 그룹으로 띄운다" } }
+    - { id: b, text: { ko: "인터넷용 Application Load Balancer를 두 영역의 퍼블릭 서브넷에 두고, 서버 보안 그룹은 로드 밸런서 보안 그룹에서 오는 리스너·상태 확인 포트만 받는다" } }
+    - { id: c, text: { ko: "영역마다 NAT 게이트웨이를 두고, 영역별 프라이빗 라우팅 테이블이 같은 영역의 NAT를 가리키게 한다" } }
+    - { id: d, text: { ko: "프라이빗 라우팅 테이블에 S3 게이트웨이 엔드포인트를 연결한다" } }
+    - { id: e, text: { ko: "Session Manager로 접속하고 서버 보안 그룹에는 SSH 규칙을 두지 않는다" } }
+    - { id: f, text: { ko: "비용을 아끼려고 NAT 게이트웨이를 영역 A에 하나만 두고 두 영역이 공유한다" } }
+    - { id: g, text: { ko: "운영 편의를 위해 서버를 퍼블릭 서브넷에 두고 보안 그룹에서 22번 포트를 0.0.0.0/0에 연다" } }
+  answer_set: [a, b, c, d, e]
+  rubric:
+    ko:
+      - "a, b, c, d, e를 모두 고르면 정답이다. a: 서버를 프라이빗 서브넷에 두면 인터넷에서 직접 닿지 못한다. 두 영역에 걸친 Auto Scaling이 영역 장애를 견딘다. 운영 환경은 {{fact:vpc.plan.prod-min-azs}}의 가용 영역에 둔다."
+      - "b: 들어오는 트래픽은 로드 밸런서만 받는다. 보안 그룹 ID로 사슬을 걸면 서버가 늘고 줄어도 규칙이 그대로다."
+      - "c: 영역 장애 때도 남은 영역의 송신이 살아 있어야 하므로 영역마다 NAT 게이트웨이가 필요하다. 같은 영역 NAT로 보내면 영역 간 전송 요금도 없다."
+      - "d: S3 업로드가 NAT를 지나지 않게 해 NAT 처리 요금({{fact:vpc.price.natgw-gb.apne2}})을 없앤다. 게이트웨이 엔드포인트는 요금이 없다."
+      - "e: SSH 포트를 열지 않아도 접속할 수 있다. 공격 면이 줄어든다."
+      - "f는 감점: NAT가 있는 영역이 멈추면 다른 영역의 송신도 끊겨 요구 사항을 어긴다."
+      - "g는 감점: 서버가 인터넷에 직접 노출되고 SSH가 전 세계에 열린다."
+  facts: [vpc.plan.prod-min-azs, vpc.price.natgw-gb.apne2]
+
+- id: vpc.d.design-patterns-multi-vpc
+  type: design
+  chapter: vpc/design-patterns
+  topic: vpc/design-patterns/hub-spoke
+  scenario: { ko: "한 리전에 업무 VPC가 {{raw:12개}} 있고 앞으로 더 늘어난다. 지금은 VPC마다 NAT 게이트웨이를 영역별로 두고, 일부 VPC 쌍은 피어링으로 이어져 있다. 보안팀은 모든 인터넷 송신과 VPC 사이 트래픽을 한곳의 상태 저장 방화벽에서 검사하고 싶어 한다. 업무 VPC끼리는 기본적으로 통신하지 못하고 공유 서비스 VPC(디렉터리, 모니터링)에만 닿아야 한다. 온프레미스와는 VPN 하나로 잇는다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "전송 게이트웨이를 허브로 두고 업무 VPC, 공유 서비스 VPC, 검사·송신 VPC, VPN을 연결한다" } }
+    - { id: b, text: { ko: "전송 게이트웨이 라우팅 테이블을 나눠 업무 VPC 연결은 공유 서비스·검사 쪽 경로만 갖게 하고, 업무 VPC끼리의 경로는 넣지 않는다" } }
+    - { id: c, text: { ko: "검사·송신 VPC에 방화벽과 NAT 게이트웨이를 두고, 그 VPC의 전송 게이트웨이 연결에 어플라이언스 모드를 켠다" } }
+    - { id: d, text: { ko: "검사·송신 VPC의 전송 게이트웨이 연결은 영역마다 프라이빗 서브넷에 만든다" } }
+    - { id: e, text: { ko: "모든 VPC 쌍을 피어링으로 완전 메시로 잇고, 방화벽은 VPC마다 둔다" } }
+    - { id: f, text: { ko: "업무 VPC에서 피어링을 거쳐 송신 VPC의 NAT 게이트웨이로 인터넷에 나가게 한다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a, b, c, d를 모두 고르면 정답이다. a: VPC가 많고 계속 늘면 피어링 메시보다 전송 게이트웨이 허브가 관리하기 쉽다. 연결 수 한도는 {{fact:vpc.tgw.attachments}}다."
+      - "b: 전송 게이트웨이 라우팅 테이블을 나누는 것이 '격리 VPC + 공유 서비스' 모양이다. 업무 VPC끼리는 경로가 없으므로 닿지 못한다."
+      - "c: 상태 저장 방화벽이 요청과 응답을 같은 장비에서 보려면 장비가 있는 VPC 연결에 어플라이언스 모드가 필요하다. 송신을 한곳에 모으면 업무 VPC의 NAT 게이트웨이를 없앨 수 있다."
+      - "d: 연결을 퍼블릭 서브넷에 두면 트래픽이 검사·NAT를 건너뛰고 인터넷 게이트웨이로 가서 버려진다."
+      - "비용 점검: 전송 게이트웨이는 연결마다 {{fact:vpc.price.tgw-attachment-hour.apne2}}, 처리 GB마다 {{fact:vpc.price.tgw-gb}}(서울)가 붙는다. 업무 VPC별 NAT 시간 요금이 없어지는 몫과 견줘 본다."
+      - "e는 감점: 연결 수가 VPC 수의 제곱에 가깝게 늘고, 방화벽이 흩어져 '한곳에서 검사' 요구를 어긴다."
+      - "f는 감점: 피어링을 건너온 트래픽은 상대 VPC의 NAT 게이트웨이나 인터넷 게이트웨이로 내보낼 수 없다."
+  facts: [vpc.tgw.attachments, vpc.price.tgw-attachment-hour.apne2, vpc.price.tgw-gb]

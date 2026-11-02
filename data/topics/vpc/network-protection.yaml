@@ -1,0 +1,82 @@
+# 장: 네트워크 보호
+chapter:
+  id: vpc/network-protection
+  title:
+    ko: 네트워크 보호 (Network Firewall, DNS 방화벽, BPA, 암호화 제어)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html
+  topics:
+    - id: vpc/network-protection/layers
+      title:
+        ko: 보호 장치의 겹과 WAF·Shield의 자리
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+        - DOP-C02#6.2
+        - SAP-C03#1.4
+      recommended:
+        - claim:
+            ko: 보안 그룹을 네트워크 접근 통제의 주된 수단으로 쓰고, 네트워크 ACL은 서브넷 단위의 보조 통제로 쓴다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html
+          checked: 2026-11-03
+        - claim:
+            ko: 서브넷 라우팅 테이블에는 연결 요구를 충족하는 최소한의 경로만 둔다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html
+        - https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html
+    - id: vpc/network-protection/network-firewall
+      title:
+        ko: AWS Network Firewall과 방화벽 서브넷 라우팅
+      exam_tags:
+        - SAP-C03#1.4
+        - SOA-C03#5.1
+        - DOP-C02#6.2
+      recommended:
+        - claim:
+            ko: 방화벽 엔드포인트 서브넷은 Network Firewall 전용으로 두고 다른 애플리케이션을 두지 않는다
+          source: https://docs.aws.amazon.com/network-firewall/latest/developerguide/vpc-config-subnets.html
+          checked: 2026-11-03
+        - claim:
+            ko: 전송 게이트웨이로 중앙 집중 검사를 할 때는 방화벽 엔드포인트가 있는 VPC 연결에 어플라이언스 모드를 켠다
+          source: https://docs.aws.amazon.com/network-firewall/latest/developerguide/vpc-config-tgw-multi-az.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/network-firewall.html
+        - https://docs.aws.amazon.com/network-firewall/latest/developerguide/firewall-high-level-steps.html
+        - https://docs.aws.amazon.com/network-firewall/latest/developerguide/arch-single-zone-igw.html
+    - id: vpc/network-protection/dns-firewall
+      title:
+        ko: Route 53 Resolver DNS 방화벽
+      exam_tags:
+        - SOA-C03#5.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/resolver-dns-firewall.html
+        - https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall.html
+    - id: vpc/network-protection/bpa
+      title:
+        ko: VPC 퍼블릭 액세스 차단(BPA) 운영
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 운영 계정에서 BPA를 켜기 전에 인터넷 접근이 필요한 워크로드를 철저히 검토한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa-basics.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-vpc-bpa-basics.html
+    - id: vpc/network-protection/encryption-controls
+      title:
+        ko: VPC 암호화 제어
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 암호화 상태를 보는 흐름 로그에는 encryption-status와 함께 traffic-path, flow-direction 필드를 넣는다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-encryption-controls.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-encryption-controls.html

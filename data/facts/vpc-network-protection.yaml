@@ -1,0 +1,58 @@
+# VPC 네트워크 보호 장(vpc/network-protection) 전용 사실 항목. 2026-11-03 공식 문서와 대조.
+
+- id: vpc.nfw.bw-per-az
+  value: 100
+  unit: Gbps
+  display: { ko: "가용 영역마다 100 Gbps" }
+  label: { ko: "AWS Network Firewall이 가용 영역 하나에서 처리하는 트래픽 상한 (그 영역의 모든 방화벽 엔드포인트가 나눠 씀)" }
+  source_en: https://docs.aws.amazon.com/network-firewall/latest/developerguide/vpc-config-subnets.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/network-firewall/latest/developerguide/vpc-config-subnets.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.bpa.exclusions
+  value: 50
+  unit: count
+  display: { ko: "50개" }
+  label: { ko: "계정·리전당 VPC 퍼블릭 액세스 차단(BPA) 제외 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/amazon-vpc-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.bpa.since
+  value: "2024-11-19"
+  unit: date
+  display: { ko: "2024년 11월 19일" }
+  label: { ko: "VPC 퍼블릭 액세스 차단(BPA)이 VPC 사용 설명서에 추가된 날" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/WhatsNew.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.encryption-controls.since
+  value: "2025-11-21"
+  unit: date
+  display: { ko: "2025년 11월 21일" }
+  label: { ko: "VPC 암호화 제어(VPC Encryption Controls)가 VPC 사용 설명서에 추가된 날" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/WhatsNew.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: vpc.encryption-controls.exclusion-types
+  value: 8
+  unit: count
+  display: { ko: "8가지" }
+  label: { ko: "VPC 암호화 제어 적용(enforce) 모드에서 제외로 둘 수 있는 리소스 종류 수 (인터넷 게이트웨이, NAT 게이트웨이, 송신 전용 인터넷 게이트웨이, 미적용 VPC와의 피어링, 가상 프라이빗 게이트웨이, VPC 안 Lambda, VPC Lattice, EFS)" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-encryption-controls.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/vpc-encryption-controls.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.tgw.nf-attachment.since
+  value: "2025-06-16"
+  unit: date
+  display: { ko: "2025년 6월 16일" }
+  label: { ko: "전송 게이트웨이 네트워크 기능 연결(Network Firewall 직접 연결)이 Transit Gateway 안내서에 추가된 날" }
+  source_en: https://docs.aws.amazon.com/vpc/latest/tgw/doc-history.html
+  checked: 2026-11-03
+  volatile: false

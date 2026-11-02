@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.dns-dhcp-phz-attributes
+  type: quiz
+  chapter: vpc/dns-dhcp
+  topic: vpc/dns-dhcp/attributes
+  question: { ko: "직접 만든 VPC에 Route 53 프라이빗 호스팅 영역 `app.internal`을 연결하고 A 레코드를 넣었다. 그런데 VPC 안의 인스턴스에서 `db.app.internal`이 풀리지 않는다. DHCP 옵션 세트는 기본값이다. 가장 먼저 확인할 것은?" }
+  choices:
+    - { id: a, text: { ko: "보안 그룹에서 Amazon DNS 서버(VPC + 2 주소)로 가는 UDP 53 아웃바운드를 연다" } }
+    - { id: b, text: { ko: "VPC의 DNS 확인(enableDnsSupport)과 DNS 호스트 이름(enableDnsHostnames)이 모두 켜져 있는지 본다" } }
+    - { id: c, text: { ko: "DHCP 옵션 세트를 수정해 도메인 이름에 app.internal을 추가한다" } }
+    - { id: d, text: { ko: "인스턴스에 퍼블릭 IP를 붙인다" } }
+  answer: b
+  explanation: { ko: "프라이빗 호스팅 영역의 사용자 지정 이름을 쓰려면 두 DNS 속성이 모두 켜져 있어야 한다. 직접 만든 VPC는 DNS 호스트 이름 속성이 기본으로 꺼져 있다. Amazon DNS 서버로 가는 트래픽은 보안 그룹과 네트워크 ACL이 거르지 않으므로 a는 원인이 아니다. DHCP 옵션 세트는 만든 뒤 수정할 수 없고, 레코드는 옵션 세트가 아니라 호스팅 영역에 있다(c). 퍼블릭 IP는 프라이빗 호스팅 영역 풀이와 관계없다(d)." }
+  facts: []
+
+- id: vpc.q.dns-dhcp-change-options
+  type: quiz
+  chapter: vpc/dns-dhcp
+  topic: vpc/dns-dhcp/dhcp-options
+  question: { ko: "운영 VPC의 인스턴스가 사내 DNS 서버 두 대를 쓰도록 DHCP 옵션 세트를 쓰고 있다. 사내 DNS 서버 하나의 IP가 바뀌었다. 인스턴스를 재시작하지 않고 반영하는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "기존 옵션 세트의 도메인 이름 서버 값을 편집해 저장한다" } }
+    - { id: b, text: { ko: "새 IP로 새 옵션 세트를 만들어 VPC에 연결한다. 인스턴스는 DHCP 임대를 갱신할 때 새 값을 받으며, 급하면 OS에서 임대를 직접 갱신한다" } }
+    - { id: c, text: { ko: "VPC에서 옵션 세트를 떼어 낸 뒤 인스턴스가 사내 DNS를 스스로 찾게 한다" } }
+    - { id: d, text: { ko: "새 옵션 세트를 만들어 VPC에 기존 세트와 함께 하나 더 연결한다" } }
+  answer: b
+  explanation: { ko: "DHCP 옵션 세트는 만든 뒤 고칠 수 없으므로 a는 안 된다. 새 세트를 연결하면 기존 인스턴스도 재시작 없이 임대 갱신 때 새 값을 받는다. 다만 몇 시간 걸릴 수 있다. 옵션 세트를 떼면 그 VPC의 이름 풀이가 꺼진다(c). VPC에는 옵션 세트를 한 번에 하나만 연결한다(d)." }
+  facts: []
+
+- id: vpc.q.dns-dhcp-onprem-phz
+  type: quiz
+  chapter: vpc/dns-dhcp
+  topic: vpc/dns-dhcp/hybrid-resolver
+  question: { ko: "사내 데이터 센터가 Site-to-Site VPN으로 VPC와 이어져 있다. 사내 서버가 VPC에 연결된 프라이빗 호스팅 영역 `aws.example.com`의 이름을 풀어야 한다. 알맞은 구성은?" }
+  choices:
+    - { id: a, text: { ko: "사내 DNS 서버에서 aws.example.com 질의를 VPC의 + 2 주소로 조건부 전달한다" } }
+    - { id: b, text: { ko: "VPC에 Resolver 아웃바운드 엔드포인트와 전달 규칙을 만들어 사내 DNS 서버를 가리킨다" } }
+    - { id: c, text: { ko: "VPC에 Resolver 인바운드 엔드포인트를 만들고, 사내 DNS 서버에서 aws.example.com 질의를 그 엔드포인트 IP로 조건부 전달한다" } }
+    - { id: d, text: { ko: "프라이빗 호스팅 영역을 VPN 연결에 직접 연결한다" } }
+  answer: c
+  explanation: { ko: "사내 → VPC 방향 질의는 인바운드 엔드포인트가 받는다. 사내 DNS 서버가 그 엔드포인트의 프라이빗 IP로 넘기면 Resolver가 프라이빗 호스팅 영역을 보고 답한다. VPC + 2 주소로 직접 넘기는 방식은 지원하지 않고 결과가 불안정하다(a). 아웃바운드 엔드포인트는 VPC → 사내 방향이다(b). 프라이빗 호스팅 영역은 VPC에 연결하는 것이고, VPN 너머로 바로 풀리지 않는다(d)." }
+  facts: []

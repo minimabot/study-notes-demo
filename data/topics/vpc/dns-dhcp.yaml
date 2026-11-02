@@ -1,0 +1,56 @@
+# 장: DNS와 DHCP 옵션 세트
+chapter:
+  id: vpc/dns-dhcp
+  title:
+    ko: DNS와 DHCP 옵션 세트
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html
+  topics:
+    - id: vpc/dns-dhcp/amazon-dns
+      title:
+        ko: Amazon DNS 서버(Route 53 Resolver)
+      exam_tags:
+        - SOA-C03#5.2
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/AmazonDNS-concepts.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-limitations.html
+    - id: vpc/dns-dhcp/attributes
+      title:
+        ko: VPC DNS 속성과 프라이빗 호스팅 영역
+      exam_tags:
+        - SOA-C03#5.2
+        - SOA-C03#5.3
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/AmazonDNS-concepts.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns-updating.html
+    - id: vpc/dns-dhcp/dhcp-options
+      title:
+        ko: DHCP 옵션 세트
+      exam_tags:
+        - SOA-C03#5.2
+      recommended:
+        - claim:
+            ko: NetBIOS 노드 유형은 2(P-node)로 지정한다
+          source: https://docs.aws.amazon.com/vpc/latest/userguide/DHCPOptionSet.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/VPC_DHCP_Options.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/DHCPOptionSetConcepts.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/DHCPOptionSet.html
+    - id: vpc/dns-dhcp/hybrid-resolver
+      title:
+        ko: Resolver 엔드포인트로 하이브리드 DNS 잇기
+      exam_tags:
+        - SOA-C03#5.2
+        - SAP-C03#1.3
+      recommended:
+        - claim:
+            ko: 온프레미스나 다른 VPC의 DNS 서버에서 VPC + 2 주소로 질의를 넘기지 말고 Resolver 인바운드 엔드포인트를 쓴다
+          source: https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html
+        - https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-overview-DSN-queries-to-vpc.html
+        - https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-outbound-queries.html

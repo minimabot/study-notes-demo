@@ -1,0 +1,65 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.network-cost-s3-nat
+  type: quiz
+  chapter: vpc/network-cost
+  topic: vpc/network-cost/s3-path
+  question: { ko: "서울 리전 프라이빗 서브넷의 배치 서버들이 같은 리전 S3 버킷으로 매달 {{raw:20 TB}}를 올린다. 지금은 모두 NAT 게이트웨이를 거친다. 서버는 인터넷의 패키지 저장소에도 가끔 접속한다. 비용을 가장 많이 줄이는 변경은?" }
+  choices:
+    - { id: a, text: { ko: "S3 게이트웨이 엔드포인트를 만들고 프라이빗 서브넷의 라우팅 테이블에 연결한다. NAT 게이트웨이는 인터넷용으로 남긴다" } }
+    - { id: b, text: { ko: "NAT 게이트웨이를 지우고 서버에 퍼블릭 IPv4 주소를 붙여 인터넷 게이트웨이로 S3에 보낸다" } }
+    - { id: c, text: { ko: "영역마다 NAT 게이트웨이를 하나씩 더 만든다" } }
+    - { id: d, text: { ko: "S3 Transfer Acceleration을 켠다" } }
+  answer: a
+  explanation: { ko: "게이트웨이 엔드포인트는 시간 요금과 처리 요금이 없다. S3로 가는 GB에 붙던 NAT 처리 요금({{fact:vpc.price.natgw-gb.apne2}}, 서울)이 사라진다(a). 인터넷 접속은 남은 NAT가 처리한다. b는 프라이빗 서브넷 설계를 깨고, 서버마다 퍼블릭 IPv4 요금({{fact:vpc.price.public-ipv4-hour}})이 붙는다. c는 영역 간 전송을 줄일 수는 있지만 NAT 시간 요금이 늘고 처리 요금은 그대로다. d는 먼 거리 업로드를 빠르게 하는 기능이고 요금이 더 붙는다." }
+  facts: [vpc.price.natgw-gb.apne2, vpc.price.public-ipv4-hour]
+
+- id: vpc.q.network-cost-inter-az
+  type: quiz
+  chapter: vpc/network-cost
+  topic: vpc/network-cost/data-transfer
+  question: { ko: "같은 VPC의 애플리케이션 서버(영역 A)가 캐시 서버(영역 B)와 하루 종일 많은 데이터를 주고받는다. 이 트래픽에 붙는 요금을 옳게 설명한 것은?" }
+  choices:
+    - { id: a, text: { ko: "같은 VPC 안이므로 요금이 없다" } }
+    - { id: b, text: { ko: "영역 간 전송 요금이 나가는 쪽과 들어오는 쪽에 각각 GB당 붙는다" } }
+    - { id: c, text: { ko: "인터넷 송신 단가로 계산된다" } }
+    - { id: d, text: { ko: "NAT 게이트웨이 처리 요금이 붙는다" } }
+  answer: b
+  explanation: { ko: "같은 VPC라도 가용 영역을 넘으면 {{fact:vpc.price.inter-az-gb}}의 전송 요금이 붙는다(b). 무료인 것은 같은 영역 안 프라이빗 IP 통신이다(a). 인터넷 송신 단가(c)는 인터넷으로 나가는 트래픽에만 쓴다. VPC 안 서브넷 사이는 local 경로로 가므로 NAT 게이트웨이를 거치지 않는다(d). 대화가 많은 계층은 같은 영역의 대상을 우선 쓰도록 배치하면 이 요금이 준다." }
+  facts: [vpc.price.inter-az-gb]
+
+- id: vpc.q.network-cost-interface-vs-gateway
+  type: quiz
+  chapter: vpc/network-cost
+  topic: vpc/network-cost/s3-path
+  question: { ko: "온프레미스 데이터센터가 Direct Connect로 서울 리전 VPC에 이어져 있다. 온프레미스 서버가 인터넷을 거치지 않고 S3에 사설 IP로 닿아야 한다. 알맞은 선택은?" }
+  choices:
+    - { id: a, text: { ko: "S3 게이트웨이 엔드포인트를 만든다. 요금이 없으므로 가장 싸다" } }
+    - { id: b, text: { ko: "S3 인터페이스 엔드포인트를 만든다. 영역마다 시간 요금과 처리 GB 요금이 붙는다" } }
+    - { id: c, text: { ko: "VPC에 NAT 게이트웨이를 만들고 온프레미스 트래픽을 그쪽으로 보낸다" } }
+    - { id: d, text: { ko: "VPC 피어링으로 S3에 연결한다" } }
+  answer: b
+  explanation: { ko: "게이트웨이 엔드포인트는 VPC 라우팅 테이블에 경로로 들어가는 방식이라 그 VPC 안에서만 쓴다. 온프레미스나 다른 VPC에서는 쓸 수 없다(a). 인터페이스 엔드포인트는 사설 IP를 가진 네트워크 인터페이스라서 Direct Connect·VPN 너머에서도 닿는다(b). 요금은 영역마다 {{fact:vpc.price.interface-endpoint-hour.apne2}}와 {{fact:vpc.price.interface-endpoint-gb}}(서울)다. 가상 프라이빗 게이트웨이로 들어온 트래픽은 NAT 게이트웨이로 내보낼 수 없고, 인터넷을 거치게 된다(c). 피어링은 VPC끼리만 잇는다(d)." }
+  facts: [vpc.price.interface-endpoint-hour.apne2, vpc.price.interface-endpoint-gb]
+
+- id: vpc.d.network-cost-egress
+  type: design
+  chapter: vpc/network-cost
+  topic: vpc/network-cost/checklist
+  scenario: { ko: "서울 리전의 운영 VPC다. 가용 영역 {{raw:3곳}}에 프라이빗 서브넷이 있고, 영역마다 NAT 게이트웨이가 하나씩 있다. 비용 보고서를 보니 NAT 게이트웨이 처리량이 매달 수십 TB이고, 흐름 로그를 보면 대부분 같은 리전 S3 버킷과 DynamoDB 테이블로 간다. 나머지는 ECR 이미지 내려받기와 소량의 외부 API 호출이다. 서버 {{raw:40대}}에는 쓰지도 않는 퍼블릭 IPv4가 자동 할당돼 있다. 또 애플리케이션 서버가 다른 영역의 캐시 노드로 자주 붙는다. 가용성을 낮추지 않고 네트워크 비용을 줄이는 변경을 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "S3와 DynamoDB 게이트웨이 엔드포인트를 만들어 세 영역의 프라이빗 라우팅 테이블에 연결한다" } }
+    - { id: b, text: { ko: "ECR 처리량이 크다면 ECR 인터페이스 엔드포인트를 만들고 NAT 처리 요금과 비교한다" } }
+    - { id: c, text: { ko: "프라이빗 서브넷의 퍼블릭 IPv4 자동 할당을 끄고 인스턴스의 퍼블릭 주소를 없앤다" } }
+    - { id: d, text: { ko: "애플리케이션 서버가 같은 영역의 캐시 노드를 먼저 쓰도록 설정한다" } }
+    - { id: e, text: { ko: "NAT 게이트웨이를 하나만 남기고 세 영역이 모두 그것을 쓰게 한다" } }
+    - { id: f, text: { ko: "S3 트래픽을 위해 영역마다 S3 인터페이스 엔드포인트를 만든다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a, b, c, d를 모두 고르면 정답이다. a: 게이트웨이 엔드포인트는 요금이 없고, S3·DynamoDB로 가던 GB의 NAT 처리 요금({{fact:vpc.price.natgw-gb.apne2}})이 사라진다. 가장 큰 절감이다."
+      - "b: 인터페이스 엔드포인트는 영역마다 {{fact:vpc.price.interface-endpoint-hour.apne2}}와 {{fact:vpc.price.interface-endpoint-gb}}가 붙지만 처리 단가가 NAT보다 낮다. 처리량이 크면 이득이고 작으면 손해이므로 비교 후 결정한다."
+      - "c: 쓰지 않는 퍼블릭 IPv4도 주소마다 {{fact:vpc.price.public-ipv4-hour}}가 붙는다. 프라이빗 서브넷 서버에는 필요 없다."
+      - "d: 영역 간 전송은 {{fact:vpc.price.inter-az-gb}}가 양쪽에 붙는다. 같은 영역 대상을 우선 쓰면 가용성을 해치지 않고 줄일 수 있다."
+      - "e는 감점: 시간 요금은 줄지만 그 영역이 멈추면 세 영역 모두 인터넷 출구를 잃는다. 다른 영역에서 오는 트래픽에 영역 간 요금도 새로 붙는다. 운영 환경의 가용성 조건을 어긴다."
+      - "f는 감점: 같은 VPC 안의 S3 접근에는 무료인 게이트웨이 엔드포인트가 있다. 인터페이스 엔드포인트는 온프레미스나 다른 VPC에서 닿아야 할 때 쓴다."
+  facts: [vpc.price.natgw-gb.apne2, vpc.price.interface-endpoint-hour.apne2, vpc.price.interface-endpoint-gb, vpc.price.public-ipv4-hour, vpc.price.inter-az-gb]

@@ -1,0 +1,71 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.hybrid-vpn-dx-preferred
+  type: quiz
+  chapter: vpc/hybrid-vpn
+  topic: vpc/hybrid-vpn/routing-ha
+  question: { ko: "사내 대역 10.20.0.0/16을 Direct Connect 프라이빗 가상 인터페이스(BGP)와 BGP Site-to-Site VPN이 같은 가상 프라이빗 게이트웨이로 함께 광고한다. 두 경로 모두 정상일 때 VPC에서 사내로 가는 트래픽은 어디로 가는가?" }
+  choices:
+    - { id: a, text: { ko: "Direct Connect로 간다. VPN은 Direct Connect 경로가 사라지면 쓰이는 예비 경로다" } }
+    - { id: b, text: { ko: "VPN으로 간다. VPN 경로가 먼저 학습되었기 때문이다" } }
+    - { id: c, text: { ko: "두 경로에 ECMP로 반씩 나뉜다" } }
+    - { id: d, text: { ko: "접두사가 같아 충돌하므로 둘 다 버려진다" } }
+  answer: a
+  explanation: { ko: "접두사 길이가 같으면 가상 프라이빗 게이트웨이는 Direct Connect BGP 경로를 VPN 정적 경로나 VPN BGP 경로보다 앞에 둔다. 그래서 VPN은 예비 경로가 된다. 학습 순서는 기준이 아니다(b). 가상 프라이빗 게이트웨이는 ECMP를 지원하지 않는다(c). 같은 접두사는 우선순위로 하나를 고를 뿐 버리지 않는다(d)." }
+  facts: []
+
+- id: vpc.q.hybrid-vpn-bandwidth
+  type: quiz
+  chapter: vpc/hybrid-vpn
+  topic: vpc/hybrid-vpn/routing-ha
+  question: { ko: "사내와 여러 VPC 사이 VPN 트래픽이 표준 터널 하나의 상한({{fact:vpc.vpn.tunnel.bw.standard}})을 넘게 되었다. Direct Connect는 당장 들일 수 없다. 표준 터널을 유지하면서 VPN 대역폭을 늘리는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "가상 프라이빗 게이트웨이에 정적 라우팅 VPN 연결을 몇 개 더 만든다" } }
+    - { id: b, text: { ko: "전송 게이트웨이에 BGP(동적 라우팅) VPN 연결을 여러 개 붙이고 ECMP를 켜서 터널들을 함께 쓴다" } }
+    - { id: c, text: { ko: "기존 VPN 연결에서 가속화를 켠다" } }
+    - { id: d, text: { ko: "VPN 연결의 MTU를 점보 프레임 크기로 올린다" } }
+  answer: b
+  explanation: { ko: "여러 터널을 동시에 쓰는 ECMP는 전송 게이트웨이에 붙은 동적 라우팅 VPN에서만 된다. 가상 프라이빗 게이트웨이는 연결이 여러 개여도 터널 하나를 주 경로로 고르고, 정적 라우팅은 ECMP를 쓸 수 없다(a). 가속화는 기존 연결에서 켤 수 없고 인터넷 구간 경로를 바꿀 뿐 터널 상한을 올리지 않는다(c). VPN은 점보 프레임을 지원하지 않는다(d)." }
+  facts: [vpc.vpn.tunnel.bw.standard]
+
+- id: vpc.q.hybrid-vpn-dx-encryption
+  type: quiz
+  chapter: vpc/hybrid-vpn
+  topic: vpc/hybrid-vpn/direct-connect
+  question: { ko: "규정 때문에 사내와 VPC 사이 트래픽을 IPsec으로 암호화해야 한다. 이미 Direct Connect 전송 가상 인터페이스, Direct Connect 게이트웨이, 전송 게이트웨이를 쓰고 있다. 공인 IP를 늘리지 않고 별도 VPN 장비 없이 충족하는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "Direct Connect 회선은 기본으로 IPsec 암호화되므로 할 일이 없다" } }
+    - { id: b, text: { ko: "Direct Connect 위에 프라이빗 IP Site-to-Site VPN을 만들어 전송 게이트웨이에 붙인다" } }
+    - { id: c, text: { ko: "퍼블릭 가상 인터페이스를 새로 만들고 그 위에 공인 IP VPN을 올린다" } }
+    - { id: d, text: { ko: "VPC에 보안 그룹을 추가해 Direct Connect 트래픽을 암호화한다" } }
+  answer: b
+  explanation: { ko: "프라이빗 IP VPN은 전송 가상 인터페이스·Direct Connect 게이트웨이·전송 게이트웨이 구성 위에 사설 IP로 IPsec 터널을 올린다. 공인 IP와 별도 VPN 장비가 필요 없다. Direct Connect 회선 자체는 IPsec 터널이 아니다(a). 퍼블릭 가상 인터페이스 위 VPN은 공인 IP가 필요한 예전 방식이다(c). 보안 그룹은 트래픽을 거를 뿐 암호화하지 않는다(d)." }
+  facts: []
+
+- id: vpc.d.hybrid-vpn-factory
+  type: design
+  chapter: vpc/hybrid-vpn
+  topic: vpc/hybrid-vpn/direct-connect
+  scenario: { ko: "지방 공장의 생산 관리 시스템이 서울 리전의 VPC {{raw:3개}}(앞으로 늘어남)에 있는 서비스와 계속 통신한다. 평소에는 지연과 대역폭이 일정해야 한다. 공장 근처에는 Direct Connect 로케이션이 한 곳뿐이라 올해는 회선을 하나만 들일 수 있다. 요구는 (1) 회선이나 Direct Connect 로케이션에 장애가 나도 사람 손 없이 통신이 이어질 것, (2) 공장 쪽 라우터 하나가 고장 나도 버틸 것, (3) VPC가 늘어도 연결을 다시 설계하지 않을 것, (4) 예비 경로가 망가진 상태를 미리 알 것이다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "Direct Connect 연결에 전송 가상 인터페이스를 만들어 Direct Connect 게이트웨이 → 전송 게이트웨이로 잇고, VPC들은 전송 게이트웨이에 붙인다" } }
+    - { id: b, text: { ko: "같은 전송 게이트웨이에 BGP Site-to-Site VPN을 붙이고, 공장 대역을 Direct Connect와 VPN 양쪽에 같은 접두사로 광고한다" } }
+    - { id: c, text: { ko: "VPN은 Direct Connect 라우터와 다른 공장 쪽 장비(두 번째 고객 게이트웨이 장치)에서 끝나게 한다" } }
+    - { id: d, text: { ko: "VPN 터널마다 CloudWatch TunnelState 경보를 만들어 SNS로 알린다" } }
+    - { id: e, text: { ko: "예비 대역폭을 늘리려고 정적 라우팅 VPN 여러 개를 ECMP로 묶는다" } }
+    - { id: f, text: { ko: "VPC마다 가상 프라이빗 게이트웨이를 붙이고 각각에 가속화된 VPN을 만든다" } }
+    - { id: g, text: { ko: "설정을 단순하게 하려고 VPN 연결의 터널 하나만 구성한다" } }
+    - { id: h, text: { ko: "호스팅 연결 하나에 VPC마다 프라이빗 가상 인터페이스를 하나씩 만든다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a, b, c, d를 모두 고르면 정답이다."
+      - "a: Direct Connect 게이트웨이와 전송 게이트웨이를 쓰면 회선 하나로 여러 VPC에 닿고, VPC가 늘어도 전송 게이트웨이에 붙이기만 하면 된다. 요구 (3). 평소 경로는 일정한 Direct Connect다."
+      - "b: 같은 접두사라면 전송 게이트웨이는 Direct Connect 게이트웨이 전파 경로를 VPN보다 앞에 둔다. 회선이나 로케이션 장애로 Direct Connect 경로가 사라지면 BGP가 VPN 경로로 넘긴다. 요구 (1). BGP는 AWS가 권장하는 방식이고, 전송 게이트웨이에서는 필요하면 ECMP로 예비 대역폭도 늘릴 수 있다."
+      - "c: 두 경로가 같은 공장 라우터에서 끝나면 그 장비가 단일 장애 지점이다. 고객 게이트웨이 장치를 나누어야 요구 (2)를 지킨다."
+      - "d: 예비 VPN은 평소 트래픽이 없어 고장이 드러나지 않는다. 터널 상태 경보로 미리 알아야 요구 (4)를 지킨다."
+      - "e는 감점: ECMP는 동적 라우팅 VPN에서만 된다."
+      - "f는 감점: 가속화는 전송 게이트웨이에 붙은 VPN에서만 되고, VPC마다 가상 프라이빗 게이트웨이와 VPN을 두면 VPC가 늘 때마다 다시 만들어야 해 요구 (3)을 어긴다."
+      - "g는 감점: AWS는 유지 보수 때 터널 하나를 내리기도 한다. 두 터널을 모두 구성해야 한다."
+      - "h는 감점: 호스팅 연결 하나에는 가상 인터페이스를 {{fact:vpc.dx.vif-per-hosted}}만 만들 수 있다."
+      - "참고: 예산이 생기면 다른 로케이션에 두 번째 Direct Connect 연결을 두는 높은 복원력 모델({{fact:vpc.dx.sla.high}})로 옮길 수 있다. VPN 예비 경로는 터널 대역폭이 작으므로 장애 때 줄어든 대역폭으로 버틸 수 있는지 미리 확인한다."
+  facts: [vpc.dx.vif-per-hosted, vpc.dx.sla.high, vpc.vpn.tunnel.bw.standard]

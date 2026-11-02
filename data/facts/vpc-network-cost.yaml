@@ -1,0 +1,195 @@
+# vpc/network-cost 장 전용 사실 항목. ID 접두어 vpc.price.
+# 요금 숫자는 요금 페이지(JS로 그려짐) 대신 AWS Price List API 가격표에서 읽었다 (2026-11-03 확인).
+#   NAT 게이트웨이: AmazonEC2 오퍼 20261029175634 (usagetype APN2-NatGateway-Hours / -Bytes, us-east-1은 NatGateway-Hours / -Bytes)
+#   인터페이스 엔드포인트·전송 게이트웨이·퍼블릭 IPv4·Reachability Analyzer: AmazonVPC 오퍼 20261016224321
+#   영역 간 전송·인터넷 송신·리전 간 전송: AWSDataTransfer 오퍼 20260916132208 (같은 값이 AmazonEC2 오퍼의 DataTransfer-Regional-Bytes에도 있다)
+#   https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/<서비스>/current/region_index.json → currentVersionUrl
+# 요금 항목의 뜻(영역 간 전송은 들어가는 쪽·나가는 쪽 각각, 무료 송신 제공량, 같은 영역 피어링 무료, 게이트웨이 엔드포인트 무료)은
+#   https://aws.amazon.com/ec2/pricing/on-demand/ 와 https://aws.amazon.com/vpc/pricing/ 본문에서 확인했다.
+# 재사용: NAT 게이트웨이 할당량(vpc.quota.natgw-per-az), 엔드포인트 할당량(vpc.endpoint.*), 전송 게이트웨이 한도(vpc.tgw.*).
+
+- id: vpc.price.offer-version
+  value: "2026-10-29"
+  unit: date
+  display: { ko: "2026-10 게시 가격표 (AmazonEC2 2026-10-29, AmazonVPC 2026-10-16, AWSDataTransfer 2026-09-16 게시본, 2026-11-03 확인)" }
+  label: { ko: "이 장의 VPC 네트워크 요금 수치를 읽은 AWS Price List API 가격표 버전" }
+  source_en: https://aws.amazon.com/vpc/pricing/
+  source_ko: https://aws.amazon.com/ko/vpc/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+# ── NAT 게이트웨이 (영역 NAT 게이트웨이) ──
+- id: vpc.price.natgw-hour.apne2
+  value: 0.059
+  unit: usd/hour
+  display: { ko: "NAT 게이트웨이 시간당 0.059 USD" }
+  label: { ko: "NAT 게이트웨이 시간 요금, 서울(ap-northeast-2) (Price List API AmazonEC2: APN2-NatGateway-Hours)" }
+  source_en: https://aws.amazon.com/vpc/pricing/
+  source_ko: https://aws.amazon.com/ko/vpc/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.natgw-hour.use1
+  value: 0.045
+  unit: usd/hour
+  display: { ko: "NAT 게이트웨이 시간당 0.045 USD" }
+  label: { ko: "NAT 게이트웨이 시간 요금, 미국 동부 버지니아 북부(us-east-1) (Price List API AmazonEC2: NatGateway-Hours)" }
+  source_en: https://aws.amazon.com/vpc/pricing/
+  source_ko: https://aws.amazon.com/ko/vpc/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.natgw-gb.apne2
+  value: 0.059
+  unit: usd/GB
+  display: { ko: "처리 데이터 GB당 0.059 USD" }
+  label: { ko: "NAT 게이트웨이 데이터 처리 요금, 서울(ap-northeast-2). 들어오고 나가는 방향 모두 처리량으로 센다 (Price List API AmazonEC2: APN2-NatGateway-Bytes)" }
+  source_en: https://aws.amazon.com/vpc/pricing/
+  source_ko: https://aws.amazon.com/ko/vpc/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.natgw-gb.use1
+  value: 0.045
+  unit: usd/GB
+  display: { ko: "처리 데이터 GB당 0.045 USD" }
+  label: { ko: "NAT 게이트웨이 데이터 처리 요금, 미국 동부 버지니아 북부(us-east-1) (Price List API AmazonEC2: NatGateway-Bytes)" }
+  source_en: https://aws.amazon.com/vpc/pricing/
+  source_ko: https://aws.amazon.com/ko/vpc/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+# ── 퍼블릭 IPv4 ──
+- id: vpc.price.public-ipv4-hour
+  value: 0.005
+  unit: usd/hour
+  display: { ko: "주소 하나에 시간당 0.005 USD" }
+  label: { ko: "퍼블릭 IPv4 주소 요금. 사용 중인 주소와 유휴 주소 모두 같은 단가이고, 서울(ap-northeast-2)과 us-east-1이 같다 (Price List API AmazonVPC: APN2-PublicIPv4:InUseAddress, APN2-PublicIPv4:IdleAddress)" }
+  source_en: https://aws.amazon.com/vpc/pricing/
+  source_ko: https://aws.amazon.com/ko/vpc/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+# ── 인터페이스 엔드포인트 (PrivateLink) ──
+- id: vpc.price.interface-endpoint-hour.apne2
+  value: 0.013
+  unit: usd/hour
+  display: { ko: "엔드포인트·가용 영역 하나에 시간당 0.013 USD" }
+  label: { ko: "인터페이스 VPC 엔드포인트 시간 요금, 서울(ap-northeast-2). 엔드포인트 네트워크 인터페이스가 있는 가용 영역마다 붙는다 (Price List API AmazonVPC: APN2-VpcEndpoint-Hours)" }
+  source_en: https://aws.amazon.com/privatelink/pricing/
+  source_ko: https://aws.amazon.com/ko/privatelink/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.interface-endpoint-hour.use1
+  value: 0.01
+  unit: usd/hour
+  display: { ko: "엔드포인트·가용 영역 하나에 시간당 0.01 USD" }
+  label: { ko: "인터페이스 VPC 엔드포인트 시간 요금, 미국 동부 버지니아 북부(us-east-1) (Price List API AmazonVPC: USE1-VpcEndpoint-Hours)" }
+  source_en: https://aws.amazon.com/privatelink/pricing/
+  source_ko: https://aws.amazon.com/ko/privatelink/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.interface-endpoint-gb
+  value: 0.01
+  unit: usd/GB
+  display: { ko: "처리 데이터 GB당 0.01 USD (월 첫 1 PB 구간)" }
+  label: { ko: "인터페이스 VPC 엔드포인트 데이터 처리 요금의 첫 구간(월 1 PB까지). 서울(ap-northeast-2)과 us-east-1이 같다. 1 PB를 넘으면 단가가 낮아진다 (Price List API AmazonVPC: APN2-VpcEndpoint-Bytes)" }
+  source_en: https://aws.amazon.com/privatelink/pricing/
+  source_ko: https://aws.amazon.com/ko/privatelink/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+# ── 전송 게이트웨이 ──
+- id: vpc.price.tgw-attachment-hour.apne2
+  value: 0.07
+  unit: usd/hour
+  display: { ko: "연결 하나에 시간당 0.07 USD" }
+  label: { ko: "전송 게이트웨이 연결(VPC·VPN·Direct Connect·피어링 연결) 시간 요금, 서울(ap-northeast-2) (Price List API AmazonVPC: APN2-TransitGateway-Hours)" }
+  source_en: https://aws.amazon.com/transit-gateway/pricing/
+  source_ko: https://aws.amazon.com/ko/transit-gateway/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.tgw-attachment-hour.use1
+  value: 0.05
+  unit: usd/hour
+  display: { ko: "연결 하나에 시간당 0.05 USD" }
+  label: { ko: "전송 게이트웨이 연결 시간 요금, 미국 동부 버지니아 북부(us-east-1) (Price List API AmazonVPC: USE1-TransitGateway-Hours)" }
+  source_en: https://aws.amazon.com/transit-gateway/pricing/
+  source_ko: https://aws.amazon.com/ko/transit-gateway/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.tgw-gb
+  value: 0.02
+  unit: usd/GB
+  display: { ko: "처리 데이터 GB당 0.02 USD" }
+  label: { ko: "전송 게이트웨이 데이터 처리 요금(VPC·VPN·Direct Connect 연결). 서울(ap-northeast-2)과 us-east-1이 같다 (Price List API AmazonVPC: APN2-TransitGateway-Bytes)" }
+  source_en: https://aws.amazon.com/transit-gateway/pricing/
+  source_ko: https://aws.amazon.com/ko/transit-gateway/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+# ── 데이터 전송 ──
+- id: vpc.price.inter-az-gb
+  value: 0.01
+  unit: usd/GB
+  display: { ko: "GB당 0.01 USD (보내는 쪽과 받는 쪽에 각각)" }
+  label: { ko: "같은 리전 안 가용 영역 사이 데이터 전송 요금(EC2·RDS·네트워크 인터페이스 등, 영역을 넘는 VPC 피어링 포함). 들어가는 쪽과 나가는 쪽에 각각 붙는다. 서울(ap-northeast-2)과 us-east-1이 같다 (Price List API AWSDataTransfer: APN2-DataTransfer-Regional-Bytes, AmazonVPC: APN2-VpcPeering-In/Out-Bytes)" }
+  source_en: https://aws.amazon.com/ec2/pricing/on-demand/
+  source_ko: https://aws.amazon.com/ko/ec2/pricing/on-demand/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.internet-out-gb.apne2
+  value: 0.126
+  unit: usd/GB
+  display: { ko: "GB당 0.126 USD (월 첫 10 TB 구간)" }
+  label: { ko: "인터넷으로 나가는 데이터 전송 요금의 첫 구간(무료 제공량을 넘은 뒤 월 10 TB까지), 서울(ap-northeast-2). 양이 많아지면 단가가 낮아진다 (Price List API AWSDataTransfer: APN2-DataTransfer-Out-Bytes)" }
+  source_en: https://aws.amazon.com/ec2/pricing/on-demand/
+  source_ko: https://aws.amazon.com/ko/ec2/pricing/on-demand/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.internet-out-gb.use1
+  value: 0.09
+  unit: usd/GB
+  display: { ko: "GB당 0.09 USD (월 첫 10 TB 구간)" }
+  label: { ko: "인터넷으로 나가는 데이터 전송 요금의 첫 구간, 미국 동부 버지니아 북부(us-east-1) (Price List API AWSDataTransfer: DataTransfer-Out-Bytes)" }
+  source_en: https://aws.amazon.com/ec2/pricing/on-demand/
+  source_ko: https://aws.amazon.com/ko/ec2/pricing/on-demand/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.internet-out.free
+  value: 100
+  unit: GB/month
+  display: { ko: "월 100 GB" }
+  label: { ko: "인터넷 송신 무료 제공량. 모든 AWS 서비스와 리전(중국·GovCloud 제외)을 합쳐 계정에 한 번 적용된다" }
+  source_en: https://aws.amazon.com/ec2/pricing/on-demand/
+  source_ko: https://aws.amazon.com/ko/ec2/pricing/on-demand/
+  checked: 2026-11-03
+  volatile: true
+
+- id: vpc.price.inter-region-gb.apne2
+  value: 0.08
+  unit: usd/GB
+  display: { ko: "GB당 0.08 USD" }
+  label: { ko: "서울(ap-northeast-2)에서 다른 리전(예: us-east-1)으로 나가는 데이터 전송 요금 (Price List API AWSDataTransfer: APN2-USE1-AWS-Out-Bytes)" }
+  source_en: https://aws.amazon.com/ec2/pricing/on-demand/
+  source_ko: https://aws.amazon.com/ko/ec2/pricing/on-demand/
+  checked: 2026-11-03
+  volatile: true
+
+# ── 기타 ──
+- id: vpc.price.reachability-analysis
+  value: 0.1
+  unit: usd/analysis
+  display: { ko: "분석 한 번에 0.10 USD" }
+  label: { ko: "Reachability Analyzer 경로 분석 요금. 서울(ap-northeast-2)과 us-east-1이 같다 (Price List API AmazonVPC: APN2-Analysis-Runs)" }
+  source_en: https://aws.amazon.com/vpc/pricing/
+  source_ko: https://aws.amazon.com/ko/vpc/pricing/
+  checked: 2026-11-03
+  volatile: true

@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.labs-cleanup-order
+  type: quiz
+  chapter: vpc/labs
+  topic: vpc/labs/cleanup
+  question: { ko: "실습 정리 중 release-address로 NAT 게이트웨이의 탄력적 IP를 먼저 해제하려 했더니 실패했다. 옳은 순서는?" }
+  choices:
+    - { id: a, text: { ko: "VPC를 먼저 지우면 NAT 게이트웨이와 탄력적 IP가 함께 정리된다" } }
+    - { id: b, text: { ko: "delete-nat-gateway 후 상태가 deleted가 될 때까지 기다린 뒤 release-address를 실행한다" } }
+    - { id: c, text: { ko: "인터넷 게이트웨이를 먼저 분리하면 탄력적 IP가 풀린다" } }
+    - { id: d, text: { ko: "탄력적 IP는 요금이 없으므로 그대로 두어도 된다" } }
+  answer: b
+  explanation: { ko: "탄력적 IP는 NAT 게이트웨이에 붙어 있는 동안 해제되지 않는다. NAT 게이트웨이를 지우고 삭제가 끝난 뒤 해제한다(b). NAT 게이트웨이가 남아 있으면 VPC를 지울 수 없다(a). 인터넷 게이트웨이를 분리해도 주소 연결은 그대로다(c). 해제하지 않은 탄력적 IP는 유휴 퍼블릭 IPv4로 {{fact:vpc.price.public-ipv4-hour}}가 계속 붙는다(d)." }
+  facts: [vpc.price.public-ipv4-hour]
+
+- id: vpc.q.labs-endpoint-route
+  type: quiz
+  chapter: vpc/labs
+  topic: vpc/labs/endpoint-flowlogs
+  question: { ko: "프라이빗 라우팅 테이블에 0.0.0.0/0 → NAT 게이트웨이 경로가 있다. 여기에 S3 게이트웨이 엔드포인트를 연결했다. 프라이빗 서브넷의 인스턴스가 같은 리전 S3에 요청하면 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "기본 경로가 먼저 있었으므로 계속 NAT 게이트웨이를 지난다" } }
+    - { id: b, text: { ko: "S3 접두사 목록 경로가 더 구체적이므로 게이트웨이 엔드포인트로 가고, NAT 처리 요금이 붙지 않는다" } }
+    - { id: c, text: { ko: "두 경로로 번갈아 나뉘어 간다" } }
+    - { id: d, text: { ko: "인스턴스 코드에서 엔드포인트 DNS 이름으로 바꾸기 전에는 효과가 없다" } }
+  answer: b
+  explanation: { ko: "엔드포인트를 만들 때 지정한 라우팅 테이블에 S3 접두사 목록(pl-...) → vpce-... 경로가 자동으로 들어간다. 라우팅은 가장 구체적인 경로를 고르므로 S3 트래픽은 엔드포인트로 간다(b). 경로를 만든 순서는 관계없다(a). 로드를 나누는 동작은 없다(c). 게이트웨이 엔드포인트는 라우팅으로 동작하므로 코드나 DNS 이름을 바꿀 필요가 없다(d). NAT 처리 요금은 {{fact:vpc.price.natgw-gb.apne2}}(서울)다." }
+  facts: [vpc.price.natgw-gb.apne2]
+
+- id: vpc.q.labs-reachability
+  type: quiz
+  chapter: vpc/labs
+  topic: vpc/labs/endpoint-flowlogs
+  question: { ko: "Reachability Analyzer로 인터넷 게이트웨이에서 프라이빗 서브넷 시험 인스턴스의 80번 포트까지 경로를 분석했더니 NetworkPathFound가 false였다. 이 결과를 옳게 읽은 것은?" }
+  choices:
+    - { id: a, text: { ko: "분석기가 실제 패킷을 보냈는데 응답이 없었다" } }
+    - { id: b, text: { ko: "구성(라우팅, 보안 그룹 등)만 보고 따져 본 결과 인터넷에서 그 인스턴스에 닿는 경로가 없다. 프라이빗 서브넷 설계가 의도대로 동작한다" } }
+    - { id: c, text: { ko: "NAT 게이트웨이가 고장 나서 인스턴스가 인터넷에 나가지 못한다" } }
+    - { id: d, text: { ko: "흐름 로그를 켜야만 분석 결과가 나온다" } }
+  answer: b
+  explanation: { ko: "Reachability Analyzer는 패킷을 보내지 않는 정적 구성 분석 도구다(a는 틀림). 두 리소스 사이의 경로를 구성으로 따져 막히는 지점을 알려 준다. 프라이빗 서브넷의 인스턴스는 퍼블릭 IP와 인터넷 게이트웨이 경로가 없으므로 들어오는 경로가 없는 것이 맞다(b). 이 분석은 들어오는 방향이고 NAT를 통한 나가는 방향과는 관계없다(c). 흐름 로그와는 별개로 동작한다(d). 분석마다 {{fact:vpc.price.reachability-analysis}}가 붙는다." }
+  facts: [vpc.price.reachability-analysis]

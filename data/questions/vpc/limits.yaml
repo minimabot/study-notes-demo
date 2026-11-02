@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: vpc.q.limits-igw-region
+  type: quiz
+  chapter: vpc/limits
+  topic: vpc/limits/gateways-connections
+  question: { ko: "한 리전에 VPC를 더 만들고 각 VPC에 인터넷 게이트웨이를 붙이려 한다. 리전당 인터넷 게이트웨이 할당량에 걸렸다. 알맞은 대응은?" }
+  choices:
+    - { id: a, text: { ko: "리전당 VPC 할당량 상향을 요청한다. 리전당 인터넷 게이트웨이 할당량도 같은 만큼 늘어난다" } }
+    - { id: b, text: { ko: "VPC 하나에 인터넷 게이트웨이를 두 개 붙여 다른 VPC와 나눠 쓴다" } }
+    - { id: c, text: { ko: "인터넷 게이트웨이 할당량은 조정할 수 없으므로 리전을 나눈다" } }
+    - { id: d, text: { ko: "NAT 게이트웨이 할당량을 늘리면 인터넷 게이트웨이가 필요 없어진다" } }
+  answer: a
+  explanation: { ko: "리전당 인터넷 게이트웨이 수({{fact:vpc.quota.igw-per-region}})는 리전당 VPC 할당량을 늘리면 같은 만큼 함께 늘어난다. VPC 하나에는 인터넷 게이트웨이를 {{fact:vpc.quota.igw-per-vpc}}만 붙일 수 있고, 인터넷 게이트웨이를 여러 VPC가 나눠 쓸 수도 없다(b). 조정이 가능하므로 c는 틀리다. 퍼블릭 NAT 게이트웨이도 인터넷으로 나가려면 인터넷 게이트웨이가 필요하다(d)." }
+  facts: [vpc.quota.igw-per-region, vpc.quota.igw-per-vpc]
+
+- id: vpc.q.limits-sg-product
+  type: quiz
+  chapter: vpc/limits
+  topic: vpc/limits/filters-routes
+  question: { ko: "보안 그룹당 인바운드 규칙 할당량을 {{raw:200개}}로 올렸다. 이 계정에서 네트워크 인터페이스 하나에 붙일 수 있는 보안 그룹 수는 최대 몇 개가 되는가?" }
+  choices:
+    - { id: a, text: { ko: "{{raw:16개}}. 인터페이스당 보안 그룹 수는 규칙 수와 무관하다" } }
+    - { id: b, text: { ko: "{{raw:5개}}. 두 할당량의 곱이 상한을 넘을 수 없다" } }
+    - { id: c, text: { ko: "{{raw:1개}}. 규칙 수를 올리면 보안 그룹은 하나만 붙는다" } }
+    - { id: d, text: { ko: "제한 없음. 규칙 수만 늘어난다" } }
+  answer: b
+  explanation: { ko: "'보안 그룹당 규칙 수 × 인터페이스당 보안 그룹 수'는 {{fact:vpc.quota.sg-rules-x-eni}}을 넘을 수 없다. 규칙 {{raw:200개}}이면 인터페이스당 보안 그룹은 {{raw:5개}}까지다. 두 할당량은 서로 묶여 있으므로 a, d는 틀리고, 곱을 넘지 않는 한 여러 그룹을 붙일 수 있으므로 c도 틀리다." }
+  facts: [vpc.quota.sg-rules-x-eni, vpc.quota.sg-rules, vpc.quota.sg-per-eni]
+
+- id: vpc.q.limits-propagated
+  type: quiz
+  chapter: vpc/limits
+  topic: vpc/limits/filters-routes
+  question: { ko: "가상 프라이빗 게이트웨이로 온프레미스 경로를 전파받는 서브넷 라우팅 테이블에서 일부 접두사가 빠져 있다. 온프레미스가 광고하는 접두사가 매우 많다. 알맞은 대응은?" }
+  choices:
+    - { id: a, text: { ko: "Service Quotas에서 라우팅 테이블당 전파 경로 할당량 상향을 요청한다" } }
+    - { id: b, text: { ko: "전파 경로 수는 조정할 수 없다. 온프레미스에서 경로를 요약하거나 기본 경로를 광고한다" } }
+    - { id: c, text: { ko: "라우팅 테이블을 하나 더 만들어 같은 서브넷에 두 개를 연결한다" } }
+    - { id: d, text: { ko: "네트워크 ACL 규칙 수를 늘린다" } }
+  answer: b
+  explanation: { ko: "라우팅 테이블당 전파 경로 수({{fact:vpc.quota.propagated-routes}})는 조정할 수 없다(a는 틀림). 문서는 더 많은 접두사가 필요하면 기본 경로를 광고하라고 안내한다. 서브넷 하나에는 라우팅 테이블을 하나만 연결할 수 있다(c). 네트워크 ACL은 경로 수와 관계없다(d)." }
+  facts: [vpc.quota.propagated-routes]

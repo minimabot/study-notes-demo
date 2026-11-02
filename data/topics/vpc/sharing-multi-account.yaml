@@ -1,0 +1,47 @@
+# 장: VPC 공유와 다중 계정 네트워크
+chapter:
+  id: vpc/sharing-multi-account
+  title:
+    ko: VPC 공유와 다중 계정 네트워크
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html
+  topics:
+    - id: vpc/sharing-multi-account/basics
+      title:
+        ko: VPC 공유의 개념과 준비 조건
+      exam_tags:
+        - SAP-C03#2.3
+        - SAP-C03#1.4
+        - SOA-C03#3.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-share-prerequisites.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html
+    - id: vpc/sharing-multi-account/responsibilities
+      title:
+        ko: 소유자와 참여자의 책임·권한·요금
+      exam_tags:
+        - SAP-C03#2.3
+        - SOA-C03#3.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-share-limitations.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-share-billing.html
+    - id: vpc/sharing-multi-account/az-sg-unshare
+      title:
+        ko: 가용 영역 ID, 보안 그룹 공유, 공유 해제
+      exam_tags:
+        - SAP-C03#2.3
+        - SOA-C03#3.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing-share-subnet-working-with.html
+        - https://docs.aws.amazon.com/vpc/latest/userguide/security-group-sharing.html
+    - id: vpc/sharing-multi-account/patterns
+      title:
+        ko: 다중 계정 네트워크 방식 (공유 VPC와 전송 게이트웨이 허브)
+      exam_tags:
+        - SAP-C03#1.4
+        - SAP-C03#2.3
+        - SAA-C03#1.1
+      sources:
+        - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html
+        - https://docs.aws.amazon.com/vpc/latest/tgw/tgw-transit-gateways.html
