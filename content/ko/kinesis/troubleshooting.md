@@ -26,7 +26,7 @@ chapter: kinesis/troubleshooting
 
 1. **스트림 용량이 모자란다.** 샤드 하나의 쓰기 한도는 {{fact:kinesis.shard.write}}다. 최고 처리량을 레코드 크기와 초당 레코드 수로 재고 샤드 수와 견준다({{ch:kinesis/capacity-modes}}). 온디맨드 모드도 이전 최고치를 크게 넘는 급증에서는 스로틀될 수 있다.
 2. **핫 샤드.** 파티션 키 하나가 한 샤드의 한도에 부딪히고 나머지는 한가한 경우다. 샤드 수준 `IncomingBytes`·`WriteProvisionedThroughputExceeded`로 그 샤드를 찾는다. 파티션 키를 다시 설계하거나({{ch:kinesis/producers}}), 그 샤드를 나눈다({{ch:kinesis/resharding}}).
-3. **관리 API 한도.** 샤드 한도 말고 스트림 단위 API 한도도 있다. `CreateStream`, `DeleteStream`, `ListStreams`, `GetShardIterator`, `MergeShards`는 {{fact:kinesis.api.control-plane.tps}}, `DescribeStream`은 {{fact:kinesis.api.describestream.tps}}, `DescribeStreamSummary`는 {{fact:kinesis.api.describestreamsummary.tps}}다. 쓰기 경로에서 레코드마다 이런 API를 부르면 데이터 양과 상관없이 막힌다. 결과를 캐시하고 쓰기 경로에서 뺀다.
+3. **관리 API 한도.** 샤드 한도와 별도로 관리 API마다 호출 한도가 있다. 범위는 API에 따라 계정·리전별이거나 스트림별이다. 예를 들어 `DescribeStream`과 `DescribeStreamSummary`는 계정·리전별이고 `MergeShards`는 스트림별이다. `CreateStream`, `DeleteStream`, `ListStreams`, `GetShardIterator`, `MergeShards`는 {{fact:kinesis.api.control-plane.tps}}, `DescribeStream`은 {{fact:kinesis.api.describestream.tps}}, `DescribeStreamSummary`는 {{fact:kinesis.api.describestreamsummary.tps}}다. 쓰기 경로에서 레코드마다 이런 API를 부르면 데이터 양과 상관없이 막힌다. 결과를 캐시하고 쓰기 경로에서 뺀다.
 
 크기 계산에서 하나 더 볼 점이 있다. `PutRecord`는 레코드마다 KB 단위로 올림해 계산하지만, `PutRecords`는 요청 안 레코드 크기의 합으로 계산한다. 그래서 작은 레코드를 하나씩 보내면 같은 데이터라도 한도에 더 빨리 닿는다. KPL을 쓰는데 느리다면 `flushSync()`를 쓰기마다 부르고 있지 않은지 본다. 종료할 때 쓰는 기능이고, 쓰기마다 부르면 {{fact:kinesis.kpl.flushsync.delay}} 정도의 지연이 붙는다.
 

@@ -4,10 +4,10 @@ chapter: dynamodb/backup-restore
 
 @topic dynamodb/backup-restore/pitr
 
-**특정 시점으로 복구(Point-in-time recovery, PITR)** 는 테이블을 연속으로 백업해 두는 기능이다. 켜 두기만 하면 일정을 짜거나 백업을 지울 필요가 없다. 테스트 스크립트가 운영 테이블에 잘못 쓴 경우처럼, 실수로 쓰거나 지운 데이터를 되돌리는 데 쓴다.
+**특정 시점으로 복구(Point-in-time recovery, PITR)** 는 테이블을 연속으로 백업해 두는 기능이다. 켜 두기만 하면 일정을 짜거나 백업을 지울 필요가 없다. 배포한 코드의 버그가 여러 항목의 값을 잘못 덮어썼거나, 운영자가 엉뚱한 항목을 지웠을 때 그 직전 상태로 되돌리는 데 쓴다.
 
-- **복원 범위.** 최대 {{fact:dynamodb.pitr.window.max}} 안의 아무 초로 되돌린다. 복원할 수 있는 가장 늦은 시점(`LatestRestorableDateTime`)은 보통 현재보다 {{fact:dynamodb.pitr.latest-restorable-lag}} 전이다.
-- **복구 기간(Recovery period).** `RecoveryPeriodInDays`로 {{fact:dynamodb.pitr.window.min}}~{{fact:dynamodb.pitr.window.max}} 사이에서 줄일 수 있다(2025년에 추가된 설정). 기간을 줄여도 요금은 같다. 요금은 테이블과 LSI 크기로 매긴다.
+- **복원 범위.** 테이블에 표시되는 가장 이른 시점(`EarliestRestorableDateTime`)과 가장 늦은 시점(`LatestRestorableDateTime`) 사이의 아무 초로 되돌린다. 앞쪽 끝은 최대 {{fact:dynamodb.pitr.window.max}} 전까지이고, PITR을 켠 지 얼마 안 됐으면 그보다 짧다. 뒤쪽 끝은 보통 현재보다 {{fact:dynamodb.pitr.latest-restorable-lag}} 전이다.
+- **요금.** 테이블과 LSI 크기로 매긴다.
 - **성능 영향 없음.** PITR은 테이블 성능이나 API 지연에 영향을 주지 않는다.
 - **끄면 처음부터.** PITR을 껐다가 다시 켜면 복원 가능한 시작 시점이 새로 시작된다. 이전 기록으로는 돌아갈 수 없다.
 - **삭제된 테이블.** PITR이 켜진 테이블을 지우면 DynamoDB가 삭제 직전 상태의 **시스템 백업**(`<테이블 이름>$DeletedTableBackup`)을 만들어 {{fact:dynamodb.pitr.deleted-system-backup.retention}} 동안 추가 요금 없이 보관한다. 이 백업으로는 삭제 직전 한 시점으로만 되돌린다.
@@ -62,7 +62,7 @@ PITR이든 온디맨드 백업이든 **복원은 언제나 새 테이블로** �
 
 **S3로 내보내기(Export to S3).** PITR 기간 안의 시점을 골라 테이블 데이터를 S3 버킷에 쓴다. PITR이 켜져 있어야 한다.
 
-- 전체 내보내기와 증분 내보내기(그 기간에 바뀐 항목만)가 있다. 필터로 일부만 내보낼 수도 있다.
+- 전체 내보내기와 증분 내보내기(그 기간에 바뀐 항목만)가 있다.
 - 비동기로 동작하고 읽기 용량을 쓰지 않으며 테이블 성능에 영향이 없다.
 - 형식은 DynamoDB JSON과 Amazon Ion이다. Athena, AWS Glue, Amazon EMR 같은 분석 서비스에서 바로 쓴다.
 - 완료 시간에 SLA가 없다. AWS는 정해진 시간 안에 끝난다고 가정하는 흐름을 만들지 말라고 권장한다.
@@ -74,7 +74,19 @@ PITR이든 온디맨드 백업이든 **복원은 언제나 새 테이블로** �
 - 다른 계정의 버킷이나 다른 리전에서도 가져올 수 있다.
 - 키가 겹치는 항목은 마지막 것만 남는다.
 
-내보내기를 다른 리전 버킷에 두면 리전 장애 때 다른 리전에서 가져와 테이블을 다시 만드는 복구 경로가 된다.
+내보내기를 다른 리전 버킷에 두면 리전 장애 때 다른 리전에서 가져와 테이블을 다시 만드는 복구 경로가 된다. 테이블의 일부만 골라 내보내는 방법은 다음 절에서 본다.
+
+@topic dynamodb/backup-restore/recent-features
+
+아래 두 기능은 문서 기록상 2025년 이후에 추가되었다. 시험 범위에 들어가는지는 확인되지 않았으므로 시험 태그를 달지 않았다.
+
+**PITR 복구 기간 설정(문서 기록상 2025년).** 테이블마다 `RecoveryPeriodInDays`로 PITR을 얼마나 거슬러 올라갈지 {{fact:dynamodb.pitr.window.min}}~{{fact:dynamodb.pitr.window.max}} 사이에서 고른다.
+
+- 기간을 줄이면 가장 이른 복원 시점이 바로 당겨진다. 새 기간 밖으로 밀려난 시점으로는 더 이상 돌아갈 수 없다.
+- 기간을 늘리면 가장 이른 복원 시점이 바로 뒤로 가지 않는다. 그때부터 백업이 쌓여 새 기간을 채울 때까지 기다려야 한다.
+- 기간을 짧게 잡아도 PITR 요금은 줄지 않는다. 요금은 기간이 아니라 테이블과 LSI 크기로 정해진다.
+
+**필터 내보내기(Filtered export, 문서 기록상 2026년).** S3로 내보낼 때 테이블 전체 대신 일부만 고른다. 키 조건·필터·프로젝션 식을 내보내기 요청에 넣고, 전체 내보내기와 증분 내보내기 모두에 쓸 수 있다. 필터를 쓴다고 따로 요금이 붙지는 않는다.
 
 @topic dynamodb/backup-restore/dr-strategy
 

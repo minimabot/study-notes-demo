@@ -3,14 +3,14 @@
   type: quiz
   chapter: kinesis/capacity-modes
   topic: kinesis/capacity-modes/provisioned
-  question: { ko: "프로비저닝 모드 스트림에 평균 {{raw:3.2 KB}} 레코드를 초당 {{raw:600건}} 쓴다. GetRecords를 쓰는 공유 처리량 소비자 애플리케이션 {{raw:3개}}가 모든 데이터를 읽는다. 키 분포가 고르다면 필요한 샤드 수는?" }
+  question: { ko: "프로비저닝 모드 스트림에 평균 {{raw:3.2 KB}} 레코드를 초당 {{raw:600건}} 쓴다. GetRecords를 쓰는 공유 처리량 소비자 애플리케이션 {{raw:3개}}가 모든 데이터를 읽는다. 키 분포가 고르다고 보고, 개발자 안내서의 샤드 수 계산식(레코드 크기를 KB 단위로 올림, 읽기 대역폭 = 쓰기 대역폭 × 소비자 수)을 적용하면 필요한 샤드 수는?" }
   choices:
     - { id: a, text: { ko: "{{raw:2개}}" } }
     - { id: b, text: { ko: "{{raw:3개}}" } }
     - { id: c, text: { ko: "{{raw:4개}}" } }
     - { id: d, text: { ko: "{{raw:8개}}" } }
   answer: c
-  explanation: { ko: "레코드 크기를 올림해 {{raw:4 KB}}로 본다. 쓰기는 {{raw:4 KB}} × {{raw:600건}} = {{raw:2,400 KB/s}}이고, 샤드 쓰기 용량({{fact:kinesis.shard.write}})으로 나누면 올림해 {{raw:3개}}가 필요하다. 레코드 수({{fact:kinesis.shard.write-records}} 기준)로는 {{raw:1개}}면 된다. 읽기는 공유 소비자 셋이 함께 쓰므로 {{raw:2,400 KB/s}} × 소비자 셋 = {{raw:7,200 KB/s}}이고, 샤드 공유 읽기 용량({{fact:kinesis.shard.read}})으로 나누면 올림해 {{raw:4개}}다. 가장 큰 값인 {{raw:4개}}가 답이다. b는 읽기를 빠뜨렸고, a는 레코드 크기를 올림하지 않고 쓰기만 본 값에 가깝다. d는 소비자마다 샤드를 따로 잡은 값이다." }
+  explanation: { ko: "레코드 크기를 올림해 {{raw:4 KB}}로 본다. 쓰기는 {{raw:4 KB}} × {{raw:600건}} = {{raw:2,400 KB/s}}이고, 샤드 쓰기 용량({{fact:kinesis.shard.write}})으로 나누면 올림해 {{raw:3개}}가 필요하다. 레코드 수({{fact:kinesis.shard.write-records}} 기준)로는 {{raw:1개}}면 된다. 읽기는 공유 소비자 셋이 함께 쓰므로 {{raw:2,400 KB/s}} × 소비자 셋 = {{raw:7,200 KB/s}}이고, 샤드 공유 읽기 용량({{fact:kinesis.shard.read}})으로 나누면 올림해 {{raw:4개}}다. 가장 큰 값인 {{raw:4개}}가 답이다. b는 읽기를 빠뜨렸고, a는 레코드 크기를 올림하지 않고 쓰기만 본 값에 가깝다. d는 소비자마다 샤드를 따로 잡은 값이다. 이 계산식은 여유를 두는 계획용이다. PutRecords로 묶어 보내면 스로틀 판정은 요청 안 레코드 크기의 합으로 하므로 실제로는 더 적은 샤드로 버틸 수도 있다({{ch:kinesis/troubleshooting}})." }
   facts: [kinesis.shard.write, kinesis.shard.write-records, kinesis.shard.read]
 
 - id: kinesis.q.capacity-modes-ondemand-peak

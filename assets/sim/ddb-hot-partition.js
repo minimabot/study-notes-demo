@@ -1,6 +1,6 @@
 // 실험: 파티션 키 전략에 따라 파티션마다 부하가 어떻게 쌓이는지 본다.
 // 파티션 하나의 한도(읽기·쓰기)는 사실 항목(F)에서 받는다.
-// 단순화: 키 값 하나는 한 파티션에만 놓인다고 본다. 실제로는 적응형 용량이 파티션을 다시 나눌 수 있다.
+// 단순화: 키 값 하나는 한 파티션에만 놓인다고 본다(단일 항목, LSI가 있는 테이블 등). 실제로는 LSI가 없으면 항목 컬렉션이 여러 파티션으로 나뉠 수 있다.
 window.SIMS = window.SIMS || {};
 window.SIMS['ddb-hot-partition'] = function (root, F) {
   const RMAX = F['dynamodb.partition.read.max'].value;
@@ -26,7 +26,7 @@ window.SIMS['ddb-hot-partition'] = function (root, F) {
     </div>
     <div class="stats" data-out></div>
     <div class="hp-bars" data-bars></div>
-    <p class="note">파티션 수(${P}), 사용자 수, 상태 비율은 화면 실험용 값이며 AWS 수치가 아닙니다. 실제 파티션 수는 DynamoDB가 정하고 보여 주지 않습니다. 이 실험은 키 값 하나가 한 파티션에 있다고 단순화했습니다.</p>`;
+    <p class="note">파티션 수(${P}), 사용자 수, 상태 비율은 화면 실험용 값이며 AWS 수치가 아닙니다. 실제 파티션 수는 DynamoDB가 정하고 보여 주지 않습니다. 이 실험은 키 값 하나가 한 파티션에 있다고 단순화했습니다(단일 항목, LSI가 있는 테이블 등). LSI가 없으면 실제로는 같은 키의 항목들이 정렬 키로 나뉠 수도 있습니다.</p>`;
   const st = document.createElement('style');
   st.textContent = `.hp-ctrls{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hp-ctrls select,.hp-ctrls input{width:100%;box-sizing:border-box}
   .hp-bars{margin-top:10px}.hp-row{display:grid;grid-template-columns:2.6em 1fr 5.5em;gap:6px;align-items:center;font-size:12px;margin:3px 0}
@@ -64,7 +64,7 @@ window.SIMS['ddb-hot-partition'] = function (root, F) {
       const ks = names[i];
       const label = kind === 'user' ? (ks.length ? `사용자 ${ks.length.toLocaleString()}명` : '') : ks.join(', ');
       return `<div class="hp-row"><span>P${i + 1}</span><div class="hp-track"><i class="${v > lim ? 'over' : ''}" style="width:${(v / scale) * 100}%"></i><s style="left:${(lim / scale) * 100}%"></s></div><b>${n(v)}</b>${label ? `<div class="hp-keys">${label}</div>` : ''}</div>`;
-    }).join('') + (maxKey > lim ? `<p class="note" style="color:var(--warn)">키 값 하나의 부하가 파티션 한도를 넘습니다. 적응형 용량으로도 받을 수 없으니 키를 다시 설계하거나 접미사를 늘려야 합니다.</p>` : '');
+    }).join('') + (maxKey > lim ? `<p class="note" style="color:var(--warn)">키 값 하나의 부하가 파티션 한도를 넘습니다. 이 실험은 키 값 하나가 파티션 하나에 놓인다고 단순화했습니다(단일 항목, LSI가 있는 테이블 등). 실제로는 정렬 키로 나뉠 수도 있지만 그것을 기대하지 말고 키를 다시 설계하거나 접미사를 늘리세요.</p>` : '');
   };
   root.querySelectorAll('input,select').forEach((i) => { i.addEventListener('input', f); i.addEventListener('change', f); });
   f();

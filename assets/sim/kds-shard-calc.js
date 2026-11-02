@@ -12,7 +12,7 @@ window.SIMS['kds-shard-calc'] = function (root, F) {
   const START = { kb: 3.2, r: 600, c: 3 }; // 입력칸 시작값(예시). AWS 수치 아님
   root.innerHTML = `
     <div class="lab-h"><div class="t">계산기: 프로비저닝 샤드 수</div><div class="badge">INTERACTIVE</div></div>
-    <p class="hint">레코드 크기를 KB 단위로 <b>올림</b>한 뒤, 쓰기(데이터 양·레코드 수)와 읽기 중 가장 많은 샤드가 필요한 쪽을 고릅니다.</p>
+    <p class="hint">개발자 안내서의 계획용 계산식을 따릅니다. 레코드 크기를 KB 단위로 <b>올림</b>하고, 읽기 = 쓰기 × 소비자 수로 봅니다. 쓰기(데이터 양·레코드 수)와 읽기 중 가장 많은 샤드가 필요한 쪽을 고릅니다. PutRecords로 묶어 보내면 스로틀은 요청 합계로 판정하므로 실제 필요 샤드는 이보다 적을 수 있습니다.</p>
     <div class="ctrls" style="flex-wrap:wrap">
       <label class="f">평균 레코드 크기(KB) <input type="number" min="0.001" step="0.1" value="${START.kb}" data-kb style="max-width:100%"></label>
       <label class="f">초당 쓰는 레코드 수 <input type="number" min="0" step="1" value="${START.r}" data-r style="max-width:100%"></label>

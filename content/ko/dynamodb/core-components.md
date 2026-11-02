@@ -34,7 +34,7 @@ DynamoDB에서 다루는 기본 단위는 셋이다.
 - **파티션 키**는 DynamoDB가 내부 해시 함수에 넣어 항목을 저장할 파티션을 정하는 값이다. 그래서 해시 속성(hash attribute)이라고도 부른다.
 - **정렬 키**는 같은 파티션 키를 가진 항목들을 정렬해 두는 값이다. 범위 속성(range attribute)이라고도 부른다.
 
-복합 키가 쓸모 있는 이유는 **범위 조회** 때문이다. 파티션 키 `CustomerId`, 정렬 키 `OrderDate`로 두면 "이 고객의 지난달 주문"을 `Query` 한 번으로 가져온다. 단순 키로는 항목을 하나씩 찾을 수밖에 없다.
+복합 키가 쓸모 있는 이유는 **범위 조회** 때문이다. 파티션 키 `CustomerId`, 정렬 키 `OrderDate`로 두면 "이 고객의 지난달 주문"을 키 조건 하나로 `Query`해 가져온다. 한 번의 응답에는 크기 상한({{fact:dynamodb.query.page.max}})이 있고 `Limit`으로 개수를 줄일 수도 있다. 응답에 `LastEvaluatedKey`가 있으면 그 값을 다음 요청의 `ExclusiveStartKey`로 넘겨 이어 받고, 키가 없어질 때까지 반복한다. 단순 키로는 항목을 하나씩 찾을 수밖에 없다.
 
 키 값의 길이에도 한도가 있다. 문자열·이진 형식일 때 파티션 키는 {{fact:dynamodb.key.partition.max-length}}, 정렬 키는 {{fact:dynamodb.key.sort.max-length}}까지다.
 

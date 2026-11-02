@@ -61,7 +61,7 @@ window.SIMS['fifo-hol'] = function (root, F) {
     q('[data-dlqbox]').innerHTML = dlq.map((m) => `<span class="fh-chip poison">${m.id}<i>수신 ${m.rc}</i></span>`).join('') || '<span class="muted">비어 있음</span>';
     const a = L[0];
     let note = `단계 ${steps}. `;
-    if (a.q[0] && a.q[0].poison) note += q('[data-dlq]').checked ? `A1이 ${MAX_RECEIVE}번 수신되면 DLQ로 옮겨지고 A2부터 흐른다.` : 'DLQ가 없으면 A1이 영원히 다시 보이고 A2 이후는 계속 기다린다. B, C 그룹은 영향이 없다.';
+    if (a.q[0] && a.q[0].poison) note += q('[data-dlq]').checked ? `A1이 ${MAX_RECEIVE}번 수신되면 DLQ로 옮겨지고 A2부터 흐른다.` : `DLQ가 없다. 이 실험은 소비자가 계속 받기만 하고 A1을 지우지 않는다고 본다. 그러면 A1은 보존 기간(기본 ${F['sqs.retention.default'].display}, 최대 ${F['sqs.retention.max'].display}) 안에서 되풀이해 수신될 수 있고, 그동안 A2 이후는 막힌다. 실험은 만료를 생략했다. 실제로는 A1이 만료되면 처리되지 않은 채 지워지고, 뒤의 메시지도 각자 보존 기간이 끝나면 지워질 수 있다. B, C 그룹은 이 막힘의 직접 영향을 받지 않는다.`;
     else if (dlq.length) note += 'A1이 DLQ로 빠져 그룹 A가 다시 흐른다. 대신 A1은 원래 순서에서 빠졌다.';
     else note += '막힌 그룹이 없다.';
     q('[data-note]').textContent = note;

@@ -20,7 +20,7 @@ chapter:
       title:
         ko: 뜨거운 샤드와 차가운 샤드
       exam_tags:
-        - SAA-C03#3.2
+        - SAA-C03#3.5
         - DOP-C02#3.2
       sources:
         - https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding-strategies.html

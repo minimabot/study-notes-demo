@@ -11,7 +11,7 @@ chapter: kinesis/consumers
 | 읽기 처리량 | 샤드당 {{fact:kinesis.shard.read}}를 모든 소비자가 나눠 쓴다 | 소비자마다 {{fact:kinesis.efo.throughput}}를 따로 받는다 |
 | 전달 방식 | 소비자가 `GetRecords`로 당겨 온다(풀, HTTP) | 서비스가 `SubscribeToShard`로 밀어 준다(푸시, HTTP/2) |
 | 전파 지연 | 소비자 하나일 때 {{fact:kinesis.shared.latency.one}}, 다섯이면 {{fact:kinesis.shared.latency.five}} | 소비자 수와 상관없이 {{fact:kinesis.efo.latency}} |
-| 추가 요금 | 없다 | 데이터 검색 요금과 소비자-샤드 시간 요금 |
+| 추가 요금 | 모드와 보존 기간에 따라 다르다({{ch:kinesis/cost}}) | 모드에 따라 다르다. Advantage에서는 일반 조회보다 EFO 단가가 더 높지 않다({{ch:kinesis/cost}}) |
 
 **공유 처리량(Shared throughput).** 샤드 하나의 읽기 한도는 바이트와 호출 수 두 가지다. 바이트는 {{fact:kinesis.shard.read}}, `GetRecords` 호출은 {{fact:kinesis.getrecords.tps}}다. 이 둘은 그 샤드를 읽는 모든 애플리케이션의 **합**에 걸린다. 그래서 AWS는 애플리케이션마다 {{fact:kinesis.poll.recommended}} 폴링을 권한다. 그래야 여러 애플리케이션이 함께 읽어도 호출 한도를 넘지 않는다. 소비자가 늘수록 각자 받는 몫이 줄고, 폴링 간격 때문에 지연도 커진다.
 

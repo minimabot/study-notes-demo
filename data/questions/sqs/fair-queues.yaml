@@ -7,10 +7,10 @@
   choices:
     - { id: a, text: { ko: "같은 고객의 메시지가 보낸 순서대로 처리된다" } }
     - { id: b, text: { ko: "공정 큐가 적용되어, 한 고객이 몰려도 다른 고객의 메시지가 먼저 전달될 수 있다" } }
-    - { id: c, text: { ko: "같은 고객의 메시지는 한 번에 하나씩만 처리된다" } }
+    - { id: c, text: { ko: "같은 고객의 메시지를 누가 받아 가면, 지우거나 다시 보일 때까지 그 고객의 다음 메시지는 수신되지 않는다" } }
     - { id: d, text: { ko: "소비자가 ReceiveMessage에 MessageGroupId를 지정하도록 코드를 고쳐야 한다" } }
   answer: b
-  explanation: { ko: "Standard 큐에서 MessageGroupId는 공정 큐용 테넌트 표시일 뿐이다. 순서 보장(a)과 그룹 안 한 번에 하나씩 처리(c)는 FIFO 큐의 동작이다. 공정 큐는 소비자 코드 변경 없이(d가 틀림) 생산자가 MessageGroupId만 넣으면 자동으로 적용된다." }
+  explanation: { ko: "Standard 큐에서 MessageGroupId는 공정 큐용 테넌트 표시일 뿐이다. 순서 보장(a)과, 받아 간 메시지가 지워지거나 다시 보이기 전까지 같은 그룹의 다음 메시지를 내주지 않는 규칙(c)은 FIFO 큐의 동작이다. FIFO 큐에서도 한 번에 받은 묶음 안의 처리 순서는 소비자가 지킨다. 공정 큐는 소비자 코드 변경 없이(d가 틀림) 생산자가 MessageGroupId만 넣으면 자동으로 적용된다." }
   facts: []
 
 - id: sqs.q.fair-queues-noisy-fate

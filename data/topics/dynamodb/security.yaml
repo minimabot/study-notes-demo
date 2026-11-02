@@ -66,6 +66,8 @@ chapter:
         ko: "VPC 엔드포인트: 게이트웨이와 인터페이스"
       exam_tags:
         - SOA-C03#4.2
+        - SOA-C03#5.1
+        - SAA-C03#1.2
       recommended:
         - claim:
             ko: "VPC 안에서만 DynamoDB에 접근하면 VPC 엔드포인트로 접근 경로를 제한한다"

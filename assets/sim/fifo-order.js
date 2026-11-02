@@ -8,7 +8,8 @@ window.SIMS['fifo-order'] = function (root, F) {
   root.innerHTML = `
     <div class="lab-h"><div class="t">실험: 1~${N}번을 순서대로 보냈을 때 받는 순서</div><div class="badge">INTERACTIVE</div></div>
     <p class="hint">생산자가 1부터 ${N}까지 차례로 보낸다. 표준 큐는 최선 노력 순서(best-effort ordering)와 최소 한 번 전달이라 순서가 바뀌거나 같은 메시지가 두 번 올 수 있다(아래는 무작위 예시다).
-    FIFO 큐는 같은 메시지 그룹 안에서 보낸 순서대로, 중복 없이 전달한다. 중복 제거 간격은 <b>${F['sqs.fifo.dedup.interval'].display}</b>다.</p>
+    FIFO 큐는 같은 메시지 그룹 안에서 보낸 순서를 지킨다. 중복 제거 간격(<b>${F['sqs.fifo.dedup.interval'].display}</b>) 안에 같은 중복 제거 ID로 다시 보낸 메시지는 중복으로 보고 큐에 넣지 않는다. 콘텐츠 기반 중복 제거를 켜면 본문 해시가 그 ID가 된다.
+    이 실험은 소비자 장애나 가시성 제한 시간 만료로 같은 메시지를 다시 받는 경우를 생략했다. 그런 재처리는 FIFO 큐에서도 생길 수 있으니 소비자를 멱등하게 만든다.</p>
     <div class="ctrls">
       <button class="primary" data-a="run">1~${N} 전송</button>
       <label class="f"><input type="checkbox" data-g> FIFO 그룹 2개로 나누기 (홀수 → A, 짝수 → B)</label>

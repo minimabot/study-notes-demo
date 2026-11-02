@@ -6,11 +6,11 @@
   question: { ko: "온디맨드 테이블의 이전 최고치가 초당 읽기 {{raw:50,000}}이다. 다음 주 행사에서 트래픽이 {{raw:10분}} 만에 초당 {{raw:200,000}}으로 오를 예정이다. 스로틀을 피하려면?" }
   choices:
     - { id: a, text: { ko: "온디맨드는 한도 없이 즉시 늘어나므로 아무것도 하지 않는다" } }
-    - { id: b, text: { ko: "행사 전에 웜 처리량을 목표 수준으로 미리 올린다(사전 워밍)" } }
+    - { id: b, text: { ko: "테이블 처리량 할당량을 목표 이상으로 늘려 두고, 행사 전에 웜 처리량을 목표 수준으로 미리 올린다(사전 워밍)" } }
     - { id: c, text: { ko: "온디맨드 최대 처리량을 초당 {{raw:200,000}}으로 설정한다" } }
     - { id: d, text: { ko: "최종 일관된 읽기를 강력한 일관된 읽기로 바꾼다" } }
   answer: b
-  explanation: { ko: "온디맨드는 이전 최고치의 {{fact:dynamodb.ondemand.peak-multiplier}}까지만 즉시 받아 준다. 그 이상을 {{fact:dynamodb.ondemand.peak-growth-window}} 안에 넘기면 스로틀될 수 있으므로 사전 워밍이 맞다(a는 틀림). 최대 처리량(c)은 상한일 뿐 용량을 미리 확보하지 않는다. 또 기본 테이블 한도 {{fact:dynamodb.throughput.table-default}}를 넘는 값이므로 한도 증가도 따로 필요하다. 강력한 일관성(d)은 읽기 단위를 더 쓴다." }
+  explanation: { ko: "온디맨드는 이전 최고치의 {{fact:dynamodb.ondemand.peak-multiplier}}까지만 즉시 받아 준다. 그 이상을 {{fact:dynamodb.ondemand.peak-growth-window}} 안에 넘기면 스로틀될 수 있으므로 사전 워밍이 맞다(a는 틀림). 사전 워밍은 계정의 테이블 할당량까지만 가능하고, 목표가 기본 한도 {{fact:dynamodb.throughput.table-default}}를 넘으므로 할당량 증가가 먼저 필요하다(b). 최대 처리량(c)은 상한일 뿐 용량을 미리 확보하지 않는다. 강력한 일관성(d)은 읽기 단위를 더 쓴다." }
   facts: [dynamodb.ondemand.peak-multiplier, dynamodb.ondemand.peak-growth-window, dynamodb.throughput.table-default]
 
 - id: dynamodb.q.capacity-switch

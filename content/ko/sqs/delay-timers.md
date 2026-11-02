@@ -14,7 +14,7 @@ chapter: sqs/delay-timers
 
 @topic sqs/delay-timers/message-timer
 
-**메시지 타이머(Message Timer)** 는 메시지 하나에만 대기 시간을 거는 방법이다. `SendMessage`(또는 `SendMessageBatch`의 각 항목)에 `DelaySeconds`를 넣는다. 범위는 지연 큐와 같아서, 기본값은 {{fact:sqs.delay.default}}, 최댓값은 {{fact:sqs.delay.max}}다.
+**메시지 타이머(Message Timer)** 는 메시지 하나에만 대기 시간을 거는 방법이다. `SendMessage`(또는 `SendMessageBatch`의 각 항목)에 `DelaySeconds`를 넣는다. 값의 범위는 지연 큐와 같다. 가장 작은 값은 {{fact:sqs.delay.default}}, 가장 큰 값은 {{fact:sqs.delay.max}}다. 메시지에 값을 넣지 않으면 큐에 걸린 `DelaySeconds`가 그대로 적용되고, 넣으면 그 메시지만 큐 값 대신 자기 값을 따른다.
 
 | 항목 | 지연 큐 | 메시지 타이머 |
 |---|---|---|

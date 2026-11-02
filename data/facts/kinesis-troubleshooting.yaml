@@ -6,18 +6,18 @@
   value: 10
   unit: count/s
   display: { ko: "초당 10회" }
-  label: { ko: "DescribeStream 호출 한도 (스트림 단위)" }
-  source_en: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
-  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/troubleshooting-producers.html
-  checked: 2026-11-02
+  label: { ko: "DescribeStream 호출 한도 (계정·리전별)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-03
   volatile: false
 
 - id: kinesis.api.describestreamsummary.tps
   value: 20
   unit: count/s
   display: { ko: "초당 20회" }
-  label: { ko: "DescribeStreamSummary 호출 한도 (스트림 단위)" }
-  source_en: https://docs.aws.amazon.com/streams/latest/dev/troubleshooting-producers.html
-  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/troubleshooting-producers.html
-  checked: 2026-11-02
+  label: { ko: "DescribeStreamSummary 호출 한도 (계정·리전별)" }
+  source_en: https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/streams/latest/dev/service-sizes-and-limits.html
+  checked: 2026-11-03
   volatile: false

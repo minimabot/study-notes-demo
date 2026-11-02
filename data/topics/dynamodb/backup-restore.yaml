@@ -59,6 +59,15 @@ chapter:
       sources:
         - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.HowItWorks.html
         - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataImport.HowItWorks.html
+    - id: dynamodb/backup-restore/recent-features
+      title:
+        ko: "최근 추가된 기능: PITR 복구 기간 설정과 필터 내보내기"
+      exam_tags: []
+      exam_unknown: true   # 복구 기간 설정 2025-01-07, 필터 내보내기 2026-10-01 (DocumentHistory)
+      sources:
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery_Howitworks.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataExport.Filtered.html
+        - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DocumentHistory.html
     - id: dynamodb/backup-restore/dr-strategy
       title:
         ko: RPO·RTO로 재해 복구 방식 고르기

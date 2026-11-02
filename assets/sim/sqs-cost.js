@@ -49,7 +49,9 @@ window.SIMS['sqs-cost'] = function (root, F) {
     <div class="stats" data-out></div>
     <ul class="note sc-asm">
       <li>메시지 1건마다 보내기·받기·삭제가 한 번씩 일어난다고 본다. 배치를 쓰면 세 동작 모두 같은 배치 크기로 묶는다고 본다.</li>
-      <li>보내기와 받기는 배치 합계 페이로드를 ${F['sqs.billing.chunk-size'].display} 조각으로 나눈 수만큼 요청으로 센다. 삭제는 배치당 요청 1건으로 센다.</li>
+      <li>하루 메시지를 배치 크기로 묶고, 남는 메시지는 마지막 부분 배치 하나로 보낸다고 본다.</li>
+      <li>받는 쪽도 보낸 배치와 같은 묶음으로 받는다고 본다. 실제 수신 묶음 크기는 그때 보이는 메시지 수에 따라 달라진다.</li>
+      <li>보내기와 받기는 각 배치의 실제 합계 페이로드를 ${F['sqs.billing.chunk-size'].display} 조각으로 나눈 수만큼 요청으로 센다. 삭제는 배치당 요청 1건으로 센다.</li>
       <li>빈 응답은 추정값이다. 소비자마다 긴 폴링이면 대기 시간마다, 짧은 폴링이면 ${SHORT_GAP}초마다 한 번 받기 요청을 보낸다고 보고, 그중 메시지를 받은 요청을 뺀 나머지를 빈 응답으로 센다.</li>
       <li>한 달은 ${DAYS}일로 계산한다. 프리 티어(${F['sqs.price.free-tier.requests'].display})는 모든 리전 합산이므로, 다른 큐가 이미 쓰고 있다면 실제 무료분은 더 적다.</li>
       <li>첫 유료 구간 단가만 쓴다. 월 요청이 ${F['sqs.price.tier1.max'].display}을 넘으면 실제로는 넘는 부분이 더 싼 단가로 계산된다.</li>
@@ -71,13 +73,16 @@ window.SIMS['sqs-cost'] = function (root, F) {
   const fmt = (v) => Math.round(v).toLocaleString('ko-KR');
   const usd = (v) => `${v < 10 ? v.toFixed(2) : Math.round(v).toLocaleString('ko-KR')} USD`;
 
-  // 한 달 요청 수를 항목별로 계산한다.
+  // 한 달 요청 수를 항목별로 계산한다. 꽉 찬 배치와 마지막 부분 배치를 나눠, 실제 페이로드로 조각을 센다.
   const model = (n, bytes, b, interval, c) => {
-    const calls = Math.ceil(n / b); // 하루 배치 호출 수
-    const chunks = Math.ceil((b * bytes) / CHUNK);
-    const send = calls * chunks, recv = calls * chunks, del = calls;
+    const full = Math.floor(n / b), rest = n % b; // 하루 꽉 찬 배치 수, 마지막 부분 배치의 메시지 수
+    const calls = full + (rest ? 1 : 0); // 하루 배치 호출 수
+    const chunks = Math.ceil((b * bytes) / CHUNK); // 꽉 찬 배치 1건의 조각 수
+    const restChunks = rest ? Math.ceil((rest * bytes) / CHUNK) : 0; // 부분 배치 1건의 조각 수
+    const pieces = full * chunks + restChunks;
+    const send = pieces, recv = pieces, del = calls;
     const empty = Math.max(0, c * (DAY_S / interval) - calls);
-    return { send: send * DAYS, recv: recv * DAYS, del: del * DAYS, empty: empty * DAYS, chunks };
+    return { send: send * DAYS, recv: recv * DAYS, del: del * DAYS, empty: empty * DAYS, chunks, full, rest, restChunks };
   };
   const bill = (total, price) => (Math.max(0, total - FREE) / 1e6) * price;
 
@@ -116,10 +121,12 @@ window.SIMS['sqs-cost'] = function (root, F) {
 
     let html = `
       <div class="stat"><div class="k">월간 요청 수</div><div class="v">${fmt(total)}</div></div>
-      <div class="stat"><div class="k">요청 1건당 메시지 / 조각</div><div class="v">${b}개 / ${m.chunks}조각</div></div>
+      <div class="stat"><div class="k">꽉 찬 배치 1건 (하루 ${fmt(m.full)}건)</div><div class="v">${m.full ? `${b}개 / ${m.chunks}조각` : '없음'}</div></div>
+      <div class="stat"><div class="k">마지막 부분 배치 (하루)</div><div class="v">${m.rest ? `${m.rest}개 / ${m.restChunks}조각` : '없음'}</div></div>
       <div class="stat acc"><div class="k">예상 SQS 월 요금 (${REGION_NAME[region]})</div><div class="v">${usd(sqsUsd)}</div></div>
       <div class="stat"><div class="k">비교: 배치 없이 짧은 폴링이면</div><div class="v">${fmt(baseTotal)}건 · ${usd(baseUsd)}</div></div>`;
     if (kmsOn) html += `<div class="stat"><div class="k">KMS 호출 수 · 요금 (서울 단가)</div><div class="v">${fmt(kmsReq)}건 · ${usd(kmsUsd)}</div></div>`;
+    if (!n) html += `<div class="stat"><div class="k">참고</div><div class="v">메시지가 0건이라 보내기·받기·삭제 요청이 없다. 빈 응답만 계산한다</div></div>`;
     if (over) html += `<div class="stat bad"><div class="k">주의</div><div class="v">배치 합계가 요청 최대 크기(${F['sqs.message.max-size'].display})를 넘어 배치 크기를 ${b}개로 줄여 계산함</div></div>`;
     if (total > TIER1_MAX) html += `<div class="stat bad"><div class="k">주의</div><div class="v">월 요청이 첫 구간 상한을 넘음 → 실제 요금은 이보다 낮음</div></div>`;
     $('[data-out]').innerHTML = html;

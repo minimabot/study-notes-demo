@@ -57,7 +57,7 @@ window.SIMS['ddb-cost'] = function (root, F) {
       <li>읽기 단위 = 항목 크기를 ${F['dynamodb.rcu.item-size'].display}로 나눠 올림한 값. 최종적 일관성이면 그 절반(${F['dynamodb.read.eventual-per-unit'].display})으로 본다. 쓰기 단위 = 항목 크기를 ${F['dynamodb.wcu.item-size'].display}로 나눠 올림한 값. 트랜잭션, GSI 쓰기, 스트림, DAX, 백업 보관, 데이터 전송은 넣지 않았다.</li>
       <li>요청은 한 달 내내 입력한 평균으로 고르게 온다고 본다. 한 달은 ${HOURS}시간으로 계산한다.</li>
       <li>프로비저닝: Auto Scaling을 켜면 평균 소비량 ÷ 목표 사용률만큼, 끄면 최고치(평균 × 최고치/평균) ÷ 목표 사용률만큼을 한 달 내내 잡아 둔다고 본다. 실제 Auto Scaling은 시간대마다 용량을 바꾸므로 결과가 다르다.</li>
-      <li>리플리카 수가 2 이상이면 글로벌 테이블로 보고, 쓰기를 리플리카마다 복제 쓰기 단위(일반 쓰기와 같은 단가)로, 저장을 리플리카마다 센다. 모든 리플리카에 선택한 리전 단가를 쓴다. 읽기는 입력한 값 전체를 한 번만 센다.</li>
+      <li>리플리카 수가 2 이상이면 글로벌 테이블로 보고, 모든 리플리카의 쓰기를 복제 쓰기 단위(rWCU, 기준 가격표에서 일반 쓰기와 같은 단가)로, 저장을 리플리카마다 센다. rWCU 무료 구간은 일반 WCU와 별도로 표시되며, 여기서는 rWCU 합계에서 한 번만 뺀다. 모든 리플리카에 선택한 리전 단가를 쓴다. 읽기는 입력한 값 전체를 한 번만 센다.</li>
       <li>프리 티어(Standard만: 저장 ${F['dynamodb.price.free-tier.storage'].display}, ${F['dynamodb.price.free-tier.capacity'].display})는 이 테이블 하나가 혼자 쓴다고 보고 한 번만 뺀다. Standard-IA에는 무료 구간이 없다.</li>
       <li>PITR은 저장 GB에 PITR 단가를 곱한다(첫 리플리카만). 예약 용량 할인은 넣지 않았다. 예약은 Standard 프로비저닝에만 적용된다.</li>
     </ul>`;
@@ -93,7 +93,10 @@ window.SIMS['ddb-cost'] = function (root, F) {
       const wcu = Math.ceil((wUnits * k) / (o.util / 100));
       units = { rcu, wcu };
       read = Math.max(0, rcu - (free ? FREE_CU : 0)) * HOURS * P.rcu;
-      write = (Math.max(0, wcu - (free ? FREE_CU : 0)) + wcu * (o.rep - 1)) * HOURS * P.wcu;
+      // 글로벌 테이블(리플리카 2 이상)은 모든 리플리카 쓰기를 복제 쓰기 단위(rWCU)로 센다.
+      // 가격표상 rWCU는 WCU와 단가가 같고 무료 구간이 따로 있다. 합계에서 무료분을 한 번만 뺀다(단순화).
+      const wTotal = wcu * o.rep;
+      write = Math.max(0, wTotal - (free ? FREE_CU : 0)) * HOURS * P.wcu;
     }
     const storage = Math.max(0, o.gb * o.rep - (free ? FREE_GB : 0)) * P.gb;
     const pitr = o.pitr ? o.gb * PRICE[o.region].pitr : 0;

@@ -369,3 +369,13 @@
   source_en: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_TableCapacityMode.html
   checked: 2026-11-02
   volatile: true
+
+- id: dynamodb.price.export.full.apne2
+  value: 0.1083
+  unit: usd/GB
+  display: { ko: "GB당 0.1083 USD" }
+  label: { ko: "S3로 전체 내보내기 단가, 서울(ap-northeast-2). 내보내는 시점의 테이블 크기(테이블 데이터와 LSI) 기준 (Price List API: APN2-ExportDataSize-Bytes)" }
+  source_en: https://aws.amazon.com/dynamodb/pricing/
+  source_ko: https://aws.amazon.com/ko/dynamodb/pricing/
+  checked: 2026-11-03
+  volatile: true

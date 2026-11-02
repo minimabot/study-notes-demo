@@ -10,7 +10,7 @@
     - { id: c, text: { ko: "향상된 팬아웃 소비자를 등록한다" } }
     - { id: d, text: { ko: "파티션 키를 무작위 값으로 바꾼다" } }
   answer: b
-  explanation: { ko: "샤드 쓰기 스로틀이 0이므로 샤드 한도가 아니라 스트림 단위 API 한도에 걸린 것이다. DescribeStream은 {{fact:kinesis.api.describestream.tps}}로 제한되고, 인스턴스가 늘수록 레코드마다 부르는 호출이 이 한도를 넘는다. 쓰기 경로에서 빼는 것이 답이다(DescribeStreamSummary도 {{fact:kinesis.api.describestreamsummary.tps}} 한도가 있으니 드물게 부른다). 샤드를 늘리거나(a) 키를 바꿔도(d) API 호출 수는 그대로다. 향상된 팬아웃(c)은 읽기 쪽 기능이다." }
+  explanation: { ko: "샤드 쓰기 스로틀이 0이므로 샤드 한도가 아니라 계정·리전별 API 호출 한도에 걸린 것이다. DescribeStream은 {{fact:kinesis.api.describestream.tps}}로 제한되고, 인스턴스가 늘수록 레코드마다 부르는 호출이 이 한도를 넘는다. 쓰기 경로에서 빼는 것이 답이다(DescribeStreamSummary도 {{fact:kinesis.api.describestreamsummary.tps}} 한도가 있으니 드물게 부른다). 샤드를 늘리거나(a) 키를 바꿔도(d) API 호출 수는 그대로다. 향상된 팬아웃(c)은 읽기 쪽 기능이다." }
   facts: [kinesis.api.describestream.tps, kinesis.api.describestreamsummary.tps]
 
 - id: kinesis.q.troubleshooting-skipped
