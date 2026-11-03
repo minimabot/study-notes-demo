@@ -7,7 +7,7 @@ chapter: iam/temporary-credentials
 **임시 보안 자격 증명(temporary security credentials)** 은 **AWS STS(AWS Security Token Service)** 가 요청을 받을 때마다 새로 만들어 주는 자격 증명이다. 쓰는 법은 IAM 사용자의 액세스 키와 거의 같다. 다른 점은 두 가지다.
 
 - **수명이 짧다.** 몇 분에서 몇 시간 사이로 정한다. 만료되면 AWS는 그 자격 증명으로 서명한 요청을 더 이상 받지 않는다.
-- **어디에도 저장돼 있지 않다.** 요청할 때 만들어 건네준다. 만료 전이든 후든, 요청할 권한이 남아 있으면 새로 받으면 된다.
+- **IAM 사용자에 붙어 보관되지 않는다.** 장기 액세스 키와 달리 요청할 때마다 새로 만들어 건넨다. 만료 전이든 후든, 요청할 권한이 남아 있으면 새로 받으면 된다.
 
 임시 자격 증명은 액세스 키 ID, 보안 액세스 키, **세션 토큰(session token)** 세 가지로 이뤄진다. 요청에 세션 토큰이 함께 들어가야 한다.
 
@@ -21,7 +21,7 @@ chapter: iam/temporary-credentials
 
 @topic iam/temporary-credentials/api-compare
 
-임시 자격 증명을 돌려주는 STS API는 다섯 가지다. 누가 부르는지가 가장 크게 다르다.
+IAM 문서가 비교하는 대표 STS API는 다섯 가지다. 누가 부르는지가 가장 크게 다르다. 이 밖에 멤버 계정의 루트 작업에만 쓰는 `sts:AssumeRoot`가 있는데, 이것은 {{ch:iam/identities}}에서 다룬다.
 
 | API | 누가 부르나 |
 |---|---|
@@ -31,7 +31,7 @@ chapter: iam/temporary-credentials
 | `GetFederationToken` | IAM 사용자 또는 루트 사용자 |
 | `GetSessionToken` | IAM 사용자 또는 루트 사용자 |
 
-**유효 기간.** 다섯 API 모두 최소 {{fact:iam.sts.duration.min}}이다.
+**유효 기간.** 표의 다섯 API 모두 최소 {{fact:iam.sts.duration.min}}이다.
 
 | API | 기본 / 최대 |
 |---|---|
@@ -61,7 +61,7 @@ chapter: iam/temporary-credentials
 **세션 정책(session policy)** 은 역할 세션이나 페더레이션 사용자 세션을 만들 때 매개변수로 넘기는 정책이다. 세션의 권한은 **역할(또는 사용자)의 자격 증명 기반 정책과 세션 정책의 교집합** 이 된다. 세션 정책은 권한을 줄이기만 하고 늘리지는 못한다.
 
 - `AssumeRole`, `AssumeRoleWithSAML`, `AssumeRoleWithWebIdentity`에서는 `Policy`로 인라인 JSON 하나, `PolicyArns`로 관리형 정책을 {{fact:iam.session-policy.managed-arns.max}}까지 넘긴다. 합친 평문 크기 한도는 {{fact:iam.session-policy.max-size}}다.
-- `GetFederationToken`은 세션 정책을 반드시 넘긴다. 결과 권한은 IAM 사용자 정책과 세션 정책의 교집합이다.
+- `GetFederationToken`에서 세션 정책은 선택 매개변수지만 보통 함께 넘긴다. 사용자 정책과 세션 정책을 거쳐 생기는 권한은 두 정책의 교집합이다. 세션 정책 없이 부르면 사용자 정책만으로는 대개 세션에 권한이 생기지 않는다. 다만 같은 계정의 리소스 기반 정책이 그 페더레이션 사용자 세션 ARN을 직접 허용할 수는 있다. 명시적 거부 같은 다른 제한은 여전히 적용된다.
 - 리소스 기반 정책이 역할이나 사용자의 ARN을 보안 주체로 지정했다면 그 허용도 세션 정책으로 걸러진다. 명시적 거부는 어느 정책에 있든 이긴다({{ch:iam/policy-evaluation}}).
 
 **세션 태그(session tag)** 는 역할을 수임하거나 사용자를 페더레이션할 때 넘기는 키-값 속성이다. 세션으로 보낸 요청에는 `aws:PrincipalTag`로 들어가므로 ABAC 조건에 쓴다({{ch:iam/conditions-abac}}).
@@ -78,7 +78,7 @@ chapter: iam/temporary-credentials
 
 @topic iam/temporary-credentials/endpoints
 
-STS에는 **글로벌 엔드포인트(global endpoint)** `sts.amazonaws.com`과 리전마다 있는 **리전 엔드포인트(Regional endpoint)** 가 있다. 어디서 받은 자격 증명이든 쓰는 곳은 리전을 가리지 않는다.
+STS에는 **글로벌 엔드포인트(global endpoint)** `sts.amazonaws.com`과 리전마다 있는 **리전 엔드포인트(Regional endpoint)** 가 있다. 리전 엔드포인트에서 받은 토큰은 모든 리전에서 쓴다. 글로벌 엔드포인트 토큰은 기본 설정으로는 기본으로 켜진 리전에서만 쓰이므로, 옵트인 리전에서 쓰려면 토큰 버전 설정을 바꿔야 한다(아래 표).
 
 AWS는 리전 엔드포인트를 권장한다. 문서가 드는 이유는 세 가지다.
 
@@ -90,16 +90,16 @@ AWS는 리전 엔드포인트를 권장한다. 문서가 드는 이유는 세 �
 
 기본으로 켜진 리전의 STS 엔드포인트는 IAM 콘솔의 계정 설정에서 끄고 켤 수 있다. 끄고 켜는 기준은 **자격 증명이 만들어지는 계정** 이다. 옵트인 리전은 리전을 활성화하면 STS도 자동으로 켜지고 끌 수 없다. 다른 계정의 역할을 옵트인 리전 엔드포인트로 수임하려면 역할이 있는 계정이 그 리전을 활성화해 두어야 한다. 누가 어느 리전을 쓰는지는 `aws:RequestedRegion` 조건으로 제한한다.
 
-2025년에 글로벌 엔드포인트 동작이 바뀌었다. 기본으로 켜진 리전에서 Amazon DNS 서버로 이름을 풀면, 글로벌 엔드포인트 요청이 요청이 나온 그 리전에서 처리된다. 옵트인 리전이나 다른 DNS 리졸버를 쓰면 여전히 미국 동부(버지니아 북부)에서 처리된다. 바뀐 뒤에도 글로벌 엔드포인트 요청의 CloudTrail 로그는 `us-east-1`로 가고, `aws:RequestedRegion` 값은 `us-east-1`이다. 시험이 이 변경을 반영하는지는 확인되지 않았다. 리전 엔드포인트를 쓰라는 권장은 그대로다.
+2025년에 글로벌 엔드포인트 동작이 바뀌었다. 기본으로 켜진 리전에서 Amazon DNS 서버로 이름을 풀면, 글로벌 엔드포인트 요청이 요청이 나온 그 리전에서 처리된다. 옵트인 리전이나 다른 DNS 리졸버를 쓰면 여전히 미국 동부(버지니아 북부)에서 처리된다. 바뀐 뒤에도 글로벌 엔드포인트 요청의 CloudTrail 로그는 `us-east-1`로 가고, `aws:RequestedRegion` 값은 `us-east-1`이다. 시험이 이 변경을 반영하는지는 확인되지 않았다. 리전 엔드포인트를 쓰라는 권장은 그대로다. 이 변경으로 글로벌 엔드포인트 요청은 리전 엔드포인트와 요청 할당량을 나눠 쓰지 않게 됐다. 할당량 페이지에는 아직 예정된 변경으로 적혀 있어 문서끼리 표현이 다르다.
 
-STS 요청 할당량은 계정·리전 단위로 공유하며, AWS 자격 증명으로 부르는 요청의 기본값은 {{fact:iam.sts.rps}}다. 글로벌 엔드포인트 요청은 리전 엔드포인트와 할당량을 나눠 쓰지 않는다.
+STS 요청 할당량은 계정·리전 단위로 공유하며, AWS 자격 증명으로 부르는 요청의 기본값은 {{fact:iam.sts.rps}}다.
 
 @topic iam/temporary-credentials/revoke-caller
 
 임시 자격 증명은 만료 전까지 유효하다. 콘솔 세션을 길게 허용했는데 자격 증명이 새어 나갔다면, 만료를 기다리지 않고 **역할의 세션을 취소** 한다.
 
 - IAM 콘솔에서 역할을 열고 **세션 취소(Revoke sessions)** 탭의 **활성 세션 취소** 를 고른다. IAM은 `AWSRevokeOlderSessions`라는 인라인 정책을 역할에 붙인다. 이 정책은 그 시점 이전에 수임한 세션의 모든 작업을 거부한다. 정책 전파 지연을 감안해 {{fact:iam.role.revoke.future-buffer}} 뒤까지 막는다.
-- 그 뒤에 새로 수임한 세션은 영향을 받지 않는다. 정상 사용자는 다시 수임하면 된다. CLI는 자격 증명을 캐시하므로 캐시를 지워야 새 자격 증명을 받는다.
+- 누른 뒤 {{fact:iam.role.revoke.future-buffer}}가 지나서 새로 수임한 세션은 영향을 받지 않는다. 정당한 사용자는 그만큼 기다렸다가 다시 수임한다. 정책이 전파되는 데 지연이 있을 수 있다. CLI는 자격 증명을 캐시하므로 캐시를 지워야 새 자격 증명을 받는다.
 - 이 거부는 그 역할의 모든 사용자에게 걸린다. 오래 열린 콘솔 세션만 골라 막지 않는다.
 - 필요한 권한은 그 역할에 대한 `iam:PutRolePolicy`다. 서비스 연결 역할은 세션을 취소할 수 없다. IAM Identity Center 권한 세트가 만든 역할은 IAM에서 고칠 수 없으므로 Identity Center에서 취소한다.
 

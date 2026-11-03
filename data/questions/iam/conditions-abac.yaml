@@ -33,12 +33,12 @@
   topic: iam/conditions-abac/global-keys
   question: { ko: "버킷 정책에 \"회사 공인 IP 대역(aws:SourceIp)이 아니면 거부\" 문이 있다. 사내 VPC의 EC2 인스턴스가 S3 게이트웨이 VPC 엔드포인트로 접근하자 모두 거부됐다. 원인과 대처로 알맞은 것은?" }
   choices:
-    - { id: a, text: { ko: "VPC 엔드포인트를 거친 요청에는 aws:SourceIp가 없다. 엔드포인트 경로는 aws:SourceVpce로 구분해 허용한다" } }
+    - { id: a, text: { ko: "VPC 엔드포인트를 거친 요청에는 aws:SourceIp가 없어 거부 조건에 걸린다. 거부 문에 aws:SourceVpce 조건을 더해, 승인한 엔드포인트로 들어온 요청은 거부 대상에서 빼야 한다" } }
     - { id: b, text: { ko: "aws:SourceIp는 IPv6만 지원한다. 대역을 IPv6로 바꾼다" } }
     - { id: c, text: { ko: "VPC 엔드포인트는 버킷 정책을 무시한다. 엔드포인트 정책만 고친다" } }
     - { id: d, text: { ko: "인스턴스의 프라이빗 IP 대역을 aws:SourceIp에 추가한다" } }
   answer: a
-  explanation: { ko: "aws:SourceIp는 공인 IP 대역에만 쓰고, 요청이 VPC 엔드포인트를 거치면 요청 컨텍스트에 들어 있지 않다. 그래서 \"이 대역이 아니면 거부\" 조건에 걸린다. 엔드포인트로 들어온 요청은 aws:SourceVpce(또는 aws:SourceVpc)로 판단한다. aws:SourceIp는 IPv4와 IPv6를 모두 지원한다(b). 엔드포인트 정책은 대상 서비스의 리소스 기반 정책을 대신하지 않는 추가 경계다(c). 프라이빗 IP를 넣어도 키 자체가 없으니 소용없다(d)." }
+  explanation: { ko: "aws:SourceIp는 공인 IP 대역에만 쓰고, 요청이 VPC 엔드포인트를 거치면 요청 컨텍스트에 들어 있지 않다. 그래서 \"이 대역이 아니면 거부\" 조건에 걸린다. Allow 문을 따로 더해도 명시적 거부를 이기지 못하므로, 거부 문 자체에 aws:SourceVpce(또는 aws:SourceVpc) 예외 조건을 넣어야 한다. 물론 접근을 허용하는 Allow 문은 따로 있어야 한다. aws:SourceIp는 IPv4와 IPv6를 모두 지원한다(b). 엔드포인트 정책은 대상 서비스의 리소스 기반 정책을 대신하지 않는 추가 경계다(c). 프라이빗 IP를 넣어도 키 자체가 없으니 소용없다(d)." }
   facts: []
 
 - id: iam.q.conditions-abac-new-project

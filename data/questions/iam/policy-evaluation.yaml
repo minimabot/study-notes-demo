@@ -45,7 +45,7 @@
   type: design
   chapter: iam/policy-evaluation
   topic: iam/policy-evaluation/boundaries-delegation
-  scenario: { ko: "중앙 보안팀이 애플리케이션 팀 리더(역할 AppLead)에게 Lambda 실행 역할을 직접 만들고 권한 정책을 붙이는 일을 맡기려 한다. 요구는 이렇다. AppLead가 만든 역할은 보안팀이 만든 고객 관리형 정책 AppWorkloadBoundary 범위를 넘는 권한을 가질 수 없어야 한다. AppLead가 이 제한을 스스로 풀 수 없어야 한다. AppLead는 역할마다 필요한 권한 정책을 자유롭게 붙일 수 있어야 한다. 알맞은 조치를 모두 고르라." }
+  scenario: { ko: "중앙 보안팀이 애플리케이션 팀 리더(역할 AppLead)에게 Lambda 실행 역할을 직접 만들고 권한 정책을 붙이는 일을 맡기려 한다. 요구는 이렇다. AppLead가 만든 역할이 권한 정책(자격 증명 기반 정책)으로 받는 권한은 보안팀이 만든 고객 관리형 정책 AppWorkloadBoundary 범위를 넘을 수 없어야 한다. AppLead가 이 제한을 스스로 풀 수 없어야 한다. AppLead는 역할마다 필요한 권한 정책을 자유롭게 붙일 수 있어야 한다. 알맞은 조치를 모두 고르라." }
   choices:
     - { id: a, text: { ko: "AppLead에게 iam:CreateRole, iam:AttachRolePolicy, iam:PutRolePolicy, iam:PutRolePermissionsBoundary를 허용하되, iam:PermissionsBoundary 조건 키가 AppWorkloadBoundary의 ARN과 같을 때만 허용한다" } }
     - { id: b, text: { ko: "AppWorkloadBoundary와 AppLead에게 붙은 고객 관리형 정책에 대해 iam:CreatePolicyVersion, iam:SetDefaultPolicyVersion, iam:DeletePolicy, iam:DeletePolicyVersion을 명시적으로 거부한다" } }
@@ -60,7 +60,7 @@
       - "a: iam:PermissionsBoundary 조건으로 역할을 만들거나 정책을 붙일 때 반드시 정해진 경계를 쓰게 한다. 경계 없이 만들려 하면 요청이 거부된다. 실제 권한은 붙인 권한 정책과 경계의 교집합이 된다."
       - "b: 경계 정책 내용을 바꾸면 제한이 풀린다. 정책 버전을 만들거나 기본 버전을 바꾸는 작업을 모두 막아야 한다(CreatePolicyVersion만 막으면 부족하다)."
       - "c: 경계를 떼어 낼 수 있으면 제한이 사라진다. 문서의 위임 예에서도 경계 삭제 작업을 명시적으로 거부한다."
-      - "d는 감점: 권한 경계는 최대 권한만 정하고 권한을 주지 않는다. 역할에 권한 정책이 없으면 아무 작업도 할 수 없다."
+      - "d는 감점: 권한 경계는 최대 권한만 정하고 권한을 주지 않는다. 경계만으로는 자격 증명 기반 권한이 생기지 않는다. 리소스 기반 정책의 직접 허용 같은 별도 경로는 예외다."
       - "e는 감점: 위임의 목적(권한 상승 방지)을 사전에 강제하지 못한다. 사후 검토로는 그 사이의 위험을 막지 못한다."
-      - "f는 감점: 같은 계정에서 리소스 기반 정책이 역할 세션 ARN에 직접 준 권한은 권한 경계의 묵시적 거부로 제한되지 않는다. 경계의 명시적 거부만 막는다."
+      - "f는 감점: 같은 계정에서 리소스 기반 정책이 역할 세션 ARN에 직접 준 권한은 권한 경계의 묵시적 거부로 제한되지 않는다. 경계의 명시적 거부만 막는다. 이 경로를 막으려면 기존 직접 허용을 점검하고, 리소스 기반 정책 변경 권한을 통제하거나 적용되는 명시적 거부로 따로 제한해야 한다."
   facts: []
