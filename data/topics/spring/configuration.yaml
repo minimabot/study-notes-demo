@@ -1,0 +1,44 @@
+# 장: 설정 클래스 처리와 자동 구성 (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/configuration
+  title: { ko: "설정 처리: @Configuration, @Conditional, Boot 자동 구성" }
+  track: core
+  doc_source: https://docs.spring.io/spring-framework/reference/core/beans/java.html
+  topics:
+    - id: spring/configuration/ccpp
+      title: { ko: "ConfigurationClassPostProcessor와 파서" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassPostProcessor.java#L389
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassParser.java#L305
+        - https://docs.spring.io/spring-framework/reference/core/beans/java.html
+    - id: spring/configuration/full-vs-lite
+      title: { ko: "풀 모드와 라이트 모드(proxyBeanMethods)" }
+      recommended:
+        - claim: { ko: "자동 구성 클래스는 proxyBeanMethods = false인 설정으로 선언된다(@AutoConfiguration)" }
+          source: https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/AutoConfiguration.java#L46
+          checked: 2026-11-03
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/Configuration.java#L477
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassEnhancer.java#L342
+    - id: spring/configuration/conditional
+      title: { ko: "@Conditional은 정의 단계의 if문" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/ConditionEvaluator.java#L81
+        - https://docs.spring.io/spring-framework/reference/core/beans/java.html
+    - id: spring/configuration/auto-configuration
+      title: { ko: "Boot 자동 구성과 @ConditionalOnMissingBean의 순서" }
+      recommended:
+        - claim: { ko: "@ConditionalOnBean·@ConditionalOnMissingBean은 자동 구성 클래스에만 쓴다" }
+          source: https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html
+          checked: 2026-11-03
+        - claim: { ko: "자동 구성은 imports 파일로만 로드하고 컴포넌트 스캔 대상이 되지 않게 한다" }
+          source: https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html
+        - https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/AutoConfigurationImportSelector.java#L66
+    - id: spring/configuration/debugging
+      title: { ko: "조건 평가 보고서와 실무 함정" }
+      sources:
+        - https://docs.spring.io/spring-boot/reference/features/spring-application.html
+        - https://docs.spring.io/spring-boot/reference/features/developing-auto-configuration.html

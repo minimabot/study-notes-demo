@@ -83,3 +83,11 @@ chapter:
 - IAM 권 ID는 `iam`. 문서 사본: `../sources/iam/*.md`(URL `https://docs.aws.amazon.com/IAM/latest/UserGuide/<page>.html`). 공용 수치는 `data/facts/iam-core.yaml`(고치지 않는다). 새 사실은 `data/facts/iam-<장>.yaml`.
 - Lambda 권 ID는 `lambda`. 문서 사본: `../sources/lambda/*.md`(URL `https://docs.aws.amazon.com/lambda/latest/dg/<page>.html`). 공용 수치는 `data/facts/lambda-core.yaml`(+ 기존 `lambda.yaml`, `lambda-sqs-integration.yaml`; 고치지 않는다). 새 사실은 `data/facts/lambda-<장>.yaml`.
 - EC2 권 ID는 `ec2`. 문서 사본: `../sources/ec2/*.md`(URL `https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/<page>.html`), 하위 폴더 `ebs`(https://docs.aws.amazon.com/ebs/latest/userguide/), `alb`(.../elasticloadbalancing/latest/application/), `nlb`(.../elasticloadbalancing/latest/network/), `asg`(https://docs.aws.amazon.com/autoscaling/ec2/userguide/), `efs`(https://docs.aws.amazon.com/efs/latest/ug/). 공용 수치는 `data/facts/ec2-core.yaml`(고치지 않는다). 새 사실은 `data/facts/ec2-<장>.yaml`.
+
+## 10. AWS가 아닌 권 (spring 등)
+- 대상 버전을 권 머리에 밝힌다: Spring Framework 7.0.8, Spring Boot 4.1.2, Java 25(21과 다르면 표시).
+- 근거(우선순위): ① 공식 레퍼런스(docs.spring.io, 사본 `../sources/spring/*.html`) ② 해당 버전 태그의 소스 코드 — GitHub 고정 링크 `https://github.com/spring-projects/spring-framework/blob/v7.0.8/<path>#L<n>`, Boot는 `v4.1.2`, JDK는 `https://github.com/openjdk/jdk/blob/jdk-25-ga/<path>#L<n>` ③ Javadoc(JDK 25: docs.oracle.com/en/java/javase/25/docs/api/). 블로그·Q&A는 근거로 쓰지 않는다.
+- 사실 항목의 `source_en`에 위 URL을 쓰고, `source_ko`는 없으면 생략한다. 기본값·순서 같은 수치는 그대로 {{fact:ID}}로 쓴다.
+- 시험 태그는 없다(`exam_tags` 생략). 대신 장마다 세 단계로 쓴다: **겉 동작**(처음 접하는 사람용 요약) → **내부 동작**(호출 흐름을 소스로 따라가기, 클래스·메서드 이름과 고정 링크) → **실무 함정**(내부를 알아야 이유가 보이는 버그와 대처). 프록시·리플렉션·스레드 같은 선행 개념은 짧은 설명 상자로 넣는다.
+- 코드 예시는 Java 25 + Spring Boot 4.1.2 기준으로 컴파일 가능한 형태로 쓴다. 코드 블록 안 숫자는 허용.
+- Spring 권 ID는 `spring`. 새 사실은 `data/facts/spring-<장>.yaml`.

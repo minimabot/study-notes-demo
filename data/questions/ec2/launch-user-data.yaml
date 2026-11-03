@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.launch-userdata-rerun
+  type: quiz
+  chapter: ec2/launch-user-data
+  topic: ec2/launch-user-data/user-data
+  question: { ko: "Amazon Linux 인스턴스를 띄울 때 넣은 사용자 데이터 셸 스크립트가 처음에는 잘 돌았다. 스크립트를 고쳐 다시 적용하려고 인스턴스를 재부팅했지만 바뀐 내용이 반영되지 않는다. 이유와 대처로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "사용자 데이터는 기본적으로 첫 부팅 때 한 번만 돈다. 인스턴스를 중지해 사용자 데이터를 바꾸고, 매 시작마다 돌도록 cloud-init 설정을 바꾸거나 새 인스턴스를 띄운다" } }
+    - { id: b, text: { ko: "실행 중인 인스턴스에서 사용자 데이터를 바로 고치면 다음 재부팅 때 자동으로 돈다" } }
+    - { id: c, text: { ko: "스크립트에 sudo를 빠뜨렸다. sudo를 붙이면 재부팅 때 다시 돈다" } }
+    - { id: d, text: { ko: "사용자 데이터 크기 한도를 넘었다. base64로 인코딩한 크기를 줄이면 된다" } }
+  answer: a
+  explanation: { ko: "Linux에서 사용자 데이터 스크립트와 cloud-init 지시어는 기본적으로 처음 띄울 때의 부팅에서만 돈다. 사용자 데이터를 바꾸려면 EBS 루트 인스턴스를 중지해야 하고, 매번 돌게 하려면 설정을 따로 바꾼다. b: 실행 중에는 볼 수만 있고 바꿀 수 없다. c: 스크립트는 root로 돌기 때문에 sudo가 필요 없다. d: 처음에 잘 돌았으므로 크기 문제가 아니다. 한도({{fact:ec2.userdata.max}})는 인코딩 전 원본 기준이다." }
+  facts: [ec2.userdata.max]
+
+- id: ec2.q.launch-template-version
+  type: quiz
+  chapter: ec2/launch-user-data
+  topic: ec2/launch-user-data/launch-templates
+  question: { ko: "Auto Scaling 그룹이 쓰는 시작 템플릿의 AMI를 새 패치 버전으로 바꾸려 한다. 시작 템플릿에서 해야 할 일로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "기존 버전의 AMI ID를 직접 고쳐 저장한다" } }
+    - { id: b, text: { ko: "기존 버전을 바탕으로 AMI ID만 바꾼 새 버전을 만들고, 그룹이 그 버전(또는 기본 버전으로 지정한 그 버전)을 쓰게 한다" } }
+    - { id: c, text: { ko: "시작 템플릿은 바꿀 수 없으므로 시작 구성으로 옮긴다" } }
+    - { id: d, text: { ko: "새 템플릿 버전에 태그를 달면 Auto Scaling 그룹이 자동으로 그 버전을 고른다" } }
+  answer: b
+  explanation: { ko: "시작 템플릿은 바꿀 수 없고, 바꿀 내용은 새 버전으로 만든다. 새 버전은 기존 버전을 바탕으로 일부 값만 덮어쓸 수 있다. 버전을 지정하지 않으면 기본 버전이 쓰이므로, 기본 버전을 바꾸거나 그룹이 가리키는 버전을 바꾼다. a: 버전은 고칠 수 없다. c: 시작 구성은 버전이 없고 새 기능을 지원하지 않으며, 문서는 오히려 시작 템플릿으로 옮기라고 한다. d: 버전에는 태그를 달 수 없다." }
+  facts: []
+
+- id: ec2.q.launch-userdata-secret
+  type: quiz
+  chapter: ec2/launch-user-data
+  topic: ec2/launch-user-data/user-data
+  question: { ko: "부팅 스크립트가 데이터베이스 비밀번호를 읽어 앱 설정 파일에 써야 한다. 가장 안전한 방법은?" }
+  choices:
+    - { id: a, text: { ko: "비밀번호를 사용자 데이터 스크립트 안에 그대로 적는다. 사용자 데이터는 인스턴스 안에서만 읽히므로 안전하다" } }
+    - { id: b, text: { ko: "비밀번호를 base64로 인코딩해 사용자 데이터에 넣는다" } }
+    - { id: c, text: { ko: "비밀번호를 Secrets Manager에 두고, 그 비밀만 읽을 수 있는 IAM 역할을 인스턴스 프로파일로 붙여 스크립트가 가져오게 한다" } }
+    - { id: d, text: { ko: "IAM 사용자 액세스 키를 사용자 데이터에 넣어 스크립트가 비밀을 읽게 한다" } }
+  answer: c
+  explanation: { ko: "사용자 데이터는 인스턴스 안에서만 읽히지만 인증이나 암호화로 보호되지 않아, 인스턴스에 접근하는 사람과 그 위의 소프트웨어가 읽을 수 있다. 그래서 비밀번호나 오래 쓰는 키를 넣지 말라고 한다. 역할을 붙이면 임시 자격 증명이 자동으로 바뀌며 제공된다. a: 앞의 이유로 안전하지 않다. b: base64는 인코딩일 뿐 암호화가 아니다. API로 보낼 때 원래 base64로 보낸다. d: 오래 쓰는 액세스 키를 사용자 데이터에 두는 것은 같은 문제를 더 키운다." }
+  facts: []

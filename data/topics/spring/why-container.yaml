@@ -1,0 +1,22 @@
+# 장: 왜 컨테이너인가 (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/why-container
+  title: { ko: "0장. 손으로 조립해 보고 컨테이너가 넘겨받는 일 보기" }
+  track: core
+  doc_source: https://docs.spring.io/spring-framework/reference/core/beans/introduction.html
+  topics:
+    - id: spring/why-container/by-hand
+      title: { ko: "손으로 객체 그래프 조립하기" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/introduction.html
+        - https://docs.spring.io/spring-framework/reference/core/beans/dependencies.html
+    - id: spring/why-container/what-container-takes
+      title: { ko: "컨테이너가 넘겨받는 것: 정의, 생성, 감싸기" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/basics.html
+        - https://docs.spring.io/spring-framework/reference/core/aop/proxying.html
+    - id: spring/why-container/pitfalls
+      title: { ko: "실무 함정: 컨테이너 밖에서 만든 객체" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/aop/proxying.html
+        - https://docs.spring.io/spring-boot/reference/features/spring-application.html

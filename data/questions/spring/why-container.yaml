@@ -1,0 +1,28 @@
+# 퀴즈. 정답은 보기 ID로 지정한다.
+- id: spring.q.why-container-new-tx
+  type: quiz
+  chapter: spring/why-container
+  topic: spring/why-container/pitfalls
+  question: { ko: "OrderService 클래스의 place() 메서드에 @Transactional이 붙어 있다. 배치 작업 코드에서 new OrderService(repository, payment)로 객체를 만들어 place()를 불렀다. 무슨 일이 일어나는가?" }
+  choices:
+    - { id: a, text: { ko: "정상적으로 트랜잭션이 걸린다. 애너테이션은 클래스에 붙어 있으므로 어떻게 만들든 적용된다" } }
+    - { id: b, text: { ko: "트랜잭션 없이 실행된다. 트랜잭션은 컨테이너가 빈을 만들 때 씌우는 프록시가 처리하는데, new로 만든 객체에는 프록시가 없다" } }
+    - { id: c, text: { ko: "컴파일 오류가 난다. @Transactional 클래스는 new로 만들 수 없다" } }
+    - { id: d, text: { ko: "실행 시점에 컨테이너가 객체를 감지해 자동으로 프록시로 바꾼다" } }
+  answer: b
+  explanation: { ko: "@Transactional 자체는 표시일 뿐이고, 실제 트랜잭션 시작·커밋은 컨테이너가 빈을 만든 직후 후처리기 단계에서 씌우는 프록시가 한다. new로 만든 객체는 컨테이너를 거치지 않았으므로 프록시가 없고 메서드가 그대로 실행된다(a, d는 틀림). 컨테이너는 이미 만들어진 외부 객체를 찾아가 바꾸지 않는다. 컴파일러는 애너테이션의 의미를 모르므로 오류도 없다(c)." }
+  facts: []
+
+- id: spring.q.why-container-order
+  type: quiz
+  chapter: spring/why-container
+  topic: spring/why-container/what-container-takes
+  question: { ko: "OrderService가 생성자로 OrderRepository와 PaymentClient를 받는다. 컨테이너는 이 셋을 어떤 순서로 만들어야 하는지 어떻게 아는가?" }
+  choices:
+    - { id: a, text: { ko: "클래스 이름의 알파벳 순서로 만든다" } }
+    - { id: b, text: { ko: "@Order 값이 작은 클래스부터 만든다" } }
+    - { id: c, text: { ko: "OrderService를 만들려고 생성자를 고르는 순간 매개변수 타입에 맞는 빈을 찾아, 아직 없으면 그것부터 만든다" } }
+    - { id: d, text: { ko: "개발자가 의존 순서를 설정 파일에 적어야 한다" } }
+  answer: c
+  explanation: { ko: "컨테이너는 빈 정의를 차례로 꺼내 만들되, 생성자 매개변수를 해석하면서 필요한 빈을 그 자리에서 요청한다. 요청한 빈이 아직 없으면 그 빈을 먼저 만들어 넘긴다. 그래서 등록 순서가 어떻든 의존 대상이 먼저 준비된다. 이름 순서(a)는 관계없다. @Order(b)는 같은 타입 빈 목록을 주입할 때의 정렬 순서이지 생성 순서가 아니다. 순서를 손으로 적을 필요는 없다(d). 특별한 경우에만 @DependsOn으로 보탠다." }
+  facts: []

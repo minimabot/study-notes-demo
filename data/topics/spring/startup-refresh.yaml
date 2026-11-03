@@ -1,0 +1,39 @@
+# 장: 시작 절차 refresh()와 SpringApplication.run (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/startup-refresh
+  title: { ko: "시작 절차: refresh()의 단계와 SpringApplication.run" }
+  track: core
+  doc_source: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/support/AbstractApplicationContext.java#L581
+  topics:
+    - id: spring/startup-refresh/overview
+      title: { ko: "시작은 refresh() 한 번이다" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/context-introduction.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/support/AbstractApplicationContext.java#L581
+    - id: spring/startup-refresh/phases
+      title: { ko: "refresh()의 단계를 순서대로" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/support/AbstractApplicationContext.java#L581
+        - https://github.com/spring-projects/spring-boot/blob/v4.1.2/module/spring-boot-web-server/src/main/java/org/springframework/boot/web/server/servlet/context/ServletWebServerApplicationContext.java#L149
+    - id: spring/startup-refresh/post-processor-order
+      title: { ko: "후처리기 실행 순서" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/support/PostProcessorRegistrationDelegate.java#L68
+        - https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+    - id: spring/startup-refresh/boot-run
+      title: { ko: "Spring Boot run()의 흐름과 이벤트" }
+      sources:
+        - https://docs.spring.io/spring-boot/reference/features/spring-application.html
+        - https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot/src/main/java/org/springframework/boot/SpringApplication.java#L292
+    - id: spring/startup-refresh/pitfalls
+      title: { ko: "실무 함정: 이른 생성, 생성자 속 작업, 시작 실패 읽기" }
+      recommended:
+        - claim: { ko: "@Bean으로 BeanFactoryPostProcessor를 등록할 때는 메서드를 static으로 선언한다" }
+          source: https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+          checked: 2026-11-03
+        - claim: { ko: "시작 시 실행할 작업은 @PostConstruct 같은 생명주기 콜백 대신 CommandLineRunner·ApplicationRunner에 둔다" }
+          source: https://docs.spring.io/spring-boot/reference/features/spring-application.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/factory-extension.html
+        - https://docs.spring.io/spring-boot/reference/features/spring-application.html

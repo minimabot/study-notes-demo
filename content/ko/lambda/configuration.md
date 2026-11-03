@@ -9,7 +9,7 @@ chapter: lambda/configuration
 - 범위: {{fact:lambda.memory.min}}부터 {{fact:lambda.memory.max}}까지, MB 단위로 정한다. 기본값은 가장 낮은 {{fact:lambda.memory.min}}이다.
 - 메모리를 {{fact:lambda.memory.one-vcpu}}로 두면 vCPU 하나에 해당하는 CPU를 받는다.
 - 문서는 최솟값을 이벤트를 변환해 다른 서비스로 넘기는 정도의 단순한 함수에만 쓰라고 권한다.
-- 라이브러리나 계층을 많이 불러오거나, S3·EFS와 데이터를 주고받는 함수는 메모리를 늘리면 빨라질 수 있다. CPU, 네트워크, 메모리 어느 쪽이 병목이어도 메모리를 늘리는 것이 해법이 된다.
+- 라이브러리나 계층을 많이 불러오거나, S3·EFS와 데이터를 주고받는 함수는 메모리를 늘리면 빨라질 수 있다. CPU, 네트워크, 메모리 중 하나가 병목이면 메모리를 늘려 개선될 수 있다. 다른 서비스의 응답 지연처럼 함수 밖이 병목이면 효과가 없으므로, CloudWatch로 실행 시간과 메모리 사용량을 보며 실제 부하에서 측정해 정한다.
 
 **알맞은 값 찾기.**
 
@@ -39,7 +39,7 @@ arm64로 옮길 때 확인할 것은 다음과 같다.
 - 기본값은 {{fact:lambda.timeout.default}}이고, {{fact:lambda.timeout.min}} 단위로 최대 {{fact:lambda.timeout.max}}까지 늘릴 수 있다.
 - 제한 시간을 평균 실행 시간에 가깝게 잡으면 가끔 느린 호출이 시간 초과로 실패한다. 실행 시간은 처리할 데이터 양과 호출하는 다른 서비스의 지연에 따라 달라진다. S3에서 평소보다 큰 객체를 받거나, 외부 서비스 응답이 늦거나, 입력이 복잡할 때가 대표적이다.
 - 테스트할 때는 작은 표본이 아니라 실제로 예상되는 상한 크기의 데이터를 쓴다.
-- 함수를 SQS 이벤트 소스로 쓸 때는 큐의 가시성 제한 시간을 함수 제한 시간의 {{fact:lambda.sqs.vt-multiplier}}로 잡는다({{ch:sqs/integrations}}).
+- 함수를 SQS 이벤트 소스로 쓸 때는 큐의 가시성 제한 시간을 함수 제한 시간의 {{fact:lambda.sqs.vt-multiplier}}에 배치 기간(`MaximumBatchingWindowInSeconds`)을 더한 값으로 잡으라고 문서는 권장한다({{ch:sqs/integrations}}).
 
 **임시 스토리지(Ephemeral storage).** 함수는 `/tmp` 디렉터리를 쓸 수 있다. 실행 환경마다 따로 있고, 환경이 사라지면 내용도 사라진다. 저장된 데이터는 AWS 관리형 키로 저장 시 암호화된다.
 

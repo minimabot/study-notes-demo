@@ -1,0 +1,48 @@
+# 장: 인스턴스 시작 설정, 시작 템플릿, 사용자 데이터
+chapter:
+  id: ec2/launch-user-data
+  title:
+    ko: 인스턴스 시작 (주요 설정, 시작 템플릿, 사용자 데이터)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/LaunchingAndUsingInstances.html
+  topics:
+    - id: ec2/launch-user-data/launch-settings
+      title:
+        ko: 시작 방법과 주요 설정
+      exam_tags:
+        - SOA-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/LaunchingAndUsingInstances.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-launch-parameters.html
+    - id: ec2/launch-user-data/launch-templates
+      title:
+        ko: 시작 템플릿과 버전 (시작 구성과 비교)
+      exam_tags:
+        - SOA-C03#3.1
+        - SAA-C03#3.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 시작 구성을 쓰는 Auto Scaling 그룹은 시작 템플릿으로 옮긴다
+          source: https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-configurations.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-launch-templates.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/manage-launch-template-versions.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launch-template-restrictions.html
+    - id: ec2/launch-user-data/user-data
+      title:
+        ko: 사용자 데이터 (셸 스크립트, cloud-init, 실행 시점, 보안)
+      exam_tags:
+        - SOA-C03#3.1
+        - SAA-C03#1.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 비밀번호나 오래 쓰는 암호화 키 같은 민감한 데이터는 사용자 데이터에 넣지 않는다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html

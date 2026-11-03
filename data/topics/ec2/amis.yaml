@@ -1,0 +1,61 @@
+# 장: EC2 AMI
+chapter:
+  id: ec2/amis
+  title:
+    ko: AMI (구성, 복사·공유, 암호화, 수명 주기)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html
+  topics:
+    - id: ec2/amis/components
+      title:
+        ko: AMI 구성과 루트 볼륨 유형 (EBS 기반 대 인스턴스 스토어 기반)
+      exam_tags:
+        - SOA-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 새로 만드는 AMI는 Amazon S3 기반이 아니라 EBS 기반으로 만든다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ComponentsAMIs.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ComponentsAMIs.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html
+    - id: ec2/amis/copy-share
+      title:
+        ko: 리전 간 복사와 공유 (CopyImage, 시작 권한, 퍼블릭 액세스 차단)
+      exam_tags:
+        - SOA-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/how-ami-copy-works.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/sharingamis-intro.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/sharingamis-explicit.html
+    - id: ec2/amis/encryption
+      title:
+        ko: AMI 암호화 (띄울 때, 복사할 때, 공유할 때)
+      exam_tags:
+        - SOA-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIEncryption.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/how-ami-copy-works.html
+    - id: ec2/amis/lifecycle
+      title:
+        ko: 수명 주기 (사용 중단, 비활성화, 등록 취소, 휴지통, Image Builder)
+      exam_tags:
+        - SOA-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 쓰지 않는 AMI를 등록 취소할 때는 필요 없는 스냅샷도 지우고 인스턴스도 종료해 불필요한 비용을 막는다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/deregister-ami.html
+          checked: 2026-11-03
+        - claim:
+            ko: 맞춤형 골든 이미지의 생성·관리·배포 자동화에는 EC2 Image Builder를 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-create-win-sysprep.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-lifecycle.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-deprecate.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin-working-with-amis.html

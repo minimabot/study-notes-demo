@@ -1,0 +1,18 @@
+# spring/container 장 전용 사실
+- id: spring.override.framework.default
+  value: true
+  unit: boolean
+  display: { ko: "허용(true)" }
+  label: { ko: "Spring Framework DefaultListableBeanFactory의 같은 이름 빈 정의 덮어쓰기 기본값 (설정하지 않으면 허용)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultListableBeanFactory.java#L279
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.override.boot.default
+  value: false
+  unit: boolean
+  display: { ko: "금지(false)" }
+  label: { ko: "Spring Boot의 같은 이름 빈 정의 덮어쓰기 기본값 (spring.main.allow-bean-definition-overriding)" }
+  source_en: https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot/src/main/java/org/springframework/boot/ApplicationProperties.java#L31
+  checked: 2026-11-03
+  volatile: false

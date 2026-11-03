@@ -1,0 +1,58 @@
+# 장: 인스턴스 수명 주기
+chapter:
+  id: ec2/instance-lifecycle
+  title:
+    ko: 인스턴스 수명 주기 (상태와 과금, 중지·최대 절전·종료, 보호, 복구)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html
+  topics:
+    - id: ec2/instance-lifecycle/states-billing
+      title:
+        ko: 인스턴스 상태와 상태별 과금
+      exam_tags:
+        - SAA-C03#4.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html
+    - id: ec2/instance-lifecycle/stop-hibernate-terminate
+      title:
+        ko: 재부팅, 중지, 최대 절전, 종료 비교
+      exam_tags:
+        - SAA-C03#3.2
+        - SOA-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 인스턴스 재부팅은 OS의 재부팅 명령보다 EC2(콘솔·CLI·API)로 한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-hibernate-overview.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html
+    - id: ec2/instance-lifecycle/protection
+      title:
+        ko: 종료 방지, 중지 방지, 종료 동작, DeleteOnTermination
+      exam_tags:
+        - SOA-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_ChangingDisableAPITermination.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-stop-protection.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/preserving-volumes-on-termination.html
+    - id: ec2/instance-lifecycle/recovery-events
+      title:
+        ko: 자동 인스턴스 복구와 예정된 이벤트
+      exam_tags:
+        - SOA-C03#1.2
+        - SOA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 인스턴스 복구와 별도로, 정상 인스턴스로 트래픽을 넘기는 고가용성 아키텍처(Elastic Load Balancing, EC2 Auto Scaling)를 구현한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-recover.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-recover.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-configuration-recovery.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-instances-status-check_sched.html

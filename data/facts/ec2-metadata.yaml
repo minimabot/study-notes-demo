@@ -1,0 +1,71 @@
+# ec2/metadata 장 전용 수치. 2026-11-03 EC2 사용 설명서 대조.
+
+- id: ec2.imds.token.ttl.min
+  value: 1
+  unit: s
+  display: { ko: "1초" }
+  label: { ko: "IMDSv2 세션 토큰 TTL 하한" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.imds.token.ttl.max
+  value: 21600
+  unit: s
+  display: { ko: "6시간" }
+  label: { ko: "IMDSv2 세션 토큰 TTL 상한" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.imds.hop.default
+  value: 1
+  unit: count
+  display: { ko: "1" }
+  label: { ko: "PUT 응답 홉 제한 기본값(계정·AMI 설정이 없을 때)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.imds.hop.max
+  value: 64
+  unit: count
+  display: { ko: "64" }
+  label: { ko: "메타데이터 응답 홉 제한으로 지정할 수 있는 최대값" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.imds.hop.container
+  value: 2
+  unit: count
+  display: { ko: "2" }
+  label: { ko: "컨테이너 환경에서 문서가 권하는 홉 제한. AMI ImdsSupport v2.0이 정하는 값과 같다" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.linklocal.pps
+  value: 1024
+  unit: count/s
+  display: { ko: "초당 1,024 패킷" }
+  label: { ko: "링크 로컬 주소 서비스(IMDS, Route 53 Resolver DNS, NTP 등) 합산 인스턴스당 패킷 한도" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.imds.cred.refresh
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "인스턴스 역할 임시 자격 증명: 이전 자격 증명 만료 전 최소 이만큼 앞서 새 자격 증명이 나온다" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-metadata-security-credentials.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/instance-metadata-security-credentials.html
+  checked: 2026-11-03
+  volatile: false

@@ -1,0 +1,22 @@
+# 권 정의와 장 순서. 대상: Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25. 실무에서 Spring을 쓰기 위한 개념을 내부 동작과 함께 다룬다 (2026-11-03)
+volume:
+  id: spring
+  title: { ko: "Spring과 Java 동시성" }
+  structure_source: https://docs.spring.io/spring-framework/reference/core/beans.html
+order:
+  - spring/why-container
+  - spring/container
+  - spring/startup-refresh
+  - spring/configuration
+  - spring/bean-creation
+  - spring/dependency-injection
+  - spring/proxies-aop
+  - spring/transactional
+  - spring/scopes
+  - spring/bean-lifecycle
+  - spring/smart-lifecycle
+  - spring/events
+  - spring/completable-future
+  - spring/completable-future-practice
+  - spring/async
+  - spring/labs

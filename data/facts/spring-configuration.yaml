@@ -1,0 +1,27 @@
+# spring/configuration 장 전용 사실
+- id: spring.configuration.proxy-bean-methods.default
+  value: true
+  unit: boolean
+  display: { ko: "true(풀 모드)" }
+  label: { ko: "@Configuration의 proxyBeanMethods 기본값" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/Configuration.java#L477
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.autoconfiguration.proxy-bean-methods
+  value: false
+  unit: boolean
+  display: { ko: "false(라이트 모드)" }
+  label: { ko: "@AutoConfiguration 클래스의 proxyBeanMethods 값 (항상 false)" }
+  source_en: https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/AutoConfiguration.java#L46
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.ccpp.order
+  value: 2147483647
+  unit: order
+  display: { ko: "Ordered.LOWEST_PRECEDENCE (PriorityOrdered 무리 안에서)" }
+  label: { ko: "ConfigurationClassPostProcessor.getOrder() 반환값" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/ConfigurationClassPostProcessor.java#L210
+  checked: 2026-11-03
+  volatile: false

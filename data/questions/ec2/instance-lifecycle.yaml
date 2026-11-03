@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.lifecycle-hibernate
+  type: quiz
+  chapter: ec2/instance-lifecycle
+  topic: ec2/instance-lifecycle/stop-hibernate-terminate
+  question: { ko: "단독 EC2 인스턴스(Auto Scaling 그룹 아님)에서 도는 분석 서버가 시작할 때 메모리에 큰 캐시를 채우느라 오래 걸린다. 밤에는 끄고 아침에 빨리 이어서 쓰고 싶다. 무엇을 해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "지금 실행 중인 인스턴스에서 최대 절전을 켠 뒤 밤마다 최대 절전한다" } }
+    - { id: b, text: { ko: "최대 절전을 켜고 암호화된 EBS 루트 볼륨(RAM을 담을 크기)으로 새로 띄운 뒤, 밤마다 최대 절전한다" } }
+    - { id: c, text: { ko: "밤마다 재부팅한다. 재부팅은 RAM 내용을 유지한다" } }
+    - { id: d, text: { ko: "밤마다 중지한다. 중지해도 RAM 내용은 인스턴스 스토어에 남는다" } }
+  answer: b
+  explanation: { ko: "최대 절전은 RAM 내용을 EBS 루트 볼륨에 저장했다가 시작할 때 다시 읽어 프로세스를 이어 간다. 루트 볼륨은 EBS이고 암호화되어 있으며 RAM을 담을 만큼 커야 하고, 최대 절전은 시작할 때만 켤 수 있다. stopped 상태에서는 인스턴스 사용 요금이 없다(stopping 동안은 있다). a: 이미 있는 인스턴스에는 최대 절전을 켤 수 없다. c: 재부팅은 RAM을 지운다. 또 밤새 running이라 계속 과금된다. d: 중지하면 RAM과 인스턴스 스토어 데이터가 모두 지워진다." }
+  facts: []
+
+- id: ec2.q.lifecycle-termination-protection
+  type: quiz
+  chapter: ec2/instance-lifecycle
+  topic: ec2/instance-lifecycle/protection
+  question: { ko: "중요한 인스턴스에 종료 방지를 켰는데도 인스턴스가 종료됐다. 종료 방지가 막지 못하는 경우로 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "다른 IAM 사용자가 콘솔에서 종료를 눌렀다" } }
+    - { id: b, text: { ko: "AWS CLI로 terminate-instances를 불렀다" } }
+    - { id: c, text: { ko: "종료 동작이 terminate로 되어 있는 상태에서 누군가 OS 안에서 shutdown 명령을 실행했다" } }
+    - { id: d, text: { ko: "SDK로 TerminateInstances API를 불렀다" } }
+  answer: c
+  explanation: { ko: "종료 방지(DisableApiTermination)는 콘솔·CLI·API를 통한 종료를 막는다. OS 안에서 끄는 경우는 인스턴스 시작 종료 동작이 정하며, 이 값이 terminate면 종료 방지와 상관없이 종료된다. 예정된 이벤트와 Auto Scaling의 축소·교체도 막지 못한다. a, b, d: 모두 EC2 API를 거치므로 막힌다." }
+  facts: []
+
+- id: ec2.q.lifecycle-stop-ip
+  type: quiz
+  chapter: ec2/instance-lifecycle
+  topic: ec2/instance-lifecycle/stop-hibernate-terminate
+  question: { ko: "자동 할당된 퍼블릭 IPv4 주소로 접속하던 EBS 루트 인스턴스를, 인스턴스 유형을 바꾸려고 중지 후 다시 시작했다. 그 뒤 외부에서 같은 주소로 접속되지 않는다. 이유와 대책은?" }
+  choices:
+    - { id: a, text: { ko: "중지하면 퍼블릭 IPv4가 반납되고 시작 때 새 주소를 받는다. 고정 주소가 필요하면 Elastic IP를 연결한다" } }
+    - { id: b, text: { ko: "중지하면 프라이빗 IPv4도 바뀌어 보안 그룹 규칙이 맞지 않게 된다" } }
+    - { id: c, text: { ko: "인스턴스 유형을 바꾸면 루트 볼륨이 새로 만들어져 설정이 사라진다" } }
+    - { id: d, text: { ko: "중지 후 시작하면 인스턴스 ID가 바뀐다" } }
+  answer: a
+  explanation: { ko: "중지(와 최대 절전)하면 자동 할당 퍼블릭 IPv4는 반납되고 시작할 때 새 주소를 받는다. Elastic IP는 중지해도 연결이 유지된다. 재부팅이면 퍼블릭 IPv4도 유지된다. b: 프라이빗 IPv4와 IPv6는 유지된다. c: EBS 루트 볼륨은 그대로 남는다. d: 인스턴스 ID는 그대로다." }
+  facts: []

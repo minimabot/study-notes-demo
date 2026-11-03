@@ -32,7 +32,7 @@ chapter:
         - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html
     - id: lambda/invocation/retries
       title: { ko: "방식별 재시도와 멱등성" }
-      exam_tags: [DVA-C03#1.2, SAP-C03#1.1]
+      exam_tags: [DVA-C03#1.1, DVA-C03#1.2, SAP-C03#1.1]
       exam_unknown: false
       recommended:
         - { claim: { ko: "재시도로 같은 이벤트가 여러 번 처리돼도 중복 거래 같은 부작용이 없도록 멱등 코드를 쓴다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html, checked: 2026-11-03 }

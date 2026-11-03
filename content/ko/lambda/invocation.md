@@ -24,7 +24,7 @@ Lambda 함수를 실행하는 것을 **간접 호출(invocation)** 이라고 한
 이벤트 소스 매핑은 트리거와 몇 가지가 다르다.
 
 - 트리거는 이벤트를 내는 서비스가 저장·관리하는 알림 설정이다. 이벤트 소스 매핑은 Lambda 안에서 만들고 관리하는 리소스다.
-- 이벤트 소스 매핑은 레코드를 배치로 모아 한 번에 넘긴다. 배치 크기(`BatchSize`), 배치 기간(`MaximumBatchingWindowInSeconds`)을 채우거나, 모은 페이로드가 {{fact:lambda.payload.sync.max}}에 이르면 함수를 부른다.
+- 이벤트 소스 매핑은 레코드를 배치로 모아 한 번에 넘긴다. 레코드는 배치 크기(`BatchSize`)와 배치 기간(`MaximumBatchingWindowInSeconds`)에 따라 모인다. 다음 레코드를 넣으면 페이로드 한도({{fact:lambda.payload.sync.max}})를 넘는 경우 그 레코드는 넣지 않으므로, 한도 때문에 배치가 더 일찍 나갈 수 있다. Lambda와 소스가 붙이는 메타데이터도 크기에 들어가서 실제 레코드 수가 설정한 배치 크기보다 적을 수 있다.
 - 이벤트 소스 매핑은 각 이벤트를 **최소 한 번** 처리한다. 같은 레코드가 두 번 올 수 있으므로 함수 코드를 멱등(idempotent)하게 만든다.
 
 소스별 설정은 {{ch:lambda/event-source-mappings}}, SQS는 {{ch:sqs/integrations}}, Kinesis는 {{ch:kinesis/consumers}}, DynamoDB Streams는 {{ch:dynamodb/streams-ttl}}에서 다룬다.
@@ -62,7 +62,7 @@ Lambda 함수를 실행하는 것을 **간접 호출(invocation)** 이라고 한
 | 동기식 요청 | {{fact:lambda.payload.sync.max}} |
 | 동기식 응답 | {{fact:lambda.payload.sync.max}} (응답 스트리밍을 쓰면 {{fact:lambda.streaming.max}}) |
 | 비동기식 요청 | {{fact:lambda.payload.async.max}} |
-| 이벤트 소스 매핑 배치 | 배치 전체가 {{fact:lambda.payload.sync.max}}에 이르면 더 모으지 않고 호출 |
+| 이벤트 소스 매핑 배치 | 레코드와 메타데이터를 합쳐 {{fact:lambda.payload.sync.max}} 이하. 넘치면 설정한 배치 크기보다 적게 보낸다 |
 
 비동기 한도는 늘어난 적이 있어 예전 자료에는 더 작은 값이 남아 있다. 현재 할당량 페이지 값({{fact:lambda.payload.async.max}})을 기준으로 삼는다. 다만 SNS의 메시지 크기 한도는 이보다 작다. 그래서 큰 비동기 이벤트의 호출 기록(원래 페이로드 + 메타데이터)은 SNS 대상으로 전달되지 않을 수 있다고 문서가 따로 경고한다({{ch:lambda/async-invocation}}).
 
@@ -74,7 +74,7 @@ Lambda 함수를 실행하는 것을 **간접 호출(invocation)** 이라고 한
 | 비동기식 | Lambda가 이벤트를 대기열에 되돌려 놓고 간격을 늘려 가며 다시 시도한다. 최대 이벤트 보존 기간(기본 {{fact:lambda.async.event-age.max}}) 안에서 계속한다. 대기열이 길면 이벤트가 함수에 닿기 전에 만료될 수 있다 |
 | 이벤트 소스 매핑 | 레코드는 소스에 남아 있고 Lambda가 다시 시도한다. 스트림에서는 배치가 함수에 닿지 못한 스로틀이 재시도 횟수에 세지 않는다. SQS에서는 매핑에 배정하는 동시성을 줄여 가며 재시도하다가, 가시성 제한 시간이 지나면 메시지가 큐에 다시 보인다 |
 
-동기식 요청 수에는 별도 상한도 있다. 실행 환경 하나가 처리하는 동기 요청은 {{fact:lambda.rps-per-env.sync}}까지다. 그래서 함수의 초당 동기 요청 상한은 동시성 한도의 그만큼 배수가 된다. 비동기식은 이런 초당 요청 상한이 없고 동시성만 따진다. 동시성 계산은 {{ch:lambda/concurrency}}에서 다룬다.
+동기식 요청 수에는 별도 상한도 있다. 계정 동시성, 예약된 동시성처럼 동시성이 걸린 할당량마다 동시성 1당 {{fact:lambda.rps-per-env.sync}}의 초당 요청 한도가 함께 붙는다. 이것은 실행 환경 하나의 처리량 상한이 아니라 할당량 전체에 걸리는 요청 수 한도다. 비동기식은 이런 초당 요청 상한이 없고 동시성만 따진다. 동시성 계산은 {{ch:lambda/concurrency}}에서 다룬다.
 
 @topic lambda/invocation/retries
 
@@ -83,7 +83,7 @@ Lambda 함수를 실행하는 것을 **간접 호출(invocation)** 이라고 한
 | 방식 | 함수 오류 시 재시도 |
 |---|---|
 | 동기식(직접 호출) | Lambda는 재시도하지 않는다. 호출자가 응답의 오류를 보고 다시 부를지, 큐로 보낼지, 무시할지 정한다 |
-| 동기식(서비스가 호출) | 그 서비스가 정한다. 예: API Gateway는 오류를 요청자에게 그대로 전한다. S3 Batch Operations는 함수가 `TemporaryFailure`를 돌려주면 재시도한다 |
+| 동기식(서비스가 호출) | 그 서비스가 정한다. 예: API Gateway는 Lambda 호출을 재시도하지 않는다. 기본 오류 처리에서는 Lambda가 호출을 거절하면 500, 함수 오류나 잘못된 응답 형식이면 502를 클라이언트에 준다(통합 방식과 사용자 정의 오류 응답에 따라 달라질 수 있다). S3 Batch Operations는 함수가 `TemporaryFailure`를 돌려주면 재시도한다 |
 | 비동기식 | Lambda가 기본 {{fact:lambda.async.retries.max}} 더 시도한다. 그래도 실패하면 버리거나, 설정해 둔 실패 대상(on-failure destination)·배달 못한 편지 대기열(DLQ)로 보낸다 |
 | 이벤트 소스 매핑(스트림) | 배치 전체를 성공하거나 레코드가 만료될 때까지 다시 처리한다. 그동안 그 샤드의 처리가 멈춘다. 재시도 횟수와 실패 대상을 설정할 수 있다 |
 | 이벤트 소스 매핑(큐) | 큐의 가시성 제한 시간이 재시도 간격을, 큐의 리드라이브 정책(DLQ)이 최종 실패 처리를 정한다 |

@@ -1,0 +1,9 @@
+# spring/startup-refresh 장 전용 사실
+- id: spring.refresh.phase-count
+  value: 12
+  unit: count
+  display: { ko: "12단계" }
+  label: { ko: "AbstractApplicationContext.refresh()가 차례로 부르는 단계 메서드 수 (prepareRefresh ~ finishRefresh, v7.0.8)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/support/AbstractApplicationContext.java#L581
+  checked: 2026-11-03
+  volatile: false

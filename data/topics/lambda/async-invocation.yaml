@@ -55,6 +55,7 @@ chapter:
       title:
         ko: 호출 방식별 재시도와 멱등성
       exam_tags:
+        - DVA-C03#1.1
         - DVA-C03#1.2
         - SAP-C03#1.1
         - DOP-C02#5.1

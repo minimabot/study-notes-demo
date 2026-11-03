@@ -1,0 +1,91 @@
+# ec2/amis 장 전용 수치. 2026-11-03 EC2 사용 설명서·EBS 사용 설명서(휴지통) 대조.
+
+- id: ec2.ami.boot.ebs
+  value: 60
+  unit: s
+  display: { ko: "1분 미만" }
+  label: { ko: "EBS 기반 AMI로 띄운 인스턴스의 보통 부팅 시간" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ComponentsAMIs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ComponentsAMIs.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ami.boot.s3
+  value: 300
+  unit: s
+  display: { ko: "5분 미만" }
+  label: { ko: "Amazon S3 기반(인스턴스 스토어 루트) AMI로 띄운 인스턴스의 보통 부팅 시간" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ComponentsAMIs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ComponentsAMIs.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ami.public.deprecate
+  value: 2
+  unit: year
+  display: { ko: "2년" }
+  label: { ko: "퍼블릭 AMI의 기본 사용 중단 날짜(생성일로부터). 퍼블릭 AMI는 이보다 늦출 수 없다" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-deprecate.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ami-deprecate.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ami.deprecate.max
+  value: 10
+  unit: year
+  display: { ko: "10년" }
+  label: { ko: "프라이빗 AMI 사용 중단 날짜로 지정할 수 있는 상한(지금부터)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-deprecate.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ami-deprecate.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ami.dereg.cooldown
+  value: 24
+  unit: hour
+  display: { ko: "24시간" }
+  label: { ko: "AMI 등록 취소 방지를 끈 뒤에도 보호가 유지되는 선택적 대기 기간" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-deregistration-protection.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ami-deregistration-protection.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ami.quota.public
+  value: 5
+  unit: count
+  display: { ko: "리전당 5개" }
+  label: { ko: "퍼블릭 AMI 기본 할당량(휴지통에 있는 퍼블릭 AMI 포함)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ami-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ami.quota.share
+  value: 1000
+  unit: count
+  display: { ko: "1,000개" }
+  label: { ko: "AMI 하나를 한 리전에서 공유할 수 있는 대상(조직·OU·계정) 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ami-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ami-quotas.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.rbin.ami.retention.min
+  value: 1
+  unit: day
+  display: { ko: "1일" }
+  label: { ko: "휴지통 보존 규칙의 보존 기간 하한(EBS 스냅샷과 EBS 기반 AMI)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/recycle-bin-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.rbin.ami.retention.max
+  value: 365
+  unit: day
+  display: { ko: "365일" }
+  label: { ko: "휴지통 보존 규칙의 보존 기간 상한(EBS 스냅샷과 EBS 기반 AMI)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/recycle-bin-concepts.html
+  checked: 2026-11-03
+  volatile: false

@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.amis-cross-region
+  type: quiz
+  chapter: ec2/amis
+  topic: ec2/amis/copy-share
+  question: { ko: "서울 리전에서 만든 맞춤형 AMI로 버지니아 북부 리전에도 같은 구성의 인스턴스를 띄우려 한다. 무엇을 해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "AMI를 퍼블릭으로 공유하면 모든 리전에서 같은 AMI ID로 쓸 수 있다" } }
+    - { id: b, text: { ko: "버지니아 북부 리전에서 CopyImage로 서울 AMI를 복사하고, 새로 생긴 AMI ID로 띄운다" } }
+    - { id: c, text: { ko: "시작 템플릿에 서울 AMI ID를 넣고 버지니아 북부 서브넷을 지정한다" } }
+    - { id: d, text: { ko: "AMI는 글로벌 리소스라 아무것도 하지 않아도 된다" } }
+  answer: b
+  explanation: { ko: "AMI는 리전 리소스이고 인스턴스는 AMI가 있는 리전에서만 뜬다. 다른 리전에서 쓰려면 대상 리전에서 복사를 시작해 옮긴다. 복사본은 새 AMI ID를 받는 별개의 AMI라 원본과 따로 관리된다. a: 공유도 리전 단위라 공유한 리전에서만 보인다. c: 다른 리전의 AMI ID로는 띄울 수 없다. d: AMI는 글로벌이 아니다." }
+  facts: []
+
+- id: ec2.q.amis-encrypted-share
+  type: quiz
+  chapter: ec2/amis
+  topic: ec2/amis/encryption
+  question: { ko: "루트 스냅샷이 AWS 관리형 기본 KMS 키로 암호화된 AMI를 다른 계정과 공유하려 했지만 되지 않는다. 가장 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "AMI를 복사하면서 암호화를 풀고, 암호화되지 않은 복사본을 공유한다" } }
+    - { id: b, text: { ko: "AMI를 퍼블릭으로 바꾼다" } }
+    - { id: c, text: { ko: "AMI를 고객 관리형 키로 다시 암호화해 복사하고, 상대 계정이 그 키를 쓰도록 키 정책을 연 뒤 복사본을 공유한다" } }
+    - { id: d, text: { ko: "스냅샷만 상대 계정과 공유하면 AMI도 자동으로 공유된다" } }
+  answer: c
+  explanation: { ko: "AWS 관리형 기본 키로 암호화한 AMI는 공유할 수 없다. 복사할 때 고객 관리형 키로 다시 암호화할 수 있고, 공유받는 계정이 그 키를 쓸 수 있어야 한다. a: 암호화된 AMI를 복사해 암호화를 풀 수는 없다. b: 암호화된 스냅샷이 있는 AMI는 퍼블릭으로 만들 수 없다. d: 공유 대상은 AMI의 시작 권한이다. 스냅샷 공유만으로 AMI가 공유되지 않는다." }
+  facts: []
+
+- id: ec2.q.amis-deregister-cost
+  type: quiz
+  chapter: ec2/amis
+  topic: ec2/amis/lifecycle
+  question: { ko: "오래된 EBS 기반 AMI를 정리했는데 스냅샷 저장 요금이 줄지 않는다. 가장 그럴듯한 이유는?" }
+  choices:
+    - { id: a, text: { ko: "AMI를 사용 중단(deprecate)만 했거나, 등록 취소하면서 연결된 스냅샷을 지우지 않았다" } }
+    - { id: b, text: { ko: "등록 취소하면 스냅샷이 자동으로 휴지통에 들어가 늘 요금이 나간다" } }
+    - { id: c, text: { ko: "등록 취소한 AMI로 띄운 인스턴스가 자동으로 종료되면서 새 스냅샷을 만든다" } }
+    - { id: d, text: { ko: "AMI 요금은 AMI 개수로 매겨지므로 스냅샷과 상관없다" } }
+  answer: a
+  explanation: { ko: "사용 중단은 목록에서 숨길 뿐 AMI를 지우지 않으므로 스냅샷 요금이 계속 나간다. 등록 취소도 기본으로 스냅샷을 남긴다. 등록 취소할 때 연결된 스냅샷 삭제를 지정하거나 나중에 직접 지워야 요금이 멈춘다. b: 휴지통은 보존 규칙에 맞을 때만 쓰이고, 보존 기간이 끝나면 영구 삭제된다. c: 등록 취소는 기존 인스턴스에 영향을 주지 않는다. d: 요금은 뒤의 스냅샷(또는 S3) 저장에 붙는다." }
+  facts: []

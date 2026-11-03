@@ -1,0 +1,29 @@
+# 장: 컨테이너 구조 (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/container
+  title: { ko: "컨테이너 구조: BeanFactory, ApplicationContext, 빈 정의" }
+  track: core
+  doc_source: https://docs.spring.io/spring-framework/reference/core/beans/beanfactory.html
+  topics:
+    - id: spring/container/beanfactory-vs-context
+      title: { ko: "BeanFactory와 ApplicationContext가 하는 일의 차이" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/beanfactory.html
+        - https://docs.spring.io/spring-framework/reference/core/beans/context-introduction.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/ApplicationContext.java#L59
+    - id: spring/container/bean-definition
+      title: { ko: "빈 정의(BeanDefinition)가 담는 것" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/definition.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/config/BeanDefinition.java#L42
+    - id: spring/container/registry-dlbf
+      title: { ko: "BeanDefinitionRegistry와 DefaultListableBeanFactory" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultListableBeanFactory.java#L1252
+        - https://docs.spring.io/spring-framework/reference/core/beans/beanfactory.html
+    - id: spring/container/annotation-registration
+      title: { ko: "애너테이션 설정이 정의로 바뀌는 순서와 실무 함정" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/AnnotationConfigUtils.java#L143
+        - https://docs.spring.io/spring-framework/reference/core/beans/java.html
+        - https://docs.spring.io/spring-boot/reference/features/spring-application.html

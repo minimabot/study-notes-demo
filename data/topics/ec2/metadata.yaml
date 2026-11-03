@@ -1,0 +1,82 @@
+# 장: 인스턴스 메타데이터
+chapter:
+  id: ec2/metadata
+  title:
+    ko: 인스턴스 메타데이터 (IMDS, IMDSv2, 자격 증명)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+  topics:
+    - id: ec2/metadata/basics
+      title:
+        ko: IMDS 엔드포인트와 메타데이터 범주
+      exam_tags:
+        - SAA-C03#1.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 비밀번호나 오래 쓰는 암호화 키 같은 민감한 데이터는 사용자 데이터에 넣지 않는다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+    - id: ec2/metadata/imdsv2
+      title:
+        ko: IMDSv1과 IMDSv2 (토큰, PUT, 홉 제한과 컨테이너)
+      exam_tags:
+        - SAA-C03#1.2
+        - DVA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 컨테이너 환경에서는 설정(리전 등)을 컨테이너에 직접 넘기거나 응답 홉 제한을 2로 올린다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html
+    - id: ec2/metadata/defaults-policy
+      title:
+        ko: 메타데이터 옵션, 계정 기본값·AMI 설정, IAM 조건, IMDSv2 전환 경로
+      exam_tags:
+        - SOA-C03#4.1
+        - SAA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: IMDSv2만 받도록 바꾸기 전에 MetadataNoToken 지표 등으로 IMDSv1 의존을 찾아 없앤 뒤, 인스턴스와 계정 기본값을 IMDSv2 필수로 바꾼다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-metadata-transition-to-version-2.html
+          checked: 2026-11-03
+        - claim:
+            ko: 로컬 방화벽으로 IMDS 접근을 좁힐 때는 특정 사용자만 허용하는 허용 규칙을 고려한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-metadata-limiting-access.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-options.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-new-instances.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-metadata-transition-to-version-2.html
+    - id: ec2/metadata/enforcement
+      title:
+        ko: 계정 수준 IMDSv2 강제와 ImdsV1Enabled 지표 (2025년 이후)
+      exam_tags: []
+      exam_unknown: true   # IMDSv2 enforcement 2026-02-24, ImdsV1Enabled 지표 2026-10-22 (DocumentHistory)
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-IMDS-new-instances.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-metadata-transition-to-version-2.html
+    - id: ec2/metadata/identity-credentials
+      title:
+        ko: 인스턴스 프로파일 자격 증명과 인스턴스 자격 증명 문서
+      exam_tags:
+        - DVA-C03#2.1
+        - SAA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: EC2 워크로드는 인스턴스에 붙은 역할의 세션 자격 증명을 IMDS에서 받아 쓰고, 같은 역할을 다시 AssumeRole하지 않는다(세션 태그·세션 정책이 필요할 때 제외)
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-metadata-security-credentials.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-metadata-security-credentials.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/verify-iid.html

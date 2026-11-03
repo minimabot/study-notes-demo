@@ -124,7 +124,7 @@ window.SIMS['lambda-lifecycle'] = function (root, F) {
       else if (e.st === 'busy') { s = `${e.req} 처리 중`; m = '핸들러 실행'; p = (t - e.t0) / (e.until - e.t0); }
       else if (e.st === 'frozen') {
         s = '동결(대기)';
-        if (e.pc) { m = '프로비저닝: 종료 안 됨'; p = 1; }
+        if (e.pc) { m = '데모: 유휴 종료 생략. 실제 환경은 백그라운드에서 교체될 수 있음'; p = 1; }
         else { const left = Math.max(0, IDLE_MS - (t - e.idle0)); m = `종료까지 ${(left / 1000).toFixed(1)}s (데모)`; p = left / IDLE_MS; }
       } else { s = '종료됨'; m = '사라지는 중'; p = 0; }
       return `<div class="ll-env ${e.st}"><div class="n">${e.id}${e.pc ? '<span class="pc">PC</span>' : ''}</div><div class="s">${s}</div><div class="m">${m}</div><div class="ll-bar"><i style="width:${Math.min(100, Math.max(0, p * 100))}%"></i></div></div>`;

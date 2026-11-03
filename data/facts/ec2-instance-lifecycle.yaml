@@ -1,0 +1,31 @@
+# ec2/instance-lifecycle 장 전용 수치. 2026-11-03 EC2 사용 설명서 대조. 시작마다의 최소 과금은 공용 ec2.ondemand.billing.min을 쓴다.
+
+- id: ec2.hib.linux.ram.max
+  value: 150
+  unit: GiB
+  display: { ko: "150 GiB" }
+  label: { ko: "최대 절전 모드를 쓸 수 있는 Linux 인스턴스 RAM 상한(이보다 작아야 한다)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/hibernating-prerequisites.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.hib.win.ram.max
+  value: 16
+  unit: GiB
+  display: { ko: "16 GiB" }
+  label: { ko: "최대 절전 모드를 쓸 수 있는 Windows 인스턴스 RAM 상한(이하)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/hibernating-prerequisites.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.hib.max.duration
+  value: 60
+  unit: day
+  display: { ko: "60일" }
+  label: { ko: "최대 절전 상태로 둘 수 있는 최대 기간(넘기려면 시작 후 중지·시작)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-hibernate-overview.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/instance-hibernate-overview.html
+  checked: 2026-11-03
+  volatile: false

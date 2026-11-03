@@ -1,0 +1,70 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.metadata-container-hop
+  type: quiz
+  chapter: ec2/metadata
+  topic: ec2/metadata/imdsv2
+  question: { ko: "EC2 인스턴스에 IMDSv2 필수와 응답 홉 제한 기본값을 설정했다. 인스턴스 위 Docker 컨테이너(브리지 네트워크) 안의 앱이 AWS SDK로 인스턴스 역할 자격 증명을 받지 못해 시간 초과가 난다. 호스트에서 직접 돌린 같은 앱은 잘 된다. 가장 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "IMDSv1을 다시 허용한다" } }
+    - { id: b, text: { ko: "인스턴스의 메타데이터 응답 홉 제한을 {{fact:ec2.imds.hop.container}}로 올린다" } }
+    - { id: c, text: { ko: "홉 제한을 최대값 {{fact:ec2.imds.hop.max}}로 올린다" } }
+    - { id: d, text: { ko: "IAM 사용자 액세스 키를 컨테이너 환경 변수로 넣는다" } }
+  answer: b
+  explanation: { ko: "컨테이너에서 IMDS로 가면 네트워크 홉이 하나 더 붙는다. 홉 제한이 기본값 {{fact:ec2.imds.hop.default}}이면 PUT 응답(토큰)이 컨테이너까지 오지 못한다. 문서는 컨테이너 환경에서 홉 제한을 {{fact:ec2.imds.hop.container}}로 올리거나 설정을 컨테이너에 직접 넘기라고 한다. a: 보안을 낮추는 쪽이고 문제의 원인(홉)도 아니다. c: 필요 이상으로 높이면 토큰이 더 멀리 갈 수 있다. d: 오래 쓰는 키를 두는 것은 역할을 쓰는 것보다 나쁘다." }
+  facts: [ec2.imds.hop.default, ec2.imds.hop.container, ec2.imds.hop.max]
+
+- id: ec2.q.metadata-transition
+  type: quiz
+  chapter: ec2/metadata
+  topic: ec2/metadata/defaults-policy
+  question: { ko: "수백 대의 기존 인스턴스를 IMDSv2만 받도록 바꾸려 한다. 바꾼 뒤 일부 에이전트가 깨질까 걱정된다. 문서가 권하는 첫 단계로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "계정 기본값을 IMDSv2 필수로 바꾼다. 기존 인스턴스에도 바로 적용된다" } }
+    - { id: b, text: { ko: "모든 인스턴스의 IMDS를 끈다" } }
+    - { id: c, text: { ko: "CloudWatch의 MetadataNoToken 지표 등으로 IMDSv1을 부르는 인스턴스와 소프트웨어를 찾아 IMDSv2로 올린 뒤, 인스턴스를 IMDSv2 필수로 바꾼다" } }
+    - { id: d, text: { ko: "홉 제한을 1로 낮추면 IMDSv1이 자동으로 꺼진다" } }
+  answer: c
+  explanation: { ko: "문서의 권장 경로는 IMDSv1 사용을 먼저 조사(MetadataNoToken, IMDS Packet Analyzer)하고, 소프트웨어를 IMDSv2로 올린 다음, 인스턴스와 계정 기본값을 IMDSv2 필수로 바꾸는 것이다. a: 계정 기본값은 새로 띄우는 인스턴스에만 적용되고 기존 인스턴스는 바뀌지 않는다. b: IMDS를 끄면 역할 자격 증명을 쓰는 앱까지 멈춘다. d: 홉 제한은 토큰 응답이 갈 수 있는 거리이고 IMDSv1 허용 여부와 상관없다." }
+  facts: []
+
+- id: ec2.q.metadata-credentials
+  type: quiz
+  chapter: ec2/metadata
+  topic: ec2/metadata/identity-credentials
+  question: { ko: "EC2 인스턴스의 Java 앱이 S3를 읽어야 한다. 인스턴스에는 S3 읽기 권한만 있는 역할의 인스턴스 프로파일이 붙어 있다. 앱 코드는 어떻게 자격 증명을 얻는 것이 알맞은가?" }
+  choices:
+    - { id: a, text: { ko: "AWS SDK의 기본 자격 증명 공급자를 쓴다. SDK가 IMDS에서 역할의 임시 자격 증명을 받아 쓰고, 바뀐 자격 증명도 알아서 다시 가져온다" } }
+    - { id: b, text: { ko: "앱이 시작할 때 같은 역할을 sts:AssumeRole로 맡아 자격 증명을 받는다" } }
+    - { id: c, text: { ko: "IAM 사용자 액세스 키를 만들어 설정 파일에 넣는다" } }
+    - { id: d, text: { ko: "인스턴스 자격 증명 문서에서 액세스 키를 꺼내 쓴다" } }
+  answer: a
+  explanation: { ko: "인스턴스 프로파일의 역할 자격 증명은 IMDS의 iam/security-credentials/<역할 이름>으로 제공되고, AWS가 자동으로 바꾼다(이전 것이 만료되기 최소 {{fact:ec2.imds.cred.refresh}} 전에 새 것이 나온다). SDK와 CLI는 이를 알아서 쓴다. b: 이미 붙은 역할을 다시 맡을 필요가 없고, 그러려면 신뢰 정책에서 자기 자신을 허용해야 한다. 세션 태그나 세션 정책이 필요할 때만 쓴다. c: 오래 쓰는 키를 인스턴스에 두는 것은 피한다. d: 인스턴스 자격 증명 문서는 인스턴스 속성을 담은 문서이고 자격 증명이 들어 있지 않다." }
+  facts: [ec2.imds.cred.refresh]
+
+- id: ec2.d.metadata-container-hardening
+  type: design
+  chapter: ec2/metadata
+  topic: ec2/metadata/defaults-policy
+  scenario: { ko: "한 팀이 EC2 인스턴스 여러 대에서 Docker 컨테이너(브리지 네트워크)로 웹 서비스를 돌린다. 인스턴스는 Amazon EC2 Auto Scaling 그룹이 시작 템플릿으로 띄운다. 컨테이너는 두 종류다. (가) API 컨테이너: 인스턴스 역할로 S3 버킷 하나를 읽어야 한다. (나) 미리보기 컨테이너: 사용자가 준 URL의 내용을 가져와 썸네일을 만든다. AWS API는 전혀 부르지 않는다. 보안 점검에서 (나)를 이용한 SSRF로 인스턴스 역할 자격 증명이 새어 나갈 수 있다는 지적을 받았다. 현재 인스턴스는 IMDSv1과 IMDSv2를 모두 받고, 역할에는 AmazonS3FullAccess가 붙어 있다. 메타데이터 접근을 단단히 하는 조치를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "MetadataNoToken 지표로 IMDSv1 호출이 없는지 확인한 뒤, 시작 템플릿의 메타데이터 버전을 IMDSv2 필수(HttpTokens=required)로 바꾼 새 버전을 만들어 그룹에 적용한다" } }
+    - { id: b, text: { ko: "같은 시작 템플릿 버전에서 응답 홉 제한을 {{fact:ec2.imds.hop.container}}로 둔다. (가) 컨테이너가 IMDSv2 토큰을 받을 수 있게 하기 위해서다" } }
+    - { id: c, text: { ko: "홉 제한을 {{fact:ec2.imds.hop.max}}로 올려 어떤 네트워크 구성에서도 토큰이 닿게 한다" } }
+    - { id: d, text: { ko: "호스트 OS 방화벽 규칙으로 (나) 컨테이너에서 169.254.169.254로 가는 트래픽을 막는다" } }
+    - { id: e, text: { ko: "역할 권한을 그 버킷 하나의 읽기로 줄인다" } }
+    - { id: f, text: { ko: "IAM 사용자 액세스 키를 사용자 데이터로 넘겨 (가) 컨테이너가 쓰게 하고, IMDS는 끈다" } }
+    - { id: g, text: { ko: "IAM 정책 조건 ec2:MetadataHttpTokens=required로 IMDSv1을 허용하는 인스턴스를 띄우거나 그렇게 바꾸지 못하게 한다" } }
+    - { id: h, text: { ko: "SSRF를 막기 위해 인스턴스의 IMDS를 아예 끈다(HttpEndpoint=disabled)" } }
+  answer_set: [a, b, d, e, g]
+  rubric:
+    ko:
+      - "a, b, d, e, g를 모두 고르면 정답이다."
+      - "a: IMDSv2는 PUT으로 받은 토큰이 있어야 메타데이터를 준다. 단순히 URL을 GET하게 만드는 SSRF로는 토큰을 받기 어렵다. 바꾸기 전에 IMDSv1 의존을 확인하는 것이 문서의 권장 순서다. 시작 템플릿은 고칠 수 없으므로 새 버전으로 만든다."
+      - "b: 브리지 네트워크 컨테이너에서는 홉이 하나 더 붙어, 기본값 {{fact:ec2.imds.hop.default}}이면 (가)가 토큰을 받지 못한다. 문서는 컨테이너 환경에서 {{fact:ec2.imds.hop.container}}를 권한다."
+      - "d: AWS API가 필요 없는 소프트웨어는 로컬 방화벽으로 IMDS 접근을 막는 것이 문서가 제시하는 방법이다. IMDSv2만으로는 같은 인스턴스 안 소프트웨어의 접근 자체를 막지 못한다."
+      - "e: 자격 증명이 새더라도 피해 범위를 줄인다. 최소 권한 원칙이다."
+      - "g: 시작 템플릿이 나중에 다시 IMDSv1을 허용하는 쪽으로 바뀌는 것을 정책으로 막는다. 계정 기본값을 IMDSv2 필수로 두는 것도 함께 쓸 수 있다."
+      - "c는 감점: 홉 제한을 필요 이상으로 높이면 토큰 응답이 더 멀리 갈 수 있어 보호가 약해진다."
+      - "f는 감점: 오래 쓰는 키를 사용자 데이터에 넣으면 인스턴스의 소프트웨어가 읽을 수 있다. 사용자 데이터에는 민감한 값을 넣지 말라고 문서가 경고한다. IMDS를 끄면 역할도 쓸 수 없다."
+      - "h는 감점: IMDS를 끄면 인스턴스 안의 어떤 코드도 메타데이터를 읽지 못해 (가)가 인스턴스 역할 자격 증명을 받을 수 없다. 접근을 끊어야 할 대상은 (나)뿐이다."
+  facts: [ec2.imds.hop.default, ec2.imds.hop.container, ec2.imds.hop.max]

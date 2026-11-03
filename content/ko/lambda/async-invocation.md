@@ -80,7 +80,7 @@ chapter: lambda/async-invocation
 | 호출 방식 | 재시도 |
 |---|---|
 | 직접 동기 호출 | Lambda가 재시도하지 않는다. 호출한 쪽이 다시 부르거나, 대기열로 보내거나, 무시한다 |
-| 다른 서비스의 동기 호출 | 그 서비스가 정한다. 예: API Gateway는 오류를 그대로 요청자에게 돌려준다. S3 Batch Operations는 `TemporaryFailure`면 다시 시도한다 |
+| 다른 서비스의 동기 호출 | 그 서비스가 정한다. 예: API Gateway는 Lambda 호출을 재시도하지 않는다. 기본 오류 처리에서는 Lambda가 호출을 거절하면 500, 함수 오류나 잘못된 응답 형식이면 502를 클라이언트에 준다(통합 방식과 사용자 정의 오류 응답에 따라 달라질 수 있다). S3 Batch Operations는 `TemporaryFailure`면 다시 시도한다 |
 | 비동기 호출 | 어느 서비스가 불렀든 Lambda가 함수 오류를 {{fact:lambda.async.retries.max}}까지 재시도한다 |
 | 이벤트 소스 매핑(스트림) | 배치 전체를 다시 시도한다. 계속 실패하면 오류가 풀리거나 레코드가 만료될 때까지 그 샤드 처리가 막힌다. `IteratorAge` 지표로 감시한다({{ch:kinesis/consumers}}, {{ch:dynamodb/streams-ttl}}) |
 | 이벤트 소스 매핑(큐) | 큐의 가시성 제한 시간과 재드라이브 정책이 재시도 간격과 실패 메시지의 행선지를 정한다({{ch:sqs/integrations}}) |

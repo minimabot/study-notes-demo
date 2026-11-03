@@ -1,0 +1,51 @@
+# ec2/launch-user-data 장 전용 수치. 2026-11-03 EC2 사용 설명서·EC2 Auto Scaling 사용 설명서 대조. 사용자 데이터 크기는 공용 ec2.userdata.max를 쓴다.
+
+- id: ec2.lt.max
+  value: 5000
+  unit: count
+  display: { ko: "리전당 5,000개" }
+  label: { ko: "계정당 시작 템플릿 최대 수" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launch-template-restrictions.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/launch-template-restrictions.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.lt.versions.max
+  value: 10000
+  unit: count
+  display: { ko: "템플릿당 10,000개" }
+  label: { ko: "시작 템플릿 하나의 최대 버전 수" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launch-template-restrictions.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/launch-template-restrictions.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.lc.new-types.date
+  value: "2023-01-01"
+  unit: date
+  display: { ko: "2023년 1월 1일" }
+  label: { ko: "이날부터 새 인스턴스 유형을 시작 구성(launch configuration)에서 지원하지 않는다" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/launch-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.lc.console.date
+  value: "2023-06-01"
+  unit: date
+  display: { ko: "2023년 6월 1일" }
+  label: { ko: "이날 이후 만든 계정은 콘솔에서 새 시작 구성을 만들 수 없다" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/launch-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.lc.create.date
+  value: "2024-10-01"
+  unit: date
+  display: { ko: "2024년 10월 1일" }
+  label: { ko: "이날 이후 만든 계정은 어떤 방법(콘솔·API·CLI·CloudFormation)으로도 새 시작 구성을 만들 수 없다" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/launch-configurations.html
+  checked: 2026-11-03
+  volatile: false
