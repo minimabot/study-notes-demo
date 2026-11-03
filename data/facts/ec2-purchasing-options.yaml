@@ -1,0 +1,62 @@
+# ec2/purchasing-options 장 전용 수치. 2026-11-03 EC2 사용 설명서·Savings Plans 사용 설명서 대조.
+# 할인율은 "최대" 값이고 자주 바뀐다. Savings Plans 개요(최대 72%)와 Compute Savings Plans(최대 66%)는 서로 다른 플랜의 값이다.
+
+- id: ec2.term.1y
+  value: 365
+  unit: day
+  display: { ko: "1년(365일)" }
+  label: { ko: "예약 인스턴스·Savings Plans 약정 기간 중 짧은 쪽" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-reserved-instances.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.term.3y
+  value: 1095
+  unit: day
+  display: { ko: "3년(1,095일)" }
+  label: { ko: "예약 인스턴스·Savings Plans 약정 기간 중 긴 쪽 (할인이 더 크다)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-reserved-instances.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.sp.max-discount
+  value: 72
+  unit: percent
+  display: { ko: "최대 72%" }
+  label: { ko: "EC2 Instance Savings Plans의 온디맨드 대비 최대 할인율" }
+  source_en: https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/savingsplans/latest/userguide/plan-types.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.sp.compute.max-discount
+  value: 66
+  unit: percent
+  display: { ko: "최대 66%" }
+  label: { ko: "Compute Savings Plans의 온디맨드 대비 최대 할인율" }
+  source_en: https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/savingsplans/latest/userguide/plan-types.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.cb.advance.max
+  value: 8
+  unit: week
+  display: { ko: "최대 8주 뒤" }
+  label: { ko: "ML용 용량 블록의 예약 시작 시점을 잡을 수 있는 범위" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-blocks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-capacity-blocks.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.cb.instances.max
+  value: 64
+  unit: count
+  display: { ko: "블록당 최대 64개" }
+  label: { ko: "ML용 용량 블록 하나에 담을 수 있는 인스턴스 수" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-blocks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-capacity-blocks.html
+  checked: 2026-11-03
+  volatile: true

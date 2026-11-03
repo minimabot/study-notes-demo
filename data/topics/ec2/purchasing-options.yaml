@@ -1,0 +1,77 @@
+# 장: EC2 구매 옵션
+chapter:
+  id: ec2/purchasing-options
+  title:
+    ko: 구매 옵션 (온디맨드, Savings Plans, 예약 인스턴스, 전용, 용량 예약)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html
+  topics:
+    - id: ec2/purchasing-options/on-demand
+      title:
+        ko: 온디맨드 인스턴스와 vCPU 할당량
+      exam_tags:
+        - SAA-C03#4.2
+        - SAP-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 짧고 불규칙하며 중단되면 안 되는 워크로드에는 온디맨드 인스턴스를 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html
+    - id: ec2/purchasing-options/savings-plans-ri
+      title:
+        ko: Savings Plans와 예약 인스턴스
+      exam_tags:
+        - SAA-C03#4.2
+        - SAP-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 약정 할인에는 예약 인스턴스보다 Savings Plans를 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/savingsplans/latest/userguide/plan-types.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-reserved-instances.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/reserved-instances-scope.html
+    - id: ec2/purchasing-options/dedicated
+      title:
+        ko: 전용 호스트와 전용 인스턴스 (테넌시와 라이선스)
+      exam_tags:
+        - SAA-C03#4.2
+        - SAP-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-hosts-overview.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/dedicated-instance.html
+    - id: ec2/purchasing-options/capacity
+      title:
+        ko: 온디맨드 용량 예약과 ML용 용량 블록
+      exam_tags:
+        - SAP-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 중요한 워크로드에 엄격한 용량 보장이 필요하면 온디맨드 용량 예약을 만든다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-reservations.html
+          checked: 2026-11-03
+        - claim:
+            ko: 며칠~몇 주 동안 GPU가 필요하고 쓰지 않는 동안 예약 비용을 내고 싶지 않으면 용량 블록을 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-blocks.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-reservations.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/capacity-reservations-pricing-billing.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-capacity-blocks.html
+    - id: ec2/purchasing-options/compare
+      title:
+        ko: 구매 옵션 비교와 조합
+      exam_tags:
+        - SAA-C03#4.2
+        - SAP-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-purchasing-options.html

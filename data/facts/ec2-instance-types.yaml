@@ -1,0 +1,101 @@
+# ec2/instance-types 장 전용 수치. 2026-11-03 EC2 사용 설명서 대조.
+
+- id: ec2.t.credit.def
+  value: 1
+  unit: vcpu-minute
+  display: { ko: "vCPU 하나를 최대로 1분 쓰는 양" }
+  label: { ko: "CPU 크레딧 1개의 크기 (vCPU 1개 × 사용률 100% × 1분)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.t3.large.vcpu
+  value: 2
+  unit: count
+  display: { ko: "vCPU 2개" }
+  label: { ko: "t3.large의 vCPU 수" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.t3.large.earn
+  value: 36
+  unit: credit/hour
+  display: { ko: "시간당 36크레딧" }
+  label: { ko: "t3.large가 시간당 얻는 CPU 크레딧" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.t3.large.baseline
+  value: 30
+  unit: percent
+  display: { ko: "vCPU당 30%" }
+  label: { ko: "t3.large의 기준 사용률 (vCPU당)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.t.accrual.window
+  value: 24
+  unit: hour
+  display: { ko: "24시간" }
+  label: { ko: "버스터블 인스턴스 크레딧 적립 한도의 기준 기간 (적립 한도 = 이 기간에 얻을 수 있는 크레딧 양)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.t.unlimited.window
+  value: 24
+  unit: hour
+  display: { ko: "24시간" }
+  label: { ko: "무제한 모드에서 평균 CPU 사용률을 따지는 이동 구간 (인스턴스 수명이 더 짧으면 수명)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances-unlimited-mode-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-performance-instances-unlimited-mode-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.t.credit.persist
+  value: 7
+  unit: day
+  display: { ko: "7일" }
+  label: { ko: "T3·T3a·T4g·T8i를 중지한 뒤 적립 크레딧이 남아 있는 기간 (T2는 중지하면 바로 사라진다)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.t3.large.breakeven
+  value: 42.5
+  unit: percent
+  display: { ko: "42.5%" }
+  label: { ko: "무제한 모드 t3.large가 m5.large와 비용이 같아지는 24시간 평균 CPU 사용률 (문서 예시, us-east-1 Linux 가격 기준)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances-unlimited-mode-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-performance-instances-unlimited-mode-concepts.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.t3.full-burst.ratio
+  value: 1.5
+  unit: ratio
+  display: { ko: "약 1.5배" }
+  label: { ko: "T3가 CPU를 늘 최대로 버스트할 때 같은 크기 M5 대비 비용 (문서 예시)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances-unlimited-mode-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/burstable-performance-instances-unlimited-mode-concepts.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.co.lookback
+  value: 14
+  unit: day
+  display: { ko: "최근 14일" }
+  label: { ko: "Compute Optimizer EC2 권장 사항이 근거로 삼는 사용 기록 기간" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-recommendations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-recommendations.html
+  checked: 2026-11-03
+  volatile: false

@@ -1,0 +1,41 @@
+# EC2 권 공용 수치. 다른 장은 이 파일을 고치지 않는다. 2026-11-03 EC2 사용 설명서 대조.
+
+- id: ec2.spot.notice
+  value: 120
+  unit: s
+  display: { ko: "2분" }
+  label: { ko: "스팟 인스턴스 중단 알림이 중지·종료보다 먼저 오는 시간" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-instance-termination-notices.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/spot-instance-termination-notices.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.userdata.max
+  value: 16384
+  unit: byte
+  display: { ko: "16 KB" }
+  label: { ko: "사용자 데이터 크기 한도 (base64 인코딩 전 원본)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/user-data.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.pg.partition.per-az
+  value: 7
+  unit: count
+  display: { ko: "가용 영역당 7개" }
+  label: { ko: "파티션 배치 그룹의 가용 영역당 최대 파티션 수" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/placement-strategies.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.pg.spread.per-az
+  value: 7
+  unit: count
+  display: { ko: "가용 영역당 7개" }
+  label: { ko: "랙 수준 분산 배치 그룹의 가용 영역당 실행 인스턴스 수 한도" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/placement-strategies.html
+  checked: 2026-11-03
+  volatile: false

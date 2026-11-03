@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.instance-types-naming
+  type: quiz
+  chapter: ec2/instance-types
+  topic: ec2/instance-types/naming
+  question: { ko: "인스턴스 유형 `r7gd.2xlarge`에 대한 설명으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "컴퓨팅 최적화, 7세대, GPU 가속, 고밀도 스토리지" } }
+    - { id: b, text: { ko: "메모리 최적화, 7세대, AWS Graviton 프로세서, 인스턴스 스토어 볼륨 포함" } }
+    - { id: c, text: { ko: "메모리 최적화, 7세대, Intel 프로세서, 전용 호스트 전용" } }
+    - { id: d, text: { ko: "범용, 7세대, AWS Graviton 프로세서, 네트워크 최적화" } }
+  answer: b
+  explanation: { ko: "첫 글자 `r`은 메모리 최적화 시리즈, `7`은 세대, 옵션 `g`는 AWS Graviton 프로세서, `d`는 인스턴스 스토어 볼륨이 붙어 있다는 뜻이다. 점 뒤 `2xlarge`는 크기다. a: 컴퓨팅 최적화는 `c`이고 옵션 `g`는 GPU가 아니라 Graviton이다. c: Intel은 옵션 `i`이고, 이름에 테넌시는 나타나지 않는다. d: 범용은 `m`, 네트워크 최적화는 옵션 `n`이다." }
+  facts: []
+
+- id: ec2.q.instance-types-unlimited
+  type: quiz
+  chapter: ec2/instance-types
+  topic: ec2/instance-types/burstable
+  question: { ko: "무제한 모드 t3.large 한 대가 하루 내내 평균 CPU 사용률 {{raw:40%}}로 돈다. 요금에 대해 맞는 설명은?" }
+  choices:
+    - { id: a, text: { ko: "무제한 모드는 CPU를 얼마나 쓰든 시간당 인스턴스 요금만 낸다" } }
+    - { id: b, text: { ko: "크레딧이 바닥나면 기준 사용률로 묶이므로 추가 요금은 없다" } }
+    - { id: c, text: { ko: "평균이 기준 사용률({{fact:ec2.t3.large.baseline}})을 넘으므로, 갚지 못한 잉여 크레딧만큼 vCPU-시간당 추가 요금이 붙는다" } }
+    - { id: d, text: { ko: "T3는 시작 크레딧으로 버스트하므로 하루 동안은 추가 요금이 없다" } }
+  answer: c
+  explanation: { ko: "무제한 모드는 쌓인 크레딧을 다 쓰면 잉여 크레딧으로 계속 버스트한다. {{fact:ec2.t.unlimited.window}} 평균이 기준 이하면 시간당 요금에 포함되지만, 기준을 넘으면 갚지 못한 잉여 크레딧에 vCPU-시간당 정해진 추가 요금을 낸다(a는 틀림). 기준으로 묶이는 것은 표준 모드의 동작이다(b). 시작 크레딧은 표준 모드 T2에만 있다(d). 평균이 계속 높다면 손익분기점(문서 예시 {{fact:ec2.t3.large.breakeven}})과 비교해 m5 같은 고정 성능 유형을 검토한다." }
+  facts: [ec2.t3.large.baseline, ec2.t.unlimited.window, ec2.t3.large.breakeven]
+
+- id: ec2.q.instance-types-graviton-move
+  type: quiz
+  chapter: ec2/instance-types
+  topic: ec2/instance-types/right-sizing
+  question: { ko: "x86 AMI로 띄운 EBS 기반 m6i 인스턴스를 비용 때문에 Graviton 기반 m7g로 옮기려 한다. 맞는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "인스턴스를 중지하고 인스턴스 유형만 m7g로 바꾼 뒤 시작한다" } }
+    - { id: b, text: { ko: "실행 중인 상태에서 유형 변경을 요청하면 AWS가 아키텍처를 자동 변환한다" } }
+    - { id: c, text: { ko: "Arm용 AMI로 m7g 인스턴스를 새로 띄우고, 애플리케이션이 Arm에서 도는지 시험한 뒤 옮긴다" } }
+    - { id: d, text: { ko: "기존 인스턴스의 AMI를 만든 뒤 그 AMI로 m7g를 띄운다" } }
+  answer: c
+  explanation: { ko: "AMI는 프로세서 아키텍처별이라, 유형을 바꿀 때는 같은 아키텍처의 유형만 고를 수 있다. x86에서 Arm(Graviton)으로는 유형 변경이 호환되지 않으므로 Arm용 AMI로 새 인스턴스를 띄워 옮겨야 한다. a, b: 아키텍처가 다른 유형으로는 바꿀 수 없고, 유형 변경은 중지 상태에서만 한다. d: 기존 인스턴스로 만든 AMI도 x86용이라 Arm 유형에서 쓸 수 없다." }
+  facts: []

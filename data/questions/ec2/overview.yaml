@@ -1,0 +1,28 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.overview-instance-store
+  type: quiz
+  chapter: ec2/overview
+  topic: ec2/overview/what-is
+  question: { ko: "EBS 루트 볼륨과 인스턴스 스토어 볼륨이 함께 붙은 인스턴스가 있다. 인스턴스 스토어에는 처리 중인 작업 파일을, EBS 볼륨에는 설정 파일을 두었다. 비용을 아끼려고 밤에 인스턴스를 중지했다가 아침에 다시 시작했다. 맞는 설명은?" }
+  choices:
+    - { id: a, text: { ko: "두 볼륨의 데이터가 모두 그대로 남는다" } }
+    - { id: b, text: { ko: "EBS 볼륨의 데이터는 남고, 인스턴스 스토어의 데이터는 지워진다" } }
+    - { id: c, text: { ko: "인스턴스 스토어 데이터는 남고, EBS 볼륨은 중지할 때 삭제된다" } }
+    - { id: d, text: { ko: "중지 전에 스냅샷을 찍지 않으면 두 볼륨 모두 비워진다" } }
+  answer: b
+  explanation: { ko: "인스턴스 스토어는 호스트에 붙은 임시 스토리지라 인스턴스를 중지·최대 절전 모드·종료하면 데이터가 지워진다. EBS 볼륨은 인스턴스와 따로 존재하는 영구 스토리지라 중지해도 남는다. a는 인스턴스 스토어의 성질을 놓쳤고, c는 두 스토리지를 거꾸로 설명했다. d: 스냅샷은 백업 수단이며, 중지만으로 EBS 데이터가 사라지지는 않는다. 잃으면 안 되는 작업 파일은 EBS나 다른 영구 스토리지에 둔다." }
+  facts: []
+
+- id: ec2.q.overview-shared-resp
+  type: quiz
+  chapter: ec2/overview
+  topic: ec2/overview/shared-responsibility
+  question: { ko: "EC2 인스턴스에서 웹 애플리케이션을 운영한다. 공동 책임 모델에서 고객이 맡는 일로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "인스턴스를 실행하는 물리 호스트의 하드웨어 교체" } }
+    - { id: b, text: { ko: "데이터센터의 출입 통제" } }
+    - { id: c, text: { ko: "게스트 OS의 보안 패치와 보안 그룹 규칙 관리" } }
+    - { id: d, text: { ko: "리전 사이 백본 네트워크의 보호" } }
+  answer: c
+  explanation: { ko: "EC2에서 고객은 클라우드 안의 보안을 맡는다. 게스트 OS와 그 위 소프트웨어의 업데이트·보안 패치, 보안 그룹과 VPC로 하는 네트워크 접근 제어, 접속 자격 증명, 인스턴스에 붙인 IAM 역할이 고객 몫이다. a, b, d는 AWS 서비스를 실행하는 인프라(하드웨어, 데이터센터, 네트워크)라서 AWS가 맡는다." }
+  facts: []

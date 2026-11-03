@@ -1,0 +1,47 @@
+# 장: EC2 개요
+chapter:
+  id: ec2/overview
+  title:
+    ko: EC2 개요 (인스턴스, 리전·가용 영역, 공동 책임)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+  topics:
+    - id: ec2/overview/what-is
+      title:
+        ko: 인스턴스와 구성 요소 (AMI, 인스턴스 유형, 스토리지, 네트워크)
+      exam_tags:
+        - SAA-C03#3.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-on-demand-instances.html
+    - id: ec2/overview/regions-azs
+      title:
+        ko: 리전과 가용 영역
+      exam_tags:
+        - SAA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 처음 인스턴스를 띄울 때는 가용 영역을 지정하지 말고 AWS가 시스템 상태와 가용 용량을 보고 고르게 둔다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+    - id: ec2/overview/shared-responsibility
+      title:
+        ko: EC2의 공동 책임 모델
+      exam_tags:
+        - SAA-C03#1.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+    - id: ec2/overview/choosing-compute
+      title:
+        ko: EC2, Lambda, 컨테이너 중 고르기
+      exam_tags:
+        - SAA-C03#3.2
+        - SAA-C03#4.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html

@@ -1,0 +1,78 @@
+# 장: EC2 스팟 인스턴스
+chapter:
+  id: ec2/spot
+  title:
+    ko: 스팟 인스턴스 (가격, 중단, 할당 전략, 모범 사례)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html
+  topics:
+    - id: ec2/spot/pricing-pools
+      title:
+        ko: 스팟 가격과 용량 풀, 맞는 워크로드
+      exam_tags:
+        - SAA-C03#4.2
+        - SAP-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/billing-for-interrupted-spot-instances.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+    - id: ec2/spot/interruptions
+      title:
+        ko: 중단, 중단 알림, 리밸런싱 권고
+      exam_tags:
+        - SAA-C03#4.2
+        - SOA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 스팟 중단 알림을 짧은 주기로 확인한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-instance-termination-notices.html
+          checked: 2026-11-03
+        - claim:
+            ko: EventBridge 규칙으로 리밸런싱 권고와 중단 알림을 잡아 작업 체크포인트를 남기거나 중단을 정상 처리한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/interruption-behavior.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-instance-termination-notices.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/rebalance-recommendations.html
+    - id: ec2/spot/allocation
+      title:
+        ko: 할당 전략과 스팟 배치 점수
+      exam_tags:
+        - SAA-C03#4.2
+        - SAP-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 대부분의 스팟 워크로드에는 가격 용량 최적화(price-capacity-optimized) 할당 전략을 쓰고, 최저 가격 전략은 쓰지 않는다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-fleet-allocation-strategy.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-fleet-allocation-strategy.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-placement-score.html
+    - id: ec2/spot/best-practices
+      title:
+        ko: 스팟 모범 사례 (유연성, Auto Scaling·EC2 Fleet, 요청 API)
+      exam_tags:
+        - SAA-C03#4.2
+        - SAP-C03#3.1
+        - SOA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 워크로드마다 여러 인스턴스 유형과 모든 가용 영역을 허용한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 스팟 용량은 Auto Scaling 그룹이나 EC2 Fleet으로 관리하고, RequestSpotFleet·RequestSpotInstances 같은 레거시 API는 쓰지 않는다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: 유연하지 않거나 상태를 갖는 워크로드를 스팟에 올리고 중단 시 온디맨드로 장애 조치하는 설계를 피한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html

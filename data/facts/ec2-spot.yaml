@@ -1,0 +1,51 @@
+# ec2/spot 장 전용 수치. 2026-11-03 EC2 사용 설명서 대조. 중단 알림 시간은 공용 ec2.spot.notice를 쓴다.
+
+- id: ec2.spot.max-discount
+  value: 90
+  unit: percent
+  display: { ko: "최대 90%" }
+  label: { ko: "스팟 인스턴스의 온디맨드 대비 최대 절감률" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/spot-best-practices.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.spot.notice.poll
+  value: 5
+  unit: s
+  display: { ko: "5초마다" }
+  label: { ko: "스팟 중단 알림을 확인하라고 문서가 권하는 주기" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-instance-termination-notices.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/spot-instance-termination-notices.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.spot.flex.types
+  value: 10
+  unit: count
+  display: { ko: "최소 10개" }
+  label: { ko: "워크로드마다 허용하라고 권하는 인스턴스 유형 수 (경험칙)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/spot-best-practices.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.spot.sps.max
+  value: 10
+  unit: score
+  display: { ko: "1~10점" }
+  label: { ko: "스팟 배치 점수 범위 (10점이 성공 가능성이 가장 높다)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/spot-best-practices.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.spot.sps.min-types
+  value: 3
+  unit: count
+  display: { ko: "3개 이상" }
+  label: { ko: "스팟 배치 점수에서 지정해야 하는 서로 다른 인스턴스 유형 수 (P·G·Trn·Inf 패밀리는 예외)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-placement-score.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/spot-placement-score.html
+  checked: 2026-11-03
+  volatile: false

@@ -1,0 +1,25 @@
+# 권 정의와 장 순서. 장 구성의 근거: Amazon EC2 사용 설명서 목차 + EBS·ELB·EC2 Auto Scaling·EFS 안내서 (2026-11-03 확인)
+volume:
+  id: ec2
+  title: { ko: "Amazon EC2" }
+  structure_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html
+order:
+  - ec2/overview
+  - ec2/instance-types
+  - ec2/purchasing-options
+  - ec2/spot
+  - ec2/amis
+  - ec2/launch-user-data
+  - ec2/instance-lifecycle
+  - ec2/metadata
+  - ec2/networking
+  - ec2/security-access
+  - ec2/ebs
+  - ec2/ebs-snapshots
+  - ec2/instance-store-efs
+  - ec2/load-balancing
+  - ec2/auto-scaling
+  - ec2/monitoring
+  - ec2/limits
+  - ec2/cost
+  - ec2/labs
