@@ -1,0 +1,63 @@
+# 장: 인스턴스 보안과 접속
+chapter:
+  id: ec2/security-access
+  title:
+    ko: 인스턴스 보안과 접속 (키 페어, Instance Connect, Session Manager, EICE)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+  topics:
+    - id: ec2/security-access/protection-layers
+      title:
+        ko: 인스턴스 보호 계층 (네트워크 제어, 격리, 패치·점검)
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 보안 그룹을 네트워크 접근 제어의 주된 수단으로 쓰고, 네트워크 ACL은 특정 트래픽 거부나 서브넷 안전망 같은 보조 수단으로 아껴 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/infrastructure-security.html
+          checked: 2026-11-03
+        - claim:
+            ko: Amazon Inspector로 EC2 인스턴스의 소프트웨어 취약점과 의도하지 않은 네트워크 노출을 자동으로 검사한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: EBS 볼륨과 스냅샷을 암호화한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/infrastructure-security.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html
+    - id: ec2/security-access/key-pairs
+      title:
+        ko: 키 페어와 잃어버린 키 복구
+      exam_tags:
+        - DVA-C03#2.2
+        - SAA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/TroubleshootingInstancesConnecting.html
+    - id: ec2/security-access/connect-options
+      title:
+        ko: 접속 방법 비교 (SSH, EC2 Instance Connect, Session Manager)
+      exam_tags:
+        - SAA-C03#1.2
+        - SOA-C03#4.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-eic.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-with-systems-manager-session-manager.html
+    - id: ec2/security-access/eice
+      title:
+        ko: EC2 Instance Connect 엔드포인트 (퍼블릭 IP 없이 접속)
+      exam_tags:
+        - SAA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-with-ec2-instance-connect-endpoint.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/eice-quotas.html

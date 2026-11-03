@@ -1,0 +1,498 @@
+# ec2/ebs 장 전용 수치. 2026-11-03 EBS 사용 설명서 대조.
+
+- id: ec2.ebs.gp.size.min
+  value: 1
+  unit: "GiB"
+  display: { ko: "1 GiB" }
+  label: { ko: "gp3·gp2 볼륨 최소 크기" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp3.size.max
+  value: 65536
+  unit: "GiB"
+  display: { ko: "64 TiB" }
+  label: { ko: "gp3 볼륨 최대 크기" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: true
+  history:
+    - { date: 2025-09-26, note: "gp3 크기·IOPS·처리량 상한 상향(문서 기록 DocumentHistory). 이전 상한은 이 사본에 숫자로 나오지 않는다. Outposts의 gp3 상한(16 TiB, 16,000 IOPS, 1,000 MiB/s)이 같은 값으로 남아 있다" }
+
+- id: ec2.ebs.gp3.iops.base
+  value: 3000
+  unit: "IOPS"
+  display: { ko: "3,000 IOPS" }
+  label: { ko: "gp3 기본(스토리지 요금에 포함) IOPS. 크기와 상관없다" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp3.iops.max
+  value: 80000
+  unit: "IOPS"
+  display: { ko: "80,000 IOPS" }
+  label: { ko: "gp3 볼륨 최대 IOPS" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: true
+  history:
+    - { date: 2025-09-26, note: "gp3 크기·IOPS·처리량 상한 상향(문서 기록 DocumentHistory). 이전 상한은 이 사본에 숫자로 나오지 않는다. Outposts의 gp3 상한(16 TiB, 16,000 IOPS, 1,000 MiB/s)이 같은 값으로 남아 있다" }
+
+- id: ec2.ebs.gp3.iops.per-gib
+  value: 500
+  unit: "IOPS/GiB"
+  display: { ko: "GiB당 500 IOPS" }
+  label: { ko: "gp3에서 크기 대비 프로비저닝할 수 있는 IOPS 비율 상한" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp3.tput.base
+  value: 125
+  unit: "MiB/s"
+  display: { ko: "125 MiB/s" }
+  label: { ko: "gp3 기본(스토리지 요금에 포함) 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp3.tput.max
+  value: 2000
+  unit: "MiB/s"
+  display: { ko: "2,000 MiB/s" }
+  label: { ko: "gp3 볼륨 최대 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: true
+  history:
+    - { date: 2025-09-26, note: "gp3 크기·IOPS·처리량 상한 상향(문서 기록 DocumentHistory). 이전 상한은 이 사본에 숫자로 나오지 않는다. Outposts의 gp3 상한(16 TiB, 16,000 IOPS, 1,000 MiB/s)이 같은 값으로 남아 있다" }
+
+- id: ec2.ebs.gp3.tput.per-iops
+  value: 0.25
+  unit: "MiB/s per IOPS"
+  display: { ko: "프로비저닝 IOPS당 0.25 MiB/s" }
+  label: { ko: "gp3에서 프로비저닝 IOPS 대비 처리량 비율 상한" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp3.price.cheaper
+  value: 20
+  unit: "%"
+  display: { ko: "20%" }
+  label: { ko: "gp3가 gp2보다 GiB당 낮은 가격 비율(문서 표현)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.ebs.size.max.16t
+  value: 16384
+  unit: "GiB"
+  display: { ko: "16 TiB" }
+  label: { ko: "gp2·io1·st1·sc1 볼륨 최대 크기" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.iops.per-gib
+  value: 3
+  unit: "IOPS/GiB"
+  display: { ko: "GiB당 3 IOPS" }
+  label: { ko: "gp2 기준 IOPS가 크기에 비례해 늘어나는 비율" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.iops.min
+  value: 100
+  unit: "IOPS"
+  display: { ko: "100 IOPS" }
+  label: { ko: "gp2 기준 IOPS 최솟값" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.iops.max
+  value: 16000
+  unit: "IOPS"
+  display: { ko: "16,000 IOPS" }
+  label: { ko: "gp2 볼륨 최대 IOPS" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.burst
+  value: 3000
+  unit: "IOPS"
+  display: { ko: "3,000 IOPS" }
+  label: { ko: "gp2 볼륨(1 TiB 미만)이 I/O 크레딧으로 버스트하는 IOPS" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.burst.size
+  value: 1024
+  unit: "GiB"
+  display: { ko: "1 TiB" }
+  label: { ko: "이 크기 미만인 gp2 볼륨만 버스트한다" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.credit.max
+  value: 5400000
+  unit: "credit"
+  display: { ko: "540만 I/O 크레딧" }
+  label: { ko: "gp2 I/O 크레딧 최대 누적량이자 초기 잔고" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.burst.min-duration
+  value: 30
+  unit: "min"
+  display: { ko: "30분" }
+  label: { ko: "가득 찬 크레딧으로 최대 버스트를 유지할 수 있는 최소 시간" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.tput.max
+  value: 250
+  unit: "MiB/s"
+  display: { ko: "250 MiB/s" }
+  label: { ko: "gp2 볼륨 최대 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.tput.min
+  value: 128
+  unit: "MiB/s"
+  display: { ko: "128 MiB/s" }
+  label: { ko: "gp2 볼륨의 작은 크기(아래 기준 이하)에서 최대 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.tput.small-gib
+  value: 170
+  unit: "GiB"
+  display: { ko: "170 GiB" }
+  label: { ko: "이 크기 이하 gp2는 처리량 상한이 128 MiB/s다" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.gp2.tput.full-gib
+  value: 334
+  unit: "GiB"
+  display: { ko: "334 GiB" }
+  label: { ko: "이 크기 이상 gp2는 늘 250 MiB/s. 그 사이 크기는 250 MiB/s까지 버스트만 한다" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/general-purpose.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.pio.size.min
+  value: 4
+  unit: "GiB"
+  display: { ko: "4 GiB" }
+  label: { ko: "io2 Block Express·io1 볼륨 최소 크기" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io2.size.max
+  value: 65536
+  unit: "GiB"
+  display: { ko: "64 TiB" }
+  label: { ko: "io2 Block Express 볼륨 최대 크기" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io2.iops.max
+  value: 256000
+  unit: "IOPS"
+  display: { ko: "256,000 IOPS" }
+  label: { ko: "io2 Block Express 최대 IOPS(Nitro 기반 인스턴스)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io2.iops.per-gib
+  value: 1000
+  unit: "IOPS/GiB"
+  display: { ko: "GiB당 1,000 IOPS" }
+  label: { ko: "io2 Block Express의 IOPS:GiB 비율 상한" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io2.tput.max
+  value: 4000
+  unit: "MiB/s"
+  display: { ko: "4,000 MiB/s" }
+  label: { ko: "io2 Block Express 최대 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io2.tput.per-iops
+  value: 0.256
+  unit: "MiB/s per IOPS"
+  display: { ko: "프로비저닝 IOPS당 0.256 MiB/s" }
+  label: { ko: "io2 Block Express 처리량이 프로비저닝 IOPS에 비례해 늘어나는 비율" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io2.durability
+  value: 99.999
+  unit: "%"
+  display: { ko: "99.999%" }
+  label: { ko: "io2 Block Express 볼륨 내구성" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.durability.other
+  value: 99.8
+  unit: "%"
+  display: { ko: "99.8~99.9%" }
+  label: { ko: "gp3·gp2·io1·st1·sc1 볼륨 내구성(범위의 하한을 값으로 둠)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.non-nitro.iops
+  value: 32000
+  unit: "IOPS"
+  display: { ko: "32,000 IOPS" }
+  label: { ko: "Nitro 기반이 아닌 인스턴스가 io1·io2 볼륨에서 실제로 낼 수 있는 IOPS 상한" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io1.iops.min
+  value: 100
+  unit: "IOPS"
+  display: { ko: "100 IOPS" }
+  label: { ko: "io1 프로비저닝 IOPS 최솟값" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io1.iops.max
+  value: 64000
+  unit: "IOPS"
+  display: { ko: "64,000 IOPS" }
+  label: { ko: "io1 볼륨 최대 IOPS(Nitro 기반 인스턴스)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io1.iops.per-gib
+  value: 50
+  unit: "IOPS/GiB"
+  display: { ko: "GiB당 50 IOPS" }
+  label: { ko: "io1의 IOPS:GiB 비율 상한" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.io1.tput.max
+  value: 1000
+  unit: "MiB/s"
+  display: { ko: "1,000 MiB/s" }
+  label: { ko: "io1 볼륨 최대 처리량(64,000 IOPS와 Nitro 기반 인스턴스일 때)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/provisioned-iops.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.hdd.size.min
+  value: 125
+  unit: "GiB"
+  display: { ko: "125 GiB" }
+  label: { ko: "st1·sc1 볼륨 최소 크기" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.st1.iops.max
+  value: 500
+  unit: "IOPS"
+  display: { ko: "500 IOPS" }
+  label: { ko: "st1 볼륨 최대 IOPS(1 MiB I/O 기준)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.st1.tput.max
+  value: 500
+  unit: "MiB/s"
+  display: { ko: "500 MiB/s" }
+  label: { ko: "st1 볼륨 최대 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/hdd-vols.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/hdd-vols.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.st1.base.per-tib
+  value: 40
+  unit: "MiB/s per TiB"
+  display: { ko: "TiB당 40 MiB/s" }
+  label: { ko: "st1 기준 처리량(크레딧 적립 속도)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/hdd-vols.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/hdd-vols.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.st1.burst.per-tib
+  value: 250
+  unit: "MiB/s per TiB"
+  display: { ko: "TiB당 250 MiB/s" }
+  label: { ko: "st1 버스트 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/hdd-vols.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/hdd-vols.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.sc1.iops.max
+  value: 250
+  unit: "IOPS"
+  display: { ko: "250 IOPS" }
+  label: { ko: "sc1 볼륨 최대 IOPS(1 MiB I/O 기준)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volume-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.sc1.tput.max
+  value: 250
+  unit: "MiB/s"
+  display: { ko: "250 MiB/s" }
+  label: { ko: "sc1 볼륨 최대 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/hdd-vols.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/hdd-vols.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.sc1.base.per-tib
+  value: 12
+  unit: "MiB/s per TiB"
+  display: { ko: "TiB당 12 MiB/s" }
+  label: { ko: "sc1 기준 처리량(크레딧 적립 속도)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/hdd-vols.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/hdd-vols.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.sc1.burst.per-tib
+  value: 80
+  unit: "MiB/s per TiB"
+  display: { ko: "TiB당 80 MiB/s" }
+  label: { ko: "sc1 버스트 처리량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/hdd-vols.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/hdd-vols.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.multiattach.max
+  value: 16
+  unit: "count"
+  display: { ko: "16대" }
+  label: { ko: "Multi-Attach 볼륨 하나를 붙일 수 있는 같은 가용 영역의 Nitro 기반 인스턴스 수" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes-multi.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-volumes-multi.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.modify.per-window
+  value: 4
+  unit: "count"
+  display: { ko: "4번" }
+  label: { ko: "볼륨 하나를 이동 24시간 안에 수정할 수 있는 횟수" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-modify-volume.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-modify-volume.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.modify.window
+  value: 24
+  unit: "hour"
+  display: { ko: "24시간" }
+  label: { ko: "볼륨 수정 횟수 한도를 세는 이동 기간" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-modify-volume.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-modify-volume.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.init.rate.min
+  value: 100
+  unit: "MiB/s"
+  display: { ko: "100 MiB/s" }
+  label: { ko: "EBS 볼륨 초기화 프로비저닝 속도(Provisioned Rate for Volume Initialization) 하한" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/initalize-volume.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/initalize-volume.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ebs.init.rate.max
+  value: 300
+  unit: "MiB/s"
+  display: { ko: "300 MiB/s" }
+  label: { ko: "EBS 볼륨 초기화 프로비저닝 속도 상한" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/initalize-volume.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/initalize-volume.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.rbin.vol.retention.max
+  value: 7
+  unit: "day"
+  display: { ko: "7일" }
+  label: { ko: "휴지통 보존 규칙의 보존 기간 상한(EBS 볼륨. 하한은 1일)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/recycle-bin-concepts.html
+  checked: 2026-11-03
+  volatile: false
+

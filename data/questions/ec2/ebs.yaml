@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.ebs-gp2-to-gp3
+  type: quiz
+  chapter: ec2/ebs
+  topic: ec2/ebs/volume-types
+  question: { ko: "데이터 크기가 {{raw:200 GiB}}인 데이터베이스가 gp2 볼륨에 있다. IOPS가 부족해 운영팀이 볼륨을 {{raw:2 TiB}}로 키워 두었다. 사용하지 않는 공간에 돈을 내지 않으면서 필요한 IOPS를 유지하려면?" }
+  choices:
+    - { id: a, text: { ko: "볼륨 크기를 탄력적 볼륨으로 줄인다" } }
+    - { id: b, text: { ko: "데이터를 알맞은 크기의 gp3 볼륨으로 옮기고, 필요한 IOPS를 크기와 따로 프로비저닝한다" } }
+    - { id: c, text: { ko: "st1 볼륨으로 바꾼다" } }
+    - { id: d, text: { ko: "gp2 볼륨을 Multi-Attach로 두 인스턴스에 붙여 IOPS를 나눈다" } }
+  answer: b
+  explanation: { ko: "gp2는 기준 IOPS가 크기에 비례({{fact:ec2.ebs.gp2.iops.per-gib}})해서 IOPS를 위해 크기를 키워야 한다. gp3는 기본 {{fact:ec2.ebs.gp3.iops.base}}를 주고, 더 필요한 IOPS와 처리량을 크기와 따로 정한다. 크기를 줄일 수 없으므로 작은 gp3 볼륨을 만들어 데이터를 옮긴다. a: 탄력적 볼륨은 크기를 늘리기만 한다. c: st1은 큰 순차 I/O용이라 데이터베이스의 작은 무작위 I/O에 맞지 않는다. d: Multi-Attach는 io1·io2만 되고, IOPS를 늘리는 기능도 아니다." }
+  facts: [ec2.ebs.gp2.iops.per-gib, ec2.ebs.gp3.iops.base]
+
+- id: ec2.q.ebs-encrypt-existing
+  type: quiz
+  chapter: ec2/ebs
+  topic: ec2/ebs/encryption
+  question: { ko: "감사에서 암호화되지 않은 EBS 데이터 볼륨이 발견됐다. 앞으로 그 리전에서 새로 만드는 볼륨은 모두 암호화되게 하고, 기존 볼륨도 암호화해야 한다. 알맞은 조합은?" }
+  choices:
+    - { id: a, text: { ko: "기본 암호화를 켜면 기존 볼륨도 자동으로 암호화된다" } }
+    - { id: b, text: { ko: "기존 볼륨의 암호화 속성을 켜고, 다른 리전에도 같은 설정이 자동 적용되게 한다" } }
+    - { id: c, text: { ko: "리전에서 기본 암호화를 켜고, 기존 볼륨은 스냅샷을 만든 뒤 그 스냅샷으로 암호화된 새 볼륨을 만들어 바꿔 붙인다" } }
+    - { id: d, text: { ko: "인스턴스 안에서만 파일을 암호화하면 EBS 암호화와 같은 효과가 난다" } }
+  answer: c
+  explanation: { ko: "기본 암호화는 리전별 설정이고 새로 만드는 볼륨과 스냅샷 복사본에만 적용된다. 기존 암호화되지 않은 볼륨은 바로 암호화할 수 없어, 스냅샷을 거쳐 암호화된 새 볼륨을 만든다. a: 기존 리소스에는 영향이 없다. b: 기존 볼륨의 암호화를 켜는 속성은 없고, 기본 암호화는 리전마다 따로 켠다. d: 그 방법은 볼륨-인스턴스 사이 전송과 스냅샷 암호화 같은 EBS 암호화의 범위를 대신하지 못한다." }
+  facts: []
+
+- id: ec2.q.ebs-az-move
+  type: quiz
+  chapter: ec2/ebs
+  topic: ec2/ebs/basics
+  question: { ko: "가용 영역 A의 인스턴스에 붙은 EBS 데이터 볼륨을 가용 영역 B의 새 인스턴스에서 쓰려 한다. 가장 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "볼륨을 떼어 B의 인스턴스에 바로 붙인다" } }
+    - { id: b, text: { ko: "볼륨의 스냅샷을 만들고, B에서 그 스냅샷으로 새 볼륨을 만들어 붙인다" } }
+    - { id: c, text: { ko: "Multi-Attach를 켜면 다른 가용 영역의 인스턴스에도 붙는다" } }
+    - { id: d, text: { ko: "볼륨을 다른 리전으로 복사한 다음 다시 B로 복사한다" } }
+  answer: b
+  explanation: { ko: "EBS 볼륨은 가용 영역 하나에 속하고 같은 가용 영역의 인스턴스에만 붙는다. 스냅샷은 리전의 모든 가용 영역에 복제되므로 어느 가용 영역에서나 볼륨을 만들 수 있다. a: 다른 가용 영역 인스턴스에는 붙지 않는다. c: Multi-Attach도 같은 가용 영역의 Nitro 기반 인스턴스 최대 {{fact:ec2.ebs.multiattach.max}}까지다. d: 리전 사이 복사는 필요 없고 볼륨을 리전으로 복사하는 기능도 없다." }
+  facts: [ec2.ebs.multiattach.max]

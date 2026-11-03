@@ -1,0 +1,141 @@
+# ec2/networking 장 전용 수치. 2026-11-03 EC2 사용 설명서 대조.
+
+- id: ec2.bw.single-flow
+  value: 5
+  unit: Gbps
+  display: { ko: "5 Gbps" }
+  label: { ko: "같은 클러스터 배치 그룹에 있지 않은 인스턴스 사이 단일 흐름(5-튜플) 대역폭 한도" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.single-flow.cpg
+  value: 10
+  unit: Gbps
+  display: { ko: "10 Gbps" }
+  label: { ko: "같은 클러스터 배치 그룹 안 인스턴스 사이 단일 흐름 대역폭 한도" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/placement-strategies.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.single-flow.ena-express
+  value: 25
+  unit: Gbps
+  display: { ko: "25 Gbps" }
+  label: { ko: "ENA Express를 켠 지원 인스턴스 사이(같은 리전) 단일 흐름 대역폭 상한. 인스턴스 전체 한도를 넘지 못한다" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ena-express.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ena-express.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.igw.vcpu
+  value: 32
+  unit: count
+  display: { ko: "vCPU 32개" }
+  label: { ko: "인터넷 게이트웨이를 거치는 다중 흐름 대역폭 규칙이 나뉘는 vCPU 수 기준" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.igw.small
+  value: 5
+  unit: Gbps
+  display: { ko: "5 Gbps" }
+  label: { ko: "vCPU 32개 미만 인스턴스가 인터넷 게이트웨이·로컬 게이트웨이를 거칠 때 다중 흐름 대역폭 한도" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.igw.ratio
+  value: 50
+  unit: "%"
+  display: { ko: "50%" }
+  label: { ko: "vCPU 32개 초과 인스턴스가 인터넷 게이트웨이·로컬 게이트웨이를 거칠 때 쓸 수 있는 대역폭 비율(일부 최신 유형 제외)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.cpg.external
+  value: 5
+  unit: Gbps
+  display: { ko: "5 Gbps" }
+  label: { ko: "클러스터 배치 그룹에서 인터넷과 Direct Connect(온프레미스)로 가는 트래픽 한도" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/placement-strategies.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.burst.vcpu
+  value: 16
+  unit: count
+  display: { ko: "vCPU 16개" }
+  label: { ko: "대체로 이 이하(4xlarge 이하) 인스턴스가 \"최대 ~ Gbps\"로 표기되고 네트워크 I/O 크레딧으로 버스트한다" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.burst.min
+  value: 5
+  unit: min
+  display: { ko: "5분" }
+  label: { ko: "네트워크 버스트 대역폭을 쓸 수 있는 시간의 보통 하한(크기에 따라 다름)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.bw.burst.max
+  value: 60
+  unit: min
+  display: { ko: "60분" }
+  label: { ko: "네트워크 버스트 대역폭을 쓸 수 있는 시간의 보통 상한(크기에 따라 다름)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.ena.max
+  value: 100
+  unit: Gbps
+  display: { ko: "100 Gbps" }
+  label: { ko: "ENA(Elastic Network Adapter)가 지원하는 네트워크 속도 상한(지원 유형)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/enhanced-networking.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.mtu.std
+  value: 1500
+  unit: byte
+  display: { ko: "1500바이트" }
+  label: { ko: "모든 EC2 유형이 지원하는 MTU. 인터넷 게이트웨이, VPN, (전송 게이트웨이 없는) 리전 간 트래픽의 최대 MTU" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network_mtu.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/network_mtu.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.mtu.jumbo
+  value: 9001
+  unit: byte
+  display: { ko: "9001바이트" }
+  label: { ko: "점보 프레임 MTU(현재 세대 유형 지원)" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network_mtu.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/network_mtu.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.pg.partition.dedicated
+  value: 2
+  unit: count
+  display: { ko: "2개" }
+  label: { ko: "전용 인스턴스(Dedicated Instances)를 쓰는 파티션 배치 그룹의 최대 파티션 수" }
+  source_en: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/placement-strategies.html
+  checked: 2026-11-03
+  volatile: false

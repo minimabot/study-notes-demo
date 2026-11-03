@@ -4,7 +4,7 @@ chapter: lambda/cost
 
 @topic lambda/cost/dimensions
 
-이벤트 함수(기본 Lambda 함수)의 요금은 기본적으로 둘이다. **요청 수**와 **실행 시간(duration)** 이다. 실행 시간은 메모리 크기를 곱한 **GB-초(GB-second)** 로 센다. 메모리 {{raw:1 GB}} 함수가 {{raw:1초}} 돌면 {{raw:1 GB-초}}다. 실행 시간은 코드가 시작해서 끝날 때까지를 {{fact:lambda.billing.duration-rounding}}해 센다.
+이벤트 함수(기본 Lambda 함수)의 요금은 기본적으로 둘이다. **요청 수**와 **실행 시간(duration)** 이다. 실행 시간은 메모리 크기를 곱한 **GB-초(GB-second)** 로 센다. 메모리 {{raw:1 GB}} 함수가 {{raw:1초}} 돌면 {{raw:1 GB-초}}다. 실행 시간은 핸들러가 이벤트를 처리한 시간을 호출마다 {{fact:lambda.billing.duration-rounding}}해 센다. 핸들러 처리 시간 말고도 콜드 스타트 때 핸들러 밖 코드가 도는 초기화 단계 같은 시간이 청구 대상이 될 수 있다. 일반 호출의 초기화 시간은 로그 REPORT 줄의 Init Duration에서 볼 수 있다. 프로비저닝된 동시성이나 SnapStart처럼 실행 방식이 다르면 초기화 로그가 남는 곳과 과금 방식도 달라진다.
 
 서울 리전을 기준으로 하고 미국 동부(버지니아 북부)를 참고로 붙인다.
 

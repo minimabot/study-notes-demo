@@ -81,16 +81,6 @@
   checked: 2026-11-03
   volatile: true
 
-- id: lambda.esm.pm.sqs.pollers.max
-  value: 10000
-  unit: count
-  display: { ko: "10,000개 (기본 200개)" }
-  label: { ko: "SQS 이벤트 소스 매핑 프로비저닝된 모드의 최대 이벤트 폴러 수 상한" }
-  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
-  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventsourcemapping.html
-  checked: 2026-11-03
-  volatile: true
-
 - id: lambda.esm.pm.kafka.pollers.max
   value: 2000
   unit: count

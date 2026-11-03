@@ -35,7 +35,7 @@ Lambda는 따로 설정하지 않아도 함수마다 지표를 Amazon CloudWatch
 |---|---|
 | `AsyncEventsReceived` | Lambda가 대기열에 넣은 이벤트 수. `Invocations`와 차이가 크면 밀리거나 버려지는 이벤트가 있다 |
 | `AsyncEventAge` | 대기열에 들어간 뒤 함수가 호출되기까지의 시간. 재시도·스로틀이 많으면 오른다 |
-| `AsyncEventsDropped` | 함수를 실행하지 못하고 버린 이벤트 수(보존 기간 만료, 재시도 소진, 예약된 동시성 0 등) |
+| `AsyncEventsDropped` | 함수를 성공적으로 처리하지 못한 채 버린 이벤트 수(보존 기간 만료, 재시도 소진, 예약된 동시성 0 등). DLQ나 실패 시 대상이 있으면 버리기 전에 그쪽으로 보낸다 |
 
 `AsyncEventAge`나 `AsyncEventsDropped`가 오르면 원인은 대개 둘 중 하나다. `Errors`가 높으면 함수 오류, `Throttles`가 높으면 동시성 부족이다.
 

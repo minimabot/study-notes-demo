@@ -34,6 +34,7 @@ chapter: lambda/event-source-mappings
 | Kinesis, DynamoDB Streams | {{fact:lambda.sqs.batch.window.default}} (레코드가 있으면 바로 호출) | {{fact:kinesis.lambda.batch.default}} / {{fact:kinesis.lambda.batch.max}} |
 | MSK, 자체 관리형 Kafka, MQ, DocumentDB | {{fact:lambda.esm.batch-window.default.kafka-mq-docdb}} | Kinesis와 같다 |
 
+- SQS 표준 큐에서 배치 크기를 {{fact:lambda.sqs.batch.window-threshold}}보다 크게 하면 배치 기간도 {{fact:lambda.sqs.batch.window.min-large}} 이상으로 둬야 한다.
 - MQ·DocumentDB·Kafka의 기본 배치 기간은 초 단위가 아니다. 한 번 바꾸면 그 기본값으로 되돌릴 수 없고, 되돌리려면 매핑을 새로 만든다.
 - 배치를 크게 잡으면 호출 한 번의 고정 비용을 여러 레코드가 나눠 진다. 문서는 배치·레코드 크기를 바꿔 가며 시험해, 폴링 빈도가 함수 처리 속도에 맞게 하라고 권한다.
 - MSK, 자체 관리형 Kafka, DocumentDB, Amazon MQ 매핑은 함수 제한 시간이 {{fact:lambda.esm.timeout.max.kafka-mq-docdb}} 이하여야 한다. 일반 최댓값({{fact:lambda.timeout.max}})보다 짧다. 오류와 재시도를 처리할 여유를 남기기 위해서다.
@@ -64,7 +65,7 @@ SQS에서 필터를 걸 때는 버려도 되는 메시지인지 먼저 따진다
 
 **기본 동작은 "배치 전체 재처리"다.** 함수가 오류를 내면 매핑은 배치 전체를 성공하거나 레코드가 만료될 때까지 다시 보낸다. 스트림에서는 순서를 지키려고 그동안 그 샤드의 처리를 멈춘다. 그래서 처리할 수 없는 레코드 하나가 샤드 전체를 막을 수 있다. 서비스 오류나 스로틀처럼 배치가 함수에 닿지 못한 경우는 재시도 횟수에 세지 않는다.
 
-**부분 배치 응답(partial batch response).** 함수 응답 형식에 `ReportBatchItemFailures`를 켜면, 함수가 실패한 항목 ID만 `batchItemFailures`로 돌려준다. Lambda는 그 항목만(스트림은 실패한 첫 레코드부터) 다시 처리한다. 성공한 레코드를 또 처리하지 않아도 된다.
+**부분 배치 응답(partial batch response).** 함수 응답 형식에 `ReportBatchItemFailures`를 켜면, 함수가 실패한 항목 ID만 `batchItemFailures`로 돌려준다. Lambda는 그 항목만(스트림은 실패한 첫 레코드부터) 다시 처리한다. SQS에서는 성공한 메시지를 또 처리하지 않아도 된다. 스트림에서는 가장 이른 실패 레코드 뒤에 있던 성공 레코드가 다시 처리될 수 있다.
 
 | 소스 | 실패를 다루는 방법 | 버린 배치 보관 |
 |---|---|---|
@@ -74,6 +75,7 @@ SQS에서 필터를 걸 때는 버려도 되는 메시지인지 먼저 따진다
 | Amazon MQ | 브로커의 재전송 정책을 쓴다(사용자 지정 불가, 최대 {{fact:lambda.esm.mq.max-redeliveries}}). 복구할 수 없는 오류면 그 소비자가 멈춘다 | 브로커 쪽 DLQ |
 
 - 스트림의 재시도·레코드 나이 기본값은 -1(무한)이다. 그대로 두면 막힌 레코드가 만료될 때까지 샤드가 멈춘다. 재시도 상한, 레코드 나이, 배치 분할, 실패 시 대상을 함께 정하는 것이 일반적인 구성이다({{ch:kinesis/consumers}}, {{ch:dynamodb/streams-ttl}}).
+- 실패 시 대상이 받는 내용은 종류마다 다르다. S3 대상에만 레코드 전체가 남고, SQS·SNS 대상에는 원본 위치(샤드, 시퀀스 번호)를 가리키는 메타데이터만 남는다. 이때 원본은 스트림 보존 기간 안에 다시 읽어야 한다.
 - Kafka에서 재시도를 무한으로 두고 실패 시 대상을 설정하면, Lambda가 재시도를 {{fact:lambda.esm.kafka.retry.cap-with-destination}}로 묶는다.
 - 실패 시 대상에 쓰는 권한(`sqs:SendMessage`, `sns:Publish`, S3는 `s3:PutObject`·`s3:ListBucket`)은 실행 역할에 둔다. 비동기 호출의 대상과 이름이 같지만 설정 위치(매핑)와 조건(실패 시만)이 다르다({{ch:lambda/async-invocation}}).
 - MQ 매핑이 멈췄다면 `StateTransitionReason`을 본다. `EVENT_SOURCE_AUTHN_ERROR`(인증 실패), `EVENT_SOURCE_AUTHZ_ERROR`(권한 부족) 같은 코드가 이유를 알려 준다.
@@ -87,7 +89,9 @@ SQS에서 필터를 걸 때는 버려도 되는 메시지인지 먼저 따진다
 | 소스 | 폴러 하나의 처리 능력 | 최대 폴러 수 상한 |
 |---|---|---|
 | MSK, 자체 관리형 Kafka | {{fact:lambda.esm.pm.kafka.poller-capacity}} | {{fact:lambda.esm.pm.kafka.pollers.max}} |
-| SQS | {{fact:lambda.esm.pm.sqs.poller-capacity}} | {{fact:lambda.esm.pm.sqs.pollers.max}} |
+| SQS | {{fact:lambda.esm.pm.sqs.poller-capacity}} | 문서마다 다르다(직접 확인) |
+
+SQS 최대 폴러 수 상한은 개발자 안내서의 페이지마다 다르게 적혀 있어 여기 적지 않는다. 설정 전에 API 참조의 `ProvisionedPollerConfig`를 확인한다.
 
 - 동시성 설정은 함수의 확장을, 프로비저닝된 모드는 매핑의 처리량을 다룬다. 둘을 따로 맞춰야 할 수 있다.
 - SQS에서는 프로비저닝된 모드와 매핑의 최대 동시성 설정을 함께 쓸 수 없다. 최대 폴러 수로 동시성을 조절한다.
@@ -101,7 +105,7 @@ SQS에서 필터를 걸 때는 버려도 되는 메시지인지 먼저 따진다
 |---|---|
 | `PolledEventCount` | 소스에서 읽은 이벤트 수. 0이면 폴링이 제대로 되는지 의심한다 |
 | `FilteredOutEventCount` | 필터에 걸러진 이벤트 수 |
-| `FailedInvokeEventCount` | 호출에 실패한 이벤트 수(권한·네트워크 오류, 함수 삭제 등) |
+| `FailedInvokeEventCount` | 호출에 실패한 이벤트 수(권한·네트워크 오류, 함수 삭제 등). 부분 배치 응답을 켰다면 `BatchItemFailures`가 비어 있지 않은 응답과 관련된 이벤트도 들어간다 |
 | `OnFailureDestinationDeliveredEventCount` | 실패 시 대상으로 보낸 이벤트 수 |
 
 최소 한 번 처리라서, 이벤트를 세는 지표에는 같은 이벤트가 두 번 잡힐 수 있다.

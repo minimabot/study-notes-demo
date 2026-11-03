@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.security-access-lost-key
+  type: quiz
+  chapter: ec2/security-access
+  topic: ec2/security-access/key-pairs
+  question: { ko: "EBS 루트 볼륨을 쓰는 Linux 인스턴스의 프라이빗 키 파일을 잃어버렸다. Session Manager나 EC2 Instance Connect는 설정돼 있지 않다. 데이터를 지키며 다시 접속하는 방법으로 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "EC2 콘솔에서 키 페어의 프라이빗 키를 다시 내려받는다" } }
+    - { id: b, text: { ko: "인스턴스를 중지하고 루트 볼륨을 임시 인스턴스에 붙여 authorized_keys에 새 공개 키를 넣은 뒤, 원래 인스턴스에 다시 붙여 시작한다" } }
+    - { id: c, text: { ko: "실행 중인 인스턴스의 키 페어 속성을 새 키 페어로 바꾼다" } }
+    - { id: d, text: { ko: "인스턴스를 종료하고 같은 AMI로 새 인스턴스를 띄운다" } }
+  answer: b
+  explanation: { ko: "EC2는 프라이빗 키 사본을 갖지 않으므로 다시 받을 수 없다. EBS 루트 볼륨이면 볼륨을 다른 인스턴스에서 고쳐 새 공개 키를 넣는 방법이 문서에 나온다. a: 프라이빗 키는 만들 때 한 번만 받는다. c: 키 페어는 첫 부팅 때 authorized_keys에 들어가는 것이고, 실행 중 인스턴스의 키를 이렇게 바꾸는 기능은 없다. d: 루트 볼륨의 데이터를 잃을 수 있다." }
+  facts: []
+
+- id: ec2.q.security-access-no-public-ip
+  type: quiz
+  chapter: ec2/security-access
+  topic: ec2/security-access/eice
+  question: { ko: "프라이빗 서브넷의 인스턴스에 운영자가 가끔 SSH로 들어가야 한다. VPC에는 인터넷 게이트웨이가 없고, 퍼블릭 IPv4 요금과 배스천 호스트 관리를 피하고 싶다. 모든 접속 시도를 기록해야 한다. 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "퍼블릭 서브넷에 배스천 호스트를 두고 탄력적 IP를 붙인다" } }
+    - { id: b, text: { ko: "인스턴스에 탄력적 IP를 붙이고 보안 그룹에서 22번 포트를 0.0.0.0/0으로 연다" } }
+    - { id: c, text: { ko: "VPC에 EC2 Instance Connect 엔드포인트를 만들고, 인스턴스 보안 그룹이 엔드포인트에서 오는 SSH만 허용하게 한다" } }
+    - { id: d, text: { ko: "콘솔의 EC2 Instance Connect(퍼블릭 IP 방식)로 접속한다" } }
+  answer: c
+  explanation: { ko: "EC2 Instance Connect 엔드포인트는 퍼블릭 IP나 인터넷 게이트웨이 없이 인터넷에서 프라이빗 인스턴스에 접속하게 해 주는 신원 인식 TCP 프록시다. IAM으로 접근을 통제하고 모든 연결 시도가 CloudTrail에 남는다. 엔드포인트 요금도 없다. a: 배스천과 탄력적 IP를 관리하고 요금을 내야 한다. b: 퍼블릭 IPv4 요금이 붙고 SSH를 전 세계에 연다. d: 콘솔의 퍼블릭 IP 방식은 인스턴스에 퍼블릭 주소와 인터넷 경로가 있어야 한다." }
+  facts: []
+
+- id: ec2.q.security-access-session-manager
+  type: quiz
+  chapter: ec2/security-access
+  topic: ec2/security-access/connect-options
+  question: { ko: "보안팀이 모든 인스턴스의 보안 그룹에서 인바운드 관리 포트(22, 3389)를 닫고, 키 페어 배포도 그만두라고 했다. Linux와 Windows 인스턴스 모두 운영자가 셸로 접속할 수 있어야 한다. 무엇을 준비해야 하는가?" }
+  choices:
+    - { id: a, text: { ko: "인스턴스에 AmazonSSMManagedInstanceCore 정책이 있는 역할을 붙이고 SSM Agent가 돌게 한 뒤, 운영자에게 세션 시작 IAM 권한을 주고 Session Manager로 접속한다" } }
+    - { id: b, text: { ko: "EC2 Instance Connect를 설치하고 보안 그룹은 그대로 닫아 둔다" } }
+    - { id: c, text: { ko: "모든 인스턴스에 같은 키 페어를 쓰고 프라이빗 키를 공유 폴더에 둔다" } }
+    - { id: d, text: { ko: "IMDSv2 홉 제한을 올려 운영자가 메타데이터로 접속하게 한다" } }
+  answer: a
+  explanation: { ko: "Session Manager는 인바운드 규칙과 키 페어 없이 Linux와 Windows에 브라우저 셸이나 CLI로 접속하게 한다. 인스턴스가 Systems Manager 관리형 노드여야 하고 AmazonSSMManagedInstanceCore가 있는 인스턴스 프로파일이 필요하다. b: EC2 Instance Connect는 Linux 전용이고 인바운드 SSH 규칙이 필요하다. c: 키 배포를 그만두라는 요구와 반대이고 키 유출 위험이 크다. d: 메타데이터 서비스는 접속 수단이 아니다." }
+  facts: []

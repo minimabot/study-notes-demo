@@ -1,0 +1,93 @@
+# 장: EBS 스냅샷과 백업
+chapter:
+  id: ec2/ebs-snapshots
+  title:
+    ko: EBS 스냅샷과 백업 (복사·공유, 빠른 복원, 아카이브, 휴지통, DLM)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-snapshots.html
+  topics:
+    - id: ec2/ebs-snapshots/basics
+      title:
+        ko: 증분 스냅샷, 저장 위치, 크래시·애플리케이션 일관성
+      exam_tags:
+        - SOA-C03#2.3
+        - SAA-C03#4.1
+        - SAA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 일관된 스냅샷을 위해 스냅샷 전에 볼륨 쓰기를 멈추고, 그럴 수 없으면 볼륨을 마운트 해제한다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-creating-snapshot.html
+          checked: 2026-11-03
+        - claim:
+            ko: 루트 볼륨의 스냅샷은 인스턴스를 중지하고 만든다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-creating-snapshot.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-snapshots.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/how_snapshots_work.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-creating-snapshot.html
+    - id: ec2/ebs-snapshots/copy-share
+      title:
+        ko: 스냅샷 복사(리전 간, 재암호화)와 계정 간 공유 규칙
+      exam_tags:
+        - SAA-C03#1.3
+        - SOA-C03#2.3
+        - SOA-C03#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 스냅샷은 그 안의 모든 데이터를 믿고 맡길 수 있는 상대에게만 공유한다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-modifying-snapshot-permissions.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-copy-snapshot.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-modifying-snapshot-permissions.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/block-public-access-snapshots.html
+    - id: ec2/ebs-snapshots/fast-restore
+      title:
+        ko: 볼륨 초기화와 빠른 스냅샷 복원(FSR)
+      exam_tags:
+        - SOA-C03#2.3
+        - SOA-C03#1.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-fast-snapshot-restore.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/volume-creation-credits.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/initalize-volume.html
+    - id: ec2/ebs-snapshots/archive-protect
+      title:
+        ko: 스냅샷 아카이브, 휴지통, 스냅샷 잠금
+      exam_tags:
+        - SAA-C03#4.1
+        - SOA-C03#2.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 월·분기·연 단위 스냅샷처럼 드물게 만드는 스냅샷을 아카이브하고, 매일 만드는 증분 스냅샷은 표준 계층에 둔다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive-considerations.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive-considerations.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin-concepts.html
+    - id: ec2/ebs-snapshots/automation
+      title:
+        ko: Data Lifecycle Manager와 AWS Backup으로 자동화
+      exam_tags:
+        - SOA-C03#2.3
+        - SAA-C03#4.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: EBS 스냅샷을 정기적으로 만들거나 Data Lifecycle Manager·AWS Backup으로 자동화한다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-snapshots.html
+          checked: 2026-11-03
+        - claim:
+            ko: 인스턴스와 EBS 볼륨 복구 절차를 정기적으로 시험한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-lifecycle.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/automate-app-consistent-backups.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/dlm-elements.html

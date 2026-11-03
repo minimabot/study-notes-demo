@@ -1,0 +1,92 @@
+# ec2/ebs-snapshots 장 전용 수치. 2026-11-03 EBS 사용 설명서 대조.
+
+- id: ec2.snap.copy.concurrent
+  value: 20
+  unit: "count"
+  display: { ko: "20개" }
+  label: { ko: "대상(destination)당 동시 스냅샷 복사 요청 수" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-copy-snapshot.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-copy-snapshot.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.fsr.per-region
+  value: 5
+  unit: "count"
+  display: { ko: "5개" }
+  label: { ko: "리전당 빠른 스냅샷 복원을 켤 수 있는 스냅샷 수(공유받은 스냅샷 포함)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-fast-snapshot-restore.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-fast-snapshot-restore.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.fsr.size.max
+  value: 16384
+  unit: "GiB"
+  display: { ko: "16 TiB" }
+  label: { ko: "빠른 스냅샷 복원을 켤 수 있는 스냅샷 최대 크기" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-fast-snapshot-restore.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-fast-snapshot-restore.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.fsr.billing.min
+  value: 1
+  unit: "hour"
+  display: { ko: "1시간" }
+  label: { ko: "빠른 스냅샷 복원 요금: 스냅샷·가용 영역마다 분 단위, 최소 과금 시간" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-fast-snapshot-restore.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/ebs-fast-snapshot-restore.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.archive.min-days
+  value: 90
+  unit: "day"
+  display: { ko: "90일" }
+  label: { ko: "스냅샷 아카이브 최소 보관 기간. 먼저 지우거나 영구 복원해도 남은 기간이 과금된다" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive-considerations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/snapshot-archive-considerations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.archive.restore.max
+  value: 72
+  unit: "hour"
+  display: { ko: "72시간" }
+  label: { ko: "아카이브 스냅샷을 표준 계층으로 복원하는 데 걸릴 수 있는 시간(크기에 따라)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive-considerations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/snapshot-archive-considerations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.archive.savings
+  value: 75
+  unit: "%"
+  display: { ko: "최대 75%" }
+  label: { ko: "스냅샷 아카이브가 낮추는 스냅샷 스토리지 비용 비율(문서 표현, 90일 이상 보관하고 거의 안 쓸 때)" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/snapshot-archive.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.archive.per-volume
+  value: 25
+  unit: "count"
+  display: { ko: "25개" }
+  label: { ko: "볼륨당 아카이브 스냅샷 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-archive.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/snapshot-archive.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.dlm.policies.per-region
+  value: 100
+  unit: "count"
+  display: { ko: "100개" }
+  label: { ko: "리전당 Data Lifecycle Manager 사용자 지정 수명 주기 정책 수" }
+  source_en: https://docs.aws.amazon.com/ebs/latest/userguide/snapshot-lifecycle.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/ebs/latest/userguide/snapshot-lifecycle.html
+  checked: 2026-11-03
+  volatile: false
+

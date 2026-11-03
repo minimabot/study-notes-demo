@@ -31,7 +31,7 @@ window.SIMS['lambda-cost'] = function (root, F) {
     <p class="hint">기준 리전은 <b>${REGION_NAME.apne2}</b>, 단가는 <b>${F['lambda.price.offer-version'].display}</b> 기준입니다. 근사치이므로 실제 청구액은 AWS 요금 페이지나 AWS Pricing Calculator로 확인하세요.</p>
     <div class="ctrls">
       <label class="f">월 요청 수(백만 건) <input type="number" min="0" step="0.5" value="${START.req}" data-req></label>
-      <label class="f">평균 실행 시간(ms) <input type="number" min="1" max="${T_MAX_MS}" step="10" value="${START.ms}" data-ms></label>
+      <label class="f">평균 청구 실행 시간(ms, 호출별 올림 후 평균) <input type="number" min="1" max="${T_MAX_MS}" step="any" value="${START.ms}" data-ms></label>
       <label class="f">메모리(MB) <input type="number" min="${MEM_MIN}" max="${MEM_MAX}" step="64" value="${START.mem}" data-mem></label>
     </div>
     <div class="ctrls">
@@ -49,7 +49,7 @@ window.SIMS['lambda-cost'] = function (root, F) {
     </div>
     <div class="stats" data-out></div>
     <ul class="note lc-asm">
-      <li>요청 요금 = 월 요청 수 × 요청 단가. 실행 시간(GB-초) = 요청 수 × 평균 실행 시간(${F['lambda.billing.duration-rounding'].display}) × 메모리(GB). 모든 호출이 평균 실행 시간만큼 돈다고 본다.</li>
+      <li>요청 요금 = 월 요청 수 × 요청 단가. 실행 시간(GB-초) = 요청 수 × 평균 청구 실행 시간 × 메모리(GB). 청구 실행 시간은 호출마다 ${F['lambda.billing.duration-rounding'].display}한 값이므로, 그 평균을 넣으면 다시 올리지 않고 그대로 곱한다. 콜드 스타트의 초기화 시간은 넣지 않은 근사치다. 콜드 스타트가 잦으면 실제 요금이 더 나온다.</li>
       <li>실행 시간 단가는 첫 요금 구간(x86 ${F['lambda.price.duration.x86.tier1'].display}, arm64 ${F['lambda.price.duration.arm.tier1'].display}) 값만 쓴다. 이를 넘으면 실제로는 더 싸다.</li>
       <li>무료 등급(${F['lambda.free.requests'].display}, ${F['lambda.free.gbs'].display})은 이 함수 하나가 모두 쓴다고 본다. 다른 함수가 이미 썼다면 체크를 끈다. 프로비저닝된 동시성을 켠 함수에는 무료 등급이 적용되지 않는다.</li>
       <li>임시 스토리지는 기본 ${F['lambda.tmp.min'].display}를 넘는 설정량만 실행 시간 동안 과금한다.</li>
@@ -98,7 +98,7 @@ window.SIMS['lambda-cost'] = function (root, F) {
   const f = () => {
     const x = {
       req: val('[data-req]', 0) * 1e6,
-      ms: Math.ceil(val('[data-ms]', 1, T_MAX_MS)),
+      ms: val('[data-ms]', 1, T_MAX_MS), // 호출별 올림을 마친 평균이므로 다시 올리지 않는다
       mem: Math.round(val('[data-mem]', MEM_MIN, MEM_MAX)),
       tmp: Math.round(val('[data-tmp]', TMP_MIN, TMP_MAX)),
       pcN: Math.floor(val('[data-pcn]', 0)),

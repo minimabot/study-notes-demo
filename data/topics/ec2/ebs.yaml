@@ -1,0 +1,103 @@
+# 장: Amazon EBS 볼륨
+chapter:
+  id: ec2/ebs
+  title:
+    ko: Amazon EBS 볼륨 (유형, 수정, Multi-Attach, 암호화)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes.html
+  topics:
+    - id: ec2/ebs/basics
+      title:
+        ko: EBS 볼륨 기본 (가용 영역 범위, 종료 시 삭제, Multi-Attach)
+      exam_tags:
+        - SAA-C03#3.1
+        - SAA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: OS와 데이터를 서로 다른 EBS 볼륨에 두고, 데이터 볼륨은 인스턴스 종료 뒤에도 남게 한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-best-practices.html
+          checked: 2026-11-03
+        - claim:
+            ko: Multi-Attach 볼륨에는 일반 파일 시스템 대신 클러스터 파일 시스템을 쓴다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes-multi.html
+          checked: 2026-11-03
+        - claim:
+            ko: Multi-Attach가 필요하면 io1보다 io2를 쓴다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes-multi.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/preserving-volumes-on-termination.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volumes-multi.html
+    - id: ec2/ebs/volume-types
+      title:
+        ko: 볼륨 유형 (gp3, gp2, io2 Block Express, io1, st1, sc1)
+      exam_tags:
+        - SAA-C03#3.1
+        - SAA-C03#4.1
+        - SOA-C03#1.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 대부분의 워크로드에는 범용 SSD 볼륨을 쓴다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+          checked: 2026-11-03
+        - claim:
+            ko: 지연에 민감한 워크로드에는 io2 Block Express를 쓴다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+          checked: 2026-11-03
+        - claim:
+            ko: 작은 무작위 I/O 워크로드에는 HDD(st1·sc1) 대신 SSD 볼륨을 쓴다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/hdd-vols.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-volume-types.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/general-purpose.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/provisioned-iops.html
+    - id: ec2/ebs/modify-performance
+      title:
+        ko: 탄력적 볼륨 수정과 EBS 최적화·성능 한도
+      exam_tags:
+        - SOA-C03#1.3
+        - SAA-C03#3.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 앱이 필요한 것보다 전용 EBS 처리량이 넉넉한 인스턴스 유형을 고른다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-modify-volume.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/modify-volume-requirements.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html
+    - id: ec2/ebs/encryption
+      title:
+        ko: EBS 암호화 (KMS 키, 기본 암호화, 기존 볼륨 암호화)
+      exam_tags:
+        - SAA-C03#1.3
+        - SOA-C03#4.2
+        - DVA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: kms:CreateGrant 권한은 kms:GrantIsForAWSResource 조건으로 AWS 서비스가 대신 만드는 경우에만 허용한다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/ebs-encryption-requirements.html
+          checked: 2026-11-03
+        - claim:
+            ko: KMS 키를 쓸 수 없게 만들기 전에, 더 이상 접근하지 않을 볼륨은 인스턴스에서 먼저 뗀다
+          source: https://docs.aws.amazon.com/ebs/latest/userguide/how-ebs-encryption-works.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/ebs-encryption.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/how-ebs-encryption-works.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/encryption-by-default.html
+    - id: ec2/ebs/recent
+      title:
+        ko: 2025년 이후 바뀐 점 (gp3 상한, 초기화 속도, 볼륨 복사, 볼륨 휴지통)
+      exam_tags: []
+      exam_unknown: true   # gp3 상한 2025-09-26, 초기화 속도 2025-05-06, 볼륨 복사 2025-10-14, 휴지통 볼륨 2025-11-20 (EBS doc-history)
+      sources:
+        - https://docs.aws.amazon.com/ebs/latest/userguide/doc-history.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/initalize-volume.html
+        - https://docs.aws.amazon.com/ebs/latest/userguide/recycle-bin-concepts.html

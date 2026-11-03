@@ -1,0 +1,86 @@
+# 장: EC2 네트워킹
+chapter:
+  id: ec2/networking
+  title:
+    ko: EC2 네트워킹 (ENI, 탄력적 IP, 대역폭·ENA, EFA, 배치 그룹)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html
+  topics:
+    - id: ec2/networking/eni
+      title:
+        ko: 탄력적 네트워크 인터페이스와 보조 IP
+      exam_tags:
+        - SAA-C03#3.4
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 같은 서브넷의 인터페이스를 여러 개 붙이기보다, 가능하면 기본 인터페이스에 보조 프라이빗 IPv4를 더한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network-interface-attachments.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network-interface-attachments.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/scenarios-enis.html
+    - id: ec2/networking/public-ip-eip
+      title:
+        ko: 퍼블릭 IPv4, 탄력적 IP와 요금
+      exam_tags:
+        - SAA-C03#3.4
+        - SOA-C03#5.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 탄력적 IP는 주로 장애 시 다른 인스턴스로 주소를 옮기는 데 쓰고, 노드 사이 통신에는 DNS 호스트 이름을 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html
+    - id: ec2/networking/bandwidth-ena
+      title:
+        ko: 인스턴스 대역폭, 향상된 네트워킹(ENA, ENA Express), MTU
+      exam_tags:
+        - SOA-C03#1.3
+        - SAA-C03#3.4
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 클러스터 배치 그룹 안 인스턴스 사이에는 점보 프레임을 쓰고, VPC 밖으로 나가는 트래픽에는 조심해서 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network_mtu.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-network-bandwidth.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network_mtu.html
+    - id: ec2/networking/efa
+      title:
+        ko: Elastic Fabric Adapter (HPC·ML 노드 간 통신)
+      exam_tags:
+        - SOA-C03#1.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/efa.html
+    - id: ec2/networking/placement-groups
+      title:
+        ko: 배치 그룹 (클러스터, 파티션, 분산)
+      exam_tags:
+        - SOA-C03#1.3
+        - SAA-C03#3.4
+        - SAA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 클러스터 배치 그룹에는 필요한 인스턴스를 한 번의 시작 요청으로, 같은 인스턴스 유형으로 띄운다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+          checked: 2026-11-03
+        - claim:
+            ko: 클러스터 배치 그룹에 온디맨드 용량 예약을 만들어 용량을 명시적으로 잡는다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+          checked: 2026-11-03
+        - claim:
+            ko: 가용 영역 하나에 분산 배치 인스턴스가 한도보다 많이 필요하면 분산 배치 그룹을 여러 개 쓴다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-strategies.html

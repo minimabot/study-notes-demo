@@ -219,7 +219,7 @@ sleep 30; aws logs tail /aws/lambda/lambda-lab-fn --since 5m | grep got
 
 확인:
 
-- [ ] `ok-*` 메시지는 한 번 처리되고 큐에서 지워졌다
+- [ ] `ok-*` 메시지는 일반적으로 처리 후 큐에서 지워졌다. 다만 최소 한 번 처리 방식이라 성공 메시지도 중복 처리될 수 있으므로 함수는 멱등하게 짠다
 - [ ] `fail-3`만 가시성 제한 시간이 지날 때마다 다시 처리됐고, 세 번 받은 뒤 DLQ로 옮겨졌다(몇 분 걸린다)
 - [ ] `--function-response-types`를 주지 않으면 Lambda가 `batchItemFailures`를 무시하고 배치 전체를 성공으로 처리한다는 것을 알았다
 
