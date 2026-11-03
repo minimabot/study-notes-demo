@@ -1,0 +1,102 @@
+# lambda/event-source-mappings 장 전용 사실. 배치 기간 최댓값·SQS/스트림 기본 배치 기간은 lambda-sqs-integration.yaml,
+# 배치 크기·재시도·레코드 나이는 kinesis-consumers.yaml, 페이로드 한도는 lambda.payload.sync.max를 재사용한다. 2026-11-03 대조.
+
+- id: lambda.esm.batch-window.default.kafka-mq-docdb
+  value: 500
+  unit: ms
+  display: { ko: "500 ms" }
+  label: { ko: "Amazon MSK·자체 관리형 Kafka·Amazon MQ·DocumentDB 이벤트 소스 매핑의 기본 배치 기간 (한 번 바꾸면 이 값으로 되돌릴 수 없음)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventsourcemapping.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.esm.timeout.max.kafka-mq-docdb
+  value: 840
+  unit: s
+  display: { ko: "14분" }
+  label: { ko: "MSK·자체 관리형 Kafka·DocumentDB·Amazon MQ 이벤트 소스 매핑이 지원하는 함수 제한 시간 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/with-mq.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-mq.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.esm.filters.default
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "이벤트 소스 매핑 하나에 둘 수 있는 필터 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventfiltering.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventfiltering.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.esm.filters.max
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "할당량 증가 요청으로 늘릴 수 있는 이벤트 소스 매핑당 필터 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventfiltering.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventfiltering.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.esm.kafka.retry.cap-with-destination
+  value: 10
+  unit: count
+  display: { ko: "10회" }
+  label: { ko: "Kafka 이벤트 소스 매핑에서 재시도 무한(-1)과 실패 시 대상을 함께 설정하면 자동 적용되는 최대 재시도 횟수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/kafka-retry-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/kafka-retry-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.esm.mq.max-redeliveries
+  value: 6
+  unit: count
+  display: { ko: "6회" }
+  label: { ko: "Amazon MQ 이벤트 소스 매핑이 쓰는 재전송 정책의 maximumRedeliveries (사용자 지정 불가)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-mq-errors.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-mq-errors.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.esm.pm.kafka.poller-capacity
+  value: 5
+  unit: MB/s
+  display: { ko: "초당 5 MB 또는 동시 호출 5개" }
+  label: { ko: "프로비저닝된 모드에서 Kafka(MSK·자체 관리형) 이벤트 폴러 하나의 처리 능력" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventsourcemapping.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.esm.pm.sqs.poller-capacity
+  value: 1
+  unit: MB/s
+  display: { ko: "초당 1 MB, 동시 호출 10개, 또는 SQS 폴링 API 호출 초당 10건" }
+  label: { ko: "프로비저닝된 모드에서 SQS 이벤트 폴러 하나의 처리 능력" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventsourcemapping.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.esm.pm.sqs.pollers.max
+  value: 10000
+  unit: count
+  display: { ko: "10,000개 (기본 200개)" }
+  label: { ko: "SQS 이벤트 소스 매핑 프로비저닝된 모드의 최대 이벤트 폴러 수 상한" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventsourcemapping.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.esm.pm.kafka.pollers.max
+  value: 2000
+  unit: count
+  display: { ko: "2,000개 (기본 200개)" }
+  label: { ko: "Kafka 이벤트 소스 매핑 프로비저닝된 모드의 최대 이벤트 폴러 수 상한" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-eventsourcemapping.html
+  checked: 2026-11-03
+  volatile: true

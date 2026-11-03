@@ -1,0 +1,67 @@
+# 장: Lambda 계층과 익스텐션
+chapter:
+  id: lambda/layers-extensions
+  title:
+    ko: 계층(Layers)과 익스텐션(Extensions)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html
+  topics:
+    - id: lambda/layers-extensions/layers
+      title:
+        ko: 계층의 쓰임과 /opt 경로, 한도
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#3.1
+        - DVA-C03#3.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: "Go·Rust 함수는 의존성을 계층에 두지 말고 실행 파일에 함께 넣는다"
+          source: https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html
+          checked: 2026-11-03
+        - claim:
+            ko: "계층 내용은 Linux에서 빌드되도록 Docker 같은 도구로 만든다"
+          source: https://docs.aws.amazon.com/lambda/latest/dg/packaging-layers.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/packaging-layers.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/adding-layers.html
+    - id: lambda/layers-extensions/layer-versions
+      title:
+        ko: 계층 버전, 삭제, 다른 계정과 공유
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/creating-deleting-layers.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/permissions-layer-cross-account.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/adding-layers.html
+    - id: lambda/layers-extensions/extensions
+      title:
+        ko: 내부·외부 익스텐션과 수명 주기 영향
+      exam_tags:
+        - DVA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-extensions.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/extensions-configuration.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html
+    - id: lambda/layers-extensions/common-extensions
+      title:
+        ko: Parameters and Secrets 익스텐션, 모니터링 에이전트, Telemetry API
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#3.1
+        - DVA-C03#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: "익스텐션이 텔레메트리를 받을 때는 Logs API 대신 Telemetry API를 쓴다"
+          source: https://docs.aws.amazon.com/lambda/latest/dg/telemetry-api.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-secrets-manager.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/telemetry-api.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/extensions-api-partners.html

@@ -1,0 +1,21 @@
+# lambda/layers-extensions 장 전용 사실. 계층 수 상한(lambda.layers.max)은 lambda-core.yaml, 압축 해제 250 MB(lambda.zip.max-unzipped)는 lambda-packaging-runtimes.yaml, 종료 단계 시간은 lambda-execution-environment.yaml, 비밀 캐시 시간은 lambda-configuration.yaml을 재사용한다.
+
+- id: lambda.extensions.max
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "함수 하나에 등록할 수 있는 익스텐션 수 (Extensions API의 Register 호출에서 강제)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/runtimes-extensions-api.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/runtimes-extensions-api.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.secrets-extension.port
+  value: 2773
+  unit: port
+  display: { ko: "2773" }
+  label: { ko: "AWS Parameters and Secrets Lambda Extension이 localhost에서 기다리는 기본 HTTP 포트" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/with-secrets-manager.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-secrets-manager.html
+  checked: 2026-11-03
+  volatile: false

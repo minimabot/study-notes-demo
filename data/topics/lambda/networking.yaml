@@ -1,0 +1,81 @@
+# 장: Lambda 네트워킹
+chapter:
+  id: lambda/networking
+  title:
+    ko: 네트워킹 (VPC 연결·인터넷 접근·VPC 엔드포인트)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+  topics:
+    - id: lambda/networking/vpc-attach
+      title:
+        ko: VPC 연결과 Hyperplane ENI
+      exam_tags:
+        - DVA-C03#1.2
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 사설 리소스에 접근하려면 함수를 프라이빗 서브넷에 연결한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+          checked: 2026-11-03
+        - claim:
+            ko: 여러 함수에 같은 서브넷·보안 그룹 조합을 지정해 Hyperplane ENI를 함께 쓰게 한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+          checked: 2026-11-03
+        - claim:
+            ko: lambda:SourceFunctionArn 조건의 Deny 문장으로 함수 코드가 EC2 API를 부르지 못하게 막는다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+          checked: 2026-11-03
+        - claim:
+            ko: Hyperplane ENI가 계속 남아 있다고 가정하고 설계하지 않는다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+    - id: lambda/networking/internet-and-services
+      title:
+        ko: VPC 함수의 인터넷 접근(NAT)과 AWS 서비스 접근(VPC 엔드포인트)
+      exam_tags:
+        - DVA-C03#1.2
+        - SAA-C03#1.2
+        - SOA-C03#5.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc-internet.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-networking.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-msk-cluster-network.html
+    - id: lambda/networking/ipv6
+      title:
+        ko: 듀얼 스택 서브넷과 IPv6
+      exam_tags:
+        - SOA-C03#5.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+    - id: lambda/networking/inbound-endpoints
+      title:
+        ko: Lambda API용 인터페이스 VPC 엔드포인트
+      exam_tags:
+        - SOA-C03#5.1
+        - SAA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc-endpoints.html
+    - id: lambda/networking/pitfalls
+      title:
+        ko: 흔한 네트워크 문제, VPC 조건 키, RDS Proxy
+      exam_tags:
+        - SOA-C03#5.3
+        - DVA-C03#1.2
+        - DVA-C03#4.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 짧은 DB 연결을 자주 열고 닫는 운영 함수에는 RDS Proxy를 쓴다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/services-rds.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-networking.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-rds.html

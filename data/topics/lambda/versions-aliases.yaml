@@ -1,0 +1,45 @@
+# 장: Lambda 버전과 별칭, 점진적 배포
+chapter:
+  id: lambda/versions-aliases
+  title:
+    ko: 버전과 별칭, 트래픽 이동 배포
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html
+  topics:
+    - id: lambda/versions-aliases/versions
+      title:
+        ko: 함수 버전과 $LATEST, 정규화된 ARN
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html
+    - id: lambda/versions-aliases/aliases
+      title:
+        ko: 별칭과 이벤트 소스·권한·프로비저닝된 동시성
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/using-aliases.html
+    - id: lambda/versions-aliases/weighted-routing
+      title:
+        ko: 가중치 별칭으로 카나리 배포
+      exam_tags:
+        - DVA-C03#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html
+    - id: lambda/versions-aliases/codedeploy
+      title:
+        ko: CodeDeploy 트래픽 이동, 후크, 자동 롤백 (AWS SAM)
+      exam_tags:
+        - DVA-C03#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+        - https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
+        - https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/automating-updates-to-serverless-apps.html

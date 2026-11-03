@@ -1,0 +1,67 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.versions-aliases-pc-latest
+  type: quiz
+  chapter: lambda/versions-aliases
+  topic: lambda/versions-aliases/aliases
+  question: { ko: "prod 별칭에 프로비저닝된 동시성을 걸었다. 그런데 API Gateway 통합에는 함수의 정규화되지 않은 ARN이 들어 있고, 콜드 스타트가 계속 보인다. 원인으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "정규화되지 않은 ARN은 $LATEST를 호출하므로 prod 별칭에 준비된 환경을 쓰지 않는다" } }
+    - { id: b, text: { ko: "프로비저닝된 동시성은 별칭에 걸 수 없고 $LATEST에만 걸 수 있다" } }
+    - { id: c, text: { ko: "별칭이 가리키는 버전에 예약된 동시성이 없어서 프로비저닝이 꺼진다" } }
+    - { id: d, text: { ko: "정규화되지 않은 ARN은 호출할 때마다 새 버전을 게시한다" } }
+  answer: a
+  explanation: { ko: "접미사 없는 ARN으로 부르면 Lambda는 $LATEST를 실행한다. 프로비저닝된 동시성은 그 별칭(또는 버전)을 호출할 때만 쓰이므로, 통합 대상을 prod 별칭 ARN으로 바꿔야 한다. b는 거꾸로다. 프로비저닝은 $LATEST에 걸 수 없다. c: 예약된 동시성은 선택 사항이다. d: 호출은 버전을 게시하지 않는다." }
+  facts: []
+
+- id: lambda.q.versions-aliases-weighted-rules
+  type: quiz
+  chapter: lambda/versions-aliases
+  topic: lambda/versions-aliases/weighted-routing
+  question: { ko: "가중치 별칭으로 새 코드에 일부 트래픽만 보내려 한다. 설정이 거부되는 경우는?" }
+  choices:
+    - { id: a, text: { ko: "버전 3과 버전 4를 가리키고, 버전 4에 작은 가중치를 준다" } }
+    - { id: b, text: { ko: "기본 버전으로 버전 4를, 추가 버전으로 $LATEST를 지정한다" } }
+    - { id: c, text: { ko: "두 버전 모두 DLQ 설정이 없다" } }
+    - { id: d, text: { ko: "두 버전의 메모리 크기가 서로 다르다" } }
+  answer: b
+  explanation: { ko: "가중치 별칭의 두 버전은 모두 게시된 버전이어야 하고 $LATEST는 쓸 수 없다. 그 밖에 두 버전은 실행 역할이 같고 DLQ 설정이 같거나 둘 다 없어야 한다(c는 허용). 가리킬 수 있는 버전은 {{fact:lambda.alias.routing.max-versions}}까지이므로 a는 맞는 구성이다. 메모리(d)는 조건에 없다." }
+  facts: [lambda.alias.routing.max-versions]
+
+- id: lambda.q.versions-aliases-canary-timing
+  type: quiz
+  chapter: lambda/versions-aliases
+  topic: lambda/versions-aliases/codedeploy
+  question: { ko: "SAM DeploymentPreference의 Type을 Canary10Percent5Minutes로 두고 배포했다. 경보와 후크가 모두 정상일 때 트래픽은 어떻게 옮겨지는가?" }
+  choices:
+    - { id: a, text: { ko: "매분 같은 비율씩 늘어 모든 트래픽이 옮겨질 때까지 이어진다" } }
+    - { id: b, text: { ko: "처음에 {{fact:lambda.codedeploy.step.pct}}가 새 버전으로 가고, {{fact:lambda.codedeploy.canary.wait.5}} 뒤 나머지가 한 번에 옮겨진다" } }
+    - { id: c, text: { ko: "{{fact:lambda.codedeploy.canary.wait.5}} 동안 새 버전을 테스트 트래픽으로만 돌린 뒤 모든 트래픽을 옮긴다" } }
+    - { id: d, text: { ko: "새 버전에 {{fact:lambda.codedeploy.step.pct}}를 보낸 상태로 유지하고, 나머지는 수동으로 옮긴다" } }
+  answer: b
+  explanation: { ko: "카나리 구성은 두 단계다. 첫 단계에 {{fact:lambda.codedeploy.step.pct}}를 옮기고, 이름에 적힌 시간({{fact:lambda.codedeploy.canary.wait.5}})이 지나면 나머지를 옮긴다. a는 선형(Linear) 구성의 동작이다. c: Lambda용 구성에는 별도 테스트 트래픽 단계가 없고, 검증은 BeforeAllowTraffic·AfterAllowTraffic 후크로 한다. d: 남은 트래픽도 CodeDeploy가 자동으로 옮긴다." }
+  facts: [lambda.codedeploy.step.pct, lambda.codedeploy.canary.wait.5]
+
+- id: lambda.d.versions-aliases-safe-release
+  type: design
+  chapter: lambda/versions-aliases
+  topic: lambda/versions-aliases/codedeploy
+  scenario: { ko: "주문 API는 API Gateway → Lambda 함수 구조이고 AWS SAM으로 배포한다. 지난 배포에서 새 코드가 특정 입력에 오류를 내 전체 고객이 몇 분 동안 실패를 겪었다. 요구: (가) 새 코드는 처음에 일부 요청에만 노출할 것, (나) 오류율이 오르면 사람 개입 없이 이전 코드로 돌아갈 것, (다) 트래픽을 받기 전에 새 버전의 기본 동작을 자동으로 확인할 것, (라) 롤백 때 API Gateway나 권한 정책을 고치지 않을 것. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "함수에 AutoPublishAlias: live를 두고, API Gateway 통합과 Lambda 권한을 live 별칭 ARN으로 지정한다" } }
+    - { id: b, text: { ko: "DeploymentPreference의 Type을 카나리(예: Canary10Percent10Minutes)로 두고, Alarms에 별칭·새 버전의 Errors 경보를 넣는다" } }
+    - { id: c, text: { ko: "Hooks의 PreTraffic에 검증 함수를 두고, 검사 결과를 PutLifecycleEventHookExecutionStatus로 CodeDeploy에 알리게 한다" } }
+    - { id: d, text: { ko: "API Gateway 통합을 정규화되지 않은 ARN으로 두고, 배포마다 $LATEST를 덮어쓴다. 문제가 생기면 이전 코드를 다시 빌드해 올린다" } }
+    - { id: e, text: { ko: "DeploymentPreference의 Type을 AllAtOnce로 두고 경보만 건다" } }
+    - { id: f, text: { ko: "가중치 별칭의 추가 버전을 $LATEST로 두어, 새 코드를 올리면 바로 일부 트래픽이 가게 한다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 게시된 버전은 바뀌지 않으므로 이전 코드가 그대로 남는다. 호출 쪽과 권한이 별칭을 가리키면, 롤백은 별칭이 가리키는 버전만 바꾸는 일이 되어 API Gateway나 정책을 고칠 필요가 없다(요구 라)."
+      - "b: 카나리 구성은 처음에 {{fact:lambda.codedeploy.step.pct}}만 새 버전으로 보낸다(요구 가). 배포 중 경보가 울리면 CodeDeploy가 트래픽을 원래 버전으로 되돌린다(요구 나). 선형 구성도 요구를 만족하는 대안이다."
+      - "c: PreTraffic(BeforeAllowTraffic) 후크는 트래픽을 옮기기 전에 실행된다. 실패를 알리거나 {{fact:lambda.codedeploy.hook.timeout}} 안에 결과를 알리지 않으면 배포가 실패해 트래픽이 옮겨지지 않는다(요구 다)."
+      - "d는 감점: $LATEST는 덮어쓰면 이전 코드가 남지 않는다. 다시 빌드해 올리는 동안 모든 요청이 실패 코드를 탄다. 요구 가, 나를 어긴다."
+      - "e는 감점: AllAtOnce는 처음부터 모든 트래픽을 옮기므로 요구 (가)를 어긴다. 경보로 롤백은 되지만 그 전까지 모든 고객이 영향을 받는다."
+      - "f는 감점: 가중치 별칭은 게시된 버전만 가리킬 수 있어 $LATEST를 쓸 수 없다. 자동 롤백 장치도 없다."
+      - "처음 도입할 때는 옮겨 올 이전 버전이 필요하므로 AutoPublishAlias만으로 한 번 배포한 뒤 DeploymentPreference를 켠다는 점을 언급하면 가점."
+  facts: [lambda.codedeploy.step.pct, lambda.codedeploy.hook.timeout]

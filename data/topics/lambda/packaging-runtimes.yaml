@@ -1,0 +1,70 @@
+# 장: Lambda 배포 패키지와 런타임
+chapter:
+  id: lambda/packaging-runtimes
+  title:
+    ko: 배포 패키지(.zip·컨테이너 이미지)와 런타임
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+  topics:
+    - id: lambda/packaging-runtimes/managed-runtimes
+      title:
+        ko: 관리형 런타임과 사용 중단 정책
+      exam_tags:
+        - DVA-C03#1.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: "코드가 쓰는 AWS SDK 모듈은 런타임에 든 SDK에 기대지 말고 배포 패키지에 함께 넣는다"
+          source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+          checked: 2026-11-03
+        - claim:
+            ko: "런타임을 바꿀 때는 버전과 별칭을 써서 되돌릴 수 있게 배포한다"
+          source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+    - id: lambda/packaging-runtimes/runtime-updates
+      title:
+        ko: 런타임 버전 업데이트와 런타임 관리 제어
+      exam_tags:
+        - DVA-C03#1.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: "대부분의 함수에는 런타임 업데이트 모드로 Auto(기본값)를 쓴다"
+          source: https://docs.aws.amazon.com/lambda/latest/dg/runtimes-update.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/runtimes-update.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/runtime-management-rollback.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/runtime-management-configure-settings.html
+    - id: lambda/packaging-runtimes/zip
+      title:
+        ko: .zip 파일 아카이브 배포
+      exam_tags:
+        - DVA-C03#3.1
+        - DVA-C03#3.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-function-zip.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+    - id: lambda/packaging-runtimes/container-images
+      title:
+        ko: 컨테이너 이미지 배포 (기본 이미지, 런타임 인터페이스 클라이언트)
+      exam_tags:
+        - DVA-C03#3.1
+        - DVA-C03#3.3
+        - SOA-C03#3.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/images-create.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+    - id: lambda/packaging-runtimes/custom-runtimes
+      title:
+        ko: OS 전용 런타임과 사용자 지정 런타임
+      exam_tags:
+        - DVA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/runtimes-provided.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html

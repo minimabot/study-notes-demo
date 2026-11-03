@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.event-source-mappings-sqs-filter
+  type: quiz
+  chapter: lambda/event-source-mappings
+  topic: lambda/event-source-mappings/filtering
+  question: { ko: "SQS 표준 큐를 읽는 이벤트 소스 매핑에 `body`의 `type`이 \"order\"인 메시지만 넘기는 필터를 걸었다. 큐에는 \"refund\" 메시지도 섞여 들어온다. 필터에 맞지 않은 \"refund\" 메시지는 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "큐에 남아 있다가 가시성 제한 시간이 지나면 다시 보인다" } }
+    - { id: b, text: { ko: "Lambda가 큐에서 자동으로 지운다" } }
+    - { id: c, text: { ko: "큐의 DLQ로 옮겨진다" } }
+    - { id: d, text: { ko: "매핑의 실패 시 대상으로 보내진다" } }
+  answer: b
+  explanation: { ko: "SQS에서는 필터에 맞지 않은 메시지를 Lambda가 큐에서 자동으로 지운다. 따로 지울 필요가 없지만, 다른 소비자도 그 메시지를 읽을 수는 없게 된다. a: 함수가 오류를 냈을 때의 동작이다. c: DLQ는 받은 횟수가 maxReceiveCount를 넘을 때 쓰이며 필터와 관계없다. d: 실패 시 대상은 스트림·Kafka 매핑에서 버린 배치를 보관하는 기능이고, 걸러진 메시지는 실패가 아니다." }
+  facts: []
+
+- id: lambda.q.event-source-mappings-poison-record
+  type: quiz
+  chapter: lambda/event-source-mappings
+  topic: lambda/event-source-mappings/errors
+  question: { ko: "Kinesis 스트림을 읽는 함수가 형식이 깨진 레코드 하나 때문에 계속 오류를 낸다. 매핑은 기본 설정 그대로다. 그 샤드의 IteratorAge가 계속 오른다. 정상 레코드 처리를 이어 가면서 문제 레코드를 나중에 살펴보려면 어떻게 하는가?" }
+  choices:
+    - { id: a, text: { ko: "함수에 예약된 동시성을 늘린다" } }
+    - { id: b, text: { ko: "매핑의 배치 기간을 최댓값으로 늘린다" } }
+    - { id: c, text: { ko: "최대 재시도 횟수와 오류 시 배치 분할을 설정하고, 실패 시 대상(SQS 큐 등)을 지정한다. 부분 배치 응답도 켠다" } }
+    - { id: d, text: { ko: "함수의 비동기 호출 설정에 DLQ를 지정한다" } }
+  answer: c
+  explanation: { ko: "스트림 매핑은 기본적으로 재시도와 레코드 나이가 -1(무한)이라, 레코드가 만료될 때까지 배치 전체를 다시 보내며 샤드가 멈춘다. 재시도 상한(최대 {{fact:kinesis.lambda.retry.max}})과 배치 분할로 문제 레코드를 좁히고, 실패 시 대상에 기록을 남기면 샤드가 다시 진행한다. 부분 배치 응답을 켜면 성공한 레코드를 다시 처리하지 않는다. a: 샤드 안 처리는 순서대로라 동시성을 늘려도 막힌 레코드를 건너뛰지 못한다. b: 배치 기간은 모으는 시간일 뿐 오류와 관계없다. d: 비동기 호출의 DLQ는 이벤트 소스 매핑 호출에 쓰이지 않는다." }
+  facts: [kinesis.lambda.retry.max]
+
+- id: lambda.q.event-source-mappings-batch-trigger
+  type: quiz
+  chapter: lambda/event-source-mappings
+  topic: lambda/event-source-mappings/batching
+  question: { ko: "SQS 매핑에 BatchSize {{raw:500}}, 배치 기간 {{raw:20초}}를 설정했다. 메시지가 아주 커서 {{raw:120개}}만 모였는데, 배치 기간이 끝나기 전에 함수가 호출됐다. 가장 알맞은 설명은?" }
+  choices:
+    - { id: a, text: { ko: "모은 페이로드가 {{fact:lambda.payload.sync.max}}에 닿아 배치 기간이 끝나기 전에 호출했다" } }
+    - { id: b, text: { ko: "SQS 매핑은 배치 기간을 무시한다" } }
+    - { id: c, text: { ko: "BatchSize가 FIFO 최댓값을 넘어 자동으로 줄었다" } }
+    - { id: d, text: { ko: "배치 기간은 첫 메시지가 아니라 매핑을 만든 시각부터 센다" } }
+  answer: a
+  explanation: { ko: "매핑은 배치 기간 만료, 배치 크기 도달, 페이로드 {{fact:lambda.payload.sync.max}} 도달 가운데 먼저 일어난 조건에서 함수를 부른다. 메시지가 크면 개수보다 크기 한도에 먼저 닿는다. b: SQS 매핑도 배치 기간을 쓴다. c: 표준 큐라면 BatchSize 최댓값은 {{fact:lambda.sqs.batch.max-standard}}이고, 설정이 몰래 바뀌지 않는다. d: 근거 없는 설명이다." }
+  facts: [lambda.payload.sync.max, lambda.sqs.batch.max-standard]

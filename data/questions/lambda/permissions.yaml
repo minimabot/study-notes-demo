@@ -1,0 +1,54 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.permissions-s3-source-account
+  type: quiz
+  chapter: lambda/permissions
+  topic: lambda/permissions/resource-based
+  question: { ko: "같은 계정의 S3 버킷 업로드 이벤트로 함수를 부르려 한다. 함수의 리소스 기반 정책에 Principal `s3.amazonaws.com`, 동작 `lambda:InvokeFunction`, 조건 `aws:SourceArn`(버킷 ARN)을 넣었다. 문서가 S3에 대해 추가로 권하는 것은?" }
+  choices:
+    - { id: a, text: { ko: "실행 역할에 s3:PutBucketNotification을 준다" } }
+    - { id: b, text: { ko: "aws:SourceAccount 조건으로 버킷 소유 계정을 고정한다" } }
+    - { id: c, text: { ko: "Principal을 \"*\"로 넓혀 알림 전달 실패를 막는다" } }
+    - { id: d, text: { ko: "lambda:SourceFunctionArn 조건을 리소스 기반 정책에 넣는다" } }
+  answer: b
+  explanation: { ko: "S3 버킷 ARN에는 계정 ID가 없다. 버킷을 지우면 다른 계정이 같은 이름의 버킷을 만들 수 있으므로, aws:SourceAccount로 버킷 소유 계정까지 고정한다. a: 버킷 알림 설정은 그것을 만드는 사람(또는 CI)의 권한이지 함수 실행 역할의 권한이 아니다. c: 누구나 부를 수 있게 되어 최소 권한에 어긋난다. d: lambda:SourceFunctionArn은 함수 코드가 보내는 요청을 좁히는 키로, 리소스 기반 정책에는 쓸 수 없다." }
+  facts: []
+
+- id: lambda.q.permissions-passrole
+  type: quiz
+  chapter: lambda/permissions
+  topic: lambda/permissions/identity-based
+  question: { ko: "개발자가 `lambda:CreateFunction` 권한으로 함수를 만들면서 이미 있는 실행 역할 `app-role`을 지정했는데 AccessDenied가 났다. 개발자 정책에 무엇을 더해야 하는가(최소 권한)?" }
+  choices:
+    - { id: a, text: { ko: "app-role 역할 ARN에 대한 iam:PassRole" } }
+    - { id: b, text: { ko: "모든 리소스(\"*\")에 대한 sts:AssumeRole" } }
+    - { id: c, text: { ko: "lambda:AddPermission" } }
+    - { id: d, text: { ko: "IAMFullAccess 관리형 정책" } }
+  answer: a
+  explanation: { ko: "함수에 실행 역할을 지정하는 것은 역할을 서비스에 넘기는 일이라 그 역할에 대한 iam:PassRole이 필요하다. 넘길 역할 ARN으로 좁히면 더 큰 권한의 역할을 함수에 붙이지 못한다. b: 역할을 수임하는 쪽은 Lambda 서비스이고 그 허용은 역할의 신뢰 정책에 있다. 개발자가 역할을 수임할 필요는 없다. c: AddPermission은 함수의 리소스 기반 정책을 바꾸는 동작이다. d: 필요 이상으로 넓다." }
+  facts: []
+
+- id: lambda.d.permissions-cross-account-s3
+  type: design
+  chapter: lambda/permissions
+  topic: lambda/permissions/resource-based
+  scenario: { ko: "계정 A({{raw:111111111111}})의 S3 버킷 `a-uploads`에 파일이 올라오면, 계정 B({{raw:222222222222}})의 함수 `b-process`가 실행되어 그 객체를 읽고 처리한다. 버킷과 함수는 같은 리전에 있다. 버킷은 SSE-S3로 암호화되어 있다. 요구: 이 버킷의 업로드 이벤트만 함수를 부를 수 있고, 함수는 그 버킷의 `incoming/` 접두사 객체만 읽을 수 있을 것. 양쪽 계정의 정책을 최소 권한으로 고르라(알맞은 것을 모두)." }
+  choices:
+    - { id: a, text: { ko: "B: b-process의 리소스 기반 정책에 Principal `s3.amazonaws.com`, `lambda:InvokeFunction`, 조건 `aws:SourceArn` = `arn:aws:s3:::a-uploads`, `aws:SourceAccount` = 계정 A를 허용한다" } }
+    - { id: b, text: { ko: "A: 버킷 관리자가 `s3:PutBucketNotification` 권한으로 버킷 이벤트 알림을 만들고, 대상으로 b-process의 함수 ARN을 지정한다" } }
+    - { id: c, text: { ko: "B: b-process 실행 역할에 `arn:aws:s3:::a-uploads/incoming/*`에 대한 `s3:GetObject`를 허용하고, A: 버킷 정책에서 그 실행 역할 ARN에 같은 리소스의 `s3:GetObject`를 허용한다" } }
+    - { id: d, text: { ko: "B: 리소스 기반 정책의 Principal을 `arn:aws:iam::111111111111:root`로 두어 계정 A가 함수를 부르게 한다" } }
+    - { id: e, text: { ko: "B: 리소스 기반 정책에 `aws:SourceAccount` = 계정 B를 넣는다" } }
+    - { id: f, text: { ko: "B: 실행 역할에 `s3:*`를 `*` 리소스로 허용해 버킷 정책 없이 읽게 한다" } }
+    - { id: g, text: { ko: "A: 버킷 정책에서 Principal `*`에 `s3:GetObject`를 허용한다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: S3가 함수를 부를 때 Lambda는 함수의 리소스 기반 정책만 본다. 호출하는 쪽은 계정 A의 사용자가 아니라 S3 서비스이므로 Principal은 서비스 주체다. 버킷 ARN에 계정 ID가 없으므로 aws:SourceArn과 함께 aws:SourceAccount(버킷 소유 계정 A)를 넣어야 이 버킷의 이벤트만 허용한다."
+      - "b: 이벤트 알림 설정은 버킷 쪽(계정 A)에 저장되는 트리거다. 알림을 만드는 주체에 버킷 알림 권한이 있어야 하고, 대상 함수의 리소스 기반 정책(a)이 먼저 있어야 설정이 성공한다."
+      - "c: 다른 계정의 객체를 읽으려면 양쪽이 모두 허용해야 한다. B의 실행 역할 정책(자격 증명 기반)과 A의 버킷 정책(리소스 기반)이 둘 다 incoming/ 접두사로 좁혀져야 최소 권한이다. 버킷이 SSE-KMS였다면 KMS 키 정책에도 실행 역할을 넣어야 한다."
+      - "d는 감점: S3 알림은 계정 A의 IAM 주체가 아니라 S3 서비스가 보낸다. 계정 A 전체에 호출을 열면 A의 모든 사용자·역할이 함수를 부를 수 있어 범위가 너무 넓고, 정작 S3 호출 허용은 빠진다."
+      - "e는 감점: aws:SourceAccount는 이벤트를 내는 리소스(버킷)의 소유 계정이다. 계정 B를 넣으면 계정 A의 버킷 이벤트가 거부된다."
+      - "f는 감점: 다른 계정 버킷은 버킷 정책의 허용 없이 읽을 수 없고, s3:* 와 * 리소스는 최소 권한에 어긋난다."
+      - "g는 감점: 버킷 객체를 누구에게나 공개한다. 계정 B 실행 역할 ARN으로 한정해야 한다."
+  facts: []

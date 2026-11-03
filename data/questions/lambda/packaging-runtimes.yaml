@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.packaging-runtimes-size
+  type: quiz
+  chapter: lambda/packaging-runtimes
+  topic: lambda/packaging-runtimes/zip
+  question: { ko: "Python 함수의 의존성(과학 계산 라이브러리 여러 개)을 넣었더니 압축한 .zip이 {{raw:120 MB}}, 압축을 풀면 {{raw:600 MB}}다. 이 코드를 Lambda에 배포하는 방법으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: ".zip을 S3에 올리고 함수 코드 위치로 S3 객체를 지정한다" } }
+    - { id: b, text: { ko: "의존성을 계층 여러 개로 나눠 붙인다" } }
+    - { id: c, text: { ko: "컨테이너 이미지로 빌드해 Amazon ECR에 올리고 이미지로 함수를 만든다" } }
+    - { id: d, text: { ko: "콘솔 코드 편집기에 붙여 넣는다" } }
+  answer: c
+  explanation: { ko: ".zip은 함수 코드와 계층을 합친 압축 해제 크기가 {{fact:lambda.zip.max-unzipped}}를 넘을 수 없다. S3로 올리면(a) 직접 업로드 한도 {{fact:lambda.zip.max-zipped}}는 피하지만 압축 해제 한도는 그대로다. 계층으로 나눠도(b) 계층 크기가 같은 한도에 함께 들어간다. 컨테이너 이미지는 압축 해제 기준 {{fact:lambda.image.max-size}}까지 된다. 콘솔 편집기(d)는 {{fact:lambda.console-editor.max}}까지만 직접 고칠 수 있다." }
+  facts: [lambda.zip.max-unzipped, lambda.zip.max-zipped, lambda.image.max-size, lambda.console-editor.max]
+
+- id: lambda.q.packaging-runtimes-update-mode
+  type: quiz
+  chapter: lambda/packaging-runtimes
+  topic: lambda/packaging-runtimes/runtime-updates
+  question: { ko: "팀은 CI/CD로 매주 배포한다. 런타임 패치가 언제 적용되는지 배포 시점과 맞추고, 패치가 문제를 일으키면 별칭을 이전 버전으로 옮겨 코드·설정·런타임 버전을 한꺼번에 되돌리고 싶다. 알맞은 런타임 업데이트 모드는?" }
+  choices:
+    - { id: a, text: { ko: "Auto" } }
+    - { id: b, text: { ko: "Function update" } }
+    - { id: c, text: { ko: "Manual로 두고 한 런타임 버전 ARN을 계속 고정한다" } }
+    - { id: d, text: { ko: "모드와 관계없이 런타임 식별자를 매번 바꾼다" } }
+  answer: b
+  explanation: { ko: "Function update 모드는 함수를 만들거나 고칠 때만 최신 런타임 버전을 적용하고, 게시된 버전의 런타임 버전을 바꾸지 않는다. 그래서 게시된 버전이 코드·설정·런타임 버전의 고정된 묶음이 되고, 별칭을 옮기면 함께 되돌아간다. Auto(a)는 두 번째 단계에서 게시된 버전의 런타임도 자동으로 올리므로 배포 시점과 어긋날 수 있다. Manual(c)은 호환 문제 때의 임시 조치이며, 문서는 일관성을 위해 Manual을 쓰지 말라고 한다. 런타임 식별자(d)는 메이저 언어 버전을 바꾸는 것으로 패치 버전과 다르다." }
+  facts: []
+
+- id: lambda.q.packaging-runtimes-image-patch
+  type: quiz
+  chapter: lambda/packaging-runtimes
+  topic: lambda/packaging-runtimes/container-images
+  question: { ko: "AWS의 Python 기본 이미지로 만든 컨테이너 이미지 함수가 있다. Lambda가 기본 이미지에 보안 패치를 냈다. 함수에 패치를 적용하려면?" }
+  choices:
+    - { id: a, text: { ko: "아무것도 하지 않아도 된다. Auto 모드가 이미지 함수도 자동으로 패치한다" } }
+    - { id: b, text: { ko: "런타임 관리 설정을 Function update로 바꾼다" } }
+    - { id: c, text: { ko: "갱신된 기본 이미지로 이미지를 다시 빌드해 ECR에 올리고 함수 코드를 업데이트한다" } }
+    - { id: d, text: { ko: "패치가 담긴 계층을 함수에 추가한다" } }
+  answer: c
+  explanation: { ko: "자동 런타임 업데이트와 런타임 관리 모드(a, b)는 관리형 런타임을 쓰는 .zip 함수에 해당한다. 이미지 함수는 갱신된 기본 이미지로 다시 빌드하고 배포해야 패치를 받는다. 이 일은 공동 책임 모델에서 사용자 몫이다. 이미지 함수에는 계층(d)을 붙일 수 없다." }
+  facts: []

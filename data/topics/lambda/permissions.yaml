@@ -1,0 +1,70 @@
+# 장: Lambda 권한
+chapter:
+  id: lambda/permissions
+  title:
+    ko: 권한 (실행 역할·리소스 기반 정책·사용자 권한)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html
+  topics:
+    - id: lambda/permissions/execution-role
+      title:
+        ko: 실행 역할과 AWSLambdaBasicExecutionRole
+      exam_tags:
+        - DVA-C03#2.1
+        - DVA-C03#1.2
+        - SAA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 운영 환경에 내보내기 전에 실행 역할 정책을 꼭 필요한 권한만 남도록 줄인다(최소 권한)
+          source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+          checked: 2026-11-03
+        - claim:
+            ko: IAM Access Analyzer로 실제 사용 기록에 맞춘 실행 역할 정책을 만든다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/permissions-source-function-arn.html
+    - id: lambda/permissions/resource-based
+      title:
+        ko: 리소스 기반 정책 (서비스·다른 계정의 호출)
+      exam_tags:
+        - DVA-C03#2.1
+        - SAA-C03#1.1
+        - DOP-C02#6.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: S3가 함수를 부르게 할 때는 버킷 ARN에 계정 ID가 없으므로 aws:SourceAccount 조건을 함께 쓴다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/permissions-function-services.html
+          checked: 2026-11-03
+        - claim:
+            ko: 리소스 기반 정책은 put-resource-policy로 전체 JSON 정책을 정의하는 방식을 권장한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/permissions-function-services.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/permissions-function-cross-account.html
+    - id: lambda/permissions/identity-based
+      title:
+        ko: 사용자 권한, PassRole, ABAC
+      exam_tags:
+        - DVA-C03#2.1
+        - SAA-C03#1.1
+        - DOP-C02#6.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/permissions-user-function.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-api-permissions-ref.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/attribute-based-access-control.html
+    - id: lambda/permissions/code-signing
+      title:
+        ko: 코드 서명
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-codesigning.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/config-codesigning-policies.html

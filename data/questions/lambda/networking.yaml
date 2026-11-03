@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.networking-public-subnet
+  type: quiz
+  chapter: lambda/networking
+  topic: lambda/networking/internet-and-services
+  question: { ko: "RDS를 읽는 함수를 VPC에 연결했더니 외부 결제 API 호출이 제한 시간 초과로 끝난다. 개발자가 함수를 인터넷 게이트웨이 경로가 있는 퍼블릭 서브넷으로 옮겼지만 그대로다. 올바른 구성은?" }
+  choices:
+    - { id: a, text: { ko: "함수를 VPC에서 분리한다. RDS는 퍼블릭 엔드포인트로 연다" } }
+    - { id: b, text: { ko: "함수를 프라이빗 서브넷에 두고, 그 라우팅 테이블의 0.0.0.0/0을 퍼블릭 서브넷의 NAT 게이트웨이로 보낸다" } }
+    - { id: c, text: { ko: "함수에 탄력적 IP를 붙인다" } }
+    - { id: d, text: { ko: "결제 API용 인터페이스 VPC 엔드포인트를 만든다" } }
+  answer: b
+  explanation: { ko: "VPC에 연결한 함수의 나가는 트래픽은 모두 VPC를 지난다. 퍼블릭 서브넷에 연결해도 함수에는 퍼블릭 IP가 생기지 않아 인터넷 게이트웨이로 나갈 수 없다. 프라이빗 서브넷 + NAT 게이트웨이가 문서의 구성이다. a: DB를 인터넷에 여는 것은 보안 요구에 어긋난다. c: 함수 구성에는 퍼블릭 IP 설정이 없고, Lambda가 관리하는 ENI는 직접 고칠 수 없다. d: VPC 엔드포인트는 AWS 서비스(또는 PrivateLink로 제공되는 서비스)용이고, 일반 외부 API에는 쓸 수 없다." }
+  facts: []
+
+- id: lambda.q.networking-s3-no-nat
+  type: quiz
+  chapter: lambda/networking
+  topic: lambda/networking/internet-and-services
+  question: { ko: "인터넷 경로가 전혀 없는 프라이빗 서브넷에 연결한 함수가 같은 리전의 S3 버킷에 객체를 써야 한다. NAT 게이트웨이를 두지 않으려 한다. 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "S3 게이트웨이 VPC 엔드포인트를 만들고 함수 서브넷의 라우팅 테이블에 연결한다" } }
+    - { id: b, text: { ko: "Lambda용 인터페이스 VPC 엔드포인트를 만든다" } }
+    - { id: c, text: { ko: "실행 역할에 AWSLambdaVPCAccessExecutionRole을 붙인다" } }
+    - { id: d, text: { ko: "함수 보안 그룹의 인바운드에 S3 접두사 목록을 허용한다" } }
+  answer: a
+  explanation: { ko: "인터넷 없이 AWS 서비스에 닿으려면 VPC 엔드포인트를 쓴다. S3는 게이트웨이 엔드포인트를 라우팅 테이블에 붙여 쓴다. b: Lambda 인터페이스 엔드포인트는 VPC 안에서 Lambda API(Invoke 등)를 부르는 길이지, 함수가 S3로 나가는 길이 아니다. c: 이 정책은 ENI를 만드는 권한일 뿐 경로를 만들지 않는다. d: 함수가 나가는 연결이므로 인바운드 규칙과 관계없고, 경로 없이는 닿지 못한다." }
+  facts: []
+
+- id: lambda.q.networking-inactive
+  type: quiz
+  chapter: lambda/networking
+  topic: lambda/networking/vpc-attach
+  question: { ko: "VPC에 연결된 분기 정산 함수가 몇 달 만에 호출되자 첫 호출이 실패하고, 잠시 뒤에는 정상으로 돈다. 가장 알맞은 설명은?" }
+  choices:
+    - { id: a, text: { ko: "{{fact:lambda.vpc.eni.idle-reclaim}} 동안 호출이 없어 Lambda가 Hyperplane ENI를 회수하고 함수를 Inactive로 바꿨다. 첫 호출 뒤 ENI를 다시 만드는 동안 Pending이었다" } }
+    - { id: b, text: { ko: "VPC당 ENI 할당량 {{fact:lambda.vpc.eni-per-vpc}}을 넘었다" } }
+    - { id: c, text: { ko: "실행 환경마다 ENI를 새로 만들어 콜드 스타트가 길어졌다" } }
+    - { id: d, text: { ko: "NAT 게이트웨이가 유휴 상태로 삭제되었다" } }
+  answer: a
+  explanation: { ko: "VPC 함수가 {{fact:lambda.vpc.eni.idle-reclaim}} 동안 쉬면 Lambda가 쓰지 않는 Hyperplane ENI를 회수하고 함수를 Inactive로 둔다. 다음 호출은 실패하고, ENI가 준비될 때까지 Pending이 된다. 그래서 문서는 ENI가 계속 있다고 가정하지 말라고 한다. b: 할당량 초과면 ENILimitReachedException이 나고 저절로 풀리지 않는다. c: Hyperplane ENI는 서브넷·보안 그룹 조합마다 만들어 함께 쓰며, 실행 환경마다 만들지 않는다. d: NAT 게이트웨이는 쉰다고 자동으로 지워지지 않는다." }
+  facts: [lambda.vpc.eni.idle-reclaim, lambda.vpc.eni-per-vpc]

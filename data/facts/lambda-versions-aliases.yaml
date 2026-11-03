@@ -1,0 +1,111 @@
+# lambda/versions-aliases 장 전용 사실. CodeDeploy의 Lambda용 미리 정의된 배포 구성 값도 여기 둔다(시뮬레이터 lambda-alias-shift가 쓴다).
+
+- id: lambda.alias.routing.max-versions
+  value: 2
+  unit: count
+  display: { ko: "버전 2개" }
+  label: { ko: "가중치 별칭(weighted alias) 하나가 트래픽을 나눠 보낼 수 있는 함수 버전 수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuring-alias-routing.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.step.pct
+  value: 10
+  unit: "%"
+  display: { ko: "10%" }
+  label: { ko: "CodeDeploy의 미리 정의된 Lambda 카나리·선형 배포 구성이 한 단계에 옮기는 트래픽 비율" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.canary.wait.5
+  value: 5
+  unit: min
+  display: { ko: "5분" }
+  label: { ko: "LambdaCanary10Percent5Minutes: 첫 단계 뒤 나머지 트래픽을 옮기기까지의 대기 시간" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.canary.wait.10
+  value: 10
+  unit: min
+  display: { ko: "10분" }
+  label: { ko: "LambdaCanary10Percent10Minutes: 첫 단계 뒤 나머지 트래픽을 옮기기까지의 대기 시간" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.canary.wait.15
+  value: 15
+  unit: min
+  display: { ko: "15분" }
+  label: { ko: "LambdaCanary10Percent15Minutes: 첫 단계 뒤 나머지 트래픽을 옮기기까지의 대기 시간" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.canary.wait.30
+  value: 30
+  unit: min
+  display: { ko: "30분" }
+  label: { ko: "LambdaCanary10Percent30Minutes: 첫 단계 뒤 나머지 트래픽을 옮기기까지의 대기 시간" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.linear.every.1
+  value: 1
+  unit: min
+  display: { ko: "1분" }
+  label: { ko: "LambdaLinear10PercentEvery1Minute: 한 단계씩 트래픽을 더 옮기는 간격" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.linear.every.2
+  value: 2
+  unit: min
+  display: { ko: "2분" }
+  label: { ko: "LambdaLinear10PercentEvery2Minutes: 한 단계씩 트래픽을 더 옮기는 간격" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.linear.every.3
+  value: 3
+  unit: min
+  display: { ko: "3분" }
+  label: { ko: "LambdaLinear10PercentEvery3Minutes: 한 단계씩 트래픽을 더 옮기는 간격" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.linear.every.10
+  value: 10
+  unit: min
+  display: { ko: "10분" }
+  label: { ko: "LambdaLinear10PercentEvery10Minutes: 한 단계씩 트래픽을 더 옮기는 간격" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-configurations.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/deployment-configurations.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.codedeploy.hook.timeout
+  value: 1
+  unit: h
+  display: { ko: "1시간" }
+  label: { ko: "CodeDeploy 수명 주기 후크(BeforeAllowTraffic·AfterAllowTraffic) 검증 함수가 결과를 알려야 하는 시간. 넘으면 배포 실패" }
+  source_en: https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/codedeploy/latest/userguide/reference-appspec-file-structure-hooks.html
+  checked: 2026-11-03
+  volatile: false

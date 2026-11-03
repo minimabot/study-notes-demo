@@ -1,0 +1,51 @@
+# lambda/networking 장 전용 사실. 2026-11-03 대조.
+
+- id: lambda.vpc.eni-per-vpc
+  value: 3000
+  unit: count
+  display: { ko: "3,000개 (증가 요청 가능)" }
+  label: { ko: "VPC당 탄력적 네트워크 인터페이스 기본 할당량 (Lambda 할당량 목록. Amazon EFS 등 다른 서비스와 함께 씀)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.vpc.hyperplane.connections
+  value: 65000
+  unit: count
+  display: { ko: "연결(포트) 65,000개" }
+  label: { ko: "Hyperplane ENI 하나가 지원하는 연결 수. 넘으면 Lambda가 ENI를 자동으로 늘림" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-vpc.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.vpc.eni.idle-reclaim
+  value: 14
+  unit: day
+  display: { ko: "14일" }
+  label: { ko: "VPC 연결 함수가 이 기간 호출되지 않으면 Lambda가 Hyperplane ENI를 회수하고 함수를 Inactive로 바꿈" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-vpc.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.vpc.eni.delete-max
+  value: 1200
+  unit: s
+  display: { ko: "최대 20분" }
+  label: { ko: "함수에서 VPC 구성을 지운 뒤 Lambda가 Hyperplane ENI를 삭제하는 데 걸리는 시간" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-vpc.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.vpc.dns-tcp.max
+  value: 20
+  unit: count
+  display: { ko: "20개 (늘릴 수 없음)" }
+  label: { ko: "함수가 DNS 확인에 쓸 수 있는 동시 TCP 연결 수 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-networking.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/troubleshooting-networking.html
+  checked: 2026-11-03
+  volatile: false

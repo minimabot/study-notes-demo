@@ -1,0 +1,72 @@
+# 장: Lambda 이벤트 소스 매핑
+chapter:
+  id: lambda/event-source-mappings
+  title:
+    ko: 이벤트 소스 매핑 (배치·필터링·오류 처리)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+  topics:
+    - id: lambda/event-source-mappings/basics
+      title:
+        ko: 이벤트 소스 매핑과 이벤트 폴러, 지원 소스
+      exam_tags:
+        - DVA-C03#1.2
+        - DOP-C02#5.1
+        - SAA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 이벤트 소스 매핑은 같은 레코드를 두 번 처리할 수 있으므로 함수 코드를 멱등하게 만든다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/permissions-managed-policies.html
+    - id: lambda/event-source-mappings/batching
+      title:
+        ko: 배치 크기와 배치 기간
+      exam_tags:
+        - DVA-C03#1.2
+        - SAA-C03#3.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 배치 크기와 레코드 크기를 바꿔 가며 시험해 폴링 빈도를 함수 처리 속도에 맞춘다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-mq.html
+    - id: lambda/event-source-mappings/filtering
+      title:
+        ko: 이벤트 필터링
+      exam_tags:
+        - DVA-C03#1.2
+        - DOP-C02#5.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventfiltering.html
+    - id: lambda/event-source-mappings/errors
+      title:
+        ko: 소스별 오류 처리와 부분 배치 응답
+      exam_tags:
+        - DVA-C03#1.2
+        - DOP-C02#5.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/kafka-retry-configurations.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-mq-errors.html
+    - id: lambda/event-source-mappings/provisioned-mode
+      title:
+        ko: 프로비저닝된 모드와 매핑 지표
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 프로비저닝된 모드에서 지연을 최소로 하려면 배치 기간을 0으로 둔다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-metrics-types.html
