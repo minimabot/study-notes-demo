@@ -1,0 +1,237 @@
+# lambda/cost 장 전용 사실 항목. ID 접두어 lambda.
+# 요금 숫자는 요금 페이지(JS로 그려짐) 대신 AWS Price List API 가격표에서 읽었다.
+#   https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSLambda/20261030234255/{ap-northeast-2,us-east-1}/index.json
+#   (region_index.json의 currentVersionUrl, 2026-11-03 확인). 괄호 안은 가격표의 usagetype.
+# 무료 등급, 프로비저닝된 동시성 5분 올림, 임시 스토리지 무료분은 요금 페이지 본문(HTML)에서 확인했다.
+# 재사용: 메모리 최솟값·최댓값(lambda.memory.min/max), 1 vCPU 메모리(lambda.memory.one-vcpu),
+#   /tmp 기본·최댓값(lambda.tmp.min/max), 제한 시간 최댓값(lambda.timeout.max).
+
+- id: lambda.price.offer-version
+  value: "2026-10-30"
+  unit: date
+  display: { ko: "2026-10-30 게시 가격표 (2026-11-03 확인)" }
+  label: { ko: "이 권의 Lambda 요금 수치를 읽은 가격표. AWS Price List API AWSLambda 오퍼 파일 버전 20261030234255" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.request.apne2
+  value: 0.2
+  unit: usd/1M-requests
+  display: { ko: "요청 100만 건당 0.20 USD" }
+  label: { ko: "이벤트 함수 요청 단가, 서울(ap-northeast-2). x86과 arm64 같은 값 (Price List API: APN2-Request, APN2-Request-ARM, 건당 0.0000002)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.request.use1
+  value: 0.2
+  unit: usd/1M-requests
+  display: { ko: "요청 100만 건당 0.20 USD" }
+  label: { ko: "이벤트 함수 요청 단가, 미국 동부 버지니아 북부(us-east-1). x86과 arm64 같은 값 (Price List API: Request, Request-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.duration.x86.apne2
+  value: 1.66667e-05
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000166667 USD" }
+  label: { ko: "이벤트 함수 실행 시간(duration) 단가, x86_64, 첫 구간, 서울(ap-northeast-2) (Price List API: APN2-Lambda-GB-Second Tier-1)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.duration.x86.use1
+  value: 1.66667e-05
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000166667 USD" }
+  label: { ko: "이벤트 함수 실행 시간 단가, x86_64, 첫 구간, 미국 동부 버지니아 북부(us-east-1) (Price List API: Lambda-GB-Second Tier-1)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.duration.arm.apne2
+  value: 1.33334e-05
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000133334 USD" }
+  label: { ko: "이벤트 함수 실행 시간 단가, arm64, 첫 구간, 서울(ap-northeast-2) (Price List API: APN2-Lambda-GB-Second-ARM Tier-1)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.duration.arm.use1
+  value: 1.33334e-05
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000133334 USD" }
+  label: { ko: "이벤트 함수 실행 시간 단가, arm64, 첫 구간, 미국 동부 버지니아 북부(us-east-1) (Price List API: Lambda-GB-Second-ARM Tier-1)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.duration.x86.tier1
+  value: 6000000000
+  unit: GB-second/month
+  display: { ko: "월 60억 GB-초까지" }
+  label: { ko: "x86_64 실행 시간 첫 요금 구간의 끝. 이를 넘는 사용량은 더 낮은 단가 구간으로 간다 (Price List API: Tier-1 endRange 6000000000)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.duration.arm.tier1
+  value: 7500000000
+  unit: GB-second/month
+  display: { ko: "월 75억 GB-초까지" }
+  label: { ko: "arm64 실행 시간 첫 요금 구간의 끝 (Price List API: Tier-1 endRange 7500000000)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc.x86.apne2
+  value: 5.1254e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000051254 USD" }
+  label: { ko: "프로비저닝된 동시성 유지 요금, x86_64, 서울(ap-northeast-2). 켜 둔 동안 설정한 동시성 × 메모리만큼 붙는다 (Price List API: APN2-Lambda-Provisioned-Concurrency)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc.arm.apne2
+  value: 4.1003e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000041003 USD" }
+  label: { ko: "프로비저닝된 동시성 유지 요금, arm64, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Provisioned-Concurrency-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc.x86.use1
+  value: 4.1667e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000041667 USD" }
+  label: { ko: "프로비저닝된 동시성 유지 요금, x86_64, 미국 동부 버지니아 북부(us-east-1) (Price List API: Lambda-Provisioned-Concurrency)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc.arm.use1
+  value: 3.3334e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000033334 USD" }
+  label: { ko: "프로비저닝된 동시성 유지 요금, arm64, 미국 동부 버지니아 북부(us-east-1) (Price List API: Lambda-Provisioned-Concurrency-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc-duration.x86.apne2
+  value: 1.19592e-05
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000119592 USD" }
+  label: { ko: "프로비저닝된 동시성으로 처리한 호출의 실행 시간 단가, x86_64, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Provisioned-GB-Second)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc-duration.arm.apne2
+  value: 9.5674e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000095674 USD" }
+  label: { ko: "프로비저닝된 동시성으로 처리한 호출의 실행 시간 단가, arm64, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Provisioned-GB-Second-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc-duration.x86.use1
+  value: 9.7222e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000097222 USD" }
+  label: { ko: "프로비저닝된 동시성으로 처리한 호출의 실행 시간 단가, x86_64, 미국 동부 버지니아 북부(us-east-1) (Price List API: Lambda-Provisioned-GB-Second)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc-duration.arm.use1
+  value: 7.7778e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000077778 USD" }
+  label: { ko: "프로비저닝된 동시성으로 처리한 호출의 실행 시간 단가, arm64, 미국 동부 버지니아 북부(us-east-1) (Price List API: Lambda-Provisioned-GB-Second-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.storage.apne2
+  value: 3.52e-08
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000000352 USD" }
+  label: { ko: "임시 스토리지(/tmp) 중 기본 무료분을 넘는 설정량의 단가, 서울(ap-northeast-2). x86과 arm64 같은 값 (Price List API: APN2-Lambda-Storage-GB-Second)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.storage.use1
+  value: 3.09e-08
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000000309 USD" }
+  label: { ko: "임시 스토리지 추가분 단가, 미국 동부 버지니아 북부(us-east-1) (Price List API: Lambda-Storage-GB-Second)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.free.requests
+  value: 1000000
+  unit: requests/month
+  display: { ko: "월 요청 100만 건" }
+  label: { ko: "이벤트 함수 무료 등급의 요청 수. 요금 페이지와 가격표(Global-Request, 0~1,000,000 무료) 모두 확인. 프로비저닝된 동시성을 켠 함수에는 무료 등급이 적용되지 않는다" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.free.gbs
+  value: 400000
+  unit: GB-second/month
+  display: { ko: "월 400,000 GB-초" }
+  label: { ko: "이벤트 함수 무료 등급의 실행 시간. 요금 페이지와 가격표(Global-Lambda-GB-Second) 확인. 요금 페이지 예시는 arm64 사용량에도 이 무료분을 뺀다" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.price.pc.rounding
+  value: 300
+  unit: s
+  display: { ko: "5분 단위 올림" }
+  label: { ko: "프로비저닝된 동시성 요금을 셀 때 켠 시각부터 끈 시각까지를 올림하는 단위" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.billing.duration-rounding
+  value: 1
+  unit: ms
+  display: { ko: "1 ms 단위 올림" }
+  label: { ko: "실행 시간 요금을 셀 때 코드 실행 시간을 올림하는 단위" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true

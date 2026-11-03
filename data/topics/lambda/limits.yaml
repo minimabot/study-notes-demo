@@ -1,0 +1,42 @@
+# 장: Lambda 할당량 참고
+chapter:
+  id: lambda/limits
+  title:
+    ko: 할당량 한눈에 보기
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  topics:
+    - id: lambda/limits/how-quotas-work
+      title:
+        ko: 늘릴 수 있는 한도와 없는 한도
+      exam_tags:
+        - DVA-C03#4.2
+        - SOA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+    - id: lambda/limits/function-config
+      title:
+        ko: 함수 구성과 배포 패키지 한도
+      exam_tags:
+        - DVA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+    - id: lambda/limits/invocation-api
+      title:
+        ko: 호출 페이로드, 요청 수, 제어 플레인 API 한도
+      exam_tags:
+        - DVA-C03#1.2
+        - SAA-C03#2.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/scaling-behavior.html
+    - id: lambda/limits/other-compute
+      title:
+        ko: 새 실행 방식의 할당량 (Managed Instances, 지속성 함수 등)
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html

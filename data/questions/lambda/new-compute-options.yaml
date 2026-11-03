@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.new-compute-options-durable-wait
+  type: quiz
+  chapter: lambda/new-compute-options
+  topic: lambda/new-compute-options/durable
+  question: { ko: "지속성 함수로 만든 승인 흐름이 담당자 승인을 {{raw:3일}} 동안 대기(wait)한다. 이 대기 동안의 동작과 요금을 옳게 설명한 것은?" }
+  choices:
+    - { id: a, text: { ko: "함수가 멈춰 있어 실행 시간 요금이 붙지 않고, 재개하면 코드가 처음부터 다시 돌며 끝난 단계는 저장된 결과로 건너뛴다" } }
+    - { id: b, text: { ko: "실행 환경이 계속 떠 있으므로 대기 시간 전체에 실행 시간 요금이 붙는다" } }
+    - { id: c, text: { ko: "함수 제한 시간 최댓값({{fact:lambda.timeout.max}})을 넘으므로 대기가 실패한다" } }
+    - { id: d, text: { ko: "재개하면 멈춘 줄 다음부터 이어서 실행되므로 앞 단계 코드는 다시 돌지 않는다" } }
+  answer: a
+  explanation: { ko: "대기 중에는 함수가 중단되어 실행 시간 요금이 없다(a). 재개는 재실행(replay)이다. 코드는 처음부터 돌지만 체크포인트가 있는 단계는 저장된 결과를 쓴다(d가 틀린 이유). 실행 환경을 붙잡아 두지 않으므로 b도 틀린다. 함수 제한 시간은 호출 한 번에 걸리고, 전체 실행은 최대 {{fact:lambda.durable.execution.max}}까지 갈 수 있다(c)." }
+  facts: [lambda.timeout.max, lambda.durable.execution.max]
+
+- id: lambda.q.new-compute-options-mi-pricing
+  type: quiz
+  chapter: lambda/new-compute-options
+  topic: lambda/new-compute-options/managed-instances
+  question: { ko: "하루 종일 트래픽이 크고 꾸준한 이벤트 처리 함수를 Lambda 관리형 인스턴스로 옮기려 한다. 옳은 설명은?" }
+  choices:
+    - { id: a, text: { ko: "요금은 기본 함수와 같이 요청 수와 GB-초로만 계산된다" } }
+    - { id: b, text: { ko: "요청 요금, EC2 인스턴스 요금, 관리 수수료를 내며 Compute Savings Plans 할인은 인스턴스 요금에만 적용된다" } }
+    - { id: c, text: { ko: "실행 환경 하나가 호출 하나만 처리하므로 코드를 바꿀 필요가 없다" } }
+    - { id: d, text: { ko: "트래픽이 없으면 인스턴스가 모두 없어져 요금이 없다" } }
+  answer: b
+  explanation: { ko: "관리형 인스턴스는 요청 요금, EC2 인스턴스 요금, EC2 온디맨드 가격 기준 관리 수수료({{fact:lambda.mi.management-fee}})로 낸다. EC2 할인은 인스턴스 요금에만 붙고 수수료에는 붙지 않는다(b). GB-초 과금(a)은 기본 함수 방식이다. 실행 환경 하나가 여러 호출을 동시에 처리하므로 스레드 안전성을 따져야 한다(c). 트래픽이 없어도 최소 실행 환경 수만큼 남고, 기본으로 {{fact:lambda.mi.initial-instances}}를 띄운다(d)." }
+  facts: [lambda.mi.management-fee, lambda.mi.initial-instances]
+
+- id: lambda.q.new-compute-options-tenant
+  type: quiz
+  chapter: lambda/new-compute-options
+  topic: lambda/new-compute-options/isolation
+  question: { ko: "운영 중인 SaaS 함수가 고객이 올린 스크립트를 실행한다. 고객끼리 실행 환경을 공유하지 않게 테넌트 격리 모드를 쓰려 한다. 맞는 방법은?" }
+  choices:
+    - { id: a, text: { ko: "기존 함수 설정에서 테넌트 격리를 켜고 프로비저닝된 동시성으로 콜드 스타트를 줄인다" } }
+    - { id: b, text: { ko: "테넌트 격리를 켠 새 함수를 만들고, 호출마다 tenant-id를 넘긴다" } }
+    - { id: c, text: { ko: "기존 함수에 함수 URL을 붙이고 URL 경로에 고객 ID를 넣는다" } }
+    - { id: d, text: { ko: "테넌트 격리를 켜면 실행 역할 권한도 테넌트마다 자동으로 나뉜다" } }
+  answer: b
+  explanation: { ko: "테넌트 격리는 함수를 만들 때만 켤 수 있고, 호출에 tenant-id가 없으면 실패한다(b). 기존 함수에 켤 수 없고 프로비저닝된 동시성과 함께 쓸 수도 없다(a). 함수 URL도 지원하지 않는다(c). 실행 역할은 모든 테넌트에 똑같이 적용되므로 권한 분리는 따로 설계해야 한다(d). 격리 환경 수는 {{fact:lambda.tenant.envs-per-1000}}까지다." }
+  facts: [lambda.tenant.envs-per-1000]

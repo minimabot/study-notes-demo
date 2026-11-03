@@ -1,0 +1,68 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.monitoring-throttles
+  type: quiz
+  chapter: lambda/monitoring
+  topic: lambda/monitoring/metrics
+  question: { ko: "API 뒤의 함수에 대해 클라이언트가 피크 때 HTTP 429를 받는다고 알려 왔다. 그런데 같은 시간대 `Errors` 지표는 0이고 `Invocations`도 크게 늘지 않았다. 가장 먼저 볼 지표는?" }
+  choices:
+    - { id: a, text: { ko: "Throttles (Sum)" } }
+    - { id: b, text: { ko: "Duration (p99)" } }
+    - { id: c, text: { ko: "DeadLetterErrors (Sum)" } }
+    - { id: d, text: { ko: "IteratorAge (Max)" } }
+  answer: a
+  explanation: { ko: "스로틀된 요청은 함수 코드에 닿지 못하므로 Invocations에도 Errors에도 세지 않는다. 429와 함께 두 지표가 조용하면 Throttles를 보고, 이어서 ConcurrentExecutions로 동시성 한도에 닿았는지 확인한다. b: Duration은 실행된 호출의 시간이라 거부된 요청을 보여 주지 않는다. c: DeadLetterErrors는 비동기 호출에서 DLQ 전송이 실패한 횟수다. d: IteratorAge는 스트림 이벤트 소스 매핑 지표로, API 동기 호출과 관계없다." }
+  facts: []
+
+- id: lambda.q.monitoring-xray-permission
+  type: quiz
+  chapter: lambda/monitoring
+  topic: lambda/monitoring/xray
+  question: { ko: "CloudFormation으로 함수의 `TracingConfig`를 `Active`로 바꿔 배포했다. 호출은 잘 되는데 X-Ray 콘솔에 이 함수의 추적이 하나도 보이지 않는다. 가장 알맞은 원인과 조치는?" }
+  choices:
+    - { id: a, text: { ko: "실행 역할에 xray:PutTraceSegments, xray:PutTelemetryRecords가 없다. AWSXRayDaemonWriteAccess를 붙인다" } }
+    - { id: b, text: { ko: "함수에 X-Ray 샘플링 비율을 설정하지 않았다. 함수 구성에서 비율을 {{raw:100%}}로 바꾼다" } }
+    - { id: c, text: { ko: "X-Ray 데몬을 함수 계층으로 직접 설치해야 한다" } }
+    - { id: d, text: { ko: "활성 추적은 API Gateway가 앞에 있을 때만 동작한다" } }
+  answer: a
+  explanation: { ko: "콘솔에서 활성 추적을 켜면 Lambda가 권한을 실행 역할에 넣어 주지만, CloudFormation·CLI로 켜면 직접 넣어야 한다. 필요한 권한은 AWSXRayDaemonWriteAccess 관리형 정책에 들어 있다. b: 샘플링 비율({{fact:lambda.xray.sampling}})은 함수에서 바꿀 수 없다. 비율 때문이라면 일부는 보여야 한다. c: Lambda가 추적 전송을 맡으므로 데몬을 따로 설치하지 않는다. d: 활성 추적은 상위 서비스가 없어도 동작한다. 상위 서비스가 샘플링 결정을 헤더로 넘기면 그것을 따를 뿐이다." }
+  facts: [lambda.xray.sampling]
+
+- id: lambda.q.monitoring-log-level
+  type: quiz
+  chapter: lambda/monitoring
+  topic: lambda/monitoring/logs
+  question: { ko: "Python 함수가 표준 logging 라이브러리로 DEBUG 로그를 많이 남겨 CloudWatch Logs 비용이 커졌다. 코드는 고치지 않고 운영 환경에서 INFO 이상만 보내고 싶다. 로그 형식은 지금 Text다. 알맞은 방법은?" }
+  choices:
+    - { id: a, text: { ko: "로그 형식을 JSON으로 바꾸고 애플리케이션 로그 수준(ApplicationLogLevel)을 INFO로 둔다" } }
+    - { id: b, text: { ko: "로그 형식은 Text로 둔 채 ApplicationLogLevel만 INFO로 설정한다" } }
+    - { id: c, text: { ko: "시스템 로그 수준(SystemLogLevel)을 WARN으로 바꾼다" } }
+    - { id: d, text: { ko: "실행 역할에서 logs:PutLogEvents를 빼서 DEBUG 로그 전송을 막는다" } }
+  answer: a
+  explanation: { ko: "Lambda의 로그 수준 필터는 JSON 형식에서만 동작하므로 형식부터 JSON으로 바꾼다. 지원되는 런타임의 기본 로거(Python logging)라면 코드를 고치지 않아도 수준이 붙어 걸러진다. 다만 코드에서 setLevel()로 직접 수준을 정해 두었다면 그 값이 우선한다. b: Text 형식에서는 수준 설정을 쓸 수 없다. c: 시스템 로그 수준은 Lambda가 남기는 START·REPORT 같은 로그만 거른다. d: 권한을 빼면 모든 로그가 사라진다." }
+  facts: []
+
+- id: lambda.d.monitoring-intermittent-timeouts
+  type: design
+  chapter: lambda/monitoring
+  topic: lambda/monitoring/troubleshooting
+  scenario: { ko: "API Gateway REST API 뒤의 주문 조회 함수(Node.js, 메모리 {{raw:256 MB}}, 제한 시간 {{raw:10초}}, VPC 연결)가 RDS 프록시를 거쳐 DB를 읽고, 외부 배송 조회 API를 HTTP로 부른다. 평소 평균 실행 시간은 {{raw:400 ms}}다. 하루에 몇 번, 몇 분 동안 클라이언트가 5XX를 받고 함수 로그에 `Task timed out`이 찍힌다. Throttles는 0이다. 요구: (가) 어느 구간이 느린지 근거를 갖고 찾을 것, (나) 같은 일이 다시 생기면 사용자가 알기 전에 알림을 받을 것, (다) 원인이 하위 서비스여도 함수가 제한 시간까지 붙잡혀 있지 않을 것. 알맞은 조치를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "함수에 활성 추적을 켜고(실행 역할에 X-Ray 쓰기 권한), API Gateway 단계에도 X-Ray 추적을 켠다. 외부 API·DB 호출을 SDK로 계측해 하위 세그먼트를 본다" } }
+    - { id: b, text: { ko: "로그 형식을 JSON으로 바꾸고, CloudWatch Logs Insights로 `Task timed out` 호출의 requestId와 시각을 모아 Duration p99·최대와 함께 본다. Duration p99가 제한 시간에 가까워지면 울리는 경보를 SNS로 건다" } }
+    - { id: c, text: { ko: "외부 API HTTP 클라이언트와 DB 질의에 함수 제한 시간보다 짧은 제한 시간을 두고, 실패하면 백오프 재시도 뒤 오류 응답을 돌려준다. 실패 횟수는 EMF 사용자 지정 지표로 남긴다" } }
+    - { id: d, text: { ko: "Lambda Insights를 켜서 해당 시간대의 메모리·CPU 사용률을 확인하고, 한도 근처라면 메모리를 늘린다" } }
+    - { id: e, text: { ko: "원인을 보기 전에 제한 시간을 최댓값({{fact:lambda.timeout.max}})으로 올린다" } }
+    - { id: f, text: { ko: "콜드 스타트 때문일 것이므로 모든 버전에 큰 프로비저닝된 동시성을 건다" } }
+    - { id: g, text: { ko: "로그 출력이 지연을 만든다고 보고 로깅을 끈다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a, b, c, d를 모두 고르면 정답이다."
+      - "a: X-Ray 추적은 요청을 API Gateway → Lambda → 하위 호출로 나눠 보여 준다. 함수의 PassThrough 기본값에서는 추적이 나가지 않으므로 활성 추적을 켜야 하고, CLI·IaC로 켜면 xray:PutTraceSegments 권한을 직접 넣는다. 하위 세그먼트가 길면 그 서비스가 원인이다(요구 가)."
+      - "b: JSON 로그와 requestId로 실패한 호출만 골라 시간대를 맞춘다. 평균은 몇 분짜리 지연을 가리므로 p99·최대를 본다. 지표 경보를 SNS로 보내 요구 (나)를 채운다."
+      - "c: 하위 서비스가 느려지면 함수가 제한 시간까지 기다리다 실패한다. 호출별 제한 시간을 짧게 두고 오류를 처리하면 빨리 실패하고 원인을 지표로 남긴다(요구 다). 문서도 하위 서비스에 기대는 함수에 오류 처리·재시도와 지표·경보를 권한다."
+      - "d: 메모리가 모자라면 실행이 느려지고, 메모리를 늘리면 CPU도 비례해 늘어난다. 근거를 보고 조정하는 것은 타당하다. 다만 근거 없이 늘리는 것만으로는 요구 (가)를 채우지 못한다."
+      - "e는 감점: API를 기다리는 클라이언트 쪽 제한은 그대로라 사용자 경험이 나아지지 않고, 원인을 가린 채 실행 시간과 비용만 늘린다."
+      - "f는 감점: Duration에는 초기화 시간이 들어가지 않고, 평균 {{raw:400 ms}} 함수가 몇 분씩 제한 시간을 넘는 증상은 콜드 스타트로 설명되지 않는다. 근거 없이 상시 요금만 늘린다."
+      - "g는 감점: 진단 근거를 없앤다. 비용이 걱정이면 로그 수준 필터를 쓴다."
+  facts: [lambda.timeout.max]

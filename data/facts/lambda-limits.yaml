@@ -1,0 +1,131 @@
+# Lambda 할당량 장 전용 수치. lambda-core.yaml 등에 없는 것만 둔다. 2026-11-03 Lambda quotas 페이지 대조.
+
+- id: lambda.payload.headers.max
+  value: 1
+  unit: MB
+  display: { ko: "1 MB" }
+  label: { ko: "호출 요청의 요청 줄과 헤더 값을 모두 합한 크기 한도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.network.bandwidth
+  value: 625
+  unit: Mbps
+  display: { ko: "625 Mbps" }
+  label: { ko: "실행 환경 하나의 네트워크 대역폭 기본값 (VPC에 연결하지 않은 함수는 Service Quotas로 증가 요청 가능)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.network.bandwidth.increased-max
+  value: 3000
+  unit: Mbps
+  display: { ko: "최대 3,000 Mbps (메모리 10,240 MB일 때)" }
+  label: { ko: "대역폭 증가가 승인된 뒤 메모리에 비례해 늘어나는 대역폭의 최댓값 (메모리 2,048 MB부터 늘어남)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.image.settings.max
+  value: 16
+  unit: KB
+  display: { ko: "16 KB" }
+  label: { ko: "컨테이너 이미지 설정(진입점, 명령 등) 크기 한도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.console.test-events.max
+  value: 10
+  unit: count
+  display: { ko: "10개" }
+  label: { ko: "콘솔 편집기에서 함수마다 저장할 수 있는 테스트 이벤트 수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.file-descriptors.max
+  value: 1024
+  unit: count
+  display: { ko: "1,024개" }
+  label: { ko: "실행 환경의 파일 디스크립터 수 한도 (Managed Instances는 더 높음)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.processes.max
+  value: 1024
+  unit: count
+  display: { ko: "1,024개" }
+  label: { ko: "실행 환경의 프로세스·스레드 수 한도 (Managed Instances는 Bottlerocket 기본값)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.api.getfunction.rps
+  value: 100
+  unit: count/s
+  display: { ko: "초당 100건 (늘릴 수 없음)" }
+  label: { ko: "GetFunction API 요청 한도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.api.getpolicy.rps
+  value: 15
+  unit: count/s
+  display: { ko: "초당 15건 (늘릴 수 없음)" }
+  label: { ko: "GetPolicy API 요청 한도 (나머지 제어 플레인 한도와 별개)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.durable.executions.running
+  value: 5000000
+  unit: count
+  display: { ko: "5,000,000개 (미국 동부(버지니아 북부)·미국 서부(오레곤)·유럽(아일랜드)은 10,000,000개)" }
+  label: { ko: "리전당 동시에 실행 중일 수 있는 지속성 실행(durable execution) 수 기본 할당량 (늘릴 수 있음)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.operations.max
+  value: 30000
+  unit: count
+  display: { ko: "30,000개 (늘릴 수 없음)" }
+  label: { ko: "지속성 실행 하나에 들어갈 수 있는 지속성 작업(durable operation) 수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.storage.max
+  value: 100
+  unit: MB
+  display: { ko: "100 MB (늘릴 수 없음)" }
+  label: { ko: "지속성 실행 하나가 누적으로 저장하는 페이로드 크기 한도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.payload-per-op.max
+  value: 1
+  unit: MB
+  display: { ko: "1 MB (늘릴 수 없음)" }
+  label: { ko: "지속성 작업 하나(체크포인트·콜백)의 페이로드 크기 한도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true

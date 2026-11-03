@@ -1,0 +1,325 @@
+# lambda/new-compute-options 장 전용 사실 항목. ID 접두어 lambda.
+# 기능 설명과 한도는 개발자 안내서 사본(../sources/lambda/*.md, 2026-11-03), 요금은 AWS Price List API AWSLambda 오퍼
+#   20261030234255 (ap-northeast-2). 서울 가격표에는 MicroVM 항목이 없다(us-east-1에는 있다).
+# 출시일: 문서 기록에는 관리형 인스턴스(2025-11-30)만 나온다. 지속성 함수는 관리형 정책 추가일만 있고,
+#   Web Functions, MicroVMs, 테넌트 격리 모드는 문서 기록에 항목이 없다.
+
+- id: lambda.durable.execution.max
+  value: 1
+  unit: year
+  display: { ko: "1년" }
+  label: { ko: "지속성 실행(durable execution) 하나가 시작부터 끝까지 이어질 수 있는 최대 시간. 실행 제한 시간(ExecutionTimeout)의 상한" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/durable-basic-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/durable-basic-concepts.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.execution-timeout.default
+  value: 86400
+  unit: s
+  display: { ko: "86,400초(24시간)" }
+  label: { ko: "콘솔에서 지속성 실행 제한 시간(ExecutionTimeout)의 기본값. CLI·API로 durable-config를 줄 때는 이 값을 반드시 지정한다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/durable-basic-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/durable-basic-concepts.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.retention.default
+  value: 14
+  unit: day
+  display: { ko: "14일" }
+  label: { ko: "지속성 실행이 끝난 뒤 실행 기록을 보관하는 기간(RetentionPeriodInDays) 기본값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/durable-configuration.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/durable-configuration.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.retention.min
+  value: 1
+  unit: day
+  display: { ko: "1일" }
+  label: { ko: "지속성 실행 기록 보관 기간의 최솟값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/durable-configuration.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/durable-configuration.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.retention.max
+  value: 90
+  unit: day
+  display: { ko: "90일" }
+  label: { ko: "지속성 실행 기록 보관 기간의 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/durable-configuration.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/durable-configuration.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.policy-added
+  value: "2025-11-30"
+  unit: date
+  display: { ko: "2025-11-30" }
+  label: { ko: "문서 기록(Document history)에 지속성 함수용 관리형 정책 AWSLambdaBasicDurableExecutionRolePolicy가 추가된 날. 문서 기록에는 지속성 함수 출시 항목이 따로 없다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-releases.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-releases.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.durable.price.ops.apne2
+  value: 9.8
+  unit: usd/1M-operations
+  display: { ko: "지속성 작업 100만 건당 9.80 USD" }
+  label: { ko: "지속성 작업(실행 시작, 단계 완료, 대기 생성 등) 단가, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Durable-Execution-Operations, 건당 0.0000098)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.price.written.apne2
+  value: 0.3
+  unit: usd/GB
+  display: { ko: "GB당 0.30 USD" }
+  label: { ko: "지속성 작업이 쓴 데이터 양 단가, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Durable-Execution-Written-Bytes)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.durable.price.retained.apne2
+  value: 0.19
+  unit: usd/GB-month
+  display: { ko: "GB-월당 0.19 USD" }
+  label: { ko: "실행 중·완료 후 보관하는 지속성 실행 데이터 단가, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Durable-Execution-TimedStorage-ByteHrs)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.mi.released
+  value: "2025-11-30"
+  unit: date
+  display: { ko: "2025-11-30" }
+  label: { ko: "문서 기록(Document history)에 Lambda 관리형 인스턴스가 추가된 날" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-releases.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-releases.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.mi.management-fee
+  value: 15
+  unit: percent
+  display: { ko: "EC2 온디맨드 인스턴스 가격의 15%" }
+  label: { ko: "Lambda 관리형 인스턴스의 관리 수수료. 인스턴스 요금과 별도로 붙고, Savings Plans·예약 인스턴스 할인은 이 수수료에 적용되지 않는다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-managed-instances.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.mi.initial-instances
+  value: 3
+  unit: count
+  display: { ko: "인스턴스 3개" }
+  label: { ko: "용량 공급자(capacity provider)에 붙인 함수 버전을 게시할 때 가용 영역 복원력을 위해 기본으로 띄우는 인스턴스 수. 실행 환경도 3개를 띄운 뒤 버전이 ACTIVE가 된다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-managed-instances.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.mi.scale-doubling
+  value: 300
+  unit: s
+  display: { ko: "5분 안에 트래픽 두 배까지" }
+  label: { ko: "관리형 인스턴스가 기본 설정에서 따라갈 수 있는 트래픽 증가 속도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-managed-instances.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.mi.timeout.async-esm
+  value: 5400
+  unit: s
+  display: { ko: "90분" }
+  label: { ko: "관리형 인스턴스에서 비동기 호출과 이벤트 소스 매핑 호출의 함수 제한 시간 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/durable-basic-concepts.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/durable-basic-concepts.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.mi.capacity-providers.max
+  value: 1000
+  unit: count
+  display: { ko: "1,000개" }
+  label: { ko: "계정당 용량 공급자 수 할당량" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-managed-instances-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.mi.versions-per-cp
+  value: 100
+  unit: count
+  display: { ko: "100개 (늘릴 수 없음)" }
+  label: { ko: "용량 공급자 하나에 연결할 수 있는 함수 버전 수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-managed-instances-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.mi.vcpu-per-cp
+  value: 15000
+  unit: vCPU
+  display: { ko: "vCPU 15,000개" }
+  label: { ko: "용량 공급자 하나의 vCPU 수 할당량" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances-quotas.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-managed-instances-quotas.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.env.memory
+  value: 2
+  unit: GB
+  display: { ko: "Arm64 vCPU 2개, 메모리 2 GB" }
+  label: { ko: "Web Function 실행 환경 하나의 자원. Arm64(Graviton)로만 돌고 아키텍처를 고를 수 없다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/web-functions-configuration-architecture.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/web-functions-configuration-architecture.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.timeout.default
+  value: 30
+  unit: s
+  display: { ko: "30초" }
+  label: { ko: "Web Function 요청 하나의 제한 시간(timeoutSeconds) 기본값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/web-functions-revisions-timeout.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/web-functions-revisions-timeout.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.timeout.min
+  value: 3
+  unit: s
+  display: { ko: "3초" }
+  label: { ko: "Web Function 요청 제한 시간의 최솟값. 최댓값은 900초" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/web-functions-revisions-timeout.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/web-functions-revisions-timeout.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.listen.deadline
+  value: 10
+  unit: s
+  display: { ko: "10초" }
+  label: { ko: "Web Function 서버가 시작 후 포트에서 요청을 받기 시작해야 하는 시간" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/web-functions-runtimes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/web-functions-runtimes.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.rate-limit.max
+  value: 10000
+  unit: rps
+  display: { ko: "초당 요청 10,000건" }
+  label: { ko: "Web Function 엔드포인트 하나에 리전마다 걸 수 있는 요청 속도 제한(rateLimit)의 상한" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/web-functions-scaling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/web-functions-scaling.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.price.request.apne2
+  value: 0.3
+  unit: usd/1M-requests
+  display: { ko: "요청 100만 건당 0.30 USD" }
+  label: { ko: "Web Function 요청 단가, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Web-Request-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.price.vcpu.apne2
+  value: 3.45542e-05
+  unit: usd/vCPU-second
+  display: { ko: "vCPU-초당 0.0000345542 USD" }
+  label: { ko: "Web Function 활성 CPU 시간 단가, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Web-vCPU-Second-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.web.price.memory.apne2
+  value: 4.5749e-06
+  unit: usd/GB-second
+  display: { ko: "GB-초당 0.0000045749 USD" }
+  label: { ko: "Web Function 실행 환경이 살아 있는 동안의 메모리 단가, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Web-Memory-GB-Second-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.microvm.lifetime.max
+  value: 28800
+  unit: s
+  display: { ko: "28,800초(8시간)" }
+  label: { ko: "MicroVM 하나의 최대 수명(--maximum-duration-in-seconds). 실행 중과 일시 중지 시간을 모두 센다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/microvms-launching.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/microvms-launching.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.microvm.idle.max
+  value: 28800
+  unit: s
+  display: { ko: "28,800초(8시간)" }
+  label: { ko: "MicroVM을 자동으로 일시 중지하기까지의 무트래픽 시간(maxIdleDurationSeconds) 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/microvms-launching.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/microvms-launching.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.microvm.burst
+  value: 4
+  unit: x
+  display: { ko: "기준치의 4배" }
+  label: { ko: "MicroVM이 바쁠 때 수직으로 늘어날 수 있는 자원 상한. 기준치(baseline)를 넘는 사용분만 따로 낸다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-microvms-guide.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-microvms-guide.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.microvm.baseline.default
+  value: 2
+  unit: GB
+  display: { ko: "메모리 2 GB, vCPU 1개" }
+  label: { ko: "MicroVM 이미지의 기준 자원 기본값. vCPU는 메모리에 비례한다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/microvms-how-it-works.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/microvms-how-it-works.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.tenant.envs-per-1000
+  value: 2500
+  unit: count
+  display: { ko: "동시 실행 1,000개마다 2,500개" }
+  label: { ko: "테넌트 격리 모드 함수가 가질 수 있는 테넌트 격리 실행 환경 수 한도. 함수에 설정한 동시 실행 1,000개마다 이만큼 둘 수 있다" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/tenant-isolation.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/tenant-isolation.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.tenant.price.x86.apne2
+  value: 0.000166667
+  unit: usd/GB-environment
+  display: { ko: "새 환경 하나, 메모리 GB당 0.000166667 USD" }
+  label: { ko: "테넌트 격리 실행 환경을 새로 만들 때마다 붙는 요금, x86_64, 서울(ap-northeast-2). 함수 메모리 GB에 비례 (Price List API: APN2-Lambda-Tenant-Isolated-Environment-Memory-GB)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.tenant.price.arm.apne2
+  value: 0.000133333
+  unit: usd/GB-environment
+  display: { ko: "새 환경 하나, 메모리 GB당 0.000133333 USD" }
+  label: { ko: "테넌트 격리 실행 환경 생성 요금, arm64, 서울(ap-northeast-2) (Price List API: APN2-Lambda-Tenant-Isolated-Environment-Memory-GB-ARM)" }
+  source_en: https://aws.amazon.com/lambda/pricing/
+  source_ko: https://aws.amazon.com/ko/lambda/pricing/
+  checked: 2026-11-03
+  volatile: true

@@ -1,0 +1,68 @@
+# 장: Lambda 함수 URL과 HTTP 앞단 고르기
+chapter:
+  id: lambda/function-urls
+  title:
+    ko: 함수 URL (API Gateway·ALB와 비교)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/urls-configuration.html
+  topics:
+    - id: lambda/function-urls/basics
+      title:
+        ko: 함수 URL의 기본 성질과 호출 모드
+      exam_tags:
+        - DVA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/urls-configuration.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html
+    - id: lambda/function-urls/auth
+      title:
+        ko: 인증 유형(AWS_IAM·NONE)과 리소스 기반 정책
+      exam_tags:
+        - DVA-C03#2.1
+        - DVA-C03#1.2
+        - SAA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 인증 유형이 NONE이면 리소스 기반 정책에 lambda:InvokedViaFunctionUrl 조건을 넣어 함수 URL을 거친 호출만 허용한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html
+    - id: lambda/function-urls/invocation-cors
+      title:
+        ko: 호출과 페이로드 형식, CORS, 스로틀, 지표
+      exam_tags:
+        - DVA-C03#1.2
+        - SOA-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: CORS 헤더는 함수 응답에서 직접 보내지 말고 모두 함수 URL 설정에서 구성한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/urls-configuration.html
+          checked: 2026-11-03
+        - claim:
+            ko: 다른 도메인에서 함수 URL을 부를 계획이면 CORS를 설정한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/urls-configuration.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/urls-invocation.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/urls-configuration.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/urls-monitoring.html
+    - id: lambda/function-urls/choose
+      title:
+        ko: 함수 URL, API Gateway, ALB 중 고르기
+      exam_tags:
+        - SAA-C03#2.1
+        - DVA-C03#1.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 기본 인증과 단순한 요청·응답만 필요한 간단한 애플리케이션이나 시제품에는 함수 URL을, 대규모 운영 API나 고급 기능이 필요하면 API Gateway를 쓴다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/furls-http-invoke-decision.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/furls-http-invoke-decision.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-alb.html

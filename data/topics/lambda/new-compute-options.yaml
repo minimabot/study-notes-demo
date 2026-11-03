@@ -1,0 +1,56 @@
+# 장: 새 실행 방식. 모두 2025년 이후 기능이라 exam_unknown: true, 시험 태그 없음.
+chapter:
+  id: lambda/new-compute-options
+  title:
+    ko: 새 실행 방식 (지속성 함수, 관리형 인스턴스, Web Functions, MicroVMs, 테넌트 격리)
+  track: practice
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-releases.html
+  topics:
+    - id: lambda/new-compute-options/intro
+      title:
+        ko: 새 기능 한눈에 보기와 출시 시점
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-releases.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+    - id: lambda/new-compute-options/durable
+      title:
+        ko: 지속성 함수(Durable functions)
+      exam_tags: []
+      exam_unknown: true
+      recommended:
+        - claim:
+            ko: 운영 환경의 지속성 함수는 $LATEST 대신 번호 버전이나 별칭으로 호출한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/durable-invoking.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/durable-functions.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/durable-basic-concepts.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/durable-invoking.html
+    - id: lambda/new-compute-options/managed-instances
+      title:
+        ko: Lambda 관리형 인스턴스(Managed Instances)
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-managed-instances-quotas.html
+    - id: lambda/new-compute-options/web-functions
+      title:
+        ko: Lambda Web Functions
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/web-functions.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/web-functions-scaling.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/web-functions-configuration-architecture.html
+    - id: lambda/new-compute-options/isolation
+      title:
+        ko: Lambda MicroVMs와 테넌트 격리 모드
+      exam_tags: []
+      exam_unknown: true
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-microvms-guide.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/microvms-launching.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/tenant-isolation.html

@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.limits-large-upload
+  type: quiz
+  chapter: lambda/limits
+  topic: lambda/limits/invocation-api
+  question: { ko: "API Gateway 뒤의 함수가 사용자가 올린 사진을 받아 처리한다. 큰 사진을 올리면 요청이 실패한다. 동기 호출 요청 페이로드 한도는 {{fact:lambda.payload.sync.max}}다. 가장 알맞은 설계는?" }
+  choices:
+    - { id: a, text: { ko: "함수가 S3 미리 서명된 URL을 돌려주고, 클라이언트가 S3에 직접 올린 뒤 업로드 이벤트로 처리 함수를 부른다" } }
+    - { id: b, text: { ko: "함수 메모리를 최댓값으로 올려 페이로드 한도를 늘린다" } }
+    - { id: c, text: { ko: "Service Quotas에서 동기 페이로드 한도 증가를 요청한다" } }
+    - { id: d, text: { ko: "호출을 비동기로 바꿔 더 큰 페이로드를 보낸다" } }
+  answer: a
+  explanation: { ko: "호출 페이로드 한도는 바꿀 수 없으므로 큰 데이터는 Lambda 호출 경로 밖으로 뺀다. 미리 서명된 URL로 S3에 직접 올리고, 이벤트에는 객체 위치만 넘긴다. b: 메모리는 CPU·메모리 크기를 정할 뿐 페이로드 한도와 관계없다. c: 페이로드 한도는 늘릴 수 있는 할당량이 아니다. d: 비동기 요청 한도({{fact:lambda.payload.async.max}})는 동기보다 작다." }
+  facts: [lambda.payload.sync.max, lambda.payload.async.max]
+
+- id: lambda.q.limits-code-storage
+  type: quiz
+  chapter: lambda/limits
+  topic: lambda/limits/how-quotas-work
+  question: { ko: "CI 파이프라인이 커밋마다 함수 새 버전을 게시해 왔다. 어느 날 배포가 코드 저장 공간 한도({{fact:lambda.code-storage.max}}) 초과로 실패한다. 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "쓰지 않는 오래된 함수 버전과 계층 버전을 지운다 (또는 코드를 자체 관리 S3 저장소에 두도록 바꾼다)" } }
+    - { id: b, text: { ko: "Service Quotas에서 코드 저장 공간 증가를 요청한다" } }
+    - { id: c, text: { ko: "함수의 /tmp 임시 스토리지를 늘린다" } }
+    - { id: d, text: { ko: "다른 리전의 저장 공간을 빌려 쓰도록 설정한다" } }
+  answer: a
+  explanation: { ko: "Lambda 관리형 코드 저장 공간은 리전마다 세고 늘릴 수 없다. 함수 버전과 계층 버전이 하나하나 공간을 차지하므로 안 쓰는 버전을 정리한다. 문서는 한도를 넘는 경우 자체 관리 S3 코드 저장소도 안내한다. b: 늘릴 수 없는 한도다. c: /tmp는 실행 중 쓰는 임시 공간으로 코드 저장 공간과 관계없다. d: 할당량은 리전별이며 다른 리전 몫을 옮길 수 없다." }
+  facts: [lambda.code-storage.max]
+
+- id: lambda.q.limits-control-plane
+  type: quiz
+  chapter: lambda/limits
+  topic: lambda/limits/invocation-api
+  question: { ko: "배포 스크립트가 함수 수십 개의 구성을 동시에 UpdateFunctionConfiguration으로 바꾸다가 TooManyRequestsException을 받는다. 호출(Invoke) 트래픽은 평소와 같다. 원인과 조치로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "제어 플레인 API 전체 한도({{fact:lambda.control-plane.rps}}, 모든 API 합계, 늘릴 수 없음)를 넘었다. 지수 백오프로 재시도하고 배포를 나눠 돌린다" } }
+    - { id: b, text: { ko: "계정 동시성 한도를 넘었다. 동시성 증가를 요청한다" } }
+    - { id: c, text: { ko: "API마다 따로 한도가 있으므로 UpdateFunctionConfiguration 대신 다른 API를 섞어 쓰면 된다" } }
+    - { id: d, text: { ko: "함수별 확장 속도({{fact:lambda.scaling.rate}})를 넘었다" } }
+  answer: a
+  explanation: { ko: "호출, GetFunction, GetPolicy를 뺀 제어 플레인 API는 모두 합쳐 {{fact:lambda.control-plane.rps}}로 제한되고 늘릴 수 없다. 백오프 재시도와 배포 분산이 답이다. b, d: 동시성과 확장 속도는 호출에 관한 한도라 구성 변경 API와 관계없다. c: 한도가 API마다가 아니라 전체 합계이므로 다른 API를 섞어도 같은 몫을 쓴다." }
+  facts: [lambda.control-plane.rps, lambda.scaling.rate]

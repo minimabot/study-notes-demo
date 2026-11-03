@@ -1,0 +1,13 @@
+# lambda/labs 장 전용 사실 항목. ID 접두어 lambda.
+# 재사용: lambda.sqs.vt-multiplier, lambda.async.retries.max, lambda.async.event-age.max, lambda.alias.routing.max-versions,
+#   lambda.sqs.batch.default, lambda.memory.min, lambda.timeout.default
+
+- id: lambda.lab.cli.max-attempts.default
+  value: 3
+  unit: count
+  display: { ko: "3회(첫 시도 포함)" }
+  label: { ko: "AWS CLI 버전 2 기본 재시도 모드(standard)의 최대 시도 횟수. 스로틀링 오류도 다시 시도하므로 실습에서 스로틀을 보려면 AWS_MAX_ATTEMPTS=1로 둔다" }
+  source_en: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-retries.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/cli-configure-retries.html
+  checked: 2026-11-03
+  volatile: false

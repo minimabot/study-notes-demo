@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.function-urls-none-403
+  type: quiz
+  chapter: lambda/function-urls
+  topic: lambda/function-urls/auth
+  question: { ko: "CloudFormation 템플릿에 `AWS::Lambda::Url`을 `AuthType: NONE`으로 추가해 배포했다. 브라우저로 URL을 열면 403 Forbidden이 난다. 원인은?" }
+  choices:
+    - { id: a, text: { ko: "함수의 리소스 기반 정책에 lambda:InvokeFunctionUrl·lambda:InvokeFunction을 공개로 허용하는 문장이 없다" } }
+    - { id: b, text: { ko: "NONE이어도 요청에 SigV4 서명이 필요하다" } }
+    - { id: c, text: { ko: "CORS를 설정하지 않아 브라우저 요청이 거부된다" } }
+    - { id: d, text: { ko: "함수 URL은 $LATEST에만 붙일 수 있는데 별칭에 붙였다" } }
+  answer: a
+  explanation: { ko: "NONE은 Lambda가 인증을 하지 않는다는 뜻일 뿐, 리소스 기반 정책은 늘 적용된다. 콘솔이나 AWS SAM은 공개 허용 정책을 자동으로 만들지만 CloudFormation·CLI·API로 만들면 직접 넣어야 하고, 없으면 403이 난다. AWS::Lambda::Permission 문장을 두 동작에 대해 추가한다. b: SigV4 서명은 AWS_IAM일 때만 필요하다. c: CORS는 다른 출처의 스크립트 호출에 관한 것이다. 주소창에서 바로 연 요청과는 관계없고, CORS 문제는 403으로 나타나지 않는다. d: 함수 URL은 별칭과 $LATEST에 붙일 수 있다." }
+  facts: []
+
+- id: lambda.q.function-urls-cross-account
+  type: quiz
+  chapter: lambda/function-urls
+  topic: lambda/function-urls/auth
+  question: { ko: "계정 A의 함수 URL은 AWS_IAM 인증이다. 계정 B의 역할이 이 URL을 SigV4로 서명해 부르게 하려면 무엇이 필요한가?" }
+  choices:
+    - { id: a, text: { ko: "계정 B 역할의 자격 증명 기반 정책과 계정 A 함수의 리소스 기반 정책이 모두 lambda:InvokeFunctionUrl·lambda:InvokeFunction을 허용해야 한다" } }
+    - { id: b, text: { ko: "계정 A 함수의 리소스 기반 정책만 허용하면 된다" } }
+    - { id: c, text: { ko: "계정 B 역할의 자격 증명 기반 정책만 허용하면 된다" } }
+    - { id: d, text: { ko: "다른 계정은 함수 URL을 부를 수 없으므로 인증 유형을 NONE으로 바꿔야 한다" } }
+  answer: a
+  explanation: { ko: "같은 계정이면 둘 중 하나만 허용해도 되지만, 다른 계정의 주체는 자기 계정의 자격 증명 기반 정책과 함수의 리소스 기반 정책이 모두 허용해야 한다(b, c는 반쪽만이라 틀림). 리소스 기반 정책에 lambda:InvokedViaFunctionUrl 조건을 넣으면 그 역할이 함수 URL로만 부르게 좁힐 수 있다. d: 교차 계정 호출은 AWS_IAM으로 가능하며, NONE으로 바꾸면 누구나 부를 수 있게 된다." }
+  facts: []
+
+- id: lambda.q.function-urls-choose
+  type: quiz
+  chapter: lambda/function-urls
+  topic: lambda/function-urls/choose
+  question: { ko: "모바일 앱용 공개 API를 Lambda로 만든다. 요구: Amazon Cognito 사용자 풀 로그인 사용자만 호출, 파트너별 API 키와 호출량 제한, 요청 본문 스키마 검증, 회사 도메인 주소, AWS WAF 연결. 가장 알맞은 앞단은?" }
+  choices:
+    - { id: a, text: { ko: "API Gateway REST API" } }
+    - { id: b, text: { ko: "AWS_IAM 인증의 함수 URL" } }
+    - { id: c, text: { ko: "NONE 인증의 함수 URL과 예약된 동시성" } }
+    - { id: d, text: { ko: "Application Load Balancer와 Lambda 대상 그룹" } }
+  answer: a
+  explanation: { ko: "Cognito 사용자 풀 권한 부여자, 사용 계획과 API 키로 클라이언트별 스로틀, 요청 검증, 사용자 지정 도메인, AWS WAF 연결을 모두 갖춘 것은 API Gateway REST API다. b: 함수 URL의 인증은 IAM이나 없음뿐이라 Cognito 사용자 로그인을 직접 받지 못하고, API 키·검증·사용자 지정 도메인·WAF도 없다. c: 예약된 동시성은 함수 전체 상한일 뿐 파트너별 제한이 아니며, 인증도 없다. d: ALB는 사용 계획·API 키와 요청 스키마 검증이 없다." }
+  facts: []

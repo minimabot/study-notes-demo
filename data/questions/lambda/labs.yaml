@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.labs-cli-retry
+  type: quiz
+  chapter: lambda/labs
+  topic: lambda/labs/concurrency
+  question: { ko: "예약된 동시성을 {{raw:1}}로 걸고, 몇 초 걸리는 동기 호출 {{raw:5개}}를 CLI로 동시에 보냈다. 스로틀 오류가 하나도 보이지 않고 응답이 늦게 하나씩 왔다. 가장 그럴듯한 이유는?" }
+  choices:
+    - { id: a, text: { ko: "예약된 동시성은 동기 호출에는 적용되지 않는다" } }
+    - { id: b, text: { ko: "CLI가 기본 재시도 모드에서 스로틀 오류를 받아 스스로 다시 시도했다" } }
+    - { id: c, text: { ko: "Lambda가 동기 호출을 내부 큐에 넣었다가 차례로 실행했다" } }
+    - { id: d, text: { ko: "예약된 동시성은 설정 후 하루가 지나야 적용된다" } }
+  answer: b
+  explanation: { ko: "AWS CLI 버전 2의 기본 재시도 모드는 스로틀 오류도 최대 {{fact:lambda.lab.cli.max-attempts.default}}까지 다시 시도한다. 그래서 오류가 감춰지고 응답만 늦어진다. AWS_MAX_ATTEMPTS=1로 두면 429가 그대로 보인다(b). 예약된 동시성은 모든 호출 방식에 적용된다(a). 동기 호출은 큐에 넣지 않고 바로 스로틀한다. 큐에 넣고 재시도하는 것은 비동기 호출이다(c). 설정은 곧바로 적용된다(d)." }
+  facts: [lambda.lab.cli.max-attempts.default]
+
+- id: lambda.q.labs-partial-batch
+  type: quiz
+  chapter: lambda/labs
+  topic: lambda/labs/sqs-cleanup
+  question: { ko: "SQS 트리거 함수가 실패한 메시지 ID를 batchItemFailures로 돌려주도록 코드를 짰다. 그런데 실패한 메시지가 다시 오지 않고 큐에서 사라진다. 무엇을 빠뜨렸는가?" }
+  choices:
+    - { id: a, text: { ko: "이벤트 소스 매핑에 함수 응답 유형 ReportBatchItemFailures를 켜지 않았다" } }
+    - { id: b, text: { ko: "큐의 가시성 제한 시간을 함수 제한 시간의 {{fact:lambda.sqs.vt-multiplier}} 이상으로 두지 않았다" } }
+    - { id: c, text: { ko: "배치 크기를 {{raw:1}}로 두지 않았다" } }
+    - { id: d, text: { ko: "함수에 예약된 동시성을 걸지 않았다" } }
+  answer: a
+  explanation: { ko: "부분 배치 응답은 이벤트 소스 매핑에 ReportBatchItemFailures를 켜야 쓰인다. 켜지 않으면 함수가 정상 반환한 배치 전체가 성공으로 처리되어 모든 메시지가 지워진다(a). 가시성 제한 시간이 짧으면 처리 중인 메시지가 다시 보이는 문제가 생기지만, 실패 메시지가 사라지는 원인은 아니다(b). 배치 크기를 {{raw:1}}로 줄이는 것은 우회일 뿐이고 처리량을 떨어뜨린다(c). 예약된 동시성은 이 동작과 관계없다(d)." }
+  facts: [lambda.sqs.vt-multiplier, lambda.sqs.batch.default]
+
+- id: lambda.q.labs-alias-weight
+  type: quiz
+  chapter: lambda/labs
+  topic: lambda/labs/versions-alias
+  question: { ko: "live 별칭이 버전 1을 가리키고 버전 2에 가중치 {{raw:0.2}}를 줬다. 별칭을 {{raw:20번}} 호출했을 때 실행된 버전을 확인하는 방법과 결과로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "invoke 응답의 ExecutedVersion을 보면 된다. 버전 2가 대략 다섯 번에 한 번꼴로 나오지만 횟수는 정확히 맞지 않을 수 있다" } }
+    - { id: b, text: { ko: "invoke 응답에는 버전 정보가 없으므로 로그 그룹 이름으로 구분한다" } }
+    - { id: c, text: { ko: "버전 2가 정확히 {{raw:4번}} 실행된다" } }
+    - { id: d, text: { ko: "$LATEST를 함께 가중치에 넣어야 버전 2로 트래픽이 간다" } }
+  answer: a
+  explanation: { ko: "invoke 응답의 ExecutedVersion에 실제로 실행된 버전이 나온다(a). 가중치는 확률로 나누므로 호출이 적으면 비율이 정확히 맞지 않는다(c). 로그 스트림 이름에도 버전이 들어가지만 로그 그룹은 함수 하나에 하나다(b). 가중치 라우팅은 게시된 버전 최대 {{fact:lambda.alias.routing.max-versions}}에만 쓸 수 있고 $LATEST는 넣을 수 없다(d)." }
+  facts: [lambda.alias.routing.max-versions]

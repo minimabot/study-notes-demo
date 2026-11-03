@@ -1,0 +1,71 @@
+# Lambda 모니터링 장 전용 수치. 2026-11-03 Lambda 개발자 안내서 대조.
+
+- id: lambda.logs.visible-delay
+  value: 10
+  unit: min
+  display: { ko: "5~10분" }
+  label: { ko: "함수 호출 뒤 로그가 CloudWatch Logs에 나타나기까지 걸릴 수 있는 시간 (문서의 대략값)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/monitoring-cloudwatchlogs.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.logs.drop-rate
+  value: 2
+  unit: MB/s
+  display: { ko: "초당 2 MB" }
+  label: { ko: "로그 스트림 하나의 로그 출력이 이 속도를 넘으면 Lambda가 로그 일부를 버리는 일이 꾸준히 생김" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-execution.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/troubleshooting-execution.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.xray.sampling
+  value: 5
+  unit: percent
+  display: { ko: "초당 첫 요청 1건 + 그 밖의 요청 5%" }
+  label: { ko: "Lambda 함수의 X-Ray 샘플링 비율 (함수별로 바꿀 수 없음)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/services-xray.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.insights.metrics
+  value: 8
+  unit: count
+  display: { ko: "지표 8개" }
+  label: { ko: "CloudWatch Lambda Insights가 함수마다 보고하는 지표 수 (요금 기준)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-insights.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/monitoring-insights.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.insights.log-per-invoke
+  value: 1024
+  unit: byte
+  display: { ko: "약 1 KB" }
+  label: { ko: "Lambda Insights가 호출마다 CloudWatch Logs로 보내는 성능 로그 크기 (대략값)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-insights.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/monitoring-insights.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.recursion.threshold
+  value: 16
+  unit: count
+  display: { ko: "약 16회" }
+  label: { ko: "한 요청 체인 안에서 함수가 이만큼 호출되면 재귀 루프 감지가 다음 호출을 버림 (기본 동작, RecursiveInvocationsDropped 지표)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-metrics-types.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/monitoring-metrics-types.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.appsignals.data-delay
+  value: 10
+  unit: min
+  display: { ko: "최대 10분" }
+  label: { ko: "Application Signals를 켠 함수를 호출한 뒤 대시보드에 서비스 데이터가 나타나기까지 걸릴 수 있는 시간" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-application-signals.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/monitoring-application-signals.html
+  checked: 2026-11-03
+  volatile: false

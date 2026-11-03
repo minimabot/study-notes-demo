@@ -1,0 +1,52 @@
+# 장: 요금과 비용 줄이기. 요금 수치는 AWS Price List API 가격표(data/facts/lambda-cost.yaml 머리 주석)에서 확인했다.
+# SAP-C03#3.1(가격 모델 기반 설계)은 data/exam-guides.yaml에 아직 없어 붙이지 않았다.
+chapter:
+  id: lambda/cost
+  title:
+    ko: 요금과 비용 줄이기
+  track: practice
+  doc_source: https://aws.amazon.com/lambda/pricing/
+  topics:
+    - id: lambda/cost/dimensions
+      title:
+        ko: 요금 항목 - 요청, GB-초, 무료 등급
+      exam_tags:
+        - SAA-C03#4.2
+      exam_unknown: false
+      sources:
+        - https://aws.amazon.com/lambda/pricing/
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-ephemeral-storage.html
+    - id: lambda/cost/memory-duration
+      title:
+        ko: 메모리와 실행 시간의 맞바꿈
+      exam_tags:
+        - SAA-C03#4.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html
+        - https://aws.amazon.com/lambda/pricing/
+    - id: lambda/cost/arm64-provisioned
+      title:
+        ko: arm64와 프로비저닝된 동시성의 비용
+      exam_tags:
+        - SAA-C03#4.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html
+        - https://aws.amazon.com/lambda/pricing/
+        - https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+    - id: lambda/cost/checklist
+      title:
+        ko: 비용 줄이기 점검표
+      exam_tags:
+        - SAA-C03#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: SDK 클라이언트와 데이터베이스 연결은 핸들러 밖에서 초기화해 실행 환경 재사용을 활용한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventfiltering.html
+        - https://docs.aws.amazon.com/savingsplans/latest/userguide/what-is-savings-plans.html

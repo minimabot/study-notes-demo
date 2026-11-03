@@ -1,0 +1,85 @@
+# 장: Lambda 모니터링과 문제 해결
+chapter:
+  id: lambda/monitoring
+  title:
+    ko: 모니터링과 문제 해결 (지표·로그·X-Ray)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-monitoring.html
+  topics:
+    - id: lambda/monitoring/metrics
+      title:
+        ko: CloudWatch 지표와 경보
+      exam_tags:
+        - SOA-C03#1.1
+        - SOA-C03#1.2
+        - DVA-C03#4.1
+        - DOP-C02#4.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-metrics-types.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-metrics.html
+    - id: lambda/monitoring/logs
+      title:
+        ko: CloudWatch Logs와 고급 로깅 제어 (JSON 형식·로그 수준·로그 그룹)
+      exam_tags:
+        - DVA-C03#4.2
+        - DVA-C03#4.1
+        - SOA-C03#1.1
+        - DOP-C02#4.1
+        - DOP-C02#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 기존 도구가 일반 텍스트 로그에 기대지 않는다면 로그 형식으로 JSON을 고른다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs-logformat.html
+          checked: 2026-11-03
+        - claim:
+            ko: EMF 로그를 쓰는 Node.js 함수를 JSON 형식으로 바꿀 때는 Powertools·EMF 라이브러리를 최신으로 올리고 지표 인식을 시험한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs-logformat.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-logs.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs-logformat.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs-log-level.html
+    - id: lambda/monitoring/xray
+      title:
+        ko: X-Ray 추적 (활성 추적과 PassThrough)
+      exam_tags:
+        - DVA-C03#4.2
+        - DVA-C03#4.1
+        - DOP-C02#4.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-xray.html
+    - id: lambda/monitoring/insights-signals-powertools
+      title:
+        ko: Lambda Insights, Application Signals, Powertools
+      exam_tags:
+        - DVA-C03#4.2
+        - SOA-C03#1.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-insights.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-application-signals.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/powertools-for-lambda.html
+    - id: lambda/monitoring/troubleshooting
+      title:
+        ko: 흔한 문제 해결 (제한 시간·메모리·권한·VPC)
+      exam_tags:
+        - DVA-C03#4.1
+        - SOA-C03#1.2
+        - DVA-C03#1.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 하위 서비스에 기대는 함수는 오류 처리와 재시도 로직을 넣고, 중요한 하위 서비스의 실패는 지표나 로그로 남겨 경보를 건다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-execution.html
+          checked: 2026-11-03
+        - claim:
+            ko: 시험할 때는 작업량에서 합리적으로 예상되는 상한 크기의 데이터를 쓴다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-configuration.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-troubleshooting.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-configuration.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting-invocation.html

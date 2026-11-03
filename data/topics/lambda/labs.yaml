@@ -1,0 +1,55 @@
+# 장: 실습. 서울 리전, AWS CLI. 시험 태그는 실습 내용이 과제 문장과 직접 이어지는 주제에만 붙였다.
+chapter:
+  id: lambda/labs
+  title:
+    ko: 실습 - CLI로 함수 만들고 호출·동시성·별칭·SQS 트리거 다루기
+  track: practice
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html
+  topics:
+    - id: lambda/labs/setup
+      title:
+        ko: 준비, 실행 역할, 함수 만들기
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-intro-execution-role.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-function-zip.html
+    - id: lambda/labs/invoke-logs
+      title:
+        ko: 동기·비동기 호출과 로그 읽기
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-sync.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-cloudwatchlogs.html
+    - id: lambda/labs/concurrency
+      title:
+        ko: 예약된 동시성으로 스로틀링 관찰하기
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html
+        - https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-retries.html
+    - id: lambda/labs/versions-alias
+      title:
+        ko: 버전 게시와 별칭 가중치 라우팅
+      exam_tags: []
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuring-alias-routing.html
+    - id: lambda/labs/sqs-cleanup
+      title:
+        ko: SQS 트리거와 부분 배치 응답, 정리
+      exam_tags: []
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 소스 큐의 가시성 제한 시간을 함수 제한 시간의 6배 이상으로 설정한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-configure.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html
