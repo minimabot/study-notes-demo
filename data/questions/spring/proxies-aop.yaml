@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다.
+- id: spring.q.proxies-aop-self-invocation
+  type: quiz
+  chapter: spring/proxies-aop
+  topic: spring/proxies-aop/pitfalls
+  question: { ko: "Spring Boot 기본 설정(CGLIB 프록시)에서 ReportService.rebuildAll()이 같은 클래스의 @Transactional public 메서드 rebuild()를 this로 부른다. rebuild()에 트랜잭션이 걸리지 않는 이유로 가장 정확한 것은?" }
+  choices:
+    - { id: a, text: { ko: "CGLIB 프록시는 public 메서드를 가로채지 못하기 때문이다" } }
+    - { id: b, text: { ko: "rebuildAll()이 프록시를 지나 대상 객체 안으로 들어온 뒤의 this는 프록시가 아닌 대상 객체이므로, 인터셉터 사슬을 다시 지나지 않기 때문이다" } }
+    - { id: c, text: { ko: "같은 클래스에 @Transactional 메서드가 둘 이상이면 하나만 적용되기 때문이다" } }
+    - { id: d, text: { ko: "rebuildAll()에 @Transactional이 없어 빈 전체가 프록시로 만들어지지 않았기 때문이다" } }
+  answer: b
+  explanation: { ko: "Spring의 CGLIB 프록시는 대상 객체를 따로 두고, 가로챈 호출을 사슬을 거쳐 대상에게 위임한다. 대상 안의 this 호출은 프록시를 모르는 평범한 Java 호출이다. CGLIB는 public 메서드를 잘 가로챈다(a). 메서드 수에는 제한이 없다(c). @Transactional 메서드가 하나라도 있으면 빈 전체가 프록시가 된다(d). 해결은 메서드를 다른 빈으로 옮기는 것이다." }
+  facts: [spring.aop.proxy-target-class.boot.default]
+
+- id: spring.q.proxies-aop-jdk-proxy-type
+  type: quiz
+  chapter: spring/proxies-aop
+  topic: spring/proxies-aop/jdk-vs-cglib
+  question: { ko: "Boot 앱에서 spring.aop.proxy-target-class=false로 바꾼 뒤, OrderService 인터페이스를 구현하고 @Transactional이 있는 OrderServiceImpl을 OrderServiceImpl 타입으로 주입받던 컨트롤러가 시작에 실패했다. 이유는?" }
+  choices:
+    - { id: a, text: { ko: "인터페이스가 있으므로 JDK 동적 프록시가 만들어졌고, 그 프록시는 OrderService만 구현할 뿐 OrderServiceImpl의 하위 타입이 아니기 때문이다" } }
+    - { id: b, text: { ko: "JDK 동적 프록시는 @Transactional을 지원하지 않기 때문이다" } }
+    - { id: c, text: { ko: "OrderServiceImpl이 final로 바뀌었기 때문이다" } }
+    - { id: d, text: { ko: "proxy-target-class=false면 트랜잭션 빈이 등록되지 않기 때문이다" } }
+  answer: a
+  explanation: { ko: "DefaultAopProxyFactory는 클래스 프록시가 강제되지 않고 사용자 인터페이스가 있으면 JDK 동적 프록시를 만든다. 등록되는 빈은 그 프록시이고, 프록시 클래스는 인터페이스만 구현한다. 구현 클래스 타입의 주입 지점에는 넣을 수 없다. JDK 프록시도 트랜잭션을 잘 지원하고(b), final 여부는 바뀌지 않았으며(c), 빈은 등록된다(d). 인터페이스 타입으로 주입받거나 기본값(클래스 프록시)을 유지한다." }
+  facts: [spring.aop.proxy-target-class.boot.default, spring.aop.proxy-target-class.framework.default]
+
+- id: spring.q.proxies-aop-final-method
+  type: quiz
+  chapter: spring/proxies-aop
+  topic: spring/proxies-aop/jdk-vs-cglib
+  question: { ko: "CGLIB 프록시가 되는 빈에서 public final 메서드에 @Transactional을 붙였다. 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "시작할 때 예외가 나서 앱이 뜨지 않는다" } }
+    - { id: b, text: { ko: "Spring이 바이트코드를 고쳐 final을 지우고 트랜잭션을 건다" } }
+    - { id: c, text: { ko: "프록시가 그 메서드를 덮어쓸 수 없어 호출이 그대로 대상에 가고 트랜잭션이 걸리지 않는다. Spring은 로그만 남긴다" } }
+    - { id: d, text: { ko: "JDK 동적 프록시로 자동 전환되어 트랜잭션이 걸린다" } }
+  answer: c
+  explanation: { ko: "CGLIB는 상속으로 메서드를 덮어써 가로챈다. final 메서드는 덮어쓸 수 없으므로 프록시 클래스에서도 원래 구현이 그대로 실행된다. CglibAopProxy는 클래스를 검사해 final 메서드를 프록시할 수 없다는 로그를 남길 뿐 시작을 막지 않는다(a). final을 지우는 기능은 없다(b). 프록시 종류는 메서드 하나 때문에 바뀌지 않는다(d). final 클래스 전체라면 프록시를 만들 수 없어 실패한다." }
+  facts: []

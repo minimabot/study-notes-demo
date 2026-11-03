@@ -1,0 +1,64 @@
+# spring/transactional 장 전용 사실
+
+- id: spring.tx.propagation.default
+  value: REQUIRED
+  unit: enum
+  display: { ko: "REQUIRED" }
+  label: { ko: "@Transactional propagation 기본값" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/annotation/Transactional.java#L178
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.tx.isolation.default
+  value: DEFAULT
+  unit: enum
+  display: { ko: "DEFAULT(데이터베이스 기본 격리 수준)" }
+  label: { ko: "@Transactional isolation 기본값" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/annotation/Transactional.java#L192
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.tx.read-only.default
+  value: false
+  unit: boolean
+  display: { ko: "false" }
+  label: { ko: "@Transactional readOnly 기본값" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/annotation/Transactional.java#L229
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.tx.rollback.default
+  value: "RuntimeException|Error"
+  unit: rule
+  display: { ko: "RuntimeException과 Error(검사 예외는 커밋)" }
+  label: { ko: "롤백 규칙이 없을 때 롤백하는 예외 (DefaultTransactionAttribute.rollbackOn)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/interceptor/DefaultTransactionAttribute.java#L181
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.tx.rollback-on.global.default
+  value: RUNTIME_EXCEPTIONS
+  unit: enum
+  display: { ko: "RUNTIME_EXCEPTIONS" }
+  label: { ko: "@EnableTransactionManagement rollbackOn 기본값 (6.2부터)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/annotation/EnableTransactionManagement.java#L222
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.tx.global-rollback-on-participation-failure.default
+  value: true
+  unit: boolean
+  display: { ko: "true" }
+  label: { ko: "AbstractPlatformTransactionManager globalRollbackOnParticipationFailure 기본값 (참여한 안쪽 범위가 실패하면 전체를 rollback-only로 표시)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/support/AbstractPlatformTransactionManager.java#L138
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.tx.dstm.enforce-read-only.default
+  value: false
+  unit: boolean
+  display: { ko: "false" }
+  label: { ko: "DataSourceTransactionManager enforceReadOnly 기본값 (SET TRANSACTION READ ONLY 문을 보내지 않음)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-jdbc/src/main/java/org/springframework/jdbc/datasource/DataSourceTransactionManager.java#L127
+  checked: 2026-11-03
+  volatile: false

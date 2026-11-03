@@ -1,0 +1,141 @@
+# ec2/auto-scaling 장 전용 수치. 2026-11-03 EC2 Auto Scaling 사용 설명서 대조.
+
+- id: ec2.asg.grace.console
+  value: 300
+  unit: s
+  display: { ko: "300초" }
+  label: { ko: "콘솔에서 Auto Scaling 그룹을 만들 때 상태 확인 유예 기간 기본값" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/health-check-grace-period.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/health-check-grace-period.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.grace.api
+  value: 0
+  unit: s
+  display: { ko: "0초(꺼짐)" }
+  label: { ko: "CLI·SDK로 Auto Scaling 그룹을 만들 때 상태 확인 유예 기간 기본값" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/health-check-grace-period.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/health-check-grace-period.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.cooldown.default
+  value: 300
+  unit: s
+  display: { ko: "300초" }
+  label: { ko: "Auto Scaling 그룹 기본 휴지 기간(default cooldown)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-scaling-cooldowns.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/ec2-auto-scaling-scaling-cooldowns.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.warmup.start
+  value: 300
+  unit: s
+  display: { ko: "300초" }
+  label: { ko: "기본 인스턴스 워밍업 값을 모를 때 문서가 제안하는 시작값(기본으로 켜져 있지 않음)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-default-instance-warmup.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/ec2-auto-scaling-default-instance-warmup.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.hook.timeout.default
+  value: 3600
+  unit: s
+  display: { ko: "1시간" }
+  label: { ko: "수명 주기 후크 대기 상태 기본 제한 시간(heartbeat timeout)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/lifecycle-hooks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.hook.timeout.max
+  value: 7200
+  unit: s
+  display: { ko: "7,200초" }
+  label: { ko: "수명 주기 후크 제한 시간으로 정할 수 있는 최댓값(최솟값은 30초)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/adding-lifecycle-hooks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/adding-lifecycle-hooks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.hook.global
+  value: 172800
+  unit: s
+  display: { ko: "48시간" }
+  label: { ko: "수명 주기 후크 전역 제한 시간(48시간과 제한 시간의 100배 중 작은 값)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/lifecycle-hooks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.hook.global.multiplier
+  value: 100
+  unit: x
+  display: { ko: "100배" }
+  label: { ko: "수명 주기 후크 전역 제한 시간 계산에 쓰는 제한 시간 배수(48시간과 비교해 작은 값)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/lifecycle-hooks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.refresh.min-healthy
+  value: 90
+  unit: percent
+  display: { ko: "90%" }
+  label: { ko: "인스턴스 새로 고침 최소 정상 비율 기본값(인스턴스 유지 관리 정책이 없을 때)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.refresh.max-healthy
+  value: 100
+  unit: percent
+  display: { ko: "100%" }
+  label: { ko: "인스턴스 새로 고침 최대 정상 비율 기본값(인스턴스 유지 관리 정책이 없을 때)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/understand-instance-refresh-default-values.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.predictive.min-history
+  value: 24
+  unit: h
+  display: { ko: "24시간" }
+  label: { ko: "예측 조정이 예측을 시작하려면 필요한 지표 기록 최소 기간" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.predictive.lookback
+  value: 14
+  unit: day
+  display: { ko: "14일" }
+  label: { ko: "예측 조정이 패턴을 찾으려고 분석하는 과거 지표 기간(최대)" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.predictive.horizon
+  value: 48
+  unit: h
+  display: { ko: "48시간" }
+  label: { ko: "예측 조정이 시간 단위로 용량을 예측하는 앞쪽 기간" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.asg.predictive.refresh
+  value: 6
+  unit: h
+  display: { ko: "6시간" }
+  label: { ko: "예측 조정이 예측을 새로 갱신하는 주기" }
+  source_en: https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+  checked: 2026-11-03
+  volatile: false

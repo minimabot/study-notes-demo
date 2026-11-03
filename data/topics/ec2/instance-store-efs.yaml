@@ -1,0 +1,94 @@
+# 장: 인스턴스 스토어와 Amazon EFS
+chapter:
+  id: ec2/instance-store-efs
+  title:
+    ko: 인스턴스 스토어와 Amazon EFS (EBS·FSx와 비교)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html
+  topics:
+    - id: ec2/instance-store-efs/instance-store
+      title:
+        ko: 인스턴스 스토어 (임시 블록 스토리지, 데이터가 남는 경우)
+      exam_tags:
+        - SAA-C03#3.1
+        - SAA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 가치 있는 장기 데이터를 인스턴스 스토어에 맡기지 않는다. 남겨야 할 데이터는 EBS, S3, EFS 같은 영구 스토리지로 복사한다
+          source: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-store-lifetime.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-store-lifetime.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store.html
+    - id: ec2/instance-store-efs/efs-basics
+      title:
+        ko: EFS 개요 (NFS 공유, 파일 시스템 유형, 탑재 대상, 보안 그룹)
+      exam_tags:
+        - SAA-C03#3.1
+        - SAA-C03#2.2
+        - SOA-C03#1.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 성능과 비용을 위해 인스턴스와 같은 가용 영역의 탑재 대상으로 파일 시스템에 접근한다
+          source: https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html
+        - https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html
+        - https://docs.aws.amazon.com/efs/latest/ug/network-access.html
+    - id: ec2/instance-store-efs/efs-classes-performance
+      title:
+        ko: EFS 스토리지 클래스, 수명 주기, 성능 모드와 처리량 모드
+      exam_tags:
+        - SAA-C03#3.1
+        - SAA-C03#4.1
+        - SOA-C03#1.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 대부분의 작업에는 기본값인 범용 성능 모드와 탄력적 처리량 모드를 쓴다
+          source: https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html
+          checked: 2026-11-03
+        - claim:
+            ko: 지연에 민감한 작업이면 IA·Archive의 파일을 첫 접근 시 Standard로 되돌리도록 수명 주기 정책을 둔다
+          source: https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/efs/latest/ug/features.html
+        - https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html
+        - https://docs.aws.amazon.com/efs/latest/ug/performance.html
+    - id: ec2/instance-store-efs/efs-access-encryption
+      title:
+        ko: EFS 액세스 포인트, IAM 인증, 저장 중·전송 중 암호화
+      exam_tags:
+        - SAA-C03#3.1
+        - SOA-C03#1.3
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 데이터와 메타데이터 암호화가 요구되면 저장 중 암호화로 파일 시스템을 만들고 전송 중 암호화로 탑재한다
+          source: https://docs.aws.amazon.com/efs/latest/ug/encryption.html
+          checked: 2026-11-03
+        - claim:
+            ko: 파일 시스템 탑재에는 EFS 탑재 도우미를 쓴다
+          source: https://docs.aws.amazon.com/efs/latest/ug/encryption-in-transit.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html
+        - https://docs.aws.amazon.com/efs/latest/ug/encryption-at-rest.html
+        - https://docs.aws.amazon.com/efs/latest/ug/encryption-in-transit.html
+    - id: ec2/instance-store-efs/comparison
+      title:
+        ko: EBS·인스턴스 스토어·EFS 비교와 Amazon FSx
+      exam_tags:
+        - SAA-C03#3.1
+        - SAA-C03#4.1
+        - SAP-C03#1.5
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Storage.html
+        - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/storage_fsx.html
+        - https://docs.aws.amazon.com/fsx/latest/WindowsGuide/what-is.html

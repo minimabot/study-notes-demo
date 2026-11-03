@@ -1,0 +1,64 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다.
+- id: spring.q.transactional-checked-exception
+  type: quiz
+  chapter: spring/transactional
+  topic: spring/transactional/rollback-readonly
+  question: { ko: "@Transactional(기본 설정) 메서드가 주문을 저장한 뒤 검사 예외 IOException을 던지며 끝났다. @EnableTransactionManagement의 rollbackOn은 바꾸지 않았다. 저장한 주문은?" }
+  choices:
+    - { id: a, text: { ko: "롤백된다. 메서드가 예외로 끝나면 항상 롤백한다" } }
+    - { id: b, text: { ko: "커밋된다. 기본 롤백 규칙은 RuntimeException과 Error만 롤백한다" } }
+    - { id: c, text: { ko: "트랜잭션이 열린 채 남아 연결이 반납되지 않는다" } }
+    - { id: d, text: { ko: "UnexpectedRollbackException이 난다" } }
+  answer: b
+  explanation: { ko: "completeTransactionAfterThrowing은 트랜잭션 속성의 rollbackOn(ex)이 참일 때만 롤백하고, 거짓이면 커밋한다. 기본 rollbackOn은 RuntimeException 또는 Error일 때만 참이다. rollbackFor = IOException.class를 주거나 전역 rollbackOn = ALL_EXCEPTIONS로 바꿔야 롤백된다. 정리 단계는 예외와 상관없이 돌아 연결을 반납한다(c). UnexpectedRollbackException은 rollback-only 표시가 있는데 커밋하려 할 때 난다(d)." }
+  facts: [spring.tx.rollback.default, spring.tx.rollback-on.global.default]
+
+- id: spring.q.transactional-unexpected-rollback
+  type: quiz
+  chapter: spring/transactional
+  topic: spring/transactional/propagation
+  question: { ko: "바깥 @Transactional 메서드가 다른 빈의 @Transactional(기본 전파) 메서드 notify()를 부르고, notify()가 던진 RuntimeException을 try-catch로 잡은 뒤 정상 반환했다. 무슨 일이 일어나는가?" }
+  choices:
+    - { id: a, text: { ko: "notify()의 작업만 롤백되고 바깥 작업은 커밋된다" } }
+    - { id: b, text: { ko: "예외를 잡았으므로 모두 커밋된다" } }
+    - { id: c, text: { ko: "notify()가 참여한 물리 트랜잭션에 rollback-only 표시가 붙어, 바깥 커밋 시도 때 전체가 롤백되고 UnexpectedRollbackException이 난다" } }
+    - { id: d, text: { ko: "notify()가 새 연결을 썼으므로 notify()의 작업만 커밋된다" } }
+  answer: c
+  explanation: { ko: "REQUIRED는 기존 물리 트랜잭션에 참여한다. 참여한 안쪽 범위가 롤백 대상 예외로 끝나면 globalRollbackOnParticipationFailure(기본 true)에 따라 전체에 rollback-only 표시를 한다. 바깥이 예외를 삼키고 커밋을 부르면 관리자가 표시를 보고 롤백하며 UnexpectedRollbackException을 던진다. a는 NESTED(저장점)일 때의 동작에 가깝고, d는 REQUIRES_NEW일 때다." }
+  facts: [spring.tx.propagation.default, spring.tx.global-rollback-on-participation-failure.default]
+
+- id: spring.q.transactional-async-thread
+  type: quiz
+  chapter: spring/transactional
+  topic: spring/transactional/pitfalls
+  question: { ko: "@Transactional 메서드 안에서 CompletableFuture.runAsync(() -> repository.save(log))를 부르고 결과를 기다리지 않는다. 바깥 메서드가 RuntimeException으로 롤백되면 log 저장은?" }
+  choices:
+    - { id: a, text: { ko: "바깥 트랜잭션과 함께 롤백된다" } }
+    - { id: b, text: { ko: "다른 스레드에서 돌아 바깥 트랜잭션의 연결을 보지 못하므로, 바깥 롤백과 무관하게 따로 처리된다" } }
+    - { id: c, text: { ko: "같은 연결을 두 스레드가 나눠 써서 항상 교착이 생긴다" } }
+    - { id: d, text: { ko: "Spring이 트랜잭션 컨텍스트를 새 스레드로 복사하므로 a와 같다" } }
+  answer: b
+  explanation: { ko: "트랜잭션 연결은 TransactionSynchronizationManager의 ThreadLocal에 묶여 있다. runAsync의 작업은 공용 풀의 다른 스레드에서 돌고, 그 스레드에는 묶인 연결이 없다. 그래서 저장소 호출은 트랜잭션 없이(또는 저장소가 스스로 여는 별도 트랜잭션으로) 실행되고 바깥 롤백의 영향을 받지 않는다. 연결을 공유하지 않으므로 c는 틀리고, Spring은 트랜잭션 컨텍스트를 스레드 사이로 복사하지 않는다(d)." }
+  facts: []
+
+- id: spring.d.transactional-audit-log
+  type: design
+  chapter: spring/transactional
+  topic: spring/transactional/propagation
+  scenario: { ko: "송금 서비스 TransferService.transfer()는 @Transactional이다. 요구 사항: 송금 시도마다 감사 로그(누가, 언제, 얼마, 결과)를 DB에 남겨야 하고, 송금이 예외로 롤백되어도 감사 로그는 남아야 한다. JDBC 기반 DataSourceTransactionManager를 쓰고 HikariCP 풀을 쓴다. 맞는 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "감사 로그 저장을 별도 빈 AuditLogWriter의 public 메서드로 두고 @Transactional(propagation = Propagation.REQUIRES_NEW)를 붙여, transfer()가 주입받은 AuditLogWriter를 부른다" } }
+    - { id: b, text: { ko: "TransferService 안의 private 메서드 writeAudit()에 @Transactional(propagation = Propagation.REQUIRES_NEW)를 붙여 transfer()에서 부른다" } }
+    - { id: c, text: { ko: "감사 로그 저장 메서드를 Propagation.NESTED로 둔다" } }
+    - { id: d, text: { ko: "REQUIRES_NEW는 요청마다 연결을 하나 더 쥐므로, 풀 최대 크기가 동시에 송금을 처리하는 스레드 수보다 넉넉한지 확인하고, 감사 저장이 실패했을 때 송금을 막을지 말지 정해 예외 처리를 둔다" } }
+    - { id: e, text: { ko: "감사 로그 저장 코드를 transfer() 안에 그대로 두고, 저장 직후 예외를 catch해 삼킨다" } }
+  answer_set: [a, d]
+  rubric:
+    ko:
+      - "a와 d를 모두 고르면 정답이다."
+      - "a: REQUIRES_NEW는 바깥 트랜잭션을 보류하고 새 연결로 독립 트랜잭션을 시작해, 메서드가 끝날 때 바로 커밋한다. 바깥이 나중에 롤백되어도 감사 로그는 남는다. 다른 빈에 두어야 프록시를 거친다."
+      - "d: 바깥 연결은 보류되는 동안에도 반납되지 않으므로 송금 하나가 연결을 둘 쥔다. 공식 문서는 풀 크기가 동시 스레드 수보다 넉넉하지 않으면 교착에 가까운 고갈이 생길 수 있다고 경고한다. 감사 쓰기 실패 정책도 함께 정해야 한다."
+      - "b는 감점: 자기 호출이라 프록시를 거치지 않고, private 메서드는 프록시가 덮어쓸 수도 없다. 감사 로그는 바깥 트랜잭션 안에서 저장되어 함께 롤백된다."
+      - "c는 감점: NESTED는 같은 물리 트랜잭션 안의 저장점이다. 바깥이 롤백되면 저장점 이후의 감사 로그도 함께 사라진다."
+      - "e는 감점: 같은 트랜잭션 안의 쓰기이므로 바깥 롤백 때 함께 롤백된다. 예외를 삼키는 것은 롤백 여부와 관계없다."
+  facts: [spring.tx.propagation.default]

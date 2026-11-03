@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.auto-scaling-elb-health
+  type: quiz
+  chapter: ec2/auto-scaling
+  topic: ec2/auto-scaling/health
+  question: { ko: "ALB 뒤 Auto Scaling 그룹의 웹 서버에서 앱 프로세스가 가끔 죽는다. ALB 대상 그룹은 그 인스턴스를 unhealthy로 표시하지만, Auto Scaling 그룹은 인스턴스를 교체하지 않는다. 그룹 설정은 상태 확인 관련 기본값 그대로다. 가장 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "그룹에서 Elastic Load Balancing 상태 확인을 켠다" } }
+    - { id: b, text: { ko: "상태 확인 유예 기간을 늘린다" } }
+    - { id: c, text: { ko: "기본 휴지 기간을 줄인다" } }
+    - { id: d, text: { ko: "대상 그룹의 비정상 임계값을 {{fact:ec2.elb.hc.unhealthy.default}}보다 낮춘다" } }
+  answer: a
+  explanation: { ko: "Auto Scaling 그룹의 기본 상태 확인은 EC2 상태 확인뿐이고, ELB 상태 확인 결과는 기본으로 무시한다. 앱 프로세스가 죽어도 인스턴스는 running이라 EC2 상태 확인으로는 정상이다. ELB 상태 확인을 켜면 로드 밸런서가 비정상으로 본 인스턴스를 다음 확인 때 비정상으로 표시하고 교체한다. b: 유예 기간은 새 인스턴스의 판정을 늦출 뿐이다. c: 휴지 기간은 단순 조정 정책에만 걸리고 비정상 교체는 휴지 기간을 기다리지 않는다. d: 비정상 임계값은 2~10 범위이고, 대상 그룹은 이미 unhealthy로 보고 있다. 문제는 그룹이 그 결과를 쓰지 않는 것이다." }
+  facts: [ec2.elb.hc.unhealthy.default]
+
+- id: ec2.q.auto-scaling-warmup
+  type: quiz
+  chapter: ec2/auto-scaling
+  topic: ec2/auto-scaling/policies
+  question: { ko: "CPU 대상 추적 정책을 쓰는 그룹이 확장할 때마다 필요보다 많은 인스턴스를 띄운다. 새 인스턴스는 서비스에 들어간 직후 몇 분 동안 캐시를 채우느라 CPU가 높게 나온다. 기본 인스턴스 워밍업은 설정하지 않았다. 문서 권장에 가장 맞는 조치는?" }
+  choices:
+    - { id: a, text: { ko: "기본 휴지 기간을 {{fact:ec2.asg.cooldown.default}}보다 길게 늘린다" } }
+    - { id: b, text: { ko: "기본 인스턴스 워밍업을 켜고, 초기화가 끝나 CPU가 안정될 때까지의 시간으로 정한다" } }
+    - { id: c, text: { ko: "대상 추적 정책이 만든 CloudWatch 경보의 평가 기간을 직접 늘린다" } }
+    - { id: d, text: { ko: "대상 추적을 단순 조정 정책으로 바꾼다" } }
+  answer: b
+  explanation: { ko: "기본 인스턴스 워밍업 동안 새 인스턴스는 그룹의 집계 지표에 들어가지 않는다. 그래서 시작 직후 CPU가 튀어도 확장을 더 부르지 않는다. 워밍업 중인 인스턴스는 다음 확장 계산에서 이미 있는 용량으로 쳐서, 같은 부하에 여러 번 늘리지 않는다. 기본으로 꺼져 있고 문서가 켜라고 강하게 권한다. 값을 모르면 {{fact:ec2.asg.warmup.start}}부터 시작한다. a: 휴지 기간은 단순 조정에만 걸린다. c: 대상 추적이 만든 경보는 직접 고치지 말라고 문서가 경고한다. d: 문서는 단순 조정을 쓰지 말라고 권한다." }
+  facts: [ec2.asg.cooldown.default, ec2.asg.warmup.start]
+
+- id: ec2.q.auto-scaling-predictive
+  type: quiz
+  chapter: ec2/auto-scaling
+  topic: ec2/auto-scaling/policies
+  question: { ko: "사내 업무 앱은 평일 오전 9시에 사용자가 한꺼번에 몰리고 밤에는 거의 쓰지 않는다. 인스턴스 초기화에 시간이 오래 걸려 출근 직후 몇 분간 느리다. 예측 조정(predictive scaling)에 대한 설명으로 옳은 것은?" }
+  choices:
+    - { id: a, text: { ko: "예측 조정만 켜면 밤에 용량도 알아서 줄여 준다" } }
+    - { id: b, text: { ko: "지표 기록이 없어도 바로 예측과 조정을 시작한다" } }
+    - { id: c, text: { ko: "반복 패턴을 보고 부하가 오기 전에 미리 늘린다. 줄이는 일은 하지 않으므로 대상 추적 같은 동적 정책을 함께 둔다" } }
+    - { id: d, text: { ko: "처음 만들면 바로 '예측 및 조정' 모드로 동작한다" } }
+  answer: c
+  explanation: { ko: "예측 조정은 최대 {{fact:ec2.asg.predictive.lookback}}의 기록에서 일·주 단위 패턴을 찾아 앞으로 {{fact:ec2.asg.predictive.horizon}}을 예측하고, 부하가 오기 전에 용량을 늘린다. 초기화가 긴 앱에 맞다. a: 예측이 감소를 보여도 줄이지 않는다. 줄이려면 동적 조정 정책이 필요하다. b: 지표 기록이 최소 {{fact:ec2.asg.predictive.min-history}} 있어야 예측을 시작한다. d: 처음에는 '예측만' 모드로 동작해 예측을 검토하게 한다." }
+  facts: [ec2.asg.predictive.lookback, ec2.asg.predictive.horizon, ec2.asg.predictive.min-history]

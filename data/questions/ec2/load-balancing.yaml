@@ -1,0 +1,70 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: ec2.q.load-balancing-path
+  type: quiz
+  chapter: ec2/load-balancing
+  topic: ec2/load-balancing/alb-routing
+  question: { ko: "한 도메인 아래 `/orders/*`는 주문 서비스, `/users/*`는 사용자 서비스, 나머지는 웹 프런트엔드로 보내려 한다. 세 서비스는 각각 다른 EC2 Auto Scaling 그룹에서 돈다. 로드 밸런서를 가장 적게 쓰는 구성은?" }
+  choices:
+    - { id: a, text: { ko: "ALB 하나에 HTTPS 리스너를 두고, path-pattern 조건 규칙 두 개로 주문·사용자 대상 그룹에 보내며, 기본 규칙은 프런트엔드 대상 그룹으로 보낸다" } }
+    - { id: b, text: { ko: "서비스마다 NLB를 하나씩 두고 DNS로 나눈다" } }
+    - { id: c, text: { ko: "NLB 하나에 포트 443 TCP 리스너를 두고 경로별로 대상 그룹을 나눈다" } }
+    - { id: d, text: { ko: "Classic Load Balancer 하나에 세 Auto Scaling 그룹을 모두 붙인다" } }
+  answer: a
+  explanation: { ko: "ALB는 7계층에서 URL 경로를 보고 규칙으로 대상 그룹을 고른다. 규칙은 우선순위 순서로 평가되고, 맞는 것이 없으면 기본 규칙이 실행된다. b: 동작은 하지만 로드 밸런서가 셋이고 경로로 나누지도 못한다. c: NLB는 4계층이라 HTTP 경로를 보지 않는다. d: Classic은 경로 기반 라우팅이 없는 이전 세대이고, AWS는 현재 세대로 옮기라고 권한다." }
+  facts: []
+
+- id: ec2.q.load-balancing-dereg
+  type: quiz
+  chapter: ec2/load-balancing
+  topic: ec2/load-balancing/target-groups-health
+  question: { ko: "ALB 뒤 API 서버의 요청은 모두 {{raw:1초}} 안에 끝난다. 그런데 배포나 축소 때 인스턴스가 대상 그룹에서 빠지는 데 매번 몇 분씩 걸린다. 가장 알맞은 조치는?" }
+  choices:
+    - { id: a, text: { ko: "상태 확인 간격을 줄인다" } }
+    - { id: b, text: { ko: "대상 그룹의 등록 취소 지연을 기본값 {{fact:ec2.elb.dereg.default}}에서 요청 처리 시간에 맞게 줄인다" } }
+    - { id: c, text: { ko: "고정 세션을 켠다" } }
+    - { id: d, text: { ko: "느린 시작 기간을 {{fact:ec2.alb.slowstart.max}}로 늘린다" } }
+  answer: b
+  explanation: { ko: "대상을 등록 취소하면 draining 상태에서 처리 중인 요청을 기다린다. 기본 대기 시간은 {{fact:ec2.elb.dereg.default}}이고 최대 {{fact:ec2.elb.dereg.max}}다. 요청이 짧으면 줄여서 빼는 시간을 줄인다. a: 상태 확인 간격은 등록 취소 대기와 상관없다. c: 고정 세션은 같은 클라이언트를 같은 대상에 보내는 기능이다. d: 느린 시작은 새로 등록된 대상에 트래픽을 천천히 늘리는 기능이라 오히려 반대쪽 문제다." }
+  facts: [ec2.elb.dereg.default, ec2.elb.dereg.max, ec2.alb.slowstart.max]
+
+- id: ec2.q.load-balancing-nlb-sg
+  type: quiz
+  chapter: ec2/load-balancing
+  topic: ec2/load-balancing/nlb
+  question: { ko: "인터넷 경계 NLB에 TCP 리스너를 두고 instance 유형 대상 그룹으로 EC2에 보낸다. 대상 그룹 속성은 기본값이다. 대상 인스턴스의 보안 그룹에 NLB 서브넷 CIDR만 허용했더니 클라이언트 연결이 실패한다. 원인으로 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "instance 유형 대상 그룹은 기본으로 클라이언트 IP를 보존하므로, 패킷의 원본이 클라이언트 IP다. 보안 그룹이 클라이언트 IP를 허용해야 한다" } }
+    - { id: b, text: { ko: "NLB의 교차 영역 로드 밸런싱이 꺼져 있어서다" } }
+    - { id: c, text: { ko: "NLB는 보안 그룹을 지원하지 않아서다" } }
+    - { id: d, text: { ko: "TCP 리스너는 상태 확인을 할 수 없어서다" } }
+  answer: a
+  explanation: { ko: "NLB는 instance 유형 대상 그룹에서 클라이언트 IP 보존이 기본으로 켜져 있다. 그러면 대상이 받는 패킷의 원본은 NLB가 아니라 클라이언트다. 대상 보안 그룹이 클라이언트 IP(인터넷이면 0.0.0.0/0 등)를 허용하거나, NLB에 보안 그룹을 붙이고 대상에서 그 보안 그룹을 참조해야 한다. b: 교차 영역 설정은 어느 영역의 대상으로 보내느냐의 문제다. c: NLB에도 보안 그룹을 붙일 수 있다. d: NLB 상태 확인 기본 프로토콜이 TCP다." }
+  facts: []
+
+- id: ec2.d.load-balancing-alb-vs-nlb
+  type: design
+  chapter: ec2/load-balancing
+  topic: ec2/load-balancing/choose
+  scenario: { ko: "한 회사가 두 가지 워크로드를 AWS로 옮긴다. 둘 다 여러 가용 영역의 EC2 Auto Scaling 그룹에서 돈다. (가) HTTP 기반 마이크로서비스: `api.example.com/cart/*`, `api.example.com/search/*`처럼 경로마다 다른 서비스가 받는다. HTTPS를 써야 하고, 각 서비스는 접근 로그에 사용자 IP를 남겨야 한다. (나) 자체 TCP 프로토콜을 쓰는 게임 서버: 게임 클라이언트가 하드코딩된 IP 주소로 접속하고, 협력사 방화벽 허용 목록에 고정 IP를 등록해야 한다. 서버는 부정 행위 탐지를 위해 접속한 플레이어의 원래 IP를 패킷에서 직접 봐야 한다. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "(가)에 ALB를 두고, HTTPS 리스너의 path-pattern 규칙으로 서비스별 대상 그룹에 보낸다" } }
+    - { id: b, text: { ko: "(가)의 HTTPS 리스너에 ACM 인증서를 두어 ALB에서 TLS를 끝내고, 서비스는 X-Forwarded-For 헤더에서 사용자 IP를 읽는다" } }
+    - { id: c, text: { ko: "(나)에 NLB를 두고 TCP 리스너를 만든 뒤, 가용 영역마다 탄력적 IP를 하나씩 붙인다" } }
+    - { id: d, text: { ko: "(나)의 NLB는 instance 유형 대상 그룹을 쓰고 클라이언트 IP 보존(기본 켜짐)을 그대로 두며, 대상 보안 그룹에서 플레이어 트래픽을 허용한다" } }
+    - { id: e, text: { ko: "(나)에도 ALB를 두고 ALB에 탄력적 IP를 붙인다" } }
+    - { id: f, text: { ko: "(가)에 NLB를 두고 서비스마다 다른 포트를 열어 경로 대신 포트로 나눈다" } }
+    - { id: g, text: { ko: "(나)에 Gateway Load Balancer를 두어 TCP 트래픽을 게임 서버로 나눈다" } }
+    - { id: h, text: { ko: "두 워크로드 모두 Classic Load Balancer 하나로 처리한다" } }
+  answer_set: [a, b, c, d]
+  rubric:
+    ko:
+      - "a, b, c, d를 모두 고르면 정답이다."
+      - "a: 경로로 서비스를 나누는 것은 7계층 ALB의 리스너 규칙(path-pattern)이 하는 일이다. 규칙은 ALB당 {{fact:ec2.alb.rules.max}}가 기본 할당량이다."
+      - "b: ALB HTTPS 리스너는 인증서로 TLS를 끝낸다. ALB는 대상과 새 연결을 맺으므로 대상 로그에는 ALB IP가 남고, 사용자 IP는 X-Forwarded-For 헤더로 온다."
+      - "c: NLB는 가용 영역마다 고정 IP를 쓰고, 인터넷 경계 NLB에는 {{fact:ec2.nlb.eip.per-az}} 탄력적 IP를 지정할 수 있다. 하드코딩된 IP와 방화벽 허용 목록 요구를 만족한다. 자체 TCP 프로토콜은 4계층 NLB가 다룬다."
+      - "d: instance 유형 대상 그룹은 클라이언트 IP 보존이 기본으로 켜져 있어 서버가 패킷에서 플레이어 IP를 본다. 이때 대상 보안 그룹은 NLB IP가 아니라 클라이언트 쪽 트래픽을 허용해야 한다."
+      - "e는 감점: ALB에는 고정 IP나 탄력적 IP가 없다. ALB 앞에 고정 IP가 필요하면 NLB 뒤에 ALB를 대상(alb 유형)으로 둔다. 게다가 자체 TCP 프로토콜은 ALB가 다루지 않는다."
+      - "f는 감점: NLB는 HTTP 경로를 보지 않는다. 포트로 나누면 클라이언트가 서비스마다 포트를 알아야 하고, 사용자 인증·리디렉션 같은 7계층 기능도 없다."
+      - "g는 감점: GWLB는 방화벽·IDS 같은 가상 어플라이언스로 트래픽을 통과시키는 3계층 서비스다. 애플리케이션 서버 앞의 로드 밸런서가 아니다."
+      - "h는 감점: Classic은 이전 세대이고 AWS는 ALB·NLB로 옮기라고 권한다. 경로 기반 라우팅과 탄력적 IP 지정도 없다."
+  facts: [ec2.alb.rules.max, ec2.nlb.eip.per-az]

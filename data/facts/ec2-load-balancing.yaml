@@ -1,0 +1,161 @@
+# ec2/load-balancing 장 전용 수치. 2026-11-03 ALB·NLB 사용 설명서 대조.
+
+- id: ec2.elb.dereg.default
+  value: 300
+  unit: s
+  display: { ko: "300초" }
+  label: { ko: "ALB·NLB 대상 그룹 등록 취소 지연(deregistration delay) 기본값" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.elb.dereg.max
+  value: 3600
+  unit: s
+  display: { ko: "3,600초" }
+  label: { ko: "ALB·NLB 등록 취소 지연으로 정할 수 있는 최댓값(범위 0부터)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.elb.hc.interval.default
+  value: 30
+  unit: s
+  display: { ko: "30초" }
+  label: { ko: "ALB(instance·ip 대상)·NLB 상태 확인 간격 기본값" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/target-group-health-checks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.elb.hc.healthy.default
+  value: 5
+  unit: count
+  display: { ko: "5회" }
+  label: { ko: "ALB·NLB 정상 임계값 기본값(비정상 대상을 정상으로 보기까지 연속 성공 횟수)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/target-group-health-checks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.elb.hc.unhealthy.default
+  value: 2
+  unit: count
+  display: { ko: "2회" }
+  label: { ko: "ALB·NLB 비정상 임계값 기본값(비정상으로 보기까지 연속 실패 횟수)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/target-group-health-checks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.alb.hc.timeout.default
+  value: 5
+  unit: s
+  display: { ko: "5초" }
+  label: { ko: "ALB 상태 확인 제한 시간 기본값(instance·ip 대상)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/target-group-health-checks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.nlb.hc.timeout.tcp
+  value: 10
+  unit: s
+  display: { ko: "10초" }
+  label: { ko: "NLB TCP·HTTPS 상태 확인 제한 시간 기본값" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/network/target-group-health-checks.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/network/target-group-health-checks.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.alb.sticky.default
+  value: 86400
+  unit: s
+  display: { ko: "1일" }
+  label: { ko: "ALB 고정 세션 쿠키 유효 기간 기본값(기간 기반·애플리케이션 기반 공통)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.alb.sticky.max
+  value: 604800
+  unit: s
+  display: { ko: "7일" }
+  label: { ko: "ALB 고정 세션 쿠키 유효 기간 최댓값" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.alb.slowstart.min
+  value: 30
+  unit: s
+  display: { ko: "30초" }
+  label: { ko: "ALB 느린 시작(slow start) 기간 하한(기본은 0 = 꺼짐)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.alb.slowstart.max
+  value: 900
+  unit: s
+  display: { ko: "900초" }
+  label: { ko: "ALB 느린 시작 기간 상한" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.alb.idle.default
+  value: 60
+  unit: s
+  display: { ko: "60초" }
+  label: { ko: "ALB 연결 유휴 제한 시간 기본값" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-load-balancer-attributes.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/edit-load-balancer-attributes.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.nlb.idle.tcp
+  value: 350
+  unit: s
+  display: { ko: "350초" }
+  label: { ko: "NLB TCP 흐름 유휴 제한 시간 기본값(TLS 리스너는 이 값으로 고정)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/network/update-idle-timeout.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/network/update-idle-timeout.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.alb.rules.max
+  value: 100
+  unit: count
+  display: { ko: "100개" }
+  label: { ko: "ALB당 규칙 수 기본 할당량(조정 가능)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: ec2.alb.tg.per-action
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "ALB 규칙 작업 하나에 넣을 수 있는 대상 그룹 수(조정 불가)" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/load-balancer-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.nlb.eip.per-az
+  value: 1
+  unit: count
+  display: { ko: "가용 영역(서브넷)당 1개" }
+  label: { ko: "인터넷 경계 NLB에 붙일 수 있는 탄력적 IP 수" }
+  source_en: https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/network/introduction.html
+  checked: 2026-11-03
+  volatile: false

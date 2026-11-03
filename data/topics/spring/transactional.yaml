@@ -1,0 +1,38 @@
+# 장: @Transactional 내부 (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/transactional
+  title: { ko: "@Transactional: 프록시, 스레드에 묶인 연결, 전파" }
+  track: core
+  doc_source: https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html
+  topics:
+    - id: spring/transactional/overview
+      title: { ko: "@Transactional이 하는 일과 기본값" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/annotation/Transactional.java#L178
+    - id: spring/transactional/interceptor
+      title: { ko: "인터셉터, 트랜잭션 관리자, 스레드에 묶인 연결" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/interceptor/TransactionAspectSupport.java#L333
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-jdbc/src/main/java/org/springframework/jdbc/datasource/DataSourceTransactionManager.java#L263
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/support/TransactionSynchronizationManager.java#L77
+    - id: spring/transactional/propagation
+      title: { ko: "전파: REQUIRED, REQUIRES_NEW, NESTED가 물리적으로 하는 일" }
+      recommended:
+        - claim: { ko: "REQUIRES_NEW는 커넥션 풀 크기가 동시 스레드 수보다 넉넉할 때만 쓴다" }
+          source: https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/tx-propagation.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/tx-propagation.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/support/AbstractPlatformTransactionManager.java#L426
+    - id: spring/transactional/rollback-readonly
+      title: { ko: "롤백 규칙과 readOnly의 실제 효과" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/rolling-back.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/interceptor/DefaultTransactionAttribute.java#L180
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-orm/src/main/java/org/springframework/orm/jpa/vendor/HibernateJpaDialect.java#L150
+    - id: spring/transactional/pitfalls
+      title: { ko: "실무 함정: 자기 호출, 가시성, 예외, 다른 스레드" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-tx/src/main/java/org/springframework/transaction/annotation/AbstractTransactionManagementConfiguration.java#L86

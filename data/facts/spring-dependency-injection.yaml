@@ -1,0 +1,28 @@
+# spring/dependency-injection 장 전용 사실
+
+- id: spring.circular.framework.default
+  value: true
+  unit: boolean
+  display: { ko: "허용(true)" }
+  label: { ko: "Spring Framework AbstractAutowireCapableBeanFactory의 순환 참조 허용 기본값 (allowCircularReferences)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L131
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.circular.boot.default
+  value: false
+  unit: boolean
+  display: { ko: "금지(false)" }
+  label: { ko: "Spring Boot spring.main.allow-circular-references 기본값" }
+  source_en: https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot/src/main/java/org/springframework/boot/ApplicationProperties.java#L37
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.singleton-registry.cache-count
+  value: 3
+  unit: count
+  display: { ko: "3개(singletonObjects, singletonFactories, earlySingletonObjects)" }
+  label: { ko: "DefaultSingletonBeanRegistry가 싱글톤과 이른 참조를 담는 캐시 맵 수 (v7.0.8)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultSingletonBeanRegistry.java#L86
+  checked: 2026-11-03
+  volatile: false

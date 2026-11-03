@@ -1,0 +1,88 @@
+# 장: 로드 밸런싱 (ALB, NLB, GWLB)
+chapter:
+  id: ec2/load-balancing
+  title:
+    ko: Elastic Load Balancing (ALB, NLB, GWLB)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html
+  topics:
+    - id: ec2/load-balancing/alb-routing
+      title:
+        ko: ALB 리스너·규칙·대상 그룹, 경로·호스트 라우팅, TLS 종료, X-Forwarded-For
+      exam_tags:
+        - SAA-C03#3.4
+        - SAA-C03#2.1
+        - SAP-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 대상 애플리케이션의 유휴 제한 시간을 로드 밸런서의 연결 유휴 제한 시간보다 길게 둔다
+          source: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-load-balancer-attributes.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-rules.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/x-forwarded-headers.html
+    - id: ec2/load-balancing/target-groups-health
+      title:
+        ko: 상태 확인, 등록 취소 지연, 느린 시작, 라우팅 알고리즘, 고정 세션
+      exam_tags:
+        - SOA-C03#2.2
+        - SOA-C03#5.3
+        - SAA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 대상이 로드 밸런서에서만 트래픽을 받도록 대상 보안 그룹의 원본을 로드 밸런서 보안 그룹으로 제한한다
+          source: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-update-security-groups.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html
+    - id: ec2/load-balancing/cross-zone
+      title:
+        ko: 교차 영역 로드 밸런싱 (종류별 기본값과 요금)
+      exam_tags:
+        - SAA-C03#2.2
+        - DOP-C02#3.1
+        - SAA-C03#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: NLB는 대상 그룹마다 켜진 가용 영역 각각에 대상을 적어도 하나 둔다
+          source: https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/edit-target-group-attributes.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/network/edit-target-group-attributes.html
+    - id: ec2/load-balancing/nlb
+      title:
+        ko: NLB (4계층, 고정 IP·탄력적 IP, 클라이언트 IP 보존, TLS)
+      exam_tags:
+        - SAA-C03#3.4
+        - SAA-C03#4.2
+        - SOA-C03#5.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/network/edit-target-group-attributes.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-listeners.html
+    - id: ec2/load-balancing/choose
+      title:
+        ko: GWLB, Classic, 그리고 ALB·NLB 고르기
+      exam_tags:
+        - SAA-C03#4.2
+        - SAA-C03#3.4
+        - SAP-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: Classic Load Balancer는 현재 세대 로드 밸런서(ALB, NLB)로 옮긴다
+          source: https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/introduction.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/gateway/introduction.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/introduction.html
+        - https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/migrate-classic-load-balancer.html

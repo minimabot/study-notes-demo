@@ -1,0 +1,81 @@
+# ec2/instance-store-efs 장 전용 수치. 2026-11-03 EC2 사용 설명서·EFS 사용 설명서 대조.
+
+- id: ec2.efs.ia.default
+  value: 30
+  unit: day
+  display: { ko: "30일" }
+  label: { ko: "EFS 수명 주기 기본값: Standard에서 이 기간 접근하지 않은 파일을 IA로 옮김" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/lifecycle-management-efs.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.efs.archive.default
+  value: 90
+  unit: day
+  display: { ko: "90일" }
+  label: { ko: "EFS 수명 주기 기본값: Standard에서 이 기간 접근하지 않은 파일을 Archive로 옮김" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/lifecycle-management-efs.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/lifecycle-management-efs.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.efs.archive.min-duration
+  value: 90
+  unit: day
+  display: { ko: "90일" }
+  label: { ko: "EFS Archive 스토리지 클래스의 최소 저장 기간(요금 기준)" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/features.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/features.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.efs.min-billing
+  value: 128
+  unit: KiB
+  display: { ko: "128 KiB" }
+  label: { ko: "EFS IA·Archive 클래스의 파일당 최소 과금 크기" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/features.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/features.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.efs.regional.az.min
+  value: 3
+  unit: count
+  display: { ko: "3개 이상" }
+  label: { ko: "EFS 리전(Regional) 파일 시스템이 데이터를 나눠 두는 가용 영역 수" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/features.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/features.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.efs.mt.per-az
+  value: 1
+  unit: count
+  display: { ko: "가용 영역당 1개" }
+  label: { ko: "파일 시스템 하나가 가용 영역 하나에 둘 수 있는 탑재 대상 수" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.efs.provisioned.lock
+  value: 24
+  unit: h
+  display: { ko: "24시간" }
+  label: { ko: "EFS를 프로비저닝 처리량으로 바꾸거나 양을 늘린 뒤, 모드를 다시 바꾸거나 양을 줄이려면 기다려야 하는 시간" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/managing-throughput.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/managing-throughput.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: ec2.efs.bursting.baseline
+  value: 50
+  unit: KiBps/GiB
+  display: { ko: "Standard 저장량 GiB당 50 KiBps" }
+  label: { ko: "EFS 버스트 처리량 모드의 기준 처리량 비율(쓰기 기준 계량)" }
+  source_en: https://docs.aws.amazon.com/efs/latest/ug/performance.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/efs/latest/ug/performance.html
+  checked: 2026-11-03
+  volatile: false

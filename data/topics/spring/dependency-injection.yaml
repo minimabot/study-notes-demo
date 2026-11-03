@@ -1,0 +1,39 @@
+# 장: 의존성 주입과 순환 참조 (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/dependency-injection
+  title: { ko: "의존성 주입: 후보 고르기와 순환 참조" }
+  track: core
+  doc_source: https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html
+  topics:
+    - id: spring/dependency-injection/styles
+      title: { ko: "생성자·세터·필드 주입과 생성자를 권하는 이유" }
+      recommended:
+        - claim: { ko: "필수 의존은 생성자로, 선택 의존은 세터로 주입한다. Spring 팀은 생성자 주입을 권한다" }
+          source: https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/annotation/AutowiredAnnotationBeanPostProcessor.java#L490
+    - id: spring/dependency-injection/resolution
+      title: { ko: "후보 고르기: Optional, ObjectProvider, @Lazy, @Primary, @Qualifier" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultListableBeanFactory.java#L1637
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultListableBeanFactory.java#L2038
+        - https://docs.spring.io/spring-framework/reference/core/beans/annotation-config.html
+    - id: spring/dependency-injection/singleton-caches
+      title: { ko: "싱글톤 레지스트리의 캐시와 이른 참조" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultSingletonBeanRegistry.java#L86
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultSingletonBeanRegistry.java#L208
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L589
+    - id: spring/dependency-injection/cycles
+      title: { ko: "생성자 순환, Boot의 기본 금지, 프록시와 이른 참조" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html
+        - https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot/src/main/java/org/springframework/boot/ApplicationProperties.java#L37
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-aop/src/main/java/org/springframework/aop/framework/autoproxy/AbstractAutoProxyCreator.java#L237
+    - id: spring/dependency-injection/pitfalls
+      title: { ko: "실무 함정: 순환을 숨기지 말고 끊기" }
+      sources:
+        - https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot/src/main/java/org/springframework/boot/diagnostics/analyzer/BeanCurrentlyInCreationFailureAnalyzer.java#L57
+        - https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html

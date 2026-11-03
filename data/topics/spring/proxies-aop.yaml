@@ -1,0 +1,34 @@
+# 장: 프록시와 AOP (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/proxies-aop
+  title: { ko: "프록시와 AOP: 빈이 바꿔 끼워지는 원리" }
+  track: core
+  doc_source: https://docs.spring.io/spring-framework/reference/core/aop/proxying.html
+  topics:
+    - id: spring/proxies-aop/overview
+      title: { ko: "부가 기능은 프록시가 붙인다" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/aop/proxying.html
+        - https://docs.spring.io/spring-framework/reference/core/aop/introduction.html
+    - id: spring/proxies-aop/auto-proxy
+      title: { ko: "자동 프록시 생성기: 언제 누가 감싸나" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-aop/src/main/java/org/springframework/aop/framework/autoproxy/AbstractAutoProxyCreator.java#L285
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-aop/src/main/java/org/springframework/aop/framework/autoproxy/AbstractAutoProxyCreator.java#L321
+    - id: spring/proxies-aop/jdk-vs-cglib
+      title: { ko: "JDK 동적 프록시와 CGLIB, Boot의 기본값" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-aop/src/main/java/org/springframework/aop/framework/DefaultAopProxyFactory.java#L60
+        - https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot-autoconfigure/src/main/java/org/springframework/boot/autoconfigure/aop/AopAutoConfiguration.java#L51
+        - https://docs.spring.io/spring-framework/reference/core/aop/proxying.html
+    - id: spring/proxies-aop/chain
+      title: { ko: "인터셉터 사슬과 proceed()" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-aop/src/main/java/org/springframework/aop/framework/ReflectiveMethodInvocation.java#L155
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-aop/src/main/java/org/springframework/aop/framework/JdkDynamicAopProxy.java#L166
+        - https://docs.spring.io/spring-framework/reference/core/aop/ataspectj.html
+    - id: spring/proxies-aop/pitfalls
+      title: { ko: "실무 함정: 자기 호출, private·final, 프록시 확인" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/aop/proxying.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-aop/src/main/java/org/springframework/aop/support/AopUtils.java#L82

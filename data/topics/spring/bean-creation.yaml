@@ -1,0 +1,38 @@
+# 장: 빈 생성 과정 (Spring Framework 7.0.8 / Spring Boot 4.1.2 / Java 25)
+chapter:
+  id: spring/bean-creation
+  title: { ko: "빈 하나가 만들어지는 과정: getBean에서 초기화까지" }
+  track: core
+  doc_source: https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html
+  topics:
+    - id: spring/bean-creation/overview
+      title: { ko: "생성 순서 네 덩어리" }
+      sources:
+        - https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L556
+    - id: spring/bean-creation/get-bean
+      title: { ko: "doGetBean: 꺼낼지 만들지 정하기" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractBeanFactory.java#L236
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L488
+    - id: spring/bean-creation/instantiate
+      title: { ko: "객체 만들기: 생성자·팩터리 메서드 고르기" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L1175
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/annotation/AutowiredAnnotationBeanPostProcessor.java#L349
+        - https://docs.spring.io/spring-framework/reference/core/beans/dependencies/factory-collaborators.html
+    - id: spring/bean-creation/populate-initialize
+      title: { ko: "속성 채우기와 초기화, 파괴 등록" }
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L1390
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L1797
+        - https://docs.spring.io/spring-framework/reference/core/beans/factory-nature.html
+    - id: spring/bean-creation/preinstantiate-lazy
+      title: { ko: "미리 만들기, 지연 초기화, 실무 함정" }
+      recommended:
+        - claim: { ko: "프록시가 필요한 기능(트랜잭션 등)은 @PostConstruct 같은 초기화 코드에서 기대하지 않는다" }
+          source: https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html
+          checked: 2026-11-03
+      sources:
+        - https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/DefaultListableBeanFactory.java#L1102
+        - https://docs.spring.io/spring-boot/reference/features/spring-application.html

@@ -1,0 +1,28 @@
+# spring/bean-creation 장 전용 사실
+
+- id: spring.initialize-bean.step-count
+  value: 4
+  unit: count
+  display: { ko: "4단계" }
+  label: { ko: "AbstractAutowireCapableBeanFactory.initializeBean()의 단계 수 (Aware 콜백 → BPP 초기화 전 → 초기화 메서드 → BPP 초기화 후, v7.0.8)" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L1797
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.bpp.common-annotation.order
+  value: 2147483644
+  unit: order
+  display: { ko: "Ordered.LOWEST_PRECEDENCE - 3 (PriorityOrdered)" }
+  label: { ko: "CommonAnnotationBeanPostProcessor(@PostConstruct·@PreDestroy 처리)의 순서 값" }
+  source_en: https://github.com/spring-projects/spring-framework/blob/v7.0.8/spring-context/src/main/java/org/springframework/context/annotation/CommonAnnotationBeanPostProcessor.java#L191
+  checked: 2026-11-03
+  volatile: false
+
+- id: spring.boot.lazy-initialization.default
+  value: false
+  unit: boolean
+  display: { ko: "끔(false)" }
+  label: { ko: "Spring Boot spring.main.lazy-initialization 기본값" }
+  source_en: https://github.com/spring-projects/spring-boot/blob/v4.1.2/core/spring-boot/src/main/java/org/springframework/boot/ApplicationProperties.java#L52
+  checked: 2026-11-03
+  volatile: false

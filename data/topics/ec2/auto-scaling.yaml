@@ -1,0 +1,99 @@
+# 장: EC2 Auto Scaling
+chapter:
+  id: ec2/auto-scaling
+  title:
+    ko: Amazon EC2 Auto Scaling (그룹, 상태 확인, 조정 정책, 후크·웜 풀·새로 고침)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-groups.html
+  topics:
+    - id: ec2/auto-scaling/groups
+      title:
+        ko: Auto Scaling 그룹 (원하는·최소·최대 용량, 시작 템플릿, 가용 영역 균형)
+      exam_tags:
+        - SAA-C03#3.2
+        - SAA-C03#2.2
+        - SOA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 시작 구성을 쓰는 Auto Scaling 그룹은 시작 템플릿으로 옮긴다
+          source: https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-config.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/auto-scaling-groups.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-availability-zone-balanced.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html
+    - id: ec2/auto-scaling/health
+      title:
+        ko: 상태 확인 (EC2와 ELB), 상태 확인 유예 기간
+      exam_tags:
+        - SOA-C03#2.2
+        - SAA-C03#2.2
+        - DOP-C02#3.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/health-checks-overview.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/health-check-grace-period.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-health-checks.html
+    - id: ec2/auto-scaling/policies
+      title:
+        ko: 조정 정책 (대상 추적, 단계, 단순, 예약, 예측), 휴지 기간과 워밍업
+      exam_tags:
+        - SAA-C03#3.2
+        - SOA-C03#2.1
+        - SOA-C03#1.1
+        - DOP-C02#3.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: CPU 사용률이나 대상당 요청 수처럼 용량에 비례하는 지표에는 대상 추적 정책을 쓴다. 단순 조정과 휴지 기간은 쓰지 않는다
+          source: https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-scaling-cooldowns.html
+          checked: 2026-11-03
+        - claim:
+            ko: 대상 추적·단계 정책의 성능을 위해 기본 인스턴스 워밍업을 켜고 설정한다
+          source: https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-default-instance-warmup.html
+          checked: 2026-11-03
+        - claim:
+            ko: 대상 추적에 EC2 지표를 쓰면 세부 모니터링을 켠다
+          source: https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-scaling-cooldowns.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/predictive-scaling-policy-overview.html
+    - id: ec2/auto-scaling/lifecycle-warm-refresh
+      title:
+        ko: 수명 주기 후크, 웜 풀, 인스턴스 새로 고침
+      exam_tags:
+        - SOA-C03#2.1
+        - DOP-C02#3.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 첫 부팅 시간이 지연 문제를 일으키지 않으면 웜 풀을 만들지 않는다(불필요한 비용)
+          source: https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-warm-pools.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/lifecycle-hooks.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-warm-pools.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/instance-refresh-overview.html
+    - id: ec2/auto-scaling/mixed-termination
+      title:
+        ko: 혼합 인스턴스 그룹(스팟), 종료 정책, 축소 보호
+      exam_tags:
+        - SAA-C03#4.2
+        - SOA-C03#2.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-mixed-instances-groups.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-termination-policies.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-instance-protection.html
+    - id: ec2/auto-scaling/new-features
+      title:
+        ko: 루트 볼륨 교체, 인스턴스 수명 주기 정책, 예약 후 균형 (2025년 이후)
+      exam_tags: []
+      exam_unknown: true   # 루트 볼륨 교체·수명 주기 정책 2025-11-20, 예약 후 균형 2026-06-30 (DocumentHistory)
+      sources:
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/instance-refresh-overview.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/instance-lifecycle-policy.html
+        - https://docs.aws.amazon.com/autoscaling/ec2/userguide/ec2-auto-scaling-availability-zone-balanced.html
