@@ -1,0 +1,131 @@
+# Lambda 권 공용 수치. 다른 장은 이 파일을 고치지 않는다. 2026-11-03 Lambda quotas 대조. (lambda.timeout.max, lambda.payload.sync.max는 lambda.yaml/lambda-sqs-integration.yaml에 이미 있음)
+
+- id: lambda.concurrency.account.default
+  value: 1000
+  unit: count
+  display: { ko: "1,000개 (수만 개까지 상향 가능)" }
+  label: { ko: "리전당 동시 실행 수 기본 할당량" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.memory.min
+  value: 128
+  unit: MB
+  display: { ko: "128 MB" }
+  label: { ko: "함수 메모리 최솟값 (1 MB 단위)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.memory.max
+  value: 10240
+  unit: MB
+  display: { ko: "10,240 MB" }
+  label: { ko: "함수 메모리 최댓값. CPU는 메모리에 비례해 배정" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.envvars.max-size
+  value: 4096
+  unit: byte
+  display: { ko: "4 KB" }
+  label: { ko: "함수 환경 변수 전체 크기 합계" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.layers.max
+  value: 5
+  unit: count
+  display: { ko: "5개" }
+  label: { ko: "함수 하나에 붙일 수 있는 계층 수" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.scaling.rate
+  value: 1000
+  unit: count
+  display: { ko: "10초마다 실행 환경 1,000개" }
+  label: { ko: "함수별 동시성 확장 속도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.zip.max-zipped
+  value: 52428800
+  unit: byte
+  display: { ko: "50 MB" }
+  label: { ko: "Lambda API·SDK로 직접 올리는 .zip 배포 패키지 최대 크기 (압축 상태)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.image.max-size
+  value: 10737418240
+  unit: byte
+  display: { ko: "10 GB" }
+  label: { ko: "컨테이너 이미지 코드 패키지 최대 크기 (압축 해제, 모든 계층 포함)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.tmp.min
+  value: 512
+  unit: MB
+  display: { ko: "512 MB" }
+  label: { ko: "/tmp 임시 스토리지 최솟값(기본값)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.tmp.max
+  value: 10240
+  unit: MB
+  display: { ko: "10,240 MB" }
+  label: { ko: "/tmp 임시 스토리지 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.resource-policy.max-size
+  value: 20480
+  unit: byte
+  display: { ko: "20 KB" }
+  label: { ko: "함수 리소스 기반 정책 최대 크기" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.rps-per-env.sync
+  value: 10
+  unit: count/s
+  display: { ko: "초당 10건" }
+  label: { ko: "실행 환경 하나가 처리하는 동기 호출 요청 수 (함수·리전 요청 한도 = 동시성 × 이 값)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.control-plane.rps
+  value: 15
+  unit: count/s
+  display: { ko: "초당 15건" }
+  label: { ko: "호출·GetFunction·GetPolicy를 뺀 나머지 제어 플레인 API 전체 한도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: false

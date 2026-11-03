@@ -27,7 +27,7 @@ VPC를 이루는 부품은 다음과 같다. 각각은 뒤의 장에서 자세�
 | 서브넷 | VPC 주소 범위의 일부. 리소스는 서브넷 안에 만든다. {{ch:vpc/subnets-routing}} |
 | 라우팅 테이블(Route table) | 서브넷에서 나가는 트래픽을 어디로 보낼지 정하는 규칙 모음 |
 | 인터넷 게이트웨이(Internet gateway) | VPC와 인터넷을 잇는다. {{ch:vpc/internet-access}} |
-| NAT 장치 | 프라이빗 서브넷에서 밖으로 나가는 연결만 허용한다. {{ch:vpc/nat}} |
+| NAT 장치 | 프라이빗 서브넷의 리소스가 밖으로 연결하도록 주소를 바꿔 준다. NAT 인스턴스는 포트 포워딩을 따로 구성할 수 있다. {{ch:vpc/nat}} |
 | 보안 그룹·네트워크 ACL | 리소스 단위와 서브넷 단위의 트래픽 필터. {{ch:vpc/security-groups-nacl}} |
 | VPC 엔드포인트 | 인터넷 게이트웨이나 NAT 없이 AWS 서비스에 사설로 연결한다. {{ch:vpc/endpoints-privatelink}} |
 | 피어링·Transit Gateway | VPC끼리 잇는다. {{ch:vpc/peering}}, {{ch:vpc/transit-gateway}} |

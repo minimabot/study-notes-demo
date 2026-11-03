@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.overview-trigger-vs-esm
+  type: quiz
+  chapter: lambda/overview
+  topic: lambda/overview/concepts
+  question: { ko: "SQS 큐의 메시지를 Lambda 함수로 처리하도록 연결했다. 이 연결에 대한 설명으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "SQS가 메시지가 들어올 때마다 함수를 하나씩 직접 호출한다. 설정은 SQS 큐 쪽에 저장된다" } }
+    - { id: b, text: { ko: "Lambda의 이벤트 소스 매핑이 큐를 폴링해 메시지를 배치로 묶어 함수를 호출한다. 이벤트 소스 매핑은 Lambda 리소스다" } }
+    - { id: c, text: { ko: "SQS가 SNS를 거쳐 함수를 비동기식으로 호출한다" } }
+    - { id: d, text: { ko: "함수가 핸들러 안에서 ReceiveMessage를 계속 호출하도록 직접 구현해야 한다" } }
+  answer: b
+  explanation: { ko: "큐·스트림 서비스는 표준 트리거 대신 이벤트 소스 매핑을 쓴다. Lambda 안의 이벤트 폴러가 큐를 읽어 배치로 함수를 부르고, 매핑은 Lambda 쪽에서 만들고 관리한다. a는 S3·SNS 같은 push 트리거의 설명이다(그 설정은 이벤트를 내는 서비스 쪽에 저장된다). c처럼 SNS를 거칠 필요는 없다. d처럼 폴링을 직접 짤 필요가 없다는 것이 이벤트 소스 매핑을 쓰는 이유다." }
+  facts: []
+
+- id: lambda.q.overview-long-job
+  type: quiz
+  chapter: lambda/overview
+  topic: lambda/overview/when-to-use
+  question: { ko: "하나의 프로세스로 쪼갤 수 없는 영상 변환 작업이 매번 {{raw:40분}}쯤 걸린다. 작업은 하루 몇 번만 들어온다. 이 작업을 그대로 기본 Lambda 함수 하나로 돌리려 할 때의 판단으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "메모리를 최댓값으로 올리면 제한 시간도 함께 늘어나므로 Lambda로 충분하다" } }
+    - { id: b, text: { ko: "함수 호출 하나는 최대 {{fact:lambda.timeout.max}}에서 끊기므로 맞지 않는다. 작업을 나눌 수 없다면 ECS·Fargate나 AWS Batch 같은 다른 컴퓨팅을 고른다" } }
+    - { id: c, text: { ko: "비동기식으로 호출하면 제한 시간이 적용되지 않는다" } }
+    - { id: d, text: { ko: "프로비저닝된 동시성을 켜면 제한 시간이 없어진다" } }
+  answer: b
+  explanation: { ko: "기본 함수의 제한 시간 최댓값은 {{fact:lambda.timeout.max}}이고 호출 방식과 관계없이 적용된다(c는 틀렸다). 메모리는 CPU를 늘릴 뿐 제한 시간 상한을 바꾸지 않는다(a). 프로비저닝된 동시성은 실행 환경을 미리 초기화해 콜드 스타트를 줄이는 기능이다(d). 나눌 수 있는 작업이라면 Step Functions로 여러 함수를 이을 수도 있지만, 이 문제처럼 나눌 수 없으면 컨테이너나 배치 서비스가 맞다." }
+  facts: [lambda.timeout.max]
+
+- id: lambda.q.overview-two-permissions
+  type: quiz
+  chapter: lambda/overview
+  topic: lambda/overview/concepts
+  question: { ko: "S3 버킷 uploads에 객체가 올라오면 함수가 호출되고, 함수는 DynamoDB 테이블 Files에 항목을 쓴다. 트리거는 CLI로 직접 설정한다. 필요한 권한 설정으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "함수의 실행 역할에 Files 쓰기 권한과 s3.amazonaws.com의 lambda:InvokeFunction 허용을 모두 넣는다" } }
+    - { id: b, text: { ko: "함수의 리소스 기반 정책에 Files 쓰기 권한을 넣고, 실행 역할에 S3 호출 허용을 넣는다" } }
+    - { id: c, text: { ko: "실행 역할에 Files 쓰기 권한을 주고, 함수의 리소스 기반 정책에서 uploads 버킷(과 소유 계정)으로 한정해 S3에 lambda:InvokeFunction을 허용한다" } }
+    - { id: d, text: { ko: "S3 버킷 정책에 lambda:InvokeFunction을 넣으면 함수 쪽 설정은 필요 없다" } }
+  answer: c
+  explanation: { ko: "함수가 다른 서비스를 쓸 권한은 실행 역할로 주고, 다른 서비스가 함수를 부를 권한은 함수의 리소스 기반 정책으로 준다. 문서는 S3 전체가 아니라 특정 버킷이나 계정으로 좁히라고 권한다. a와 b는 두 방향을 섞었다. d의 버킷 정책은 버킷에 대한 접근을 정할 뿐 함수 호출 권한을 주지 않는다. 콘솔에서 트리거를 만들면 리소스 기반 정책이 자동으로 추가되지만, 이 문제처럼 직접 설정하면 따로 넣어야 한다." }
+  facts: []

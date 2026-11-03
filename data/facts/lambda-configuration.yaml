@@ -1,0 +1,71 @@
+# lambda/configuration 장 전용 사실. 메모리·/tmp 범위, 환경 변수 크기, 제한 시간 최댓값은 lambda-core.yaml·lambda.yaml을 재사용한다.
+
+- id: lambda.memory.one-vcpu
+  value: 1769
+  unit: MB
+  display: { ko: "1,769 MB" }
+  label: { ko: "vCPU 하나에 해당하는 CPU를 받는 메모리 설정값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-memory.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.timeout.default
+  value: 3
+  unit: s
+  display: { ko: "3초" }
+  label: { ko: "함수 제한 시간 기본값 (1초 단위로 조정)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-timeout.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.timeout.min
+  value: 1
+  unit: s
+  display: { ko: "1초" }
+  label: { ko: "함수 제한 시간 최솟값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-timeout.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.secrets-extension.cache-ttl
+  value: 300
+  unit: s
+  display: { ko: "300초(5분)" }
+  label: { ko: "AWS Parameters and Secrets Lambda Extension의 기본 캐시 유지 시간" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/with-secrets-manager.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/with-secrets-manager.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.streaming.uncapped
+  value: 6
+  unit: MB
+  display: { ko: "6 MB" }
+  label: { ko: "응답 스트리밍에서 대역폭 제한 없이 보내는 앞부분 크기" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-response-streaming.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.streaming.rate
+  value: 2
+  unit: MBps
+  display: { ko: "초당 2 MB" }
+  label: { ko: "응답 스트리밍에서 앞부분 이후 적용되는 최대 전송 속도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/configuration-response-streaming.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.streaming.max
+  value: 200
+  unit: MB
+  display: { ko: "200 MB" }
+  label: { ko: "스트리밍 응답 최대 크기 (동기 호출)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true

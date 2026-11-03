@@ -1,0 +1,66 @@
+# 퀴즈와 설계 과제. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.concurrency-rps-limit
+  type: quiz
+  chapter: lambda/concurrency
+  topic: lambda/concurrency/basics
+  question: { ko: "계정 동시성은 기본값이고 예약된 동시성은 없다. API Gateway 뒤의 함수가 평균 {{raw:20 ms}}에 끝나고, 피크에 초당 {{raw:30,000건}}이 동기로 들어온다. 필요한 동시성은 {{raw:600}}인데 스로틀이 난다. 이유와 조치로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "동시성이 부족하다. 이 함수에 예약된 동시성을 설정한다" } }
+    - { id: b, text: { ko: "동기 요청 수 한도(동시성 × 실행 환경당 요청 수)를 넘었다. 계정 동시성 한도 증가를 요청한다" } }
+    - { id: c, text: { ko: "실행 환경 하나가 처리할 수 있는 요청 수를 넘었다. 메모리를 늘려 환경당 처리량을 높인다" } }
+    - { id: d, text: { ko: "확장 속도 한도 때문이다. 확장 속도 한도 증가를 요청한다" } }
+  answer: b
+  explanation: { ko: "동기 호출에는 동시성과 별개로 요청 수 한도가 있고, 그 값은 동시성 × {{fact:lambda.rps-per-env.sync}}다. 기본 계정 동시성({{fact:lambda.concurrency.account.default}})에서는 이 곱이 초당 요청 수보다 작아 스로틀된다. 계정 동시성을 올리면 요청 수 한도도 함께 오른다. a: 예약은 계정 한도 안에서 떼어 주는 것이라 한도를 늘리지 않는다. c: 문서는 이 한도를 환경 하나의 처리량으로 해석하지 말라고 한다. Lambda는 전체 동시성과 전체 요청 수로 판정한다. d: 피크가 계속 이어지는 상황이라 확장 속도가 아니라 상한이 문제다." }
+  facts: [lambda.rps-per-env.sync, lambda.concurrency.account.default]
+
+- id: lambda.q.concurrency-reserved-max
+  type: quiz
+  chapter: lambda/concurrency
+  topic: lambda/concurrency/reserved
+  question: { ko: "계정 동시성이 기본값이고 아직 아무 함수에도 예약하지 않았다. 함수 하나에 예약된 동시성을 최대로 주려 한다. 설정할 수 있는 최댓값과 그 이유는?" }
+  choices:
+    - { id: a, text: { ko: "{{fact:lambda.concurrency.account.default}}. 계정 동시성 전체를 예약할 수 있다" } }
+    - { id: b, text: { ko: "{{fact:lambda.concurrency.reservable.default}}. 예약 없는 함수용으로 {{fact:lambda.concurrency.unreserved.min}}을 늘 남긴다" } }
+    - { id: c, text: { ko: "{{fact:lambda.scaling.rate}}. 확장 속도보다 크게 예약할 수 없다" } }
+    - { id: d, text: { ko: "제한 없다. 예약은 계정 한도와 따로 센다" } }
+  answer: b
+  explanation: { ko: "Lambda는 계정 한도와 관계없이 예약하지 않은 풀에 {{fact:lambda.concurrency.unreserved.min}}을 남긴다. 그래서 기본 할당량에서는 {{fact:lambda.concurrency.reservable.default}}까지 예약할 수 있다(a는 틀림). 확장 속도(c)는 늘어나는 빠르기에 대한 한도로, 예약 상한과 관계없다. 예약된 동시성은 계정 한도 안에서 센다(d는 틀림)." }
+  facts: [lambda.concurrency.unreserved.min, lambda.concurrency.reservable.default, lambda.concurrency.account.default]
+
+- id: lambda.q.concurrency-spillover
+  type: quiz
+  chapter: lambda/concurrency
+  topic: lambda/concurrency/monitoring
+  question: { ko: "결제 API 함수의 prod 별칭에 프로비저닝된 동시성을 걸었는데 피크 때 지연이 늘었다. 프로비저닝이 모자란지 확인하려면 어느 지표를 보는가?" }
+  choices:
+    - { id: a, text: { ko: "ProvisionedConcurrencySpilloverInvocations" } }
+    - { id: b, text: { ko: "ClaimedAccountConcurrency" } }
+    - { id: c, text: { ko: "UnreservedConcurrentExecutions" } }
+    - { id: d, text: { ko: "Throttles" } }
+  answer: a
+  explanation: { ko: "ProvisionedConcurrencySpilloverInvocations는 프로비저닝된 환경을 다 써서 일반 동시성으로 넘친 호출 횟수다. 넘친 호출은 새 환경을 만들어야 하므로 콜드 스타트 지연이 생길 수 있다. 이 값이 높으면 프로비저닝을 늘리거나 Application Auto Scaling을 붙인다. ClaimedAccountConcurrency(b)는 계정 전체의 점유 동시성이고, UnreservedConcurrentExecutions(c)는 예약 없는 풀 사용량이라 별칭의 부족 여부를 직접 보여 주지 않는다. 넘침은 스로틀이 아니므로 Throttles(d)에 잡히지 않는다." }
+  facts: []
+
+- id: lambda.d.concurrency-protect-rds
+  type: design
+  chapter: lambda/concurrency
+  topic: lambda/concurrency/reserved
+  scenario: { ko: "모바일 앱이 이벤트를 API로 보내고, Lambda 함수가 이벤트마다 RDS for MySQL에 한 행을 쓴다. 평소엔 한산하다가 푸시 알림 직후 몇 분 동안 요청이 크게 튄다. 그때마다 함수가 수백 개 실행 환경으로 늘어나 DB 연결이 한도를 넘고, DB가 느려져 같은 계정의 주문 함수까지 실패한다. 요구: (가) DB가 감당하는 동시 연결 수 아래로 쓰기를 묶을 것, (나) 튀는 요청을 버리지 말고 나중에라도 처리할 것, (다) 같은 계정의 다른 함수가 동시성을 빼앗기지 않을 것. 알맞은 설계를 모두 고르라." }
+  choices:
+    - { id: a, text: { ko: "API는 이벤트를 SQS 표준 큐에 넣고 바로 응답한다. 쓰기 함수는 SQS 이벤트 소스 매핑으로 큐를 읽는다" } }
+    - { id: b, text: { ko: "쓰기 함수에 DB가 견디는 수준의 예약된 동시성을 설정해 상한을 둔다(이벤트 소스 매핑의 최대 동시성도 그 이하로 맞춘다)" } }
+    - { id: c, text: { ko: "함수와 DB 사이에 RDS Proxy를 두어 실행 환경들이 연결을 풀로 나눠 쓰게 한다" } }
+    - { id: d, text: { ko: "쓰기 함수에 큰 프로비저닝된 동시성을 걸어 피크에 대비한다" } }
+    - { id: e, text: { ko: "계정 동시성 한도 증가를 요청해 함수가 더 많이 늘어날 수 있게 한다" } }
+    - { id: f, text: { ko: "API Gateway가 함수를 동기로 그대로 호출하게 두고, 스로틀된 요청은 클라이언트가 알아서 버리게 한다" } }
+  answer_set: [a, b, c]
+  rubric:
+    ko:
+      - "a, b, c를 모두 고르면 정답이다."
+      - "a: 큐가 튀는 요청을 받아 두므로 함수가 상한에 걸려도 이벤트가 사라지지 않는다(요구 나). 메시지는 처리될 때까지 큐에 남는다. SQS 이벤트 소스 매핑의 확장·최대 동시성은 {{ch:sqs/integrations}}에서 다룬다."
+      - "b: 예약된 동시성은 함수의 최댓값이 되어 동시 DB 쓰기 수를 묶는다(요구 가). 동시에 그 몫을 이 함수 전용으로 떼어 두고 더 가져가지 못하게 하므로, 나머지 풀은 다른 함수가 쓴다(요구 다). SQS와 함께 쓸 때는 매핑의 최대 동시성을 예약값 이하로 두어 불필요한 스로틀을 줄인다."
+      - "c: Lambda 실행 환경마다 DB 연결을 따로 열면 연결 수가 동시성만큼 늘어난다. RDS Proxy는 연결을 풀로 관리해 DB의 연결 부담을 줄인다. 상한(b)과 함께 쓰는 보완책이다."
+      - "d는 감점: 프로비저닝된 동시성은 콜드 스타트를 줄이는 기능이지 상한이 아니다. 피크에 넘치면 일반 동시성으로 더 늘어나 DB 문제가 그대로 남고, 할당된 동안 계속 과금된다."
+      - "e는 감점: 함수가 더 크게 늘어나면 DB 연결이 더 넘친다. 요구 (가)와 반대 방향이다."
+      - "f는 감점: 동기 호출이 스로틀되면 429가 호출자에게 돌아갈 뿐 이벤트를 보관하지 않아 요구 (나)를 어긴다. 상한이 없으면 요구 (가), (다)도 지키지 못한다."
+  facts: []

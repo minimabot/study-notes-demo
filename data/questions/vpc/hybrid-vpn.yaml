@@ -31,14 +31,14 @@
   type: quiz
   chapter: vpc/hybrid-vpn
   topic: vpc/hybrid-vpn/direct-connect
-  question: { ko: "규정 때문에 사내와 VPC 사이 트래픽을 IPsec으로 암호화해야 한다. 이미 Direct Connect 전송 가상 인터페이스, Direct Connect 게이트웨이, 전송 게이트웨이를 쓰고 있다. 공인 IP를 늘리지 않고 별도 VPN 장비 없이 충족하는 방법은?" }
+  question: { ko: "규정 때문에 사내와 VPC 사이 트래픽을 IPsec으로 암호화해야 한다. 이미 Direct Connect 전송 가상 인터페이스, Direct Connect 게이트웨이, 전송 게이트웨이를 쓰고 있다. 기존 고객 게이트웨이 장치는 사설 IP 기반 IPsec VPN을 지원한다. 공인 IP를 늘리지 않고 기존 고객 게이트웨이 장치 외에 VPN 장비를 더 들이지 않고 충족하는 방법은?" }
   choices:
     - { id: a, text: { ko: "Direct Connect 회선은 기본으로 IPsec 암호화되므로 할 일이 없다" } }
     - { id: b, text: { ko: "Direct Connect 위에 프라이빗 IP Site-to-Site VPN을 만들어 전송 게이트웨이에 붙인다" } }
     - { id: c, text: { ko: "퍼블릭 가상 인터페이스를 새로 만들고 그 위에 공인 IP VPN을 올린다" } }
     - { id: d, text: { ko: "VPC에 보안 그룹을 추가해 Direct Connect 트래픽을 암호화한다" } }
   answer: b
-  explanation: { ko: "프라이빗 IP VPN은 전송 가상 인터페이스·Direct Connect 게이트웨이·전송 게이트웨이 구성 위에 사설 IP로 IPsec 터널을 올린다. 공인 IP와 별도 VPN 장비가 필요 없다. Direct Connect 회선 자체는 IPsec 터널이 아니다(a). 퍼블릭 가상 인터페이스 위 VPN은 공인 IP가 필요한 예전 방식이다(c). 보안 그룹은 트래픽을 거를 뿐 암호화하지 않는다(d)." }
+  explanation: { ko: "프라이빗 IP VPN은 전송 가상 인터페이스·Direct Connect 게이트웨이·전송 게이트웨이 구성 위에 사설 IP로 IPsec 터널을 올린다. 공인 IP나 추가 VPN 장비가 필요 없고, 사내 쪽은 기존 고객 게이트웨이 장치가 IPsec을 종단한다. Direct Connect 회선 자체는 IPsec 터널이 아니다(a). 퍼블릭 가상 인터페이스 위 VPN은 공인 IP가 필요한 예전 방식이다(c). 보안 그룹은 트래픽을 거를 뿐 암호화하지 않는다(d)." }
   facts: []
 
 - id: vpc.d.hybrid-vpn-factory

@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.execenv-db-connection
+  type: quiz
+  chapter: lambda/execution-environment
+  topic: lambda/execution-environment/reuse
+  question: { ko: "함수가 호출될 때마다 핸들러 안에서 데이터베이스 연결을 새로 열고 닫는다. 호출이 많아지자 지연이 늘고 데이터베이스 연결 수가 치솟았다. 코드 쪽 개선으로 가장 알맞은 것은?" }
+  choices:
+    - { id: a, text: { ko: "연결을 핸들러 밖에서 만들고, 핸들러에서는 연결이 살아 있는지 확인한 뒤 없을 때만 다시 만든다" } }
+    - { id: b, text: { ko: "연결 정보를 /tmp에 파일로 써 두고 다음 호출에서 읽는다" } }
+    - { id: c, text: { ko: "핸들러 끝에서 연결을 닫지 않고 백그라운드 스레드로 넘겨 계속 쓰게 한다" } }
+    - { id: d, text: { ko: "실행 환경은 매 호출마다 새로 만들어지므로 개선할 방법이 없다" } }
+  answer: a
+  explanation: { ko: "핸들러 밖의 코드는 Init 단계에서 한 번 돌고, 실행 환경이 재사용되면 만든 객체가 그대로 남는다. 그래서 연결을 핸들러 밖에 두면 웜 스타트에서 재사용된다. 다만 재사용이 보장되지 않고 쉬는 연결은 끊길 수 있으므로 확인 후 다시 만드는 코드를 둔다. 연결 객체는 파일로 저장해 되살릴 수 없다(b). 끝나지 않은 백그라운드 작업은 동결됐다가 다음 호출 때 이어서 돌기 때문에 문서는 핸들러가 끝나기 전에 마무리하라고 한다(c). 실행 환경은 재사용될 수 있으므로 d는 틀렸다." }
+  facts: []
+
+- id: lambda.q.execenv-snapstart-uuid
+  type: quiz
+  chapter: lambda/execution-environment
+  topic: lambda/execution-environment/snapstart
+  question: { ko: "Java 함수에 SnapStart를 켰다. 함수는 정적 초기화 코드에서 UUID 하나를 만들어 '실행 환경 ID'로 로그에 남긴다. 트래픽이 늘어 실행 환경이 여러 개가 됐을 때 생기는 문제와 해결로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "문제없다. 실행 환경마다 정적 초기화 코드가 따로 돈다" } }
+    - { id: b, text: { ko: "여러 실행 환경이 같은 스냅샷에서 복원돼 같은 UUID를 갖는다. UUID를 핸들러 안이나 복원 후 런타임 후크에서 만든다" } }
+    - { id: c, text: { ko: "SnapStart는 UUID 생성을 막으므로 함수가 실패한다. 프로비저닝된 동시성과 SnapStart를 함께 켜서 해결한다" } }
+    - { id: d, text: { ko: "$LATEST 버전에서 SnapStart를 쓰면 실행 환경마다 새 스냅샷이 만들어져 해결된다" } }
+  answer: b
+  explanation: { ko: "SnapStart는 버전을 게시할 때 Init을 한 번 돌리고 그 상태의 스냅샷에서 여러 실행 환경을 재개한다. 초기화 중에 만든 고유 값은 모든 환경에 복제되므로 a는 틀렸다. 문서는 고유 값을 핸들러 안이나 복원 후 런타임 후크에서 만들라고 권한다. SnapStart는 프로비저닝된 동시성과 함께 쓸 수 없다(c). $LATEST에는 SnapStart를 쓸 수 없다(d)." }
+  facts: []
+
+- id: lambda.q.execenv-init-timeout
+  type: quiz
+  chapter: lambda/execution-environment
+  topic: lambda/execution-environment/lifecycle
+  question: { ko: "온디맨드 함수(프로비저닝된 동시성·SnapStart 미사용)의 초기화 코드가 무거워 Init 단계가 {{fact:lambda.init.timeout}} 안에 끝나지 않는다. Lambda의 동작으로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "함수를 비활성 상태로 바꾸고 더 이상 호출을 받지 않는다" } }
+    - { id: b, text: { ko: "첫 함수 호출 때 함수에 설정한 제한 시간을 걸고 Init을 다시 시도한다" } }
+    - { id: c, text: { ko: "초기화를 건너뛰고 핸들러만 실행한다" } }
+    - { id: d, text: { ko: "Init 단계에는 제한 시간이 없으므로 끝날 때까지 기다린다" } }
+  answer: b
+  explanation: { ko: "온디맨드 함수의 Init 단계는 {{fact:lambda.init.timeout}}로 제한된다. 이 안에 끝나지 않으면 Lambda는 첫 호출 때 함수 제한 시간으로 Init을 다시 시도한다. 초기화를 건너뛰지 않으며(c), 제한이 없는 것도 아니다(d). 프로비저닝된 동시성·SnapStart·관리형 인스턴스를 쓰는 함수는 이 제한 대신 {{fact:lambda.init.timeout.extended-floor}}와 함수 제한 시간 중 큰 값이 적용된다. 함수를 비활성으로 바꾸는 동작(a)은 이 상황과 관계없다." }
+  facts: [lambda.init.timeout, lambda.init.timeout.extended-floor]

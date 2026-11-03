@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.async-invocation-destination-vs-dlq
+  type: quiz
+  chapter: lambda/async-invocation
+  topic: lambda/async-invocation/destinations-dlq
+  question: { ko: "S3 이벤트 알림으로 비동기 호출되는 함수가 있다. 모든 재시도에 실패한 이벤트를 EventBridge 이벤트 버스로 보내, 원래 이벤트와 함께 함수가 돌려준 오류 내용까지 규칙으로 분석하려 한다. 무엇을 설정하는가?" }
+  choices:
+    - { id: a, text: { ko: "함수에 SQS 표준 큐를 DLQ로 설정한다" } }
+    - { id: b, text: { ko: "함수(또는 별칭)에 EventBridge 이벤트 버스를 실패 시 대상(on-failure destination)으로 설정한다" } }
+    - { id: c, text: { ko: "S3 버킷에 DLQ를 설정한다" } }
+    - { id: d, text: { ko: "함수에 EventBridge 이벤트 버스를 DLQ로 설정한다" } }
+  answer: b
+  explanation: { ko: "실패 시 대상은 이벤트와 응답(오류) 정보가 담긴 호출 기록을 보내고, EventBridge 이벤트 버스를 대상으로 쓸 수 있다. 실행 역할에 events:PutEvents가 필요하다. DLQ(a)는 원래 이벤트만 보내고 오류는 속성으로 짧게만 붙으며, 대상도 SQS 표준 큐·SNS 표준 주제뿐이라 EventBridge로 보낼 수 없다(d). 비동기 호출의 재시도는 Lambda가 하므로 S3 쪽(c)에서 정할 일이 아니다." }
+  facts: []
+
+- id: lambda.q.async-invocation-throttle
+  type: quiz
+  chapter: lambda/async-invocation
+  topic: lambda/async-invocation/retries-event-age
+  question: { ko: "비동기 호출 함수의 MaximumRetryAttempts를 0으로 설정했다. 트래픽이 몰려 함수가 스로틀(429)되었다. 스로틀된 이벤트는 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "재시도 횟수가 0이므로 즉시 버려진다" } }
+    - { id: b, text: { ko: "호출한 서비스(S3, SNS 등)가 다시 보낸다" } }
+    - { id: c, text: { ko: "Lambda가 대기열에 되돌리고, 간격을 늘려 가며 이벤트 최대 보존 기간 동안 다시 시도한다" } }
+    - { id: d, text: { ko: "곧바로 DLQ로 간다" } }
+  answer: c
+  explanation: { ko: "MaximumRetryAttempts는 함수 오류(코드 오류·시간 초과)에 대한 재시도 횟수다. 스로틀과 500번대 시스템 오류는 이와 별개로, 이벤트를 대기열에 되돌리고 {{fact:lambda.async.throttle-backoff.first}}부터 최대 {{fact:lambda.async.throttle-backoff.max}}까지 늘어나는 간격으로 최대 보존 기간(기본 {{fact:lambda.async.event-age.max}}) 동안 다시 시도한다. 그래서 a, d는 틀렸다. 비동기 호출의 재시도는 호출한 서비스가 아니라 Lambda가 한다(b). 보존 기간을 넘기면 그때 버려지거나 실패 시 대상·DLQ로 간다." }
+  facts: [lambda.async.throttle-backoff.first, lambda.async.throttle-backoff.max, lambda.async.event-age.max]
+
+- id: lambda.q.async-invocation-sqs-dlq
+  type: quiz
+  chapter: lambda/async-invocation
+  topic: lambda/async-invocation/destinations-dlq
+  question: { ko: "SQS 큐를 이벤트 소스 매핑으로 읽는 함수가 있다. 처리에 계속 실패하는 메시지를 따로 모으려 한다. 어디에 무엇을 설정하는가?" }
+  choices:
+    - { id: a, text: { ko: "함수의 비동기 호출 설정에 DLQ를 지정한다" } }
+    - { id: b, text: { ko: "함수에 실패 시 대상을 설정한다" } }
+    - { id: c, text: { ko: "MaximumRetryAttempts를 0으로 둔다" } }
+    - { id: d, text: { ko: "원본 SQS 큐에 재드라이브 정책으로 DLQ를 설정한다" } }
+  answer: d
+  explanation: { ko: "SQS 이벤트 소스 매핑은 비동기 호출이 아니다. 재시도 간격과 실패 메시지의 행선지는 원본 큐의 가시성 제한 시간과 재드라이브 정책(DLQ)이 정한다. 문서도 이 경우 함수가 아니라 큐에 DLQ를 두라고 한다. 함수의 DLQ(a), 비동기 실패 시 대상(b), MaximumRetryAttempts(c)는 비동기 호출에만 적용되는 설정이다." }
+  facts: []

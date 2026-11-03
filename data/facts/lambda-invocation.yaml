@@ -1,0 +1,13 @@
+# lambda/invocation 장 전용 사실. 동기 페이로드·배치 상한은 lambda-sqs-integration.yaml(lambda.payload.sync.max), 스트리밍 응답은 lambda-configuration.yaml(lambda.streaming.max), 비동기 재시도·보존 기간은 lambda-async-invocation.yaml을 재사용한다.
+
+- id: lambda.payload.async.max
+  value: 1
+  unit: MB
+  display: { ko: "1 MB" }
+  label: { ko: "비동기 호출 페이로드 크기 한도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-limits.html
+  checked: 2026-11-03
+  volatile: true
+  history:
+    - { date: 2018-11-16, note: "비동기 페이로드 한도 128 KB → 256 KB (Lambda 문서 기록 lambda-releases 기준). 현재 할당량 페이지 값은 1 MB이지만, 1 MB로 늘어난 날은 문서 기록 페이지에 없다" }

@@ -1,0 +1,24 @@
+# 권 정의와 장 순서. 장 구성의 근거: AWS Lambda 개발자 안내서 목차 (2026-11-03 확인)
+volume:
+  id: lambda
+  title: { ko: "AWS Lambda" }
+  structure_source: https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+order:
+  - lambda/overview
+  - lambda/invocation
+  - lambda/execution-environment
+  - lambda/configuration
+  - lambda/concurrency
+  - lambda/async-invocation
+  - lambda/event-source-mappings
+  - lambda/permissions
+  - lambda/networking
+  - lambda/versions-aliases
+  - lambda/packaging-runtimes
+  - lambda/layers-extensions
+  - lambda/monitoring
+  - lambda/function-urls
+  - lambda/limits
+  - lambda/new-compute-options
+  - lambda/cost
+  - lambda/labs

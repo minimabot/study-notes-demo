@@ -1,0 +1,45 @@
+# 장: Lambda 실행 환경
+chapter:
+  id: lambda/execution-environment
+  title: { ko: "실행 환경 수명 주기, 콜드 스타트, SnapStart" }
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  topics:
+    - id: lambda/execution-environment/lifecycle
+      title: { ko: "Init, Invoke, Shutdown 단계와 동결" }
+      exam_tags: [DVA-C03#1.2]
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+    - id: lambda/execution-environment/reuse
+      title: { ko: "실행 환경 재사용: 전역 객체와 /tmp" }
+      exam_tags: [DVA-C03#1.2, DVA-C03#4.3]
+      exam_unknown: false
+      recommended:
+        - { claim: { ko: "SDK 클라이언트와 데이터베이스 연결은 핸들러 밖에서 초기화하고, 정적 자산은 /tmp에 캐시해 재사용한다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html, checked: 2026-11-03 }
+        - { claim: { ko: "사용자 데이터·이벤트 등 보안에 민감한 정보를 실행 환경에 남기지 않는다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html, checked: 2026-11-03 }
+        - { claim: { ko: "지속 연결을 유지하려면 런타임의 keep-alive 설정을 쓴다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html, checked: 2026-11-03 }
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html
+    - id: lambda/execution-environment/cold-start
+      title: { ko: "콜드 스타트와 줄이는 방법" }
+      exam_tags: [DVA-C03#4.3, SAA-C03#3.2, SOA-C03#2.1, SAP-C03#1.1]
+      exam_unknown: false
+      recommended:
+        - { claim: { ko: "예측 가능한 시작 시간이 필요하면 프로비저닝된 동시성을 쓴다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html, checked: 2026-11-03 }
+        - { claim: { ko: "필요한 라이브러리·서비스 클라이언트만 가져오고, 일부 경로에서만 쓰는 객체는 지연 로딩해 정적 초기화를 줄인다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html, checked: 2026-11-03 }
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+    - id: lambda/execution-environment/snapstart
+      title: { ko: "SnapStart와 고유성 주의 사항" }
+      exam_tags: [DVA-C03#4.3]
+      exam_unknown: false
+      recommended:
+        - { claim: { ko: "고유 ID·난수 시드처럼 고유해야 하는 값은 초기화 단계가 아니라 핸들러 안이나 복원 후 런타임 후크에서 만든다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/snapstart-uniqueness.html, checked: 2026-11-03 }
+        - { claim: { ko: "초기화 때 받은 임시 자격 증명·타임스탬프 같은 임시 데이터는 핸들러에서 쓰기 전에 새로 고친다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html, checked: 2026-11-03 }
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/snapstart-uniqueness.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html

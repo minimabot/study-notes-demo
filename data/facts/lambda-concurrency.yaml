@@ -1,0 +1,91 @@
+# lambda/concurrency 장 전용 사실. 계정 동시성 기본값, 확장 속도, 실행 환경당 동기 RPS는 lambda-core.yaml을 재사용한다.
+
+- id: lambda.scaling.interval
+  value: 10
+  unit: s
+  display: { ko: "10초" }
+  label: { ko: "함수별 동시성 확장 속도의 기준 구간 (이 구간마다 lambda.scaling.rate만큼 늘어남)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/scaling-behavior.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/scaling-behavior.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.concurrency.unreserved.min
+  value: 100
+  unit: count
+  display: { ko: "100" }
+  label: { ko: "어떤 경우에도 예약된 동시성이 없는 함수용으로 남겨 두는 동시성" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-concurrency.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.concurrency.reservable.default
+  value: 900
+  unit: count
+  display: { ko: "900" }
+  label: { ko: "기본 계정 할당량에서 함수 수준으로 예약할 수 있는 동시성 합계" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-concurrency.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.pc.allocation-rate
+  value: 6000
+  unit: count/min
+  display: { ko: "분당 실행 환경 6,000개" }
+  label: { ko: "함수별 프로비저닝된 동시성 할당 속도 (리전 무관)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-concurrency.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.pc.buffer.recommended
+  value: 10
+  unit: "%"
+  display: { ko: "10%" }
+  label: { ko: "프로비저닝된 동시성을 정할 때 평소 필요량 위에 더하라고 제안하는 여유분" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/provisioned-concurrency.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.pc.target.min
+  value: 10
+  unit: "%"
+  display: { ko: "10%" }
+  label: { ko: "프로비저닝된 동시성 목표 추적 정책에 줄 수 있는 사용률 목표 최솟값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/provisioned-concurrency.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.pc.target.max
+  value: 90
+  unit: "%"
+  display: { ko: "90%" }
+  label: { ko: "프로비저닝된 동시성 목표 추적 정책에 줄 수 있는 사용률 목표 최댓값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/provisioned-concurrency.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.pc.autoscaling.sustain
+  value: 3
+  unit: min
+  display: { ko: "3분" }
+  label: { ko: "Application Auto Scaling이 환경을 더 할당하려면 부하가 이어져야 하는 시간" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/provisioned-concurrency.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.metrics.concurrency.period
+  value: 1
+  unit: min
+  display: { ko: "1분" }
+  label: { ko: "동시성 관련 CloudWatch 지표의 세분성" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/monitoring-concurrency.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/monitoring-concurrency.html
+  checked: 2026-11-03
+  volatile: false

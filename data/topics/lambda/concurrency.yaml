@@ -1,0 +1,82 @@
+# 장: Lambda 동시성과 확장
+chapter:
+  id: lambda/concurrency
+  title:
+    ko: 동시성과 확장 (예약·프로비저닝된 동시성)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+  topics:
+    - id: lambda/concurrency/basics
+      title:
+        ko: 동시성 계산과 계정 할당량, 요청 수 한도
+      exam_tags:
+        - DVA-C03#4.3
+        - SAA-C03#3.2
+        - SAP-C03#1.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+    - id: lambda/concurrency/scaling-throttling
+      title:
+        ko: 확장 속도와 스로틀링(429)
+      exam_tags:
+        - DVA-C03#4.3
+        - SAA-C03#3.2
+        - SOA-C03#2.1
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/scaling-behavior.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+    - id: lambda/concurrency/reserved
+      title:
+        ko: 예약된 동시성과 예약하지 않은 풀
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#4.3
+        - SAA-C03#2.1
+        - SOA-C03#2.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: "하위 리소스(DB 연결 등)가 넘치지 않도록 함수 확장 상한이 필요하면 예약된 동시성을 설정한다"
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+    - id: lambda/concurrency/provisioned
+      title:
+        ko: 프로비저닝된 동시성과 Application Auto Scaling
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#4.3
+        - SAA-C03#3.2
+        - SOA-C03#2.1
+        - SAP-C03#1.1
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 프로비저닝된 동시성은 평소 최대 동시성에 여유분을 더해 정한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+          checked: 2026-11-03
+        - claim:
+            ko: 프로비저닝된 동시성을 쓰면 초기화 작업을 핸들러 밖으로 최대한 옮긴다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+          checked: 2026-11-03
+        - claim:
+            ko: 짧게 튀는 트래픽에는 Auto Scaling 경보에 평균 대신 최대 통계를 쓰는 것이 더 효과적일 수 있다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-concurrency.html
+    - id: lambda/concurrency/monitoring
+      title:
+        ko: 동시성 지표
+      exam_tags:
+        - SOA-C03#1.1
+        - DVA-C03#4.3
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/monitoring-concurrency.html

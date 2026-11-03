@@ -1,0 +1,42 @@
+# 퀴즈. 정답은 보기 ID로 지정한다. 수치는 {{fact:ID}}로만 쓴다.
+- id: lambda.q.invocation-async-error
+  type: quiz
+  chapter: lambda/invocation
+  topic: lambda/invocation/retries
+  question: { ko: "애플리케이션이 Invoke API에 InvocationType=Event를 넣어 함수를 호출했다. 함수 코드가 예외를 던졌다. 재시도·실패 처리 설정은 기본값이다. 일어나는 일로 맞는 것은?" }
+  choices:
+    - { id: a, text: { ko: "애플리케이션은 오류 응답을 받고, 다시 보낼지 직접 정해야 한다" } }
+    - { id: b, text: { ko: "애플리케이션은 이미 202를 받았다. Lambda가 기본 {{fact:lambda.async.retries.max}} 더 시도하고, 모두 실패하면 이벤트를 버린다(대상이나 DLQ를 설정했다면 그쪽으로 보낸다)" } }
+    - { id: c, text: { ko: "Lambda가 성공할 때까지 무제한으로 재시도한다" } }
+    - { id: d, text: { ko: "이벤트가 자동으로 같은 이름의 SQS 큐에 쌓인다" } }
+  answer: b
+  explanation: { ko: "Event는 비동기식 호출이다. Lambda는 이벤트를 대기열에 넣는 순간 202로 답하므로 호출자는 함수 오류를 모른다(a는 동기식의 동작이다). 함수 오류가 나면 Lambda가 기본 {{fact:lambda.async.retries.max}} 더 시도한다. 횟수에 상한이 있으므로 c는 틀렸다. 실패한 이벤트를 남기려면 실패 대상이나 DLQ를 직접 설정해야 하며 자동으로 큐가 생기지 않는다(d)." }
+  facts: [lambda.async.retries.max]
+
+- id: lambda.q.invocation-sync-throttle
+  type: quiz
+  chapter: lambda/invocation
+  topic: lambda/invocation/limits-throttling
+  question: { ko: "API Gateway 뒤의 함수가 순간 트래픽으로 동시성 한도에 걸려 일부 요청이 스로틀됐다. 이 요청들은 어떻게 되는가?" }
+  choices:
+    - { id: a, text: { ko: "Lambda가 내부 대기열에 넣어 두었다가 동시성이 비면 실행한다" } }
+    - { id: b, text: { ko: "Lambda가 이벤트 소스 매핑처럼 폴링 속도를 줄이며 다시 가져간다" } }
+    - { id: c, text: { ko: "동기식 호출이므로 스로틀 오류가 API Gateway를 거쳐 클라이언트로 돌아간다. 다시 보낼지는 클라이언트가 정한다" } }
+    - { id: d, text: { ko: "최대 이벤트 보존 기간 동안 Lambda가 자동으로 재시도한다" } }
+  answer: c
+  explanation: { ko: "API Gateway는 함수를 동기식으로 호출한다. 동기식 호출에는 Lambda 쪽 대기열이 없어서 스로틀 오류(429)가 호출자에게 그대로 간다. API Gateway는 오류를 요청자에게 전달하므로 재시도는 클라이언트 몫이다. a와 d는 비동기식 호출의 동작(대기열에 되돌려 놓고 보존 기간 안에서 재시도)이다. b는 큐·스트림을 읽는 이벤트 소스 매핑의 동작이다." }
+  facts: []
+
+- id: lambda.q.invocation-service-types
+  type: quiz
+  chapter: lambda/invocation
+  topic: lambda/invocation/services
+  question: { ko: "다음 중 두 서비스 모두 Lambda 함수를 비동기식으로 호출하는 조합은?" }
+  choices:
+    - { id: a, text: { ko: "Amazon S3 이벤트 알림, Amazon SNS" } }
+    - { id: b, text: { ko: "Amazon API Gateway, Application Load Balancer" } }
+    - { id: c, text: { ko: "Amazon SQS, Amazon Kinesis Data Streams" } }
+    - { id: d, text: { ko: "Amazon Cognito, Amazon SNS" } }
+  answer: a
+  explanation: { ko: "S3 이벤트 알림과 SNS는 둘 다 비동기식으로 함수를 호출한다. API Gateway와 ALB(b)는 응답을 기다리는 동기식이다. SQS와 Kinesis(c)는 Lambda가 폴링하는 이벤트 소스 매핑이다. Cognito(d)는 동기식이라 조합이 맞지 않는다." }
+  facts: []

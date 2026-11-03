@@ -53,7 +53,7 @@ chapter: vpc/sharing-multi-account
 | 참여자 | 자기 애플리케이션 리소스(EC2, RDS 등). 가용 영역 간 전송, VPC 피어링·인터넷 게이트웨이·Direct Connect 게이트웨이를 지나는 데이터 전송 |
 | 소유자 | NAT 게이트웨이, 가상 프라이빗 게이트웨이, 전송 게이트웨이, PrivateLink·VPC 엔드포인트의 시간·데이터 처리·전송 요금. 공유 VPC에서 쓰는 퍼블릭 IPv4 주소 |
 
-같은 가용 영역 안의 데이터 전송은 어느 계정 리소스끼리든 무료다.
+영역 안 전송 요금은 계정이 아니라 물리적 위치로 갈린다. 두 리소스가 같은 AZ ID(예: `apne2-az1`)에 있으면 소유 계정이 달라도 그 사이 전송은 요금이 없다. 계정마다 가용 영역 이름과 실제 영역의 대응이 다를 수 있으므로 이름이 아니라 AZ ID로 같은 영역인지 확인한다.
 
 @topic vpc/sharing-multi-account/az-sg-unshare
 

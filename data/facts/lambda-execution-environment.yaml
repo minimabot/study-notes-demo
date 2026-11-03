@@ -1,0 +1,91 @@
+# lambda/execution-environment 장 전용 사실. /tmp 범위는 lambda-core.yaml(lambda.tmp.min/max), 함수 제한 시간 최댓값은 lambda.yaml(lambda.timeout.max)을 재사용한다.
+
+- id: lambda.init.timeout
+  value: 10
+  unit: s
+  display: { ko: "10초" }
+  label: { ko: "온디맨드 함수의 Init 단계 제한 시간. 넘기면 첫 호출 때 함수 제한 시간으로 Init을 다시 시도" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.init.timeout.extended-floor
+  value: 130
+  unit: s
+  display: { ko: "130초" }
+  label: { ko: "프로비저닝된 동시성·SnapStart·관리형 인스턴스 함수의 초기화 제한: 이 값과 함수 제한 시간 중 큰 값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.restore.timeout
+  value: 10
+  unit: s
+  display: { ko: "10초" }
+  label: { ko: "SnapStart Restore 단계(런타임 로드 + 복원 후 런타임 후크) 제한 시간. 넘기면 SnapStartTimeoutException" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.shutdown.max.no-ext
+  value: 0
+  unit: ms
+  display: { ko: "0 ms" }
+  label: { ko: "등록된 익스텐션이 없는 함수의 Shutdown 단계 최대 길이" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.shutdown.max.internal-ext
+  value: 500
+  unit: ms
+  display: { ko: "500 ms" }
+  label: { ko: "내부 익스텐션이 등록된 함수의 Shutdown 단계 최대 길이" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.shutdown.max.external-ext
+  value: 2000
+  unit: ms
+  display: { ko: "2,000 ms" }
+  label: { ko: "외부 익스텐션이 하나 이상 등록된 함수의 Shutdown 단계 최대 길이" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.coldstart.share
+  value: 1
+  unit: "%"
+  display: { ko: "1% 미만" }
+  label: { ko: "콜드 스타트가 일어나는 호출의 일반적인 비율 (문서의 대략값)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.coldstart.duration-range
+  value: 1
+  unit: s
+  display: { ko: "100 ms 미만에서 1초 넘게까지" }
+  label: { ko: "콜드 스타트 길이의 일반적인 범위 (문서의 대략값)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtime-environment.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-runtime-environment.html
+  checked: 2026-11-03
+  volatile: true
+
+- id: lambda.snapstart.cache.min-billing
+  value: 3
+  unit: h
+  display: { ko: "3시간" }
+  label: { ko: "SnapStart 스냅샷 캐싱 요금의 최소 청구 시간 (Java 관리형 런타임은 SnapStart 추가 요금 없음)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/snapstart.html
+  checked: 2026-11-03
+  volatile: true

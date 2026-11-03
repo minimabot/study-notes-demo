@@ -1,0 +1,41 @@
+# 장: Lambda 호출 방식
+chapter:
+  id: lambda/invocation
+  title: { ko: "호출 방식: 동기, 비동기, 이벤트 소스 매핑" }
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/lambda-invocation.html
+  topics:
+    - id: lambda/invocation/types
+      title: { ko: "세 가지 호출 방식과 InvocationType" }
+      exam_tags: [DVA-C03#1.1, DVA-C03#1.2, SAA-C03#2.1]
+      exam_unknown: false
+      recommended:
+        - { claim: { ko: "이벤트 소스 매핑은 같은 레코드를 두 번 이상 처리할 수 있으므로 함수 코드를 멱등하게 만든다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html, checked: 2026-11-03 }
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-invocation.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-sync.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html
+    - id: lambda/invocation/services
+      title: { ko: "서비스별 호출 방식" }
+      exam_tags: [DVA-C03#1.2, SAA-C03#2.1]
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/lambda-services.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html
+    - id: lambda/invocation/limits-throttling
+      title: { ko: "페이로드 한도와 방식별 스로틀 동작" }
+      exam_tags: [DVA-C03#1.2, SAA-C03#3.2]
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/services-sqs-errorhandling.html
+    - id: lambda/invocation/retries
+      title: { ko: "방식별 재시도와 멱등성" }
+      exam_tags: [DVA-C03#1.2, SAP-C03#1.1]
+      exam_unknown: false
+      recommended:
+        - { claim: { ko: "재시도로 같은 이벤트가 여러 번 처리돼도 중복 거래 같은 부작용이 없도록 멱등 코드를 쓴다" }, source: https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html, checked: 2026-11-03 }
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-retries.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html

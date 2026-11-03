@@ -13,7 +13,7 @@ chapter: vpc/subnets-routing
 | 유형 | 라우팅 테이블의 모양 |
 |---|---|
 | 퍼블릭 서브넷(Public subnet) | 인터넷 게이트웨이로 가는 직접 경로가 있다 |
-| 프라이빗 서브넷(Private subnet) | 인터넷 게이트웨이로 가는 직접 경로가 없다. 인터넷에 나가려면 NAT 장치가 필요하다 |
+| 프라이빗 서브넷(Private subnet) | 인터넷 게이트웨이로 가는 직접 경로가 없다. IPv4로 인터넷에 나가려면 NAT 장치를, IPv6로 나가기만 하려면 송신 전용 인터넷 게이트웨이를 거친다 |
 | VPN 전용 서브넷(VPN-only subnet) | 가상 프라이빗 게이트웨이를 거쳐 Site-to-Site VPN으로 가는 경로가 있고, 인터넷 게이트웨이 경로는 없다 |
 | 격리된 서브넷(Isolated subnet) | VPC 밖으로 가는 경로가 없다. 같은 VPC 안에서만 통신한다 |
 

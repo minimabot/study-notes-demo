@@ -1,0 +1,74 @@
+# 장: Lambda 함수 구성
+chapter:
+  id: lambda/configuration
+  title:
+    ko: 함수 구성 (메모리·제한 시간·환경 변수·스토리지)
+  track: exam-core
+  doc_source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html
+  topics:
+    - id: lambda/configuration/memory-architecture
+      title:
+        ko: 메모리와 CPU, 아키텍처(arm64·x86_64)
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#4.3
+        - SAA-C03#3.2
+        - SAA-C03#4.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 최소 메모리 설정은 이벤트를 변환·전달하는 단순한 함수에만 쓴다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html
+          checked: 2026-11-03
+        - claim:
+            ko: arm64로 옮길 때는 의존성 확인, 테스트, 성능 비교 뒤 별칭 라우팅 등으로 단계적으로 배포한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-memory.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/foundation-arch.html
+    - id: lambda/configuration/timeout-storage
+      title:
+        ko: 제한 시간, 임시 스토리지(/tmp), EFS
+      exam_tags:
+        - DVA-C03#1.2
+        - SAA-C03#3.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: 테스트에는 실제 예상 상한 크기의 데이터를 써서 제한 시간을 정한다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html
+          checked: 2026-11-03
+        - claim:
+            ko: EFS는 성능과 복원력을 위해 가용 영역 둘 이상에 마운트 대상을 둔다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem-efs.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-timeout.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-ephemeral-storage.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem-efs.html
+    - id: lambda/configuration/envvars-secrets
+      title:
+        ko: 환경 변수, KMS 암호화, 비밀 값 관리
+      exam_tags:
+        - DVA-C03#1.2
+        - DVA-C03#2.2
+      exam_unknown: false
+      recommended:
+        - claim:
+            ko: DB 자격 증명·API 키 같은 민감한 값은 환경 변수 대신 Secrets Manager에 둔다
+          source: https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html
+          checked: 2026-11-03
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars-encryption.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/with-secrets-manager.html
+    - id: lambda/configuration/streaming-tags
+      title:
+        ko: 응답 스트리밍과 태그
+      exam_tags:
+        - DVA-C03#1.2
+      exam_unknown: false
+      sources:
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html
+        - https://docs.aws.amazon.com/lambda/latest/dg/configuration-tags.html

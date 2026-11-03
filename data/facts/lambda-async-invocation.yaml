@@ -1,0 +1,81 @@
+# lambda/async-invocation 장 전용 사실.
+
+- id: lambda.async.retries.max
+  value: 2
+  unit: count
+  display: { ko: "2회" }
+  label: { ko: "비동기 호출 함수 오류 재시도 횟수 기본값이자 최댓값 (MaximumRetryAttempts 0~2)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-async-error-handling.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.async.retry.wait.first
+  value: 1
+  unit: min
+  display: { ko: "1분" }
+  label: { ko: "비동기 호출 첫 시도와 두 번째 시도 사이 대기 (함수 오류)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-async-error-handling.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.async.retry.wait.second
+  value: 2
+  unit: min
+  display: { ko: "2분" }
+  label: { ko: "비동기 호출 두 번째와 세 번째 시도 사이 대기 (함수 오류)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-async-error-handling.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.async.event-age.max
+  value: 21600
+  unit: s
+  display: { ko: "6시간(21,600초)" }
+  label: { ko: "비동기 이벤트 최대 보존 기간 기본값이자 최댓값 (MaximumEventAgeInSeconds)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-configuring.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-async-configuring.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.async.event-age.min
+  value: 60
+  unit: s
+  display: { ko: "60초" }
+  label: { ko: "MaximumEventAgeInSeconds 최솟값" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/api/API_PutFunctionEventInvokeConfig.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/api/API_PutFunctionEventInvokeConfig.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.async.throttle-backoff.first
+  value: 1
+  unit: s
+  display: { ko: "1초" }
+  label: { ko: "스로틀·시스템 오류 뒤 첫 재시도 간격" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-async-error-handling.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.async.throttle-backoff.max
+  value: 300
+  unit: s
+  display: { ko: "5분" }
+  label: { ko: "스로틀·시스템 오류 재시도 간격 최댓값 (지수적으로 늘어남)" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-error-handling.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-async-error-handling.html
+  checked: 2026-11-03
+  volatile: false
+
+- id: lambda.dlq.error-message.max
+  value: 1024
+  unit: byte
+  display: { ko: "1 KB" }
+  label: { ko: "DLQ 메시지 속성 ErrorMessage에 담기는 오류 메시지 앞부분 크기" }
+  source_en: https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-retain-records.html
+  source_ko: https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/invocation-async-retain-records.html
+  checked: 2026-11-03
+  volatile: false

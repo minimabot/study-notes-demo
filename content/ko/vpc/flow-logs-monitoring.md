@@ -83,7 +83,7 @@ version account-id interface-id srcaddr dstaddr srcport dstport protocol packets
 - **보안 그룹은 상태 저장(stateful)이다.** 들어온 요청이 허용되면 응답은 규칙과 관계없이 나간다.
 - **네트워크 ACL은 상태 비저장(stateless)이다.** 응답도 규칙을 따로 통과해야 한다.
 
-그래서 "요청은 ACCEPT인데 응답이 REJECT"라면 보안 그룹일 수 없다. 응답을 막을 수 있는 것은 네트워크 ACL뿐이다.
+그래서 연결이 살아 있는 동안 "요청은 ACCEPT인데 응답이 REJECT"인 줄이 계속 쌓인다면 아웃바운드 네트워크 ACL을 먼저 확인한다. 보안 그룹은 허용한 요청의 응답을 막지 않기 때문이다. 다만 연결이 닫힌 뒤 늦게 도착한 패킷 같은 경우도 REJECT로 남으므로, 레코드만으로 원인을 확정하지는 않는다.
 
 **예제.** 퍼블릭 서브넷의 웹 서버(네트워크 인터페이스 프라이빗 주소 `10.0.1.25`)에 대해 기본 형식으로 다음 세 줄이 기록됐다.
 
@@ -97,12 +97,18 @@ version account-id interface-id srcaddr dstaddr srcport dstport protocol packets
 2. **둘째 줄.** 같은 연결의 응답이다. 출발지 포트 443, 목적지 포트 50432(클라이언트의 임시 포트)로 나가다가 REJECT됐다. 보안 그룹은 상태 저장이라 허용된 요청의 응답을 막지 않는다. 따라서 **서브넷 네트워크 ACL의 아웃바운드 규칙** 이 임시 포트 범위를 열지 않은 것이다. 아웃바운드에 임시 포트 범위({{fact:vpc.ephemeral.linux}} 등 클라이언트에 맞게)를 허용하면 고쳐진다.
 3. **셋째 줄.** `203.0.113.9`에서 SSH(22)로 들어온 요청이 REJECT이고, 짝이 되는 응답 줄이 없다. 요청이 인스턴스에 닿지 못했다는 뜻이다. 이 줄만으로는 보안 그룹인지 네트워크 ACL 인바운드인지 정할 수 없다. 네트워크 ACL 인바운드가 22를 허용하고 있다면 원인은 보안 그룹이다. 의도한 차단이라면 고칠 것이 없다.
 
-정리하면 **REJECT 한 줄만 있으면 인바운드 단계(보안 그룹 또는 네트워크 ACL)**, **ACCEPT 뒤에 응답 REJECT가 따라오면 네트워크 ACL** 이다. 흐름 로그는 어느 규칙이 막았는지 직접 알려 주지 않는다. `reject-reason` 필드도 VPC 퍼블릭 액세스 차단(BPA)과 암호화 제어 때문에 거부된 경우만 표시한다.
+정리하면 **REJECT 한 줄만 있으면 인바운드 단계(보안 그룹 또는 네트워크 ACL)**, **ACCEPT 뒤에 응답 REJECT가 반복되면 네트워크 ACL을 먼저 의심** 한다. 흐름 로그는 어느 규칙이 막았는지 직접 알려 주지 않는다. `reject-reason` 필드도 VPC 퍼블릭 액세스 차단(BPA)과 암호화 제어 때문에 거부된 경우만 표시한다.
 
 **지표 필터와 경보.** CloudWatch Logs로 보낸 흐름 로그는 다른 로그처럼 지표 필터를 걸 수 있다. 예를 들어 다음 패턴은 TCP 22로 들어와 거부된 레코드를 센다.
 
 ```
 [version, account, eni, source, destination, srcport, destport="22", protocol="6", packets, bytes, windowstart, windowend, action="REJECT", flowlogstatus]
+```
+
+응답 방향에서 거부된 레코드는 서비스 포트가 출발지 포트에 찍힌다. 그래서 응답 거부까지 세려면 `srcport` 쪽 필터를 하나 더 둔다. 예를 들어 웹 서버의 응답 거부는 다음처럼 잡는다.
+
+```
+[version, account, eni, source, destination, srcport="443", destport, protocol="6", packets, bytes, windowstart, windowend, action="REJECT", flowlogstatus]
 ```
 
 지표 값을 1로 두고 합계(Sum) 통계로 경보를 만들면, 일정 시간 안에 거부된 SSH 시도가 기준을 넘을 때 SNS로 알림을 받는다. 콘솔에서 로그 그룹을 필터 표현식으로 검색할 수도 있다.
